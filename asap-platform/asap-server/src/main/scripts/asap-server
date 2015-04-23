@@ -1,0 +1,55 @@
+# This is the init script for the ASAP Server daemon.
+# When deployed, it should be placed under /etc/init.d/
+# to be executed as a service.
+
+[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="/Users/npapa/Documents/workspace/asap/asap-server/target"
+
+LIB_DIR=$ASAP_SERVER_HOME/lib
+CONF_DIR=$ASAP_SERVER_HOME/conf
+
+
+CLASSPATH=$CONF_DIR
+CLASSPATH=$CLASSPATH:$(echo $LIB_DIR/*.jar | tr ' ' ':')
+CLASSPATH=$CLASSPATH:$ASAP_SERVER_HOME/asap-server.jar
+PIDFILE=/tmp/asap-server.pid
+
+start() {
+    [ -f $PIDFILE ] && echo "ASAP Server already running ($(cat $PIDFILE))" && exit 0
+    cd $ASAP_SERVER_HOME
+    java -Duser.dir=$ASAP_SERVER_HOME -Dname=asap-server -cp $CLASSPATH  gr.ntua.cslab.asap.daemon.Main &
+    echo $! > $PIDFILE;
+}
+
+stop() {
+    PID=$(cat $PIDFILE 2>/dev/null)
+    [ "$PID" == "" ] && echo "ASAP Server not running" && exit 0
+    kill -TERM $PID
+    rm -f $PIDFILE 
+}
+
+status() {
+    if [ -f $PIDFILE ]; then
+        PID=$(cat $PIDFILE)
+        echo "ASAP Server running ($PID)"
+    else
+        echo "ASAP Server not running"
+    fi
+}
+
+case $1 in
+    start)
+        start;
+    ;;
+    stop)   
+        stop;
+    ;;
+    restart)    
+        stop && start;
+    ;;
+    status)   
+        status;
+    ;;
+    *)      
+        echo "$0 {start|stop|status|restart}"
+    ;;
+esac

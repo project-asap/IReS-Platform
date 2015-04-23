@@ -1,0 +1,5 @@
+TF_IDF,d1
+crawlDocuments_small,TF_IDF
+d1,k-Means
+k-Means,d2
+d2,$$target
