@@ -1,0 +1,5 @@
+#
+#Sun Apr 19 13:52:45 EEST 2015
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=TF_IDF
+Constraints.Input.number=1

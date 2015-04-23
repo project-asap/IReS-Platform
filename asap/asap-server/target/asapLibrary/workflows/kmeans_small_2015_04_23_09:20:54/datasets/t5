@@ -1,0 +1,4 @@
+#
+#Thu Apr 23 09:20:54 CEST 2015
+Execution.path=$HDFS_DIR/kmeans_weka/weka_kmeans.txt
+Constraints.Engine.FS=HDFS

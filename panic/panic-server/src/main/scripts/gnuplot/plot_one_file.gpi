@@ -1,0 +1,41 @@
+#!/usr/bin/gnuplot
+# this file takes one file and a number of columns as input
+# and outputs a single graph containing the lines columns
+# the X dimension is the 1st column of the file
+# the following COLS_PRINT columns are then printed
+
+
+# environment variables section
+INPUT_FILE = system("echo $INPUT_FILE")
+COLS_PRINT = system("echo $COLS_PRINT")
+
+TITLE = system("echo $TITLE")
+X_LABEL = system("echo $X_LABEL")
+Y_LABEL = system("echo $Y_LABEL")
+INDEX = system("echo $INDEX")
+
+if(TITLE eq "") TITLE = "Sample Graph"
+if(X_LABEL eq "")X_LABEL = "X axis" 
+if(Y_LABEL eq "")Y_LABEL = "Y axis" 
+if(INDEX eq "")INDEX = "1"
+
+if(INPUT_FILE eq "") print "No INPUT_FILE set" ; exit 
+if(COLS_PRINT eq "") print "No COLS_PRINT set" ; exit 
+
+
+set macro
+print "INPUT_FILE:\t".INPUT_FILE
+print "COLS_PRINT:\t".COLS_PRINT
+print "INDEX:\t\t".INDEX
+set grid
+set xlabel X_LABEL
+set ylabel Y_LABEL
+set title TITLE
+
+
+
+plot for [c=2:(COLS_PRINT+1)] INPUT_FILE index @INDEX using 1:c with lines title columnheader(c)
+#do for [c in COLS_PRINT] {
+#	print c
+#}
+pause -1

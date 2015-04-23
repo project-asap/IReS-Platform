@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>ASAP</name>
+	<groupId>gr.ntua.cslab</groupId>
+	<artifactId>asap</artifactId>
+	<packaging>pom</packaging>
+	<version>0.1-SNAPSHOT</version>
+	<properties>
+    		<hadoop.version>2.6.0</hadoop.version>
+  	</properties>
+	<modules>
+		<module>asap-server</module>
+		<module>asap-beans</module>
+	</modules>
+	<repositories>
+	  	<repository>
+    			<id>cloudera-repo-releases</id>
+    			<url>https://repository.cloudera.com/artifactory/repo/</url>
+  		</repository>
+	</repositories>
+</project>

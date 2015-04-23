@@ -1,0 +1,23 @@
+#
+#Sun Apr 19 13:54:34 EEST 2015
+Execution.Argument3=5
+Execution.Argument2=5
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Execution.Argument1=$HDFS_OP_DIR/kmeans
+Execution.Argument0=In0.path
+Execution.LuaScript=kmeans_mahout.lua
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Output0.Engine.FS=HDFS
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.k=Double,1.0,21.0,5.0
+Constraints.OpSpecification.Algorithm.name=k-means
+Optimization.inputSpace.In0.points=Double,10000.0,160000.0,10000.0
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation=127.0.0.1
+Constraints.Output.number=1
+Execution.Output0.path=$HDFS_OP_DIR/kmeans
+Optimization.outputSpace.execTime=Double
+Execution.Arguments.number=4
+Constraints.Input.number=1
+Optimization.cost=100.0
+Optimization.outputSpace.cost=Double
+Constraints.Input0.type=SequenceFile

@@ -1,0 +1,43 @@
+#
+#Thu Apr 23 09:21:01 CEST 2015
+Constraints.Input.number=2
+Constraints.Input0.DataInfo.Attributes.Atr1.type=ByteWritable
+Optimization.inputSpace.In0.uniqueKeys=Double,1.0,1E10,l
+Optimization.outputSpace.execTime=Double
+Execution.Argument2=temp1
+Execution.Argument1=In1.fileName
+Execution.Argument0=In0.fileName
+Constraints.OpSpecification.Algorithm.Join.JoinCondition=in1.atr1 \= in2.atr2
+Constraints.Input1.DataInfo.Attributes.Atr1.type=ByteWritable
+Execution.Output0.fileName=temp1
+Constraints.Output0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Input1.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Output0.DataInfo.Attributes.Atr1.type=ByteWritable
+Constraints.Output0.Engine.DB.NoSQL.HBase.value=Atr2
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Constraints.Input1.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Execution.Arguments.number=3
+Constraints.Input0.DataInfo.Attributes.number=2
+Optimization.outputSpace.cost=Double
+Constraints.Input0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Output.number=1
+Constraints.Input0.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Input0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Constraints.Input1.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Input0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Optimization.inputSpace.In1.uniqueKeys=Double,1.0,1E10,l
+Constraints.Input1.DataInfo.Attributes.number=2
+Constraints.Input1.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation=127.0.0.1
+Constraints.Output0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Execution.LuaScript=HBase_HashJoin.lua
+Constraints.Output0.DataInfo.Attributes.number=2
+Optimization.Out0.uniqueKeys=In0.uniqueKeys + In1.uniqueKeys
+Constraints.OpSpecification.Algorithm.Join.type=HashJoin
+Optimization.outputSpace.Out0.uniqueKeys=Integer
+Optimization.model.Out0.uniqueKeys=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.execTime=100.0 + (In0.uniqueKeys + In1.uniqueKeys)/1E05/cores
+Constraints.Output0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Optimization.inputSpace.cores=Double,1.0,40.0,5.0
+Optimization.cost=100.0

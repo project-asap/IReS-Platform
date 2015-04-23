@@ -1,0 +1,11 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=PeakDetection
+Constraints.Input0.Engine.FS=HDFS
+Constraints.EngineSpecification.Centralized=SQLite
+Constraints.Output.number=1
+Constraints.Input.number=1
+Optimization.inputSpace.In0.size=Double,1E3,1E9,l
+Optimization.outputSpace.execTime=Double
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel

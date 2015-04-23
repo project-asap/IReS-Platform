@@ -1,0 +1,25 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.Output0.type=arff
+Constraints.OpSpecification.Algorithm.name=TF_IDF
+Constraints.Input0.Engine.FS=HDFS
+Constraints.EngineSpecification.Centralized=WEKA
+Constraints.Output.number=1
+Constraints.Input.number=1
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.points=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.documents=Double,1.0,5000.0,500.0
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Out0.points=Integer
+Optimization.Out0.points=In0.documents
+Optimization.outputSpace.cost=Double
+Optimization.cost=1.0
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.LuaScript=TF_IDF_weka.lua
+Execution.Arguments.number=1
+Execution.Argument0=In0.path.local
+Execution.Output0.path=$HDFS_OP_DIR/tf_idf_data.arff
+Execution.copyToLocal=In0.path
+Execution.copyFromLocal=tf_idf_data.arff
+

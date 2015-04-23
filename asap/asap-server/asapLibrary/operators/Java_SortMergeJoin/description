@@ -1,0 +1,36 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Constraints.Output0.DataInfo.Attributes.Atr1.type=ByteWritable
+Constraints.OpSpecification.Algorithm.Join.type=SortMergeJoin
+Constraints.Output0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Input1.DataInfo.Attributes.number=2
+Constraints.Output0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Constraints.Input0.DataInfo.Attributes.Atr1.type=ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type=List<ByteWritable>
+Constraints.Input0.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Output0.Engine.DB.NoSQL.HBase.value=Atr2
+Constraints.Output0.DataInfo.Attributes.number=2
+Constraints.Output.number=1
+Constraints.Input0.DataInfo.Attributes.number=2
+Constraints.Input.number=2
+Constraints.Input1.DataInfo.Attributes.Atr1.type=Varchar
+Constraints.OpSpecification.Algorithm.Join.JoinCondition=in1.atr1 \= in2.atr2
+Constraints.EngineSpecification.Centralized.Java.location=127.0.0.1
+Constraints.Input1.Engine.DB.Relational.MySQL.schema=...
+Constraints.Input1.DataInfo.Attributes.Atr2.type=Varchar
+Constraints.Input1.Engine.DB.Relational.MySQL.location=127.0.0.1
+Constraints.Input0.Engine.DB.NoSQL.HBase.key=Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location=127.0.0.1
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.Out0.uniqueKeys=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.uniqueKeys=Double,1.0,1E10,l
+Optimization.inputSpace.In1.uniqueKeys=Double,1.0,1E10,l
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Out0.uniqueKeys=Integer
+Optimization.execTime=1000.0 
+Optimization.Out0.uniqueKeys=In0.uniqueKeys + In1.uniqueKeys
+Optimization.outputSpace.cost=Double
+Optimization.cost=100.0
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+

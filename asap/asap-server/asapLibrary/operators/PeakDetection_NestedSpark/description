@@ -1,0 +1,12 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=PeakDetection
+Constraints.Input0.Engine.FS=HDFS
+Constraints.EngineSpecification.Distributed=NestedSpark
+Constraints.Output.number=1
+Constraints.Input.number=1
+Optimization.inputSpace.In0.size=Double,1E3,1E8,l
+Optimization.inputSpace.cores=Double,16.0,64.0,16.0
+Optimization.outputSpace.execTime=Double
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel

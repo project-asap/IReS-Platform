@@ -1,0 +1,5 @@
+== panic-data-generator
+
+data generator source code for the PANIC system.
+
+This project creates multi dimensional points used as tests for PANIC.

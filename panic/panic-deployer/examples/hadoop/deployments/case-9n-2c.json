@@ -1,0 +1,84 @@
+{
+	"name":"Hadoop Cluster",
+	"groups" : [
+		{
+			"name":	"master",
+			"image" : "78e96a57-2436-45c8-96b5-5eda9eb69be9",
+			"flavor" : 200,
+			"multiplicity"  : 1,
+			"scripts" : [
+				{
+				    "order" : 1,
+			    	    "path" : "shared/inject_key.sh"
+				},
+				{
+				    "order" : 2,
+				    "path" : "master/nat.sh"
+				},
+				{
+				    "order" : 3,
+				    "path" : "shared/dependencies.sh"
+				},
+				{
+				    "order" : 4,
+				    "path" : "shared/configure.sh"
+				},
+				{
+				    "order" : 5,
+				    "path" : "master/ganglia.sh"
+				},
+				{
+				    "order" : 6,
+				    "path" : "master/start.sh"
+				}
+			],
+			"provider_actions": {
+      				"attach_public_ipv4" : true
+			}
+		},
+		{
+			"name":	"slave",
+			"image" : "78e96a57-2436-45c8-96b5-5eda9eb69be9",
+			"flavor" : 208,
+			"multiplicity"  : 9,
+			"scripts" : [
+				{
+				    "order" : 1,
+			    	    "path" : "shared/inject_key.sh"
+				},
+				{
+				    "order" : 2,
+				    "path" : "slave/nat.sh"
+				},
+				{
+				    "order" : 3,
+				    "path" : "shared/dependencies.sh"
+				},
+				{
+				    "order" : 4,
+				    "path" : "shared/configure.sh"
+				},
+				{
+				    "order" : 5,
+				    "path" : "slave/ganglia.sh"
+				}
+			],
+			"provider_actions": {
+			}
+		}
+	],
+	"actions" : {
+	    "inject_ssh_keypair" : true,
+	    "update_etc_hosts" : true,
+	    "set_hostnames" : true
+	},
+	"provider" : {
+	    "name": "~okeanos",
+	    "auth" :{
+	        "URL" : "https://accounts.okeanos.grnet.gr/identity/v2.0",
+	        "TOKEN" : "fQ9Xyfn8hgvaG8uBs0zdswZVqKRxBa20oCMBkGKmrKs"
+	    },
+	    "private_network" : true
+	    
+	}
+}

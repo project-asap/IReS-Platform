@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+#script used to inject ssh key into the master vm
+
+cat >> /root/.ssh/authorized_keys << EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDK0MxPLCFokxWsxNMmDcBBoXBdeftpfjusTR7zIQfWfZJhhftLYmmgiHEi0tVDbpazIt3e5uOsQakX3F8MUbPmsFiMhnf80zMkR8Ln7WFlTzlXaR8HOVa7YfwGzQWOrr38E388fb+XtsGkIADMqX+aYT7PBFjA0ttRPKXEeyWyLoYlWTuMmnrgI09k29KixzzK6ix028lMHAAIm7XFEprigU/13/PXg5/sS5LM9MTKsUqbSqZ78WF9sad7rYNE7qtH3OMNwBkV/zFpe/+7T7Lml80O9Jmi/6lJEwN01ZNGTaGqKzJJLQFd45C207LUDe1yctMyM/SXkqWHcoH0pKWX giannis@debian
+EOF

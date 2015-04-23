@@ -1,0 +1,89 @@
+"
+// Do some mock queue status updates
+  var graphId = setInterval(getGraph, 1000);
+  var stateId = setInterval(getState, 1000);
+  var trackingURLId = setInterval(getTrackingURL, 1000);
+  foundURL=false;
+  stateFinished=false;
+	function getGraph() {
+		if(stateFinished){
+			clearInterval(graphId);
+			return;
+		}
+  		var xmlhttp;
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+		else
+  		{// code for IE6, IE5
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+  		{
+  //  		document.getElementById("demo").innerHTML=xmlhttp.responseText;
+  			data = JSON.parse(xmlhttp.responseText);
+    	    draw(true);
+  		}
+		xmlhttp.open("GET",resource,true);
+		xmlhttp.send();
+  	}
+  	
+	function getState() {
+		if(stateFinished){
+			clearInterval(stateId);
+			return;
+		}
+  		var xmlhttp;
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+		else
+  		{// code for IE6, IE5
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+  		{
+    		document.getElementById("state").innerHTML="State: "+xmlhttp.responseText;
+    		if((xmlhttp.responseText.lastIndexOf("FINISHED", 0) === 0)||(xmlhttp.responseText.lastIndexOf("FAILED", 0) === 0)){
+    			stateFinished=true;
+    		}
+  		}
+		xmlhttp.open("GET",resource+"/state",true);
+		xmlhttp.send();
+  	}
+  	
+	function getTrackingURL() {
+		if(foundURL){
+			clearInterval(trackingURLId);
+			return;
+		}
+  		var xmlhttp;
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+		else
+  		{// code for IE6, IE5
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+  		{
+    		document.getElementById("trackingURL").innerHTML=xmlhttp.responseText;
+    		document.getElementById("trackingURL").href=xmlhttp.responseText;
+    		if(!(xmlhttp.responseText.length === 0)){
+    			foundURL=true;
+    		}
+    			
+  		}
+		xmlhttp.open("GET",resource+"/trackingURL",true);
+		xmlhttp.send();
+  	}
+  getTrackingURL();
+  getState();
+  getGraph();
+  draw();
+</script>
+
+

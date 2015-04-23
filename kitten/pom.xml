@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.cloudera.kitten</groupId>
+  <artifactId>kitten-project</artifactId>
+  <version>0.2.0</version>
+  <packaging>pom</packaging>
+
+  <name>Kitten Project</name>
+  <url>http://github.com/cloudera/kitten</url>
+  <description>Tools for writing applications on YARN.</description>
+
+  <modules>
+    <module>java</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Versions for dependencies -->
+    <hadoop.version>2.6.0</hadoop.version>
+    <guava.version>11.0.2</guava.version>
+    <luaj.version>2.0.2</luaj.version>
+    <junit.version>4.8.2</junit.version>
+
+    <!-- Versions for plugins -->
+    <compiler.plugin.version>2.3.2</compiler.plugin.version>
+    <assembly.plugin.version>2.2.1</assembly.plugin.version>
+  </properties>
+
+          <repositories>
+                <repository>
+                        <id>cloudera-repo-releases</id>
+                        <url>https://repository.cloudera.com/artifactory/repo/</url>
+                </repository>
+        </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>cloudera-local</id>
+      <name>Cloudera Snapshots</name>
+      <url>https://repository.cloudera.com/artifactory/libs-release-local/</url>
+    </repository>
+  </distributionManagement>
+</project>

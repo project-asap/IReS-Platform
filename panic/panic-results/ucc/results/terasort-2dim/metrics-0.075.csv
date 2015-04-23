@@ -1,0 +1,4 @@
+# Sampler used:	class gr.ntua.ece.cslab.panic.core.samplers.GreedyDimensionSampler
+# Date:	Mon Aug 04 00:47:15 EEST 2014
+Model	MSE	Average	Deviation	R
+MLPerceptron			33436.57186	182.85670	147.51834	-0.86950

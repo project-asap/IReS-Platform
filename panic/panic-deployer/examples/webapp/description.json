@@ -1,0 +1,80 @@
+{
+	"name":"Web Application Benchmark",
+	"groups" : [
+		{
+			"name":	"mysql",
+			"image" : "78e96a57-2436-45c8-96b5-5eda9eb69be9",
+			"flavor" : 150,
+			"multiplicity"  : 1,
+			"scripts" : [
+				{
+				    "order" : 1,
+				    "path" : "mysql/setup.sh"
+				},
+				{
+				    "order" : 2,
+				    "path" : "mysql/ganglia.sh"
+				}
+			],
+			"provider_actions": {
+      				"attach_public_ipv4" : true
+			}
+		},
+		{
+			"name":	"apache",
+			"image" : "78e96a57-2436-45c8-96b5-5eda9eb69be9",
+			"flavor" : 150,
+			"multiplicity"  : 1,
+			"scripts" : [
+				{
+				    "order" : 1,
+				    "path" : "apache/setup.sh"
+				},
+				{
+				    "order" : 2,
+				    "path" : "apache/ganglia.sh"
+				}
+			],
+			"provider_actions": {
+      				"attach_public_ipv4" : true
+			}
+		},
+		{
+			"name":	"client",
+			"image" : "78e96a57-2436-45c8-96b5-5eda9eb69be9",
+			"flavor" : 150,
+			"multiplicity"  : 1,
+			"scripts" : [
+				{
+				    "order" : 1,
+				    "path" : "client/setup.sh"
+				},
+				{
+				    "order" : 2,
+				    "path" : "client/ganglia.sh"
+				},
+				{
+				    "order" : 3,
+				    "path" : "client/run.sh"
+				}
+			],
+			"provider_actions": {
+      				"attach_public_ipv4" : true
+			}
+		}
+	],
+	"actions" : {
+	    "inject_ssh_keypair" : true,
+	    "update_etc_hosts" : true,
+	    "set_hostnames" : true
+	},
+	"provider" : {
+	    "name": "~okeanos",
+	    "auth" :{
+	        "URL" : "https://accounts.okeanos.grnet.gr/identity/v2.0",
+	        "TOKEN" : "fQ9Xyfn8hgvaG8uBs0zdswZVqKRxBa20oCMBkGKmrKs"
+	    },
+	    "private_network" : true
+	    
+	}
+}

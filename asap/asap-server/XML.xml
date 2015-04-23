@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow>
+    <operators>
+        <name>hbaseDataset</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>hbaseDataset
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.size = 1TB
+Optimization.uniqueKeys = 1300
+</description>
+    </operators>
+    <operators>
+        <name>t0</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t0
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+</description>
+        <input>hbaseDataset</input>
+    </operators>
+    <operators>
+        <name>mySQLDataset</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>mySQLDataset
+Constraints.DataInfo.Attributes.Atr1.type = Varchar
+Constraints.DataInfo.Attributes.Atr2.type = Varchar
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.Relational.MySQL.location = 127.0.0.1
+Constraints.Engine.DB.Relational.MySQL.schema = ...
+Optimization.size = 1GB
+Optimization.uniqueKeys = 1
+</description>
+    </operators>
+    <operators>
+        <name>Move_MySQL_HBase</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>true</isOperator>
+        <description>Move_MySQL_HBase
+Constraints.EngineSpecification.Centralized.Java.location = 127.0.0.1
+Constraints.Input.number = 1
+Constraints.Input0.DataInfo.Attributes.Atr1.type = Varchar
+Constraints.Input0.DataInfo.Attributes.Atr2.type = Varchar
+Constraints.Input0.DataInfo.Attributes.number = 2
+Constraints.Input0.Engine.DB.Relational.MySQL.location = 127.0.0.1
+Constraints.Input0.Engine.DB.Relational.MySQL.schema = ...
+Constraints.OpSpecification.Algorithm.Move = 
+Constraints.Output.number = 1
+Constraints.Output0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Output0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Output0.DataInfo.Attributes.number = 2
+Constraints.Output0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Output0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Output0.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.Out0.uniqueKeys = In0.uniqueKeys
+Optimization.execTime = log(In0.uniqueKeys)
+Optimization.inputSpace.In0.uniqueKeys = Double,1.0,1E10,l
+Optimization.model.Out0.uniqueKeys = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.Out0.uniqueKeys = Integer
+Optimization.outputSpace.execTime = Double
+</description>
+        <input>mySQLDataset</input>
+    </operators>
+    <operators>
+        <name>t1</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t1
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+</description>
+        <input>Move_MySQL_HBase</input>
+    </operators>
+    <operators>
+        <name>HBase_HashJoin</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>true</isOperator>
+        <description>HBase_HashJoin
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation = 127.0.0.1
+Constraints.Input.number = 2
+Constraints.Input0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Input0.DataInfo.Attributes.number = 2
+Constraints.Input0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Input0.Engine.DB.NoSQL.HBase.value = Atr2
+Constraints.Input1.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Input1.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Input1.DataInfo.Attributes.number = 2
+Constraints.Input1.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Input1.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Input1.Engine.DB.NoSQL.HBase.value = Atr2
+Constraints.OpSpecification.Algorithm.Join.JoinCondition = in1.atr1 = in2.atr2
+Constraints.OpSpecification.Algorithm.Join.type = HashJoin
+Constraints.Output.number = 1
+Constraints.Output0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Output0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Output0.DataInfo.Attributes.number = 2
+Constraints.Output0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Output0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Output0.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.Out0.uniqueKeys = In0.uniqueKeys + In1.uniqueKeys
+Optimization.execTime = 100.0 + (In0.uniqueKeys + In1.uniqueKeys)/1E05/cores
+Optimization.inputSpace.In0.uniqueKeys = Double,1.0,1E10,l
+Optimization.inputSpace.In1.uniqueKeys = Double,1.0,1E10,l
+Optimization.inputSpace.cores = Double,1.0,40.0,5.0
+Optimization.model.Out0.uniqueKeys = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.Out0.uniqueKeys = Integer
+Optimization.outputSpace.execTime = Double
+</description>
+        <input>t0</input>
+        <input>t1</input>
+    </operators>
+    <operators>
+        <name>t2</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t2
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.uniqueKeys = 1
+</description>
+        <input>HBase_HashJoin</input>
+    </operators>
+    <operators>
+        <name>t3</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t3
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+</description>
+        <input>hbaseDataset</input>
+    </operators>
+    <operators>
+        <name>t4</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t4
+Constraints.DataInfo.Attributes.Atr1.type = Varchar
+Constraints.DataInfo.Attributes.Atr2.type = Varchar
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.Relational.MySQL.location = 127.0.0.1
+Constraints.Engine.DB.Relational.MySQL.schema = ...
+</description>
+        <input>mySQLDataset</input>
+    </operators>
+    <operators>
+        <name>Java_SortMergeJoin</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>true</isOperator>
+        <description>Java_SortMergeJoin
+Constraints.EngineSpecification.Centralized.Java.location = 127.0.0.1
+Constraints.Input.number = 2
+Constraints.Input0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Input0.DataInfo.Attributes.number = 2
+Constraints.Input0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Input0.Engine.DB.NoSQL.HBase.value = Atr2
+Constraints.Input1.DataInfo.Attributes.Atr1.type = Varchar
+Constraints.Input1.DataInfo.Attributes.Atr2.type = Varchar
+Constraints.Input1.DataInfo.Attributes.number = 2
+Constraints.Input1.Engine.DB.Relational.MySQL.location = 127.0.0.1
+Constraints.Input1.Engine.DB.Relational.MySQL.schema = ...
+Constraints.OpSpecification.Algorithm.Join.JoinCondition = in1.atr1 = in2.atr2
+Constraints.OpSpecification.Algorithm.Join.type = SortMergeJoin
+Constraints.Output.number = 1
+Constraints.Output0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Output0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Output0.DataInfo.Attributes.number = 2
+Constraints.Output0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Output0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Output0.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.Out0.uniqueKeys = In0.uniqueKeys + In1.uniqueKeys
+Optimization.execTime = 1000.0 
+Optimization.inputSpace.In0.uniqueKeys = Double,1.0,1E10,l
+Optimization.inputSpace.In1.uniqueKeys = Double,1.0,1E10,l
+Optimization.model.Out0.uniqueKeys = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.Out0.uniqueKeys = Integer
+Optimization.outputSpace.execTime = Double
+</description>
+        <input>t3</input>
+        <input>t4</input>
+    </operators>
+    <operators>
+        <name>t5</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t5
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.uniqueKeys = 1
+</description>
+        <input>Java_SortMergeJoin</input>
+    </operators>
+    <operators>
+        <name>t6</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t6
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+</description>
+        <input>t2</input>
+        <input>t5</input>
+    </operators>
+    <operators>
+        <name>Sort</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>true</isOperator>
+        <description>Sort
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation = 127.0.0.1
+Constraints.Input.number = 1
+Constraints.Input0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Input0.DataInfo.Attributes.number = 2
+Constraints.Input0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Input0.Engine.DB.NoSQL.HBase.value = Atr2
+Constraints.OpSpecification.Algorithm.Sort.sortingOrder = in1.atr1
+Constraints.OpSpecification.Algorithm.Sort.type = ExternalSort
+Constraints.Output.number = 1
+Constraints.Output0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Output0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Output0.DataInfo.Attributes.number = 2
+Constraints.Output0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Output0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Output0.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.Out0.uniqueKeys = In0.uniqueKeys
+Optimization.inputSpace.In0.uniqueKeys = Double,1000.0,5000.0,1000.0
+Optimization.inputSpace.cores = Double,1.0,4.0,1.0
+Optimization.inputSpace.nodes = Double,2.0,10.0,1.0
+Optimization.model.Out0.uniqueKeys = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime = gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.outputSpace.Out0.uniqueKeys = Double
+Optimization.outputSpace.execTime = Double
+</description>
+        <input>t6</input>
+    </operators>
+    <operators>
+        <name>t7</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t7
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.uniqueKeys = 1
+</description>
+        <input>Sort</input>
+    </operators>
+    <operators>
+        <name>t8</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t8
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+</description>
+        <input>t2</input>
+        <input>t5</input>
+    </operators>
+    <operators>
+        <name>Sort2</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>true</isOperator>
+        <description>Sort2
+Constraints.EngineSpecification.Distributed.MapReduce.masterLocation = 127.0.0.1
+Constraints.Input.number = 1
+Constraints.Input0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Input0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Input0.DataInfo.Attributes.number = 2
+Constraints.Input0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Input0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Input0.Engine.DB.NoSQL.HBase.value = Atr2
+Constraints.OpSpecification.Algorithm.Sort.sortingOrder = in1.atr1
+Constraints.OpSpecification.Algorithm.Sort.type = ExternalSort
+Constraints.Output.number = 1
+Constraints.Output0.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.Output0.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.Output0.DataInfo.Attributes.number = 2
+Constraints.Output0.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Output0.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Output0.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.Out0.uniqueKeys = In0.uniqueKeys
+Optimization.execTime = In0.uniqueKeys*log(In0.uniqueKeys)
+Optimization.inputSpace.In0.uniqueKeys = Double,1.0,1E10,l
+Optimization.model.Out0.uniqueKeys = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.execTime = gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.Out0.uniqueKeys = Integer
+Optimization.outputSpace.execTime = Double
+</description>
+        <input>t8</input>
+    </operators>
+    <operators>
+        <name>t9</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>t9
+Constraints.DataInfo.Attributes.Atr1.type = ByteWritable
+Constraints.DataInfo.Attributes.Atr2.type = List&lt;ByteWritable&gt;
+Constraints.DataInfo.Attributes.number = 2
+Constraints.Engine.DB.NoSQL.HBase.key = Atr1
+Constraints.Engine.DB.NoSQL.HBase.location = 127.0.0.1
+Constraints.Engine.DB.NoSQL.HBase.value = Atr2
+Optimization.uniqueKeys = 1
+</description>
+        <input>Sort2</input>
+    </operators>
+    <operators>
+        <name>d4</name>
+        <cost>0.00</cost>
+        <status>stopped</status>
+        <isOperator>false</isOperator>
+        <description>d4
+</description>
+        <input>t7</input>
+        <input>t9</input>
+    </operators>
+</workflow>

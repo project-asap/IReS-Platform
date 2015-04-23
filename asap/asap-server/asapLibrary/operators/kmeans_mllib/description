@@ -1,0 +1,16 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Input0.type=mllib
+Constraints.EngineSpecification.Distributed=Spark
+Constraints.Output.number=1
+Constraints.Input.number=1
+Optimization.inputSpace.k=Double,2.0,20.0,2.0
+Optimization.inputSpace.In0.points=Double,1000000.0,10000000.0,1000000.0
+Optimization.outputSpace.execTime=Double
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.outputSpace.cost=Double
+Optimization.cost=100.0
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction

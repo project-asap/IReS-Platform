@@ -1,0 +1,13 @@
+gr/ntua/cslab/asap/daemon/rest/AbstractOperators.class
+gr/ntua/cslab/asap/daemon/rest/RunningWorkflows.class
+gr/ntua/cslab/asap/daemon/rest/AbstractWorkflows.class
+gr/ntua/cslab/asap/daemon/ServerStaticComponents.class
+gr/ntua/cslab/asap/daemon/rest/WebUI.class
+gr/ntua/cslab/asap/daemon/AbstractWorkflowLibrary.class
+gr/ntua/cslab/asap/daemon/rest/Workflows.class
+gr/ntua/cslab/asap/daemon/Main$1.class
+gr/ntua/cslab/asap/daemon/RunningWorkflowLibrary.class
+gr/ntua/cslab/asap/daemon/rest/Operators.class
+gr/ntua/cslab/asap/daemon/Main.class
+gr/ntua/cslab/asap/daemon/rest/Datasets.class
+gr/ntua/cslab/asap/daemon/YarnServiceHandler.class

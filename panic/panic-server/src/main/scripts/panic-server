@@ -1,0 +1,9 @@
+#!/bin/bash
+# This script is used to handle the PANIC server
+
+# the default classpath of the execution
+
+
+
+# executable
+java -cp $CLASSPATH:$CONF_DIR 
