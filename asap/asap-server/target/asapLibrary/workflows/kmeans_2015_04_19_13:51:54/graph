@@ -1,8 +1,0 @@
-t3,d2
-kmeans_weka,t3
-t2,kmeans_weka
-t1,t2
-TF_IDF_weka,t1
-t0,TF_IDF_weka
-crawlDocuments,t0
-d2,$$target
