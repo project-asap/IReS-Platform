@@ -137,12 +137,16 @@ public class Dataset implements Comparable<Dataset> {
 		return ret;
 	}
 
-	public void copyExecPath(Dataset dataset, int i) {
-		String path = datasetTree.getParameter("Execution.path");
-		if(path!=null)
-			dataset.add("Execution.path", path);
+	
+	public void copyExecVariables(Dataset dataset, int position) {
+		SpecTreeNode variables = datasetTree.getNode("Execution");
+		HashMap<String, String> val = new HashMap<String, String>();
+		variables.toKeyValues("", val);
+		for(Entry<String, String> e: val.entrySet()){
+			dataset.add("Execution."+e.getKey(), e.getValue());
+		}
 	}
-
+	
 	public void copyOptimization(Dataset dataset) {
 		SpecTreeNode opt = datasetTree.getNode("Optimization");
 		HashMap<String, String> kvs = new HashMap<String, String>();

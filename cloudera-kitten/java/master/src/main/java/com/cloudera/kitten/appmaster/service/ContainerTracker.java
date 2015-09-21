@@ -99,14 +99,32 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       LOG.info("Operator: "+params.getName()+" requesting " + numInstances+" containers");
       LOG.info("Resource cores: "+ resource.getVirtualCores());
       LOG.info("Resource memory: "+ resource.getMemory());
-      String[] nodes = null;//{"slave1"};
-      AMRMClient.ContainerRequest containerRequest = new AMRMClient.ContainerRequest(
-          resource,
-          nodes, // nodes
-          null, // racks
-          priority,
-          true,
-          "");
+      String[] nodes =params.getNodes();//= {"slave1"};
+      String labels = params.getLabels();
+      AMRMClient.ContainerRequest containerRequest=null;
+      if(labels==null){
+    	  LOG.info("Resource nodes: all");
+      	  containerRequest = new AMRMClient.ContainerRequest(
+              resource,
+              nodes, // nodes
+              null, // racks
+              priority,
+              true, //true for relaxed locality
+              "");
+      }
+      else{
+    	  LOG.info("Resource labels: "+ labels);
+    	  for (int i = 0; i < nodes.length; i++) {
+        	  LOG.info("Resource nodes: "+ nodes[i]);
+    	  }
+    	  containerRequest = new AMRMClient.ContainerRequest(
+    	          resource,
+    	          nodes, // nodes
+    	          null, // racks
+    	          priority,
+    	          false, //true for relaxed locality
+    	          "");
+      }
       
       this.containerRequests = new ArrayList<AMRMClient.ContainerRequest>();
       //restartResourceManager();

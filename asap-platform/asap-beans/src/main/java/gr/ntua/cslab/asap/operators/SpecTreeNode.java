@@ -222,6 +222,12 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 		//System.out.println("checking: "+name);
 		if(children.size()==0){
 			if(o1.children.size()==0){
+				if(value.startsWith("\"")){
+					if(value.equals(o1.value))
+						return true;
+					else
+						return false;
+				}
 				Pattern p = Pattern.compile(value);
 				Matcher m = p.matcher(o1.value);
 				if(m.matches()){

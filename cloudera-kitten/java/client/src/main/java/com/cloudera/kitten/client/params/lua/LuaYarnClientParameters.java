@@ -83,15 +83,17 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
 	    this.extras = new Extras();
 	    //String dir = "/opt/npapa/asapWorkflow/";
 	  	for( Entry<String, String> e : operators.entrySet()){
-	  		this.env.add(new LuaWrapper(e.getValue(), extraLuaValues).getTable(e.getKey()));
+	  		this.env.add(new LuaWrapper(e.getValue(), extraLuaValues).getTable("operator"));
 	  	    this.extras.putResource(e.getKey()+".lua", e.getValue());
 	  	}
 	  	for( Entry<String, String> e : inputDatasets.entrySet()){
-	  		if(e.getValue().startsWith("hdfs://")){
-	  			System.out.println("hdfs resource");
-	  		}
-	  		else{
-	  			this.extras.putResource(e.getKey(),  e.getValue());
+	  		if(e.getValue()!=null){
+		  		if(e.getValue().startsWith("hdfs://")){
+		  			LOG.info("hdfs resource: "+e.getValue());
+		  		}
+		  		else{
+		  			this.extras.putResource(e.getKey(),  e.getValue());
+		  		}
 	  		}
 	  	}
 	  	this.jobName=workflow;
@@ -195,6 +197,7 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
         LuaWrapper rsrc = new LuaWrapper(lp.value.checktable());
         if (!rsrc.isNil(LuaFields.LOCAL_RESOURCE_LOCAL_FILE)) {
           String localFileName = rsrc.getString(LuaFields.LOCAL_RESOURCE_LOCAL_FILE);
+          LOG.info("Copying local file " + localFileName + " to hdfs");
           try {
             localFileHelper.copyToHdfs(localFileName);
           } catch (IOException e) {

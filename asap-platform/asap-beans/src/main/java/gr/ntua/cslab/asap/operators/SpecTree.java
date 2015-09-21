@@ -102,6 +102,7 @@ public class SpecTree {
 				boolean found =false;
 				for(SpecTreeNode n1 : optree2.tree.values()){
 					Matcher m = p.matcher(n1.getName());
+					//System.out.println("checking: "+n.getName()+" "+n1.getName());
 					if(m.matches()){
 						found =true;
 						//System.out.println("found match: "+n.getName()+" "+n1.getName());

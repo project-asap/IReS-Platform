@@ -1,5 +1,5 @@
 #!/bin/bash
-WEKA=/opt/npapa/weka.jar
+WEKA=/opt/weka.jar
 
 input_dir=$1
 virtual_dir=virt

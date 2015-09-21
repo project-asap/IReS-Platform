@@ -61,4 +61,8 @@ public interface ContainerLaunchParameters {
   
   String getName();
   
+  String getLabels();
+
+String[] getNodes();
+  
 }

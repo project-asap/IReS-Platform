@@ -117,10 +117,10 @@ public class WebUI {
     @Path("/abstractOperators/checkMatches/")
     @Produces(MediaType.TEXT_HTML)
     public String checkAbstractOperatorMatches(
-            @QueryParam("opname") String opname) throws IOException {
+            @QueryParam("opname") String opname) throws Exception {
     	String ret = header;
     	ret+= "<h2>Matches for: "+opname+"</h2>";
-    	List<Operator> l = OperatorLibrary.getMatches(AbstractOperatorLibrary.getOperator(opname));
+    	List<Operator> l = OperatorLibrary.getMatchesNoIncrementID(AbstractOperatorLibrary.getOperator(opname));
     	ret += "<ul>";
     	for(Operator op : l){
 			ret+= "<li><a href=\"/web/operators/"+op.opName+"\">"+op.opName+"</a></li>";

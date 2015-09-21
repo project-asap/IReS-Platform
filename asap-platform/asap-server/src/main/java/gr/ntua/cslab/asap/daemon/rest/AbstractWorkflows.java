@@ -1,6 +1,8 @@
 package gr.ntua.cslab.asap.daemon.rest;
 
 import gr.ntua.cslab.asap.rest.beans.*;
+import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
+import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary;
 
 import java.io.IOException;
@@ -33,5 +35,16 @@ public class AbstractWorkflows {
 	@Path("/{id}/")
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
+    }
+	
+
+    @GET
+    @Path("/test/{id}/")
+    @Produces(MediaType.TEXT_HTML)
+    public void materializeAbstractWorkflow(@PathParam("id") String id) throws Exception{
+    	
+
+		AbstractWorkflow1 aw = new AbstractWorkflow1("test"+id);
+		
     }
 }

@@ -1,5 +1,5 @@
 #!/bin/bash
-WEKA=/opt/npapa/weka.jar
+WEKA=/opt/weka.jar
 
 inputFile=$1
 clusters=$2

@@ -64,6 +64,10 @@ public class OperatorDictionary {
 		input.add(in);
 	}
 	
+	public String getNameNoID() {
+		return name.substring(0, name.lastIndexOf("_"));
+	}
+	
 	public String getName() {
 		return name;
 	}

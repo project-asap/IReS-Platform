@@ -92,10 +92,16 @@ private int globalContainerId;
   }
   
   public int getCores() {
+	  if(name.equals("master")){
+		  return 1;
+	  }
     return lv.getInteger(LuaFields.CORES);
   }
 
   public int getMemory() {
+	  if(name.equals("master")){
+		  return 512;
+	  }
     return lv.getInteger(LuaFields.MEMORY);
   }
 
@@ -359,5 +365,15 @@ private int globalContainerId;
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String getLabels() {
+		return null;
+	}
+
+	@Override
+	public String[] getNodes() {
+		return null;
 	}
 }

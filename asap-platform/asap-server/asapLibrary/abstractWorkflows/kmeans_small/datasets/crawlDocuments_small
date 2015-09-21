@@ -2,4 +2,4 @@
 #Tue Feb 03 18:37:47 EET 2015
 Optimization.documents=100
 Constraints.Engine.FS=HDFS
-Execution.path=hdfs:///user/root/asapDataAll
+Execution.path=hdfs:///user/root/asapDataSmall

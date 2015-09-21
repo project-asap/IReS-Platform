@@ -5,7 +5,7 @@ output=$2
 max_iterations=$3
 K=$4
 
-mahout="/opt/mahout-distribution-0.9/bin/mahout"
+mahout="/opt/mahout-distribution-0.10.0/bin/mahout"
 
 ${mahout} kmeans \
           -i ${input}/tfidf-vectors/ \

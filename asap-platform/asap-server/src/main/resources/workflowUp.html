@@ -184,18 +184,23 @@
   
   
   var data;
-  function draw1(isUpdate) {
-  	 var st = "er ";
- 	 for (var i = 0; i < data.operators.length; i++) {
-      	var operator = data.operators[i];
-      	st += operator.name;
-     }
+//  function draw1(isUpdate) {
+//  	 var st = "er ";
+// 	 for (var i = 0; i < data.operators.length; i++) {
+//      	var operator = data.operators[i];
+//      	st += operator.name;
+//     }
   
-    document.getElementById("demo").innerHTML=st;
-  }
+//    document.getElementById("demo").innerHTML=st;
+//  }
   
   var styleTooltip = function(name, description) {
-  return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+  if(name.charAt(name.length-2)=='_'){
+  	return "<p class='name'>" + name.substring(0,name.length-2) + "</p><p class='description'>" + description + "</p>";
+  }
+  else{
+  	return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+  }
 	};
   
   
@@ -211,7 +216,7 @@
         var html = "<div class=\""+operator.isOperator+"\"   >";
       	if(operator.isOperator == "true"){
       		html += "<span class=status></span>";
-      		html += "<span class=name><a target=\"_blank\" href=\"/web/operators/"+id+"\">"+id+"</a></span>";
+      		html += "<span class=name><a target=\"_blank\" href=\"/web/operators/"+id.substring(0,id.length-2)+"\">"+id.substring(0,id.length-2)+"</a></span>";
       		html += "<span class=queue><span class=counter>execTime:"+operator.cost+"</span></span>";
       	}
       	else{

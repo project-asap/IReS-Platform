@@ -36,6 +36,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
 	public boolean copyToLocal=false, copyToHDFS=false;
 	
+	
 	public WorkflowNode(boolean isOperator, boolean isAbstract) {
 		this.isOperator = isOperator;
 		this.isAbstract = isAbstract;
@@ -146,6 +147,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 										WorkflowNode moveNode = new WorkflowNode(true, false);
 										moveNode.setOperator(m);
 										moveNode.addInput(in);
+										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
+										lin.add(in);
+										m.generateOptimizationMetrics(tempInput, 0, lin);
 										tempInputNode.addInput(moveNode);
 										moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
@@ -203,13 +207,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						int i =0;
 						for(WorkflowNode bin : bestInputs){
 							WorkflowNode tin = temp.inputs.get(i);
-							System.out.println("copy path from: "+bin.getName()+" to "+tin.getName());
+							logger.info("copy path from: "+bin.getName()+" to "+tin.getName());
 							if(bin.isOperator){
 								//move
-								bin.operator.copyExecPath(tin.dataset,0);
+								bin.operator.copyExecVariables(tin.dataset,0,bin.inputs);
 							}
 							else{
-								bin.dataset.copyExecPath(tin.dataset,0);
+								bin.dataset.copyExecVariables(tin.dataset,0);
 								bin.dataset.copyOptimization(tin.dataset);
 								
 							}
@@ -586,7 +590,12 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    		if(!dataset)
 		    			arg = n.operator.getParameter("Execution.Output0.path");*/
 		    	}
-		    	ret+= arg+" ";
+		    	if(arg.contains(" ")){
+			    	ret+= "\""+arg+"\""+" ";
+		    	}
+		    	else{
+			    	ret+= arg+" ";
+		    	}
 			}
 			return ret;
 		}

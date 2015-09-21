@@ -74,7 +74,7 @@ public class AbstractWorkflow1 {
 	}
 
 	public MaterializedWorkflow1 materialize(String metric, String nameExtention, String policy) throws Exception {
-
+		OperatorLibrary.moveid=0;
 		parsePolicy(policy);
 		String fullName=name+"_"+nameExtention;
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);

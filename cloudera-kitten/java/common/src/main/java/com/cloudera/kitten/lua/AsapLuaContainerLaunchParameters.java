@@ -453,4 +453,24 @@ private String writeExecutionScript(List<String> cmds) throws IOException {
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public String getLabels() {
+		String ret = lv.getString(LuaFields.LABELS);
+		if(ret.equals("nil")){
+			return null;
+		}
+		else
+			return ret;
+	}
+
+	@Override
+	public String[] getNodes() {
+		String nodes = lv.getString(LuaFields.NODES);
+		LOG.info("nodes: "+nodes);
+		if(nodes.equals("nil")){
+			return null;
+		}
+		return nodes.split(",");
+	}
 }

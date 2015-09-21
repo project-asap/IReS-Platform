@@ -28,6 +28,7 @@ public class OperatorLibrary {
 	private static HashMap<String,Operator> operators;
 	public static String operatorDirectory;
 	private static Logger logger = Logger.getLogger(OperatorLibrary.class.getName());
+	public static int moveid=0;
 	
 	public static void initialize(String directory) throws Exception{
 		operatorDirectory = directory;
@@ -57,21 +58,47 @@ public class OperatorLibrary {
 		return ret;
 	}
 	
-	public static List<Operator> getMatches(AbstractOperator abstractOperator){
+	public static List<Operator> getMatchesNoIncrementID(AbstractOperator abstractOperator) throws Exception{
 		//logger.info("Check matches: "+abstractOperator.opName);
 		List<Operator> ret = new ArrayList<Operator>();
 		for(Operator op : operators.values()){
-			if(abstractOperator.checkMatch(op))
-				ret.add(op);
+			if(abstractOperator.checkMatch(op)){
+				Operator temp = new Operator(op.opName, op.directory);
+				temp.optree=op.optree.clone();
+				temp.inputSpace=op.inputSpace;
+				temp.outputSpace=op.outputSpace;
+				temp.models=op.models;
+				ret.add(temp);
+			}
 		}
-		//for(Operator o :ret){
-		//	logger.info("Found: "+o.opName);
-		//}
+		for(Operator o :ret){
+			logger.info("Found: "+o.opName);
+		}
 		return ret;
 	}
 	
-	public static List<Operator> checkMove(Dataset from, Dataset to) {
-		//logger.info("Check move from: "+from+" to: "+to);
+	public static List<Operator> getMatches(AbstractOperator abstractOperator) throws Exception{
+		//logger.info("Check matches: "+abstractOperator.opName);
+		List<Operator> ret = new ArrayList<Operator>();
+		for(Operator op : operators.values()){
+			if(abstractOperator.checkMatch(op)){
+				Operator temp = new Operator(op.opName+"_"+moveid, op.directory);
+				moveid++;
+				temp.optree=op.optree.clone();
+				temp.inputSpace=op.inputSpace;
+				temp.outputSpace=op.outputSpace;
+				temp.models=op.models;
+				ret.add(temp);
+			}
+		}
+		for(Operator o :ret){
+			logger.info("Found: "+o.opName);
+		}
+		return ret;
+	}
+	
+	public static List<Operator> checkMove(Dataset from, Dataset to) throws Exception {
+		logger.info("Check move from: "+from+" to: "+to);
 		AbstractOperator abstractMove = new AbstractOperator("move");
 		abstractMove.moveOperator(from,to);
 		return getMatches(abstractMove);

@@ -64,6 +64,8 @@ public class LuaFields {
   // The file that contains the XMLed Configuration object for each container.
   public static final String KITTEN_JOB_XML_FILE = "job.xml";
   public static final String STAGEOUT = "stageout";
+  public static final String LABELS = "labels";
+  public static final String NODES = "nodes";
   
   // Not instantiated.
   private LuaFields() {}

@@ -18,7 +18,7 @@ base_env = {
 }
 
 -- The actual distributed shell job.
-kmeans_weka = yarn {
+operator = yarn {
   name = "Execute Java Operator",
   timeout = -1,
   memory = 6144,

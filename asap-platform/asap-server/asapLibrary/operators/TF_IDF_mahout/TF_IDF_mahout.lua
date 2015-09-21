@@ -18,7 +18,7 @@ base_env = {
 }
 
 -- The actual distributed shell job.
-TF_IDF_mahout = yarn {
+operator = yarn {
   name = "Execute Java Operator",
   timeout = -1,
   memory = 512,

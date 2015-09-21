@@ -89,19 +89,19 @@ public class RunningWorkflowLibrary {
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
-				operators.put(op.getName(), OperatorLibrary.operatorDirectory+"/"+op.getName()+"/"+op.getName()+".lua");
+				operators.put(op.getName(), OperatorLibrary.operatorDirectory+"/"+op.getNameNoID()+"/"+op.getNameNoID()+".lua");
 			}
 			else{
 				if(op.getInput().isEmpty()){
 					Dataset inDataset = new Dataset(op.getName());
 					inDataset.readPropertiesFromString(op.getDescription());
-					System.out.println("Adding dataset: "+op.getName()+" "+inDataset.getParameter("Execution.path"));
+					logger.info("Adding dataset: "+op.getName()+" "+inDataset.getParameter("Execution.path"));
 					inputDatasets.put(op.getName(), inDataset.getParameter("Execution.path"));
 				}
 			}
 		}
-		System.out.println("Operators: "+operators);
-		System.out.println("InputDatasets: "+inputDatasets);
+		logger.info("Operators: "+operators);
+		logger.info("InputDatasets: "+inputDatasets);
 		String tmpFilename = mw.directory+"/" +UUID.randomUUID()+".xml";
 		Utils.marshall(d, tmpFilename);
 	    LuaYarnClientParameters params = new LuaYarnClientParameters(mw.name, tmpFilename, operators, inputDatasets, conf,
