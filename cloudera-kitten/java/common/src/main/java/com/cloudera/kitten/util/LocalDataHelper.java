@@ -121,6 +121,7 @@ public class LocalDataHelper {
   
   private void copyToHdfs(String key, String localDataName) throws IOException {
 
+      LOG.info("Base dir: "+conf.get(APP_BASE_DIR));
       LOG.info("Copying local file to hdfs key: "+key+" localDataName: "+localDataName);
       FileSystem fs = FileSystem.get(conf);
       

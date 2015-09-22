@@ -55,7 +55,6 @@ public class AbstractWorkflowLibrary {
 		Long start = System.currentTimeMillis();
 		MaterializedWorkflow1 mw = aw.materialize("execTime", dateFormat.format(date), policy);
 		Long stop = System.currentTimeMillis();
-		System.out.println("Time: "+(stop-start)+" ms");
 		MaterializedWorkflowLibrary.add(mw);
 		return mw.name;
 	}

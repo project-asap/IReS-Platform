@@ -32,19 +32,15 @@ public class AbstractWorkflows {
 
 	@GET
 	@Produces("application/json")
-	@Path("/{id}/")
+	@Path("{id}/")
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
 	
-
-    @GET
-    @Path("/test/{id}/")
-    @Produces(MediaType.TEXT_HTML)
-    public void materializeAbstractWorkflow(@PathParam("id") String id) throws Exception{
-    	
-
-		AbstractWorkflow1 aw = new AbstractWorkflow1("test"+id);
-		
+	@GET
+	@Produces("application/XML")
+	@Path("XML/{id}/")
+    public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+        return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
 }

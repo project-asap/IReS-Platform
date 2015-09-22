@@ -59,4 +59,12 @@ public class Datasets {
     public OperatorDescription getOperatorInfoJson(@PathParam("id") String id) {
     	return DatasetLibrary.getOperatorDescriptionJSON(id);
     }
+    
+    
+    @GET
+    @Path("XML/{id}/")
+	@Produces("application/XML")
+    public OperatorDescription getOperatorInfoXML(@PathParam("id") String id) {
+    	return DatasetLibrary.getOperatorDescriptionJSON(id);
+    }
 }

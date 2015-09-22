@@ -375,10 +375,10 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
   		String inPath = e.getValue().replace("$HDFS_DIR", dir);
   		inPath = inPath.replace("$HDFS_OP_DIR", outdir);
   		LOG.info("adding hdfs input: "+e);
-	    cmds.add("/opt/hadoop-2.6.0/bin/hadoop fs -copyToLocal "+inPath+" .");
+	    cmds.add("/opt/hadoop-2.7.0/bin/hadoop fs -copyToLocal "+inPath+" .");
 		
 	}
-    cmds.add("/opt/hadoop-2.6.0/bin/hadoop fs -mkdir "+outdir);
+    cmds.add("/opt/hadoop-2.7.0/bin/hadoop fs -mkdir "+outdir);
     args = args.replace("$HDFS_DIR", dir);
     args = args.replace("$HDFS_OP_DIR", outdir);
     for(String c : oldcmds){
@@ -393,7 +393,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     List<String> stageOutFiles = getStageOutFiles();
     for(String f : stageOutFiles){
-	    cmds.add("/opt/hadoop-2.6.0/bin/hadoop fs -moveFromLocal "+f+" "+outdir);
+	    cmds.add("/opt/hadoop-2.7.0/bin/hadoop fs -moveFromLocal "+f+" "+outdir);
     }
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);

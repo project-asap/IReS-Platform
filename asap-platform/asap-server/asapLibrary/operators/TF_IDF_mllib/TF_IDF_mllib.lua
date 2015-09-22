@@ -36,12 +36,12 @@ operator = yarn {
     env = base_env,
     resources = {
     ["tfidf_mllib.sh"] = {
-       file = "/opt/npapa/asap-server/asapLibrary/operators/TF_IDF_mllib/tfidf_mllib.sh",
+       file = "/opt/asap-server/asapLibrary/operators/TF_IDF_mllib/tfidf_mllib.sh",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	},
     ["spark_tfidf.py"] = {
-       file = "/opt/npapa/asap-server/asapLibrary/operators/TF_IDF_mllib/spark_tfidf.py",
+       file = "/opt/asap-server/asapLibrary/operators/TF_IDF_mllib/spark_tfidf.py",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	}

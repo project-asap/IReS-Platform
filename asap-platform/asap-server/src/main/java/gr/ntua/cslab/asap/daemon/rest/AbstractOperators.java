@@ -58,4 +58,12 @@ public class AbstractOperators {
     public OperatorDescription getOperatorInfoJson(@PathParam("id") String id) {
     	return AbstractOperatorLibrary.getOperatorDescriptionJSON(id);
     }
+    
+    
+    @GET
+    @Path("XML/{id}/")
+	@Produces("application/XML")
+    public OperatorDescription getOperatorInfoXML(@PathParam("id") String id) {
+    	return AbstractOperatorLibrary.getOperatorDescriptionJSON(id);
+    }
 }

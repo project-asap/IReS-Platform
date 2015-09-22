@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import com.cloudera.kitten.client.YarnClientService;
 import com.cloudera.kitten.client.params.lua.LuaYarnClientParameters;
 import com.cloudera.kitten.client.service.YarnClientServiceImpl;
+import com.cloudera.kitten.util.LocalDataHelper;
 
 public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,WorkflowDictionary> runningWorkflows;
