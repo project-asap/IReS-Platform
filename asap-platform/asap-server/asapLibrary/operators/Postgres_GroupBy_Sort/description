@@ -1,0 +1,31 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output.number=1
+Constraints.Input.number=1
+Constraints.Output0.type=SQL
+Constraints.Output0.Engine.SQL=PostgreSQL
+Constraints.Output0.Engine.location=slave1
+Constraints.Input0.type=SQL
+Constraints.Input0.Engine.SQL=PostgreSQL
+Constraints.Input0.Engine.location=slave1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave1
+Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.SQL_query="SELECT NATIONKEY, SUM(TOTALPRICE) AS SUM FROM $1 GROUP BY NATIONKEY ORDER BY SUM"
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Out0.size=Double
+Optimization.outputSpace.cost=Double
+Optimization.Out0.size=(In0.size)*0.1
+Optimization.cost=1.0
+Execution.LuaScript=Postgres_GroupBy_Sort.lua
+Execution.Arguments.number=3
+Execution.Argument0=mydb1
+Execution.Argument1=intermediate
+Execution.Argument2=output
+Execution.Output0.path = $HDFS_OP_DIR/output
+Execution.copyFromLocal = output
+Execution.Output0.schema=(NATIONKEY int, SUM float)
+

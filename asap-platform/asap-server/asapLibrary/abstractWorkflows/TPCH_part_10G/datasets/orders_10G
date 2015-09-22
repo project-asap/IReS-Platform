@@ -1,0 +1,7 @@
+#
+#Tue Feb 03 18:37:47 EET 2015
+Optimization.size=1E10
+Constraints.type=SQL
+Constraints.Engine.SQL=HIVE
+Constraints.Engine.location=master
+Execution.name=orders_10G

@@ -1,0 +1,8 @@
+#
+#Tue Feb 03 18:37:47 EET 2015
+Optimization.size=1E10
+Constraints.type=SQL
+Constraints.Engine.SQL=HIVE
+Constraints.Engine.location=master
+Execution.name=orders_10g
+Execution.schema=(ORDERKEY int, CUSTKEY int, ORDERSTATUS varchar(5), TOTALPRICE float, ORDERDATE date, OREDERPRIORITY varchar(20), CLERK varchar(20), SHIPPRIORITY int, COMMENT varchar(120), LAST varchar(10))

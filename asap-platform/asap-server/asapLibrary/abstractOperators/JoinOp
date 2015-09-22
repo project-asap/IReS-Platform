@@ -1,8 +1,0 @@
-#
-#Tue Feb 03 18:37:47 EET 2015
-Constraints.Input1.DataInfo.Attributes.number=2
-Constraints.Output.number=1
-Constraints.Input0.DataInfo.Attributes.number=2
-Constraints.Input.number=2
-Constraints.Output0.DataInfo.Attributes.number=2
-Constraints.OpSpecification.Algorithm.Join.type=.*

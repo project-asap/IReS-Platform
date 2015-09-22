@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo -u postgres psql $1 -c "SELECT NATIONKEY, SUM(TOTALPRICE) FROM $2 GROUP BY NATIONKEY ORDER BY SUM(TOTALPRICE)" > $3

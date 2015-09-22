@@ -1,0 +1,8 @@
+#
+#Tue Feb 03 18:37:47 EET 2015
+Optimization.size=4.50E08
+Constraints.type=SQL
+Constraints.Engine.SQL=PostgreSQL
+Constraints.Engine.location=slave1
+Execution.name=customer
+Execution.schema=(CUSTKEY int, NAME varchar(25), ADDRESS varchar(40), NATIONKEY int, PHONE varchar(25), ACCTBAL float, MKTSEGMENT varchar(15), COMMENT varchar(120), LAST varchar(10))

@@ -1,0 +1,9 @@
+#
+#Tue Feb 03 18:37:47 EET 2015
+Constraints.Input.number = 2
+Constraints.Input0.type = SQL
+Constraints.Input1.type = SQL
+Constraints.Output.number = 1
+Constraints.Output0.type = SQL
+Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.SQL_query="SELECT NATIONKEY, TOTALPRICE FROM $1 LEFT JOIN $2 ON $1.CUSTKEY=$2.CUSTKEY"
