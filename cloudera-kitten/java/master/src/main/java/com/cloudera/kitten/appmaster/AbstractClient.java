@@ -29,7 +29,7 @@ public class AbstractClient {
      * @throws IOException 
      */
     public static String issueRequest(String id, WorkflowDictionary workflow) {
-        String urlString = "http://master:80/runningWorkflows/report/"+id+"/";
+        String urlString = "http://master:1323/runningWorkflows/report/"+id+"/";
         String ret="";
 		try {
 	        LOG.info("Issuing urlString: "+urlString);
