@@ -56,6 +56,10 @@ public class OutputSpacePoint  {
         this.setValue(value);
     }
 
+    public void addValue(String key, Double value) {
+        this.outputPoints.put(key, value);
+    }
+    
     public InputSpacePoint getInputSpacePoint() {
         return inputSpacePoint;
     }

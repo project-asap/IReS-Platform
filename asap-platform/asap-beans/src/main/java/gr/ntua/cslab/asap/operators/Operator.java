@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.optimization.OptimizeMissingMetrics;
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
@@ -95,7 +96,7 @@ public class Operator {
 							continue;
 						//System.out.println(c);
 	                	Model model = (Model) c.getConstructor().newInstance();
-
+	                	
 						CSVFileManager file = new CSVFileManager();
 			            file.setFilename(directory+"/data/"+e.getKey()+".csv");
 			            
@@ -342,7 +343,29 @@ public class Operator {
 			}
 		}
 	}
-	
+	public void outputFor(Dataset d, int position,
+			HashMap<String, Double> nextMetrics, List<WorkflowNode> inputs) {
+		// TODO Auto-generated method stub
+		d.datasetTree = optree.copyInputSubTree("Constraints.Output"+position);
+		if(d.datasetTree == null)
+			d.datasetTree = new SpecTree();
+		
+		copyExecVariables(d,position,inputs);
+		generateOptimizationMetrics(d,position,nextMetrics);
+	}
+
+
+	public void generateOptimizationMetrics(Dataset d, int position,
+			HashMap<String, Double> nextMetrics) {
+		for(String out : outputSpace.keySet()){
+			if(out.startsWith("Out"+position)){
+	    		String[] s = out.split("\\.");
+				d.add("Optimization."+s[1], nextMetrics.get(out)+"");
+			}
+		}
+	}
+
+
 	public void outputFor(Dataset d, int position, List<WorkflowNode> inputs) throws Exception {
 		//System.out.println("Generating output for pos: "+ position);
 		d.datasetTree = optree.copyInputSubTree("Constraints.Output"+position);
@@ -428,6 +451,66 @@ public class Operator {
         }
 	}
 	
+	/*private Model selectModel(){
+		Model model = models.va.get(0);
+		if(!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
+			for(Model m:models.get(metric)){
+				
+				if(inputSpace.size()>=2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
+					model =m;
+					break;
+				}
+				if(inputSpace.size()<2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.LinearRegression.class)){
+					model =m;
+					break;
+				}
+			}
+		}
+		logger.info("Model selected: "+ model.getClass());
+		return model
+	}*/
+	public HashMap<String, Double> getOptimalPolicyCost(HashMap<String, Double> inputMetrics, List<WorkflowNode> inputs, String policy) throws Exception {
+		logger.info("Input metrics: "+inputMetrics);
+		HashMap<String, Double> retMetrics = new HashMap<String, Double>();
+		//generate Input space point
+		InputSpacePoint in = new InputSpacePoint();
+        HashMap<String, Double> values = new HashMap<String, Double>();
+    	for(String inVar : inputSpace.keySet()){
+    		//System.out.println("var: "+inVar);
+    		String[] s = inVar.split("\\.");
+    		if(s[0].startsWith("In")){
+    			int index = Integer.parseInt(s[0].substring((s[0].length()-1)));
+    			//System.out.println("data index "+ index);
+	    		String val = null;
+	    		WorkflowNode n = inputs.get(index);
+	    		Double v = null;
+	    		if(n.isOperator){
+	    			val=n.inputs.get(0).dataset.getParameter("Optimization."+s[1]);
+	    			v = Double.parseDouble(val);
+	    		}
+	    		else{
+	    			val = n.dataset.getParameter("Optimization."+s[1]);
+	    			v = Double.parseDouble(val);
+	    		}
+    			values.put(inVar, v);			
+    		}
+    		else{
+    			//System.out.println("in value "+ 2.0);
+    			//values.put(inVar, 2.0);
+    			values.put(inVar, null);			
+    			
+    		}
+    	}
+    	in.setValues(values);
+        OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy,optree);
+        retMetrics.putAll(out.getOutputPoints());
+        logger.info("Output metrics: "+retMetrics);
+        for(Entry<String, Double> e : inputMetrics.entrySet()){
+        	retMetrics.put(e.getKey(), e.getValue()+retMetrics.get(e.getKey()));
+        }
+        logger.info("Output metrics added with input: "+retMetrics);
+		return retMetrics;
+	}
 	
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception{
 		logger.info("Getting mettric: "+metric+" from operator: "+opName);
@@ -707,6 +790,9 @@ public class Operator {
 		long stop = System.currentTimeMillis();
 		System.out.println("Time (s): "+((double)(stop-start))/1000.0);
 	}
+
+
+
 
 
 

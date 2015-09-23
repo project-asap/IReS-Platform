@@ -46,13 +46,13 @@ public class MultiPoint implements Serializable{
 
     public void setValues(HashMap<String, Double> values) {
         for(String key : values.keySet()) {
-            values.put(key, chopDouble(values.get(key)));
+        	values.put(key, chopDouble(values.get(key)));
         }
         this.values = values;
     }
 
     public void addDimension(String key, Double value) {
-        this.values.put(key, chopDouble(value));
+    	this.values.put(key, chopDouble(value));
     }
     
     public Double getValue(String key) {
@@ -107,6 +107,8 @@ public class MultiPoint implements Serializable{
     }
     
     private Double chopDouble(Double initial) {
+    	if(initial==null)
+    		return null;
         return new Double(new DecimalFormat(doubleFormat).format(initial));
         
     }

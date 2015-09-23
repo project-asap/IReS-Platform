@@ -149,28 +149,48 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
-										m.generateOptimizationMetrics(tempInput, 0, lin);
 										tempInputNode.addInput(moveNode);
-										moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
+										HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
+										Double prevCost =computePolicyFunction(prevMetrics, materializedWorkflow.function);
+										HashMap<String,Double> nextMetrics =m.getOptimalPolicyCost(prevMetrics, lin, materializedWorkflow.function);
+
+										m.generateOptimizationMetrics(tempInput, 0, nextMetrics);
+										
+										Double optCost =computePolicyFunction(nextMetrics, materializedWorkflow.function);
+										moveNode.setOptimalCost(optCost-prevCost);
+										//moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
 										
 										if(materializedWorkflow.functionTarget.contains("min") && tempCost<=operatorOneInputCost){
 											operatorOneInputCost=tempCost;
-											HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
+											/*HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
+											
 											oneInputMetrics = new HashMap<String, Double>();
 											for(Entry<String, Double> e : prevMetrics.entrySet()){
 												oneInputMetrics.put(e.getKey(), e.getValue()+m.getMettric(e.getKey(), moveNode.inputs));
-											}
+											}*/
+											oneInputMetrics = new HashMap<String, Double>();
+											for(Entry<String, Double> e : nextMetrics.entrySet()){
+												if(prevMetrics.containsKey(e.getKey())){
+													oneInputMetrics.put(e.getKey(),e.getValue());
+												}
+									        }
 											bestInput=moveNode;
 										}
 
 										if(materializedWorkflow.functionTarget.contains("max") && tempCost>=operatorOneInputCost){
 											operatorOneInputCost=tempCost;
-											HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
+											/*HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
 											oneInputMetrics = new HashMap<String, Double>();
 											for(Entry<String, Double> e : prevMetrics.entrySet()){
 												oneInputMetrics.put(e.getKey(), e.getValue()+m.getMettric(e.getKey(), moveNode.inputs));
-											}
+											}*/
+											oneInputMetrics = new HashMap<String, Double>();
+											for(Entry<String, Double> e : nextMetrics.entrySet()){
+												if(prevMetrics.containsKey(e.getKey())){
+													oneInputMetrics.put(e.getKey(),e.getValue());
+												}
+									        }
 											bestInput=moveNode;
 										}
 									}
@@ -223,17 +243,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						WorkflowNode tempOutputNode = new WorkflowNode(false, false);
 						Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
 						materializedWorkflow.count++;
-						op.outputFor(tempOutput, 0, temp.inputs);
-						//tempOutput.outputFor(op, 0, temp.inputs);
-						tempOutputNode.setDataset(tempOutput);
-						tempOutputNode.addInput(temp);
-						ret.add(tempOutputNode);
 						
-						temp.setOptimalCost(op.getMettric(metric, bestInputs));
-						plan.add(temp);
-						plan.add(tempOutputNode);
 						
-						HashMap<String,Double> nextMetrics = new HashMap<String, Double>();
+						HashMap<String,Double> bestInputMetrics = new HashMap<String, Double>();
 						for(String m : minCostsForInput.get(0).keySet()){
 							List<Double> t1 = new ArrayList<Double>();
 							for(HashMap<String, Double> h : minCostsForInput){
@@ -256,10 +268,29 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									operatorInputCost+=d;
 								}
 							}
-							nextMetrics.put(m, operatorInputCost+op.getMettric(m, bestInputs));
+							bestInputMetrics.put(m, operatorInputCost);
 						}
+						Double prevCost =computePolicyFunction(bestInputMetrics, materializedWorkflow.function);
+						HashMap<String,Double> nextMetrics =op.getOptimalPolicyCost(bestInputMetrics, bestInputs, materializedWorkflow.function);
+						for(Entry<String, Double> e : nextMetrics.entrySet()){
+							if(bestInputMetrics.containsKey(e.getKey())){
+								bestInputMetrics.put(e.getKey(),e.getValue());
+							}
+				        }
+						
+						Double optCost =computePolicyFunction(nextMetrics, materializedWorkflow.function);
+						
+
+						op.outputFor(tempOutput, 0, nextMetrics, temp.inputs);
+						//tempOutput.outputFor(op, 0, temp.inputs);
+						tempOutputNode.setDataset(tempOutput);
+						tempOutputNode.addInput(temp);
+						ret.add(tempOutputNode);
+						temp.setOptimalCost(optCost-prevCost);
+						plan.add(temp);
+						plan.add(tempOutputNode);
 						//System.out.println(nextMetrics);
-						dpTable.addRecord(tempOutput, plan, computePolicyFunction(nextMetrics, materializedWorkflow.function), nextMetrics);
+						dpTable.addRecord(tempOutput, plan, optCost, bestInputMetrics);
 					}
 				}
 			}
