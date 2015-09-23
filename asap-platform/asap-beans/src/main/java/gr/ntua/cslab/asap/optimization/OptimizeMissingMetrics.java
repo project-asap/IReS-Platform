@@ -17,7 +17,7 @@ public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree) throws Exception {
-		
+		System.out.println("Input point: "+in);
 		for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
 				e.setValue(new Double(2.0));
@@ -55,6 +55,7 @@ public class OptimizeMissingMetrics {
 	        out.addValue(metric, res.getOutputPoints().get(metric));
 	        //System.out.println("Out1: "+out);
 		}
+		System.out.println("Output point: "+out);
 		return out;
 	}
 
