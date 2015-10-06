@@ -12,6 +12,7 @@
 	<modules>
 		<module>asap-server</module>
 		<module>asap-beans</module>
+		<module>asap-client</module>
 	</modules>
 	<repositories>
 	  	<repository>

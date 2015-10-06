@@ -66,4 +66,17 @@ public class Operators {
     public OperatorDescription getOperatorInfoXML(@PathParam("id") String id) {
     	return OperatorLibrary.getOperatorDescriptionJSON(id);
     }
+    
+
+    @GET
+    @Path("add/")
+	@Produces("application/XML")
+    public String addOperator(
+            @QueryParam("opname") String opname,
+            @QueryParam("opString") String opString) throws Exception {
+    	
+    	OperatorLibrary.addOperator(opname, opString);
+    	return "OK";
+    }
+    
 }
