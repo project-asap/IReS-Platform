@@ -42,8 +42,9 @@ public class RestClient {
      * @throws MalformedURLException
      * @throws IOException 
      */
-    protected String issueRequest(String requestType, String document, String input) throws MalformedURLException, IOException {
+    public String issueRequest(String requestType, String document, String input) throws MalformedURLException, IOException {
         String urlString = "http://"+configuration.getHost()+":"+configuration.getPort()+"/"+document;
+        System.out.println(urlString);
         URL url = new URL(urlString);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         

@@ -2,13 +2,16 @@ package gr.ntua.cslab.asap.daemon.rest;
 
 
 import gr.ntua.cslab.asap.daemon.ServerStaticComponents;
+import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
+import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,5 +68,44 @@ public class AbstractOperators {
 	@Produces("application/XML")
     public OperatorDescription getOperatorInfoXML(@PathParam("id") String id) {
     	return AbstractOperatorLibrary.getOperatorDescriptionJSON(id);
+    }
+    
+
+    @GET
+    @Path("add/")
+	@Produces("application/XML")
+    public String addOperator(
+            @QueryParam("opname") String opname,
+            @QueryParam("opString") String opString) throws Exception {
+    	
+    	AbstractOperatorLibrary.addOperator(opname, opString);
+    	return "OK";
+    }
+    
+    @GET
+    @Path("delete/")
+	@Produces("application/XML")
+    public String deleteOperator(
+            @QueryParam("opname") String opname) throws Exception {
+    	
+    	AbstractOperatorLibrary.deleteOperator(opname);
+    	return "OK";
+    }
+    
+    @GET
+    @Path("checkMatches/")
+	@Produces("application/XML")
+    public String checkMatches(
+            @QueryParam("opname") String opname,
+            @QueryParam("opString") String opString) throws Exception {
+    	AbstractOperator o = new AbstractOperator(opname);
+    	InputStream is = new ByteArrayInputStream(opString.getBytes());
+    	o.readPropertiesFromFile(is);
+    	List<Operator> ops = OperatorLibrary.getMatchesNoTempID(o);
+    	String ret = "";
+    	for(Operator op: ops ){
+    		ret+=op.opName+"&&";
+    	}
+    	return ret;
     }
 }

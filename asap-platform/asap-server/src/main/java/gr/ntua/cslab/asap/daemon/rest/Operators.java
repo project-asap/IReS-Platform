@@ -79,4 +79,14 @@ public class Operators {
     	return "OK";
     }
     
+    @GET
+    @Path("delete/")
+	@Produces("application/XML")
+    public String deleteOperator(
+            @QueryParam("opname") String opname) throws Exception {
+    	
+    	OperatorLibrary.deleteOperator(opname);
+    	return "OK";
+    }
+    
 }

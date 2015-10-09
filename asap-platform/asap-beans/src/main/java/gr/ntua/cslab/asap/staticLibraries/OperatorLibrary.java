@@ -97,6 +97,26 @@ public class OperatorLibrary {
 		return ret;
 	}
 	
+	public static List<Operator> getMatchesNoTempID(AbstractOperator abstractOperator) throws Exception{
+		//logger.info("Check matches: "+abstractOperator.opName);
+		List<Operator> ret = new ArrayList<Operator>();
+		for(Operator op : operators.values()){
+			if(abstractOperator.checkMatch(op)){
+				Operator temp = new Operator(op.opName, op.directory);
+				moveid++;
+				temp.optree=op.optree.clone();
+				temp.inputSpace=op.inputSpace;
+				temp.outputSpace=op.outputSpace;
+				temp.models=op.models;
+				ret.add(temp);
+			}
+		}
+		for(Operator o :ret){
+			logger.info("Found: "+o.opName);
+		}
+		return ret;
+	}
+	
 	public static List<Operator> checkMove(Dataset from, Dataset to) throws Exception {
 		logger.info("Check move from: "+from+" to: "+to);
 		AbstractOperator abstractMove = new AbstractOperator("move");
