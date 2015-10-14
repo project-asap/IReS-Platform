@@ -66,12 +66,11 @@
             <version>2.3</version>
         </dependency>
         <dependency>
-      		<groupId>net.sourceforge</groupId>  
-       		<artifactId>jeval</artifactId>  
-       		<version>1.0</version> 
-      		<scope>system</scope>
-			<systemPath>/Users/npapa/Documents/workspace/jeval.jar</systemPath>
-</dependency>
+            <groupId>net.sourceforge.jeval</groupId>
+            <artifactId>jeval</artifactId>
+            <version>0.9.4</version>
+        </dependency>
+
     </dependencies>
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
