@@ -1,0 +1,20 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Input0.type=SparkSequenceFile
+Constraints.EngineSpecification.Distributed=Spark
+Constraints.Output.number=1
+Constraints.Input.number=1
+
+Optimization.inputSource.type=mongodb
+Optimization.inputSource.host=asapmaster
+Optimization.inputSource.db=metrics
+Optimization.inputSource.collection=spark_tfidf
+
+Optimization.inputSpace.documents=Integer, 100, 500, 20
+Optimization.inputSpace.dimensions=Integer,100, 500, 20
+
+Optimization.outputSpace.time=Double
+Optimization.model.time=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
