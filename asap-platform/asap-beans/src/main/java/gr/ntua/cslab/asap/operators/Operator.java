@@ -2,6 +2,8 @@ package gr.ntua.cslab.asap.operators;
 
 import gr.ntua.cslab.asap.optimization.OptimizeMissingMetrics;
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
+import gr.ntua.cslab.asap.utils.DataSource;
+import gr.ntua.cslab.asap.utils.MongoDB;
 import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 import gr.ntua.ece.cslab.panic.core.classifier.UserFunctionClassifier;
@@ -64,26 +66,27 @@ public class Operator {
 	 * @throws Exception
 	 */
 	public void configureModel() throws Exception {
-
+		String modelClass;
+		String inputSource;
+		List<Model> performanceModels;
 		inputSpace = new HashMap<String, String>();
-		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace );
 		outputSpace = new HashMap<String, String>();
-		optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace );
-		
+
+		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
+		optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
+		inputSource = optree.getParameter("Optimization.inputSource.type");
+		System.out.println("Input Source: "+inputSource);
+
 		for(Entry<String, String> e : outputSpace.entrySet()){
-			List<Model> performanceModels = new ArrayList<Model>();
-			String modelClass = optree.getParameter("Optimization.model."+e.getKey());
-			//System.out.println(e.getKey()+" class: "+modelClass);
-			if(modelClass.contains("AbstractWekaModel")){
+			performanceModels = new ArrayList<Model>();
+			modelClass = optree.getParameter("Optimization.model."+e.getKey());
+            if(modelClass.contains("AbstractWekaModel")){
 				String modelDir = directory+"/models";
 				File modelFile = new File(modelDir);
 				if(modelFile.exists()){
-
 					File[] listOfFiles = modelFile.listFiles();
-
 					for (int i = 0; i < listOfFiles.length; i++) {
 						if (listOfFiles[i].toString().endsWith(".model")) {
-							//System.out.println("Reading: "+listOfFiles[i].getAbsolutePath());
 							performanceModels.add(AbstractWekaModel.readFromFile(listOfFiles[i].getAbsolutePath()));
 						}
 					}
@@ -94,60 +97,69 @@ public class Operator {
 					for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if(c.equals(UserFunction.class))
 							continue;
-						//System.out.println(c);
-	                	Model model = (Model) c.getConstructor().newInstance();
-	                	
-						CSVFileManager file = new CSVFileManager();
-			            file.setFilename(directory+"/data/"+e.getKey()+".csv");
-			            
-			            //build models with adaptive sampling
-						/*
-						Sampler s = (Sampler) new UniformSampler();
-			            
-			            // samplers initialization
-			            s.setSamplingRate(0.8);
-			            //System.out.println(file.getDimensionRanges());
-			            s.setDimensionsWithRanges(file.getDimensionRanges());
-	
-			            s.configureSampler();
-			            while (s.hasMore()) {
-			                InputSpacePoint nextSample = s.next();
-			                OutputSpacePoint out = file.getActualValue(nextSample);
-			                //System.out.println(out);
-			                model.feed(out, false);
-			            }
-			            */
-			            
-			            
-			            //build models without adaptive sampling
-			            for(InputSpacePoint in : file.getInputSpacePoints()){
-			                OutputSpacePoint out = file.getActualValue(in);
-			                //System.out.println(out);
-			                model.feed(out, false);
-			            }
-			            
+						Model model = (Model) c.getConstructor().newInstance();
 
-			            try{
-			            	model.train();
-			            }catch(Exception e1){
-			            	continue;
-			            }
-			            model.serialize(modelDir+"/"+e.getKey()+"_"+i+".model");
-			            i++;
-			            performanceModels.add(model);
-		            }
+						/* Input Source: MongoDB */
+						if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")){
+							System.out.println("MONGO");
+
+							String collection = optree.getParameter("Optimization.inputSource.collection");
+							String host = optree.getParameter("Optimization.inputSource.host");
+							String db = optree.getParameter("Optimization.inputSource.db");
+							MongoDB mongodb = new MongoDB(host, db);
+							List<String> is = new ArrayList<String>();
+							List<String> os = new ArrayList<String>();
+
+							for (String k : inputSpace.keySet()) {
+								is.add(k);
+							}
+							for (String k : outputSpace.keySet()) {
+								os.add(k);
+							}
+							List<OutputSpacePoint> outPoints = mongodb.getOutputSpacePoints(collection, is, os);
+
+                            for (OutputSpacePoint point : outPoints) {
+                                System.out.println(point);
+                                model.feed(point, false);
+                            }
+
+						}
+                        //Input Source: CSV File
+						else {
+							System.out.println("CSV");
+							CSVFileManager file = new CSVFileManager();
+							file.setFilename(directory + "/data/" + e.getKey() + ".csv");
+
+							for (InputSpacePoint in : file.getInputSpacePoints()) {
+								OutputSpacePoint out = file.getActualValue(in);
+                                System.out.println(out);
+                                model.feed(out, false);
+							}
+						}
+
+
+						try{
+                            System.out.println("Training: "+model);
+                            model.train();
+						}catch(Exception e1){
+                            System.out.println("OPERATOR EXCEPTION: "+e1);
+						}
+						model.serialize(modelDir+"/"+e.getKey()+"_"+i+".model");
+						i++;
+						performanceModels.add(model);
+					}
 				}
 			}
 			else{
 				performanceModels.add((Model) Class.forName(modelClass).getConstructor().newInstance());
 			}
-			
+
 			for(Model performanceModel : performanceModels){
 				performanceModel.setInputSpace(inputSpace);
 				HashMap<String, String> temp = new HashMap<String, String>();
 				temp.put(e.getKey(), e.getValue());
 				performanceModel.setOutputSpace(temp);
-	
+
 				HashMap<String, String> conf = new HashMap<String, String>();
 				optree.getNode("Optimization").toKeyValues("", conf );
 				//System.out.println("sadfas: "+conf);
