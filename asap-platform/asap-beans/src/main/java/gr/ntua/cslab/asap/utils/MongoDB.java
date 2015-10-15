@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * --- MongoDB Class ---
- * A class for establish a connection with a MongoDB database.
+ * Establish a connection with a MongoDB database.
  */
 public class MongoDB extends DataSource{
     MongoClient client;
