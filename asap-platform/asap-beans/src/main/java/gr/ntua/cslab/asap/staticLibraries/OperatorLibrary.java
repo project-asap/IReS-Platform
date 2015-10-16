@@ -18,8 +18,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import gr.ntua.cslab.asap.utils.DataSource;
+import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
+import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import net.sourceforge.jeval.function.string.Length;
 
 import org.apache.log4j.Logger;
@@ -179,18 +183,19 @@ public class OperatorLibrary {
 
 	public static String getProfile(String opname, String variable, String profileType) throws Exception {
 		Operator op = operators.get(opname);
+		DataSource dataSource = op.getDataSource();
 		op.configureModel();
 
     	if(profileType.equals("Compare models")){
-    		/*File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
+    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
     		if(csv.exists()){
     			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
-    			append("www/test.csv",csv.toString(),",", op.inputSpace);
+    			append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
     		}
     		else{
-    			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
-    		}*/
-			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
+				op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
+				append("www/test.csv", "", ",", op.inputSpace, dataSource);
+    		}
     	}
     	else if(profileType.equals("View model")){
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
@@ -199,7 +204,7 @@ public class OperatorLibrary {
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
     		if(csv.exists()){
 				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
-				append("www/test.csv",csv.toString(),",", op.inputSpace);
+				append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
     		}
     		else{
 				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
@@ -211,47 +216,85 @@ public class OperatorLibrary {
 			return "/terasort.csv";
 		else
 			return "/iris.csv";*/
-			
+		System.out.println();
 	}
 
-	private static void append(String toCSV, String fromCSV,String delimiter, HashMap<String, String> inputSpace) throws Exception {
+	private static void append(String toCSV, String fromCSV,String delimiter,
+							   HashMap<String, String> inputSpace, DataSource dataSource)
+			throws Exception {
 
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(toCSV, true)));
-        BufferedReader br = new BufferedReader(new FileReader(fromCSV));
-        String line = br.readLine();
-        String[] variables = line.split(delimiter);
-        HashMap<String, Integer> varMapping = new HashMap<String, Integer>();
-    	for (int i = 0; i < variables.length; i++) {
-    		int j = 0;
-            for(String k: inputSpace.keySet()){
-				if(variables[i].equals(k)){
-					varMapping.put(k, j);
-					break;
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(toCSV, true)));
+
+		if (dataSource != null) {
+			ArrayList<OutputSpacePoint> points = dataSource.getOutputSpacePoints();
+			Iterator<OutputSpacePoint> iterator = points.iterator();
+
+
+			while (iterator.hasNext()) {
+				String n = "";
+
+				OutputSpacePoint outPoint = iterator.next();
+				InputSpacePoint inPoint = new InputSpacePoint();
+
+            	/* Loading input space points */
+				Iterator inputSpaceIter = inputSpace.keySet().iterator();
+				while (inputSpaceIter.hasNext()) {
+					String key = (String) inputSpaceIter.next();
+					Double value = outPoint.getInputSpacePoint().getValue(key);
+					n += value + delimiter;
 				}
-				j++;
+
+            	/* Loading output space points */
+				HashMap<String, Double> osp = new HashMap<String, Double>();
+				String key = outPoint.getKey();
+				Double value = outPoint.getValue();
+				n += value + delimiter;
+
+				out.append(n + "Samples");
+				System.out.println(n + "Samples");
+				out.append(System.lineSeparator());
+
 			}
-        }
-    	//System.out.println(varMapping);
-        line = br.readLine();
-        while (line != null) {
-        	String[] sample = line.split(delimiter);
-        	String[] ls = new String[sample.length-1];
-        	for (int i = 0; i < sample.length-1; i++) {
-        		//System.out.println(variables[i]+" "+sample[i]);
-				ls[varMapping.get(variables[i])]= sample[i];
+
+			out.close();
+			/* --------- */
+		} else {
+			BufferedReader br = new BufferedReader(new FileReader(fromCSV));
+			String line = br.readLine();
+			String[] variables = line.split(delimiter);
+			HashMap<String, Integer> varMapping = new HashMap<String, Integer>();
+			for (int i = 0; i < variables.length; i++) {
+				int j = 0;
+				for (String k : inputSpace.keySet()) {
+					if (variables[i].equals(k)) {
+						varMapping.put(k, j);
+						break;
+					}
+					j++;
+				}
 			}
-        	String n = "";
-        	for(String s : ls){
-        		n+=s+delimiter;
-        	}
-        	n+=sample[sample.length-1]+delimiter;
-        	//System.out.println(n);
-            out.append(n+"Samples");
-            out.append(System.lineSeparator());
-            line = br.readLine();
-        }
-        out.close();
-    	br.close();
+			//System.out.println(varMapping);
+			line = br.readLine();
+			while (line != null) {
+				String[] sample = line.split(delimiter);
+				String[] ls = new String[sample.length - 1];
+				for (int i = 0; i < sample.length - 1; i++) {
+					//System.out.println(variables[i]+" "+sample[i]);
+					ls[varMapping.get(variables[i])] = sample[i];
+				}
+				String n = "";
+				for (String s : ls) {
+					n += s + delimiter;
+				}
+				n += sample[sample.length - 1] + delimiter;
+				//System.out.println(n);
+				out.append(n + "Samples");
+				out.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			out.close();
+			br.close();
+		}
 	}
 
 

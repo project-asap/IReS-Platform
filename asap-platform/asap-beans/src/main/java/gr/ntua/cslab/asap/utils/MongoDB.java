@@ -16,32 +16,38 @@ import java.util.List;
  * --- MongoDB Class ---
  * Establish a connection with a MongoDB database.
  */
-public class MongoDB extends DataSource{
+public class MongoDB implements DataSource{
     MongoClient client;
     MongoDatabase mdb;
     String db;
     String host;
+    String collection;
+    List<String> inputSpace;
+    List<String> outputSpace;
 
     /** --- Constructor ---
      * @param host The MongoDB host
      * @param db The database
+     * @param collection The collection name (usually the operator's name, e.g. spark_kmeans)
+     * @param inputSpace The list of the input space attribute names, defined in the description file(e.g. documents)
+     * @param outputSpace The list of the output space attribute names, defined in the description file(e.g. execTime)
      * */
-    public MongoDB(String host, String db){
+    public MongoDB(String host, String db, String collection, List<String> inputSpace,
+                   List<String> outputSpace){
         this.client = new MongoClient(host);
         this.db = db;
         this.host = host;
+        this.collection = collection;
+        this.inputSpace = inputSpace;
+        this.outputSpace = outputSpace;
         mdb = client.getDatabase(db);
     }
 
     /**
      * --- getOutputSpacePoints ---
-     * @param collection The collection name (usually the operator's name, e.g. spark_kmeans)
-     * @param inputSpace The list of the input space attribute names, defined in the description file(e.g. documents)
-     * @param outputSpace The list of the output space attribute names, defined in the description file(e.g. execTime)
      * @return An ArrayList of output space points to be given as input to PANIC models for training
      */
-    public ArrayList<OutputSpacePoint> getOutputSpacePoints(String collection, List<String> inputSpace,
-                                                  List<String> outputSpace){
+    public ArrayList<OutputSpacePoint> getOutputSpacePoints(){
         InputSpacePoint isp = new InputSpacePoint();
         HashMap<String, Double> hm;
         ArrayList<OutputSpacePoint> results = new ArrayList<OutputSpacePoint>();
@@ -105,7 +111,7 @@ public class MongoDB extends DataSource{
      * Developer_Test_Method
      */
     public static void main(String[] args) {
-        MongoDB mdb = new MongoDB("asapmaster","metrics");
+
         ArrayList<String> in = new ArrayList<String>();
         ArrayList<String> out = new ArrayList<String>();
 
@@ -113,8 +119,9 @@ public class MongoDB extends DataSource{
         in.add("documents");
         in.add("output_size");
         out.add("time");
+        MongoDB mdb = new MongoDB("asapmaster","metrics", "spark2mahout",in, out);
 
-        for (OutputSpacePoint o : mdb.getOutputSpacePoints("spark2mahout", in, out)){
+        for (OutputSpacePoint o : mdb.getOutputSpacePoints()){
             System.out.println(o);
         }
     }

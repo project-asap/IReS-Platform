@@ -44,6 +44,7 @@ public class Operator {
 	public HashMap<String, String> inputSpace, outputSpace;
 	public SpecTree optree;
 	public String opName;
+	private DataSource dataSource;
 	private static Logger logger = Logger.getLogger(Operator.class.getName());
 	public String directory;
 	
@@ -106,7 +107,6 @@ public class Operator {
 							String collection = optree.getParameter("Optimization.inputSource.collection");
 							String host = optree.getParameter("Optimization.inputSource.host");
 							String db = optree.getParameter("Optimization.inputSource.db");
-							MongoDB mongodb = new MongoDB(host, db);
 							List<String> is = new ArrayList<String>();
 							List<String> os = new ArrayList<String>();
 
@@ -116,10 +116,10 @@ public class Operator {
 							for (String k : outputSpace.keySet()) {
 								os.add(k);
 							}
-							List<OutputSpacePoint> outPoints = mongodb.getOutputSpacePoints(collection, is, os);
+							this.dataSource = new MongoDB(host, db, collection, is, os);
+							List<OutputSpacePoint> outPoints = dataSource.getOutputSpacePoints();
 
                             for (OutputSpacePoint point : outPoints) {
-                                System.out.println(point);
                                 model.feed(point, false);
                             }
 
@@ -132,7 +132,6 @@ public class Operator {
 
 							for (InputSpacePoint in : file.getInputSpacePoints()) {
 								OutputSpacePoint out = file.getActualValue(in);
-                                System.out.println(out);
                                 model.feed(out, false);
 							}
 						}
@@ -667,6 +666,8 @@ public class Operator {
 		ret.optree = optree.clone();
 		return ret;
 	}
+
+	public DataSource getDataSource(){ return this.dataSource; }
 
 
 
