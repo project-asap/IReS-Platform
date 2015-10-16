@@ -182,14 +182,15 @@ public class OperatorLibrary {
 		op.configureModel();
 
     	if(profileType.equals("Compare models")){
-    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
+    		/*File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
     		if(csv.exists()){
     			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
     			append("www/test.csv",csv.toString(),",", op.inputSpace);
     		}
     		else{
     			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
-    		}
+    		}*/
+			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
     	}
     	else if(profileType.equals("View model")){
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
