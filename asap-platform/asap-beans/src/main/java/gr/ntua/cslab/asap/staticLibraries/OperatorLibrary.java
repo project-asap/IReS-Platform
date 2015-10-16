@@ -216,7 +216,6 @@ public class OperatorLibrary {
 			return "/terasort.csv";
 		else
 			return "/iris.csv";*/
-		System.out.println();
 	}
 
 	private static void append(String toCSV, String fromCSV,String delimiter,
