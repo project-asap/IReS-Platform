@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.operators;
 
+import gr.ntua.cslab.asap.optimization.ML;
 import gr.ntua.cslab.asap.optimization.OptimizeMissingMetrics;
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.utils.DataSource;
@@ -42,6 +43,8 @@ public class Operator {
 	public SpecTree optree;
 	public String opName;
 	private DataSource dataSource;
+	private Model bestModel;
+	private double minTotalError;
 	private static Logger logger = Logger.getLogger(Operator.class.getName());
 	public String directory;
 
@@ -51,7 +54,7 @@ public class Operator {
 		models = new HashMap<String, List<Model>>();
 		this.directory = directory;
 	}
-	
+
 
 	/*public void readModel(File file) throws Exception {
 		String modelClass = optree.getParameter("Optimization.model");
@@ -69,11 +72,11 @@ public class Operator {
 		List<Model> performanceModels;
 		inputSpace = new HashMap<String, String>();
 		outputSpace = new HashMap<String, String>();
-
 		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
 		optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		inputSource = optree.getParameter("Optimization.inputSource.type");
 		System.out.println("Input Source: " + inputSource);
+		minTotalError = Double.MAX_VALUE;
 
 		for (Entry<String, String> e : outputSpace.entrySet()) {
 			performanceModels = new ArrayList<Model>();
@@ -136,13 +139,22 @@ public class Operator {
 						try {
 							System.out.println("Training: " + model);
 							model.train();
+							double error = ML.totalError(model);
+							if (error < minTotalError){
+								System.out.println("Better");
+								bestModel = model;
+								minTotalError = error;
+							}
+							else{System.out.println("Worse");}
+
 						} catch (Exception e1) {
 							System.out.println("OPERATOR EXCEPTION: " + e1);
 						}
-						model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+
 						i++;
-						performanceModels.add(model);
 					}
+					bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+					performanceModels.add(bestModel);
 				}
 			} else {
 				performanceModels.add((Model) Class.forName(modelClass).getConstructor().newInstance());
@@ -458,7 +470,7 @@ public class Operator {
 		Model model = models.va.get(0);
 		if(!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
 			for(Model m:models.get(metric)){
-				
+
 				if(inputSpace.size()>=2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
 					model =m;
 					break;
@@ -632,7 +644,7 @@ public class Operator {
 			return Double.parseDouble(evaluator.evaluate(value));
 		}
 	}
-	
+
 	/*public Double getCost() {
 		String value = getParameter("Optimization.execTime");
 		return Double.parseDouble(value);
