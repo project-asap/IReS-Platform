@@ -1,6 +1,7 @@
 package gr.ntua.cslab.asap.optimization;
 
 import gr.ntua.cslab.asap.operators.SpecTree;
+import gr.ntua.cslab.asap.operators.SpecTreeNode;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
@@ -17,11 +18,12 @@ public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree) throws Exception {
+		System.out.println(optree.getNode("Optimization.inputSpace"));
 		System.out.println("Input point: "+in);
-
 		for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
-				e.setValue(new Double(2.0));
+				SpecTreeNode node = optree.getNode("Optimization.inputSpace." + e.getKey());
+				e.setValue(findOptimal(models, in, node));
 				optree.add("SelectedParam."+e.getKey(), "2.0");
 			}
 		}
@@ -60,8 +62,6 @@ public class OptimizeMissingMetrics {
 		return out;
 	}
 
-
-
 	protected Double computePolicyFunction(HashMap<String,Double> metrics, String policy) throws NumberFormatException, EvaluationException {
 		//System.out.println("Computing function "+ metrics);
 
@@ -74,5 +74,16 @@ public class OptimizeMissingMetrics {
 		res = Double.parseDouble(evaluator.evaluate(tempFunction));
 		//System.out.println(res);
 		return res;
+	}
+	protected static Double findOptimal(HashMap<String, List<Model>> models, InputSpacePoint in, SpecTreeNode missing){
+		String miss[] = missing.toString()
+				.replaceAll("\\(", "")
+				.replaceAll("\\)", "")
+				.split(",");
+		Double min = Double.parseDouble(miss[2]);
+		Double max = Double.parseDouble(miss[3]);
+		Double step = Double.parseDouble(miss[4]);
+
+		return 2.0;
 	}
 }
