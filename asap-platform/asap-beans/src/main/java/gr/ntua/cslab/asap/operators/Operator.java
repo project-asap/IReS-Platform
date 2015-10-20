@@ -101,8 +101,6 @@ public class Operator {
 
 						/* Input Source: MongoDB */
 						if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
-							System.out.println("MONGO");
-
 							String collection = optree.getParameter("Optimization.inputSource.collection");
 							String host = optree.getParameter("Optimization.inputSource.host");
 							String db = optree.getParameter("Optimization.inputSource.db");
@@ -125,7 +123,6 @@ public class Operator {
 						}
 						//Input Source: CSV File
 						else {
-							System.out.println("CSV");
 							CSVFileManager file = new CSVFileManager();
 							file.setFilename(directory + "/data/" + e.getKey() + ".csv");
 
@@ -137,18 +134,14 @@ public class Operator {
 
 
 						try {
-							System.out.println("Training: " + model);
 							model.train();
 							double error = ML.totalError(model);
 							if (error < minTotalError){
-								System.out.println("Better");
 								bestModel = model;
 								minTotalError = error;
 							}
-							else{System.out.println("Worse");}
 
 						} catch (Exception e1) {
-							System.out.println("OPERATOR EXCEPTION: " + e1);
 						}
 
 						i++;
