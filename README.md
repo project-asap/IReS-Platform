@@ -33,11 +33,54 @@ The local home directory of the IReS-Platform project is
 
 <code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
 
-where 
+NOTE: 
 
 <ul>
 <li>the "$USER" part of the IRES_HOME corresponds to the currently logged in user</li>
-<li>it is assumed that the project has been cloned into directory /home/$USER/asap</li>
+<li>it is assumed that the project has been cloned into the directory /home/$USER/asap</li>
+<li>to refer to the value of IRES_HOME the <a href="http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-5.html" target="_blank">bash script variable</a> notation is used i.e. $IRES_HOME
 </ul>
 
+The files that should be updated are
+
+<ol>
+<li>$IRES_HOME/asap/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server</li>
+<li>$IRES_HOME/asap/IReS-Platform/panic/panic-core/pom.xml</li>
+</ol>
+
+<h6>asap-server</h6>
+In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "IReS-Platform/asap-platform/asap-server/target" and thus the line
+
+<code>[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME=""</code>
+
+must reflect this. In our case, this line should be
+
+<code>[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="$IRES_HOME/asap/IReS-Platform/asap-platform/asap-server/target"</code>
+
+<h6>panic-core/pom.xml</h6>
+
+
 <h5>Build</h5>
+To build the project use version 3 of maven because the previous version has bugs with jetty and jersey packages. In Ubuntu just execute
+
+<code>sudo apt-get install maven</code>
+
+and confirm the maven version by running
+
+<code>mvn -v</code>.
+
+In each of the directories below
+
+<ol>
+<li>$IRES_HOME/asap-platform</li>
+<li>$IRES_HOME/cloudera-kitten</li>
+<li>$IRES_HOME/panic</li>
+</ol>
+
+run the command
+
+<code>mvn clean install</code>
+
+to build IReS-Platform project. In the end of each build you should see a "BUILD SUCCESS" message. If the build process fails by showing a message "BUILD FAILURE" then try to rebuild the unbuilt directories by using sudo i.e.
+
+<code>sudo mvn clean install</code>
