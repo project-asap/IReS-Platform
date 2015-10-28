@@ -17,13 +17,27 @@ Usage of IRes-Platform requires 3 steps
 </ol>
 </p>
 <h5>Clone</h5>
-Open a terminal and navigate to a desired directory (create it if does not exist) where IReS-Platform files will be cloned e.g. asap. If asap directory has not have any git repository, create an empty one by executing
+Open a terminal (Linux) or a cmd (Windows) and navigate to a desired directory (create it if does not exist) where IReS-Platform files will be cloned e.g. asap. If asap directory has not have any git repository, create an empty one by executing
 
-<style background-color="grey">git init</style>
+<code>git init</code>
 
-In the github page of the IReS-Platform, https://github.com/project-asap/IReS-Platform, at the right sidebar, under the label "<bold>HTTPS</bold> <font color="grey">clone URL</font>" the clone url can be found. Copy this url and from inside the terminal execute the command
+In the github page of the IReS-Platform, https://github.com/project-asap/IReS-Platform, at the right sidebar, under the label "HTTPS clone URL" the clone url can be found. Copy this url and from inside the terminal execute the command
 
-<style background-color="grey">git clone clone_url</style>
-
+<code>git clone clone_url</code>
 <h5>Update</h5>
+<p>
+For demostration reasons a Linux operating system like Ubuntu it is assumed in this step. In Windows or other Linux distributions the equivalents should be done.
+</p>
+<p>
+The local home directory of the IReS-Platform project is
+
+<code>IRES_HOME=/home/$USER/asap/IReS-Platform<code>
+
+where 
+</p>
+<ul>
+<li>the "$USER" part of the IRES_HOME corresponds to the currently logged in user</li>
+<li>it is assumed that the project has been cloned into directory /home/$USER/asap</li>
+</ul>
+
 <h5>Build</h5>
