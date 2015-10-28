@@ -31,7 +31,7 @@ For demostration reasons a Linux operating system like Ubuntu it is assumed in t
 <p>
 The local home directory of the IReS-Platform project is
 
-<code>IRES_HOME=/home/$USER/asap/IReS-Platform<code>
+<code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
 
 where 
 </p>
