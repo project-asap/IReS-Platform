@@ -25,10 +25,10 @@
                <configuration>
                    <source>1.7</source>
                    <target>1.7</target>
-   				</configuration>
-   			</plugin>
-   		</plugins>
-   </build>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
     	<dependency>
             <groupId>com.sun.jersey</groupId>
