@@ -58,14 +58,14 @@ run the command
 
 <code>sudo mvn clean install -DskipTests</code>
 
-to build IReS-Platform project. In the end of each build you should see a "BUILD SUCCESS" message.
+to build IReS-Platform project. In the end of each build you should see a "BUILD SUCCESS" message. The order of the directories above should be followed.
 
 <h5>Update</h5>
 To run asap-server successfully, the corresponding file
 
-<ol>
+<ul>
 <li>$IRES_HOME/asap/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server</li>
-</ol>
+</ul>
 
 should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "IReS-Platform/asap-platform/asap-server/target" and thus the line
 
