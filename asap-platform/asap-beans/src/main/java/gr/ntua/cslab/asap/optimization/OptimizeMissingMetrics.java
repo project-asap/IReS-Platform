@@ -4,6 +4,7 @@ import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.operators.SpecTreeNode;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
+import gr.ntua.ece.cslab.panic.core.models.MLPerceptron;
 import gr.ntua.ece.cslab.panic.core.models.Model;
 
 import java.util.HashMap;
@@ -18,12 +19,10 @@ public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree) throws Exception {
-		System.out.println(optree.getNode("Optimization.inputSpace"));
-		System.out.println("Input point: "+in);
 		for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
 				SpecTreeNode node = optree.getNode("Optimization.inputSpace." + e.getKey());
-				e.setValue(findOptimal(models, in, node));
+				e.setValue(findOptimal(models, in, e.getKey(), node));
 				optree.add("SelectedParam."+e.getKey(), "2.0");
 			}
 		}
@@ -58,7 +57,6 @@ public class OptimizeMissingMetrics {
 			out.addValue(metric, res.getOutputPoints().get(metric));
 			//System.out.println("Out1: "+out);
 		}
-		System.out.println("Output point: "+out);
 		return out;
 	}
 
@@ -75,7 +73,8 @@ public class OptimizeMissingMetrics {
 		//System.out.println(res);
 		return res;
 	}
-	protected static Double findOptimal(HashMap<String, List<Model>> models, InputSpacePoint in, SpecTreeNode missing){
+	protected static Double findOptimal(HashMap<String, List<Model>> models, InputSpacePoint in, String key, SpecTreeNode missing){
+		double bestVal = 2.0;
 		String miss[] = missing.toString()
 				.replaceAll("\\(", "")
 				.replaceAll("\\)", "")
@@ -83,7 +82,41 @@ public class OptimizeMissingMetrics {
 		Double min = Double.parseDouble(miss[2]);
 		Double max = Double.parseDouble(miss[3]);
 		Double step = Double.parseDouble(miss[4]);
+		Model model = new MLPerceptron();
+		HashMap<String, Double> tmpVal = new HashMap<String, Double>(in.getValues());
+		InputSpacePoint tmpIn = new InputSpacePoint();
 
-		return 2.0;
+		tmpIn.setValues(tmpVal);
+
+		//Get model
+		for (Entry<String, List<Model>> entry : models.entrySet()){
+			for (Model m : entry.getValue())
+				model = m;
+		}
+
+		//Set null values to 0
+		for (Entry<String, Double> point : tmpIn.getValues().entrySet()){
+			if (point.getValue() == null) {point.setValue(5.0);}
+		}
+
+		try {
+			//Get optimal
+			double bestTime = Double.MAX_VALUE;
+			double predicted;
+
+			for (double i = min; i <= max; i += step) {
+				tmpIn.getValues().put(key, i);
+				predicted = model.getPoint(tmpIn).getValue();
+				if (predicted < bestTime) {
+					bestTime = predicted;
+					bestVal = i;
+				}
+			}
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+
+		return bestVal;
 	}
 }

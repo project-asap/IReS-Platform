@@ -2,7 +2,7 @@
 # When deployed, it should be placed under /etc/init.d/
 # to be executed as a service.
 
-[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="/home/victor/Dev/asap-tmp/IReS-Platform/asap-platform/asap-server/target"
+[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="/home/vic/Dev/asap/IReS-Platform/asap-platform/asap-server/target"
 
 LIB_DIR=$ASAP_SERVER_HOME/lib
 CONF_DIR=$ASAP_SERVER_HOME/conf

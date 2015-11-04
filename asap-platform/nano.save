@@ -1,0 +1,1 @@
+asap-server/src/main/scripts/asap-server {start|stop|status|restart}

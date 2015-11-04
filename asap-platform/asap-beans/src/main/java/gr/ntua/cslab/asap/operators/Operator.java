@@ -75,7 +75,6 @@ public class Operator {
 		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
 		optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		inputSource = optree.getParameter("Optimization.inputSource.type");
-		System.out.println("Input Source: " + inputSource);
 		minTotalError = Double.MAX_VALUE;
 
 		for (Entry<String, String> e : outputSpace.entrySet()) {
@@ -484,13 +483,22 @@ public class Operator {
 		InputSpacePoint in = new InputSpacePoint();
 		HashMap<String, Double> values = new HashMap<String, Double>();
 		for (String inVar : inputSpace.keySet()) {
-			//System.out.println("var: "+inVar);
+			System.out.println("InVar: "+inVar);
 			String[] s = inVar.split("\\.");
+
+			/*
+			System.out.println("inVar");
+			for (String str : s){
+				System.out.println(str);
+			}
+			System.out.println("Policy: "+policy); */
+
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
-				//System.out.println("data index "+ index);
 				String val = null;
 				WorkflowNode n = inputs.get(index);
+				System.out.println("Index: "+index);
+
 				Double v = null;
 				if (n.isOperator) {
 					val = n.inputs.get(0).dataset.getParameter("Optimization." + s[1]);
@@ -501,6 +509,7 @@ public class Operator {
 				}
 				values.put(inVar, v);
 			} else {
+				System.out.println("Null: "+s[0]);
 				//System.out.println("in value "+ 2.0);
 				//values.put(inVar, 2.0);
 				values.put(inVar, null);
