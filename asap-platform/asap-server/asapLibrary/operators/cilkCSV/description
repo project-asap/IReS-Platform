@@ -1,0 +1,15 @@
+Constraints.Output0.Engine.FS=Local
+Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.Input0.Engine.FS=Local
+Constraints.Input0.type=arff
+Constraints.EngineSpecification.Centralized=Cilk
+Constraints.Output.number=1
+Constraints.Input.number=1
+
+Optimization.inputSpace.documents=Integer,200,150000,10000
+Optimization.inputSpace.k=Integer,5,20,5
+Optimization.inputSpace.minDF=Integer,10, 160, 20
+
+
+Optimization.outputSpace.time=Double
+Optimization.model.time=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel

@@ -83,11 +83,13 @@ public class MongoDB implements DataSource{
                     }
                 }
 
+                osp = new OutputSpacePoint();
                 for (String os : outputSpace) {
-                    hm.put(os, doc.getDouble(os));
+                    double value = doc.getDouble(os);
+                    osp.setValue(value);
+                    hm.put(os, value);
                 }
 
-                osp = new OutputSpacePoint();
                 osp.setInputSpacePoint(isp);
                 osp.setValues(hm);
                 results.add(osp);
@@ -97,6 +99,7 @@ public class MongoDB implements DataSource{
         catch(Exception e){
             System.out.println("MONGO EXCEPTION: "+e);
         }
+
         return results;
     }
 

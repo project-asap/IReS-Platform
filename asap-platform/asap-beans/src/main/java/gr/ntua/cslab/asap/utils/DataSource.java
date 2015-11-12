@@ -9,5 +9,9 @@ import java.util.ArrayList;
  * Created by victor on 10/14/15.
  */
 public interface DataSource {
+   /**
+    * --- getOutputSpacePoints ---
+    * @return An ArrayList of output space points to be given as input to PANIC models for training
+    */
    ArrayList<OutputSpacePoint> getOutputSpacePoints();
 }

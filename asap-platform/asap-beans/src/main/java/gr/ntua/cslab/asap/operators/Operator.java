@@ -70,6 +70,7 @@ public class Operator {
 		String modelClass;
 		String inputSource;
 		List<Model> performanceModels;
+        List<OutputSpacePoint> outPoints = new ArrayList<>();
 		inputSpace = new HashMap<String, String>();
 		outputSpace = new HashMap<String, String>();
 		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
@@ -93,44 +94,35 @@ public class Operator {
 				} else {
 					modelFile.mkdir();
 					int i = 0;
-					for (Class<? extends Model> c : Benchmark.discoverModels()) {
+
+
+                    if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
+                        System.out.println("MONGO");
+                        this.initializeDatasouce();
+                        outPoints = dataSource.getOutputSpacePoints();
+                    }
+                    else {
+                        System.out.println("CSV");
+                        CSVFileManager file = new CSVFileManager();
+                        file.setFilename(directory + "/data/" + e.getKey() + ".csv");
+                        int ps=0;
+                        for (InputSpacePoint in : file.getInputSpacePoints()) {
+                            OutputSpacePoint out = file.getActualValue(in);
+                            outPoints.add(out);
+                        }
+                    }
+
+
+
+
+                    for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if (c.equals(UserFunction.class))
 							continue;
 						Model model = (Model) c.getConstructor().newInstance();
 
-						/* Input Source: MongoDB */
-						if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
-							String collection = optree.getParameter("Optimization.inputSource.collection");
-							String host = optree.getParameter("Optimization.inputSource.host");
-							String db = optree.getParameter("Optimization.inputSource.db");
-							List<String> is = new ArrayList<String>();
-							List<String> os = new ArrayList<String>();
-
-							for (String k : inputSpace.keySet()) {
-								is.add(k);
-							}
-							for (String k : outputSpace.keySet()) {
-								os.add(k);
-							}
-							this.dataSource = new MongoDB(host, db, collection, is, os);
-							List<OutputSpacePoint> outPoints = dataSource.getOutputSpacePoints();
-
-							for (OutputSpacePoint point : outPoints) {
-								model.feed(point, false);
-							}
-
-						}
-						//Input Source: CSV File
-						else {
-							CSVFileManager file = new CSVFileManager();
-							file.setFilename(directory + "/data/" + e.getKey() + ".csv");
-
-							for (InputSpacePoint in : file.getInputSpacePoints()) {
-								OutputSpacePoint out = file.getActualValue(in);
-								model.feed(out, false);
-							}
-						}
-
+                        for (OutputSpacePoint point : outPoints){
+                            model.feed(point, false);
+                        }
 
 						try {
 							model.train();
@@ -139,8 +131,12 @@ public class Operator {
 								bestModel = model;
 								minTotalError = error;
 							}
+							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+							//performanceModels.add(model);
 
 						} catch (Exception e1) {
+							System.out.println("Exception in training: "+e1);
+							continue;
 						}
 
 						i++;
@@ -167,6 +163,22 @@ public class Operator {
 		}
 	}
 
+    public void initializeDatasouce(){
+        String collection = optree.getParameter("Optimization.inputSource.collection");
+        String host = optree.getParameter("Optimization.inputSource.host");
+        String db = optree.getParameter("Optimization.inputSource.db");
+        System.out.printf("Col :%s\nDB: %s\nHost: %s\n", collection, db, host);
+        List<String> is = new ArrayList<String>();
+        List<String> os = new ArrayList<String>();
+
+        for (String k : inputSpace.keySet()) {
+            is.add(k);
+        }
+        for (String k : outputSpace.keySet()) {
+            os.add(k);
+        }
+        this.dataSource = new MongoDB(host, db, collection, is, os);
+    }
 
 	public void writeCSVfileUniformSampleOfModel(String variable, Double samplingRate, String filename, String delimiter, boolean addPredicted) throws Exception {
 
