@@ -184,10 +184,12 @@ public class OperatorLibrary {
 	public static String getProfile(String opname, String variable, String profileType) throws Exception {
 		Operator op = operators.get(opname);
 		op.configureModel();
-		op.initializeDatasouce();
+		if (op.getInputSource() != null) {
+			op.initializeDatasouce();
+		}
 		DataSource dataSource = op.getDataSource();
-		System.out.println("Opname: "+opname);
 		System.out.println("Datasource: "+dataSource);
+		System.out.println("Opname: "+opname);
 
     	if(profileType.equals("Compare models")){
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");

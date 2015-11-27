@@ -4,7 +4,7 @@
 
 #USER_ASAP_HOME=/path/to/IReS-Platform_project
 #USER_ASAP_HOME=
-[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="/home/vic/Dev/asap/IReS-Platform/asap-platform/asap-server/target"
+[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="/home/vic/Dev/TMP/IReS-Platform/asap-platform/asap-server/target"
 
 LIB_DIR=$ASAP_SERVER_HOME/lib
 CONF_DIR=$ASAP_SERVER_HOME/conf

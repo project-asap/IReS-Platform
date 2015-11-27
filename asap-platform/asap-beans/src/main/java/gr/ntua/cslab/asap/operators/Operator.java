@@ -47,6 +47,7 @@ public class Operator {
 	private double minTotalError;
 	private static Logger logger = Logger.getLogger(Operator.class.getName());
 	public String directory;
+	private String inputSource;
 
 	public Operator(String name, String directory) {
 		optree = new SpecTree();
@@ -68,7 +69,7 @@ public class Operator {
 	 */
 	public void configureModel() throws Exception {
 		String modelClass;
-		String inputSource;
+
 		List<Model> performanceModels;
         List<OutputSpacePoint> outPoints = new ArrayList<>();
 		inputSpace = new HashMap<String, String>();
@@ -164,12 +165,18 @@ public class Operator {
 	}
 
     public void initializeDatasouce(){
-        String collection = optree.getParameter("Optimization.inputSource.collection");
+		System.out.println("Initializing datasource...");
+		String collection = optree.getParameter("Optimization.inputSource.collection");
         String host = optree.getParameter("Optimization.inputSource.host");
         String db = optree.getParameter("Optimization.inputSource.db");
         System.out.printf("Col :%s\nDB: %s\nHost: %s\n", collection, db, host);
         List<String> is = new ArrayList<String>();
         List<String> os = new ArrayList<String>();
+
+		if (collection == null || host == null || db == null) {
+			System.out.println("NULL");
+			return;
+		}
 
         for (String k : inputSpace.keySet()) {
             is.add(k);
@@ -468,6 +475,10 @@ public class Operator {
 				i++;
 			}
 		}
+	}
+
+	public String getInputSource(){
+		return this.inputSource;
 	}
 
 	/*private Model selectModel(){
