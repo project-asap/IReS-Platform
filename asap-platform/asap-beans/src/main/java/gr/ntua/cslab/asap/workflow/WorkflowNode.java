@@ -500,7 +500,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans, String delimiter, List<WorkflowNode> targets) throws NumberFormatException, EvaluationException {
 		if(!visited){
 			OperatorDictionary op= new OperatorDictionary(toStringNorecursive(), String.format( "%.2f", getCost() ), 
-					getStatus(bestPlans), isOperator+"", toKeyValueString(delimiter), targets.contains(this));
+					getStatus(bestPlans), isOperator+"", isAbstract+"", toKeyValueString(delimiter), targets.contains(this));
 			
 			for(WorkflowNode n : inputs){
 				op.addInput(n.toStringNorecursive());

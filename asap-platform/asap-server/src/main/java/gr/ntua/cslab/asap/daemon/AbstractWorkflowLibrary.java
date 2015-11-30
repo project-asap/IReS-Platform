@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.daemon;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
+import gr.ntua.cslab.asap.daemon.rest.TransformWorkflows;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
@@ -90,6 +91,17 @@ public class AbstractWorkflowLibrary {
 	public static void removeNode(String workflowName, String type, String name) {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.removeNode(type, name);
+	}
+
+	public static void addWorkflow(String workflowName, WorkflowDictionary workflow) throws IOException {
+		
+		AbstractWorkflow1 w = TransformWorkflows.tranformAbstractWorkflow(workflowName, workflowDirectory, workflow);
+		
+		abstractWorkflows.put(workflowName, w);
+	}
+
+	public static void removeWorkflow(String id) {
+		abstractWorkflows.remove(id);
 	}
 
 }

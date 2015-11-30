@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.daemon.rest;
 
+import gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary;
 import gr.ntua.cslab.asap.rest.beans.*;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
@@ -70,5 +71,12 @@ public class Workflows {
 	@Path("/XML/{id}/")
     public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return MaterializedWorkflowLibrary.getWorkflow(id, "<br>");
+    }
+	
+	@GET
+	@Produces("application/XML")
+	@Path("remove/{id}/")
+    public void removeWorkflow(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+		MaterializedWorkflowLibrary.removeWorkflow(id);
     }
 }

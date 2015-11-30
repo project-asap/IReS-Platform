@@ -76,7 +76,11 @@ public class DatasetLibrary {
 	
 
 	public static Dataset getDataset(String opname) {
-		return datasets.get(opname);
+		Dataset ret = datasets.get(opname);
+		if(ret!=null)
+			return ret;
+		else
+			return new Dataset(opname);
 	}
 
 	public static OperatorDescription getOperatorDescriptionJSON(String id) {

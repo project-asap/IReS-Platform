@@ -361,7 +361,7 @@ public class AbstractWorkflow1 {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
 	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", 
-	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.toKeyValueString(delimiter), targets.contains(n));
+	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){
 				op.addInput(in.toStringNorecursive());

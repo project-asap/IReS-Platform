@@ -36,11 +36,37 @@ public class AbstractWorkflows {
     public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
+
 	
 	@GET
 	@Produces("application/XML")
 	@Path("XML/{id}/")
     public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
+    }
+	
+	
+	@POST
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("add/{id}/")
+    public void addWorkflow(@PathParam("id") String id,
+    		WorkflowDictionary workflow) throws IOException, NumberFormatException, EvaluationException {
+        
+		AbstractWorkflowLibrary.addWorkflow(id, workflow);
+		
+    }
+	
+	@GET
+	@Produces("application/XML")
+	@Path("remove/{id}/")
+    public void removeWorkflow(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+        AbstractWorkflowLibrary.removeWorkflow(id);
+    }
+	
+	@GET
+	@Produces("application/XML")
+	@Path("materialize/{id}/")
+    public String materializeWorkflow(@PathParam("id") String id,@QueryParam("policy") String policy) throws Exception {
+        return AbstractWorkflowLibrary.getMaterializedWorkflow(id, policy);
     }
 }

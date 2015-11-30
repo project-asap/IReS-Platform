@@ -60,4 +60,8 @@ public class MaterializedWorkflowLibrary {
 		return materializedWorkflows.get(mw);
 	}
 
+	public static void removeWorkflow(String id) {
+		materializedWorkflows.remove(id);
+	}
+
 }
