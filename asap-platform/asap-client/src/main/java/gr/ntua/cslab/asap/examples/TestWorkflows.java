@@ -56,16 +56,16 @@ public class TestWorkflows {
 		t3.addInput(op2);
 		abstractWorkflow.addTarget(t3);
 		
-		//cli.addAbstractWorkflow(abstractWorkflow);
+		cli.addAbstractWorkflow(abstractWorkflow);
 		//cli.removeAbstractWorkflow("abstractTest1");
 		
-//		String policy ="metrics,cost,execTime\n"+
-//						"groupInputs,execTime,max\n"+
-//						"groupInputs,cost,sum\n"+
-//						"function,execTime,min";
-//		
-//		String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
-//		System.out.println(materializedWorkflow);
+		String policy ="metrics,cost,execTime\n"+
+						"groupInputs,execTime,max\n"+
+						"groupInputs,cost,sum\n"+
+						"function,2*execTime+3*cost,min";
+		
+		String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
+		System.out.println(materializedWorkflow);
 		
 //		cli.removeMaterializedWorkflow("abstractTest1_2015_11_30_13:46:59");
 		
