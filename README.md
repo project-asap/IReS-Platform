@@ -78,7 +78,8 @@ to your custom $IRES_HOME e.g.
 
 <code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
 
-NOTE:
+**NOTE:**
+
 To run asap-server you should execute this script as
 
 <code>./asap-server start</code>
