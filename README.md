@@ -69,11 +69,11 @@ To run asap-server successfully, the corresponding file
 
 should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "IReS-Platform/asap-platform/asap-server/target" and thus under the line
 
-<code>#USER_ASAP_HOME=/path/to/IReS-Platform_project</code>
+<code>#IRES_HOME=/path/to/IReS-Platform_project</code>
 
 set the
-<code>USER_ASAP_HOME=</code>
+<code>IRES_HOME=</code>
 
 to your custom $IRES_HOME e.g.
 
-<code>USER_ASAP_HOME=/home/$USER/asap/IReS-Platform</code>
+<code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
