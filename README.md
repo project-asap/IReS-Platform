@@ -64,7 +64,7 @@ to build IReS-Platform project. In the end of each build you should see a "BUILD
 To run asap-server successfully, the corresponding file
 
 <ul>
-<li>$IRES_HOME/asap/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server</li>
+<li>$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server</li>
 </ul>
 
 should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "IReS-Platform/asap-platform/asap-server/target" and thus under the line
@@ -77,3 +77,18 @@ set the
 to your custom $IRES_HOME e.g.
 
 <code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
+
+NOTE:
+To run asap-server you should execute this script as
+
+<code>./asap-server start</code>
+
+However, due to the fact that the previous maven build of cloudera-kitten, panic and asap-platform directories was done using the sudo command, a java.io.FileNotFoundException may be raised. This is a permissions issue. To confirm this, run this command
+
+<code>ls -la $IRES_HOME/asap-platform/asap-server/target</code>
+
+and you should see "root" both as an owner and as a group of the "target" folder. To fix this run this command,
+
+<code>sudo chown  -R $USER:$USER $IRES_HOME/asap-platform/asap-server/target</code>s
+
+to change the ownership from "root" to "$USER". Confirm this by running the same "ls" command as above and the rerun this script as "$USER". You should not have any problem.
