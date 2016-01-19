@@ -13,7 +13,7 @@ Usage of IRes-Platform requires 3 steps
 <ol>
 <li><bold>Clone</bold> IReS-Platform to the server. For a quick reference of how to use git, click here <a href="https://rogerdudler.github.io/git-guide/" target="_blank">Git - the simple guide</a>
 <li><bold>Build</bold> IReS-Platform project using maven. A tutorial about maven can be found here <a href="https://maven.apache.org/guides/getting-started/" target="_blank">Maven Getting Started Guide</a>.</li>
-<li><bold>Update</bold> configuration files appropriately.</li>
+<li><bold>Update</bold> configuration files and folders appropriately.</li>
 </ol>
 
 <h5>Clone</h5>
@@ -60,20 +60,32 @@ run the command
 
 to build IReS-Platform project. In the end of each build you should see a "BUILD SUCCESS" message. The order of the directories above should be followed.
 
+Apart from the "BUILD SUCCESS" message, you should also see a newly created folder by the name "target" for each of the directories above i.e. cloudera-kitten, panic and asap-platform if it did not already exist.
+
 <h5>Update</h5>
-To run asap-server successfully, the corresponding file
+To run asap-server successfully and correctly, two things must be done. The first thing is to define the home folder of the ASAP server. The second one is to copy the cluster configuration files to the corresponding folder of the ASAP server. 
+
+--> As for the ASAP server's home folder, the corresponding file
 
 <ul>
-<li>$IRES_HOME/asap/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server</li>
+<li>$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server</li>
 </ul>
 
-should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "IReS-Platform/asap-platform/asap-server/target" and thus under the line
+should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "asap-platform/asap-server/target" and thus under the line
 
-<code>#$IRES_HOME=/path/to/IReS-Platform_project</code>
+<code>#IRES_HOME=/path/to/IReS-Platform_project</code>
 
 set the
-<code>$IRES_HOME=</code>
+<code>IRES_HOME=</code>
 
-to your custom $IRES_HOME e.g.
+to your custom IRES_HOME e.g.
 
-<code>$IRES_HOME=/home/$USER/asap/IReS-Platform</code>
+<code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
+
+Notice that the folder "$IRES_HOME/asap-platform/asap-server/target" has been created during the building phase.
+
+--> As for the cluster configuration files, it is assumed that a YARN( or Hadoop 2.0) cluster is already set up and that YARN can be found for example in
+
+<code>YARN=/home/$USER/yarn</code>
+
+Copy the $YARN/etc/hadoop/core-site.xml adn $YARN/etc/hadoop/yarn-site.xml files into the $IRES_HOME/asap-platform/asap-server/target/conf directory. Finally, the yarn-site.xml must have a minimum set of properties in order for the IReS-Platform to work correctly. This minimum set of properties can be found in yarn-site.xml file of the repository.
