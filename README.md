@@ -88,4 +88,4 @@ Notice that the folder "$IRES_HOME/asap-platform/asap-server/target" has been cr
 
 <code>YARN=/home/$USER/yarn</code>
 
-Copy the $YARN/etc/hadoop/core-site.xml adn $YARN/etc/hadoop/yarn-site.xml files into the $IRES_HOME/asap-platform/asap-server/target/conf directory. Finally, the yarn-site.xml must have a minimum set of properties in order for the IReS-Platform to work correctly. This minimum set of properties can be found in yarn-site.xml file of the repository.
+Copy the <code>$YARN/etc/hadoop/core-site.xml</code> and <code>$YARN/etc/hadoop/yarn-site.xml</code> files into the <code>$IRES_HOME/asap-platform/asap-server/target/conf</code> directory. Finally, the yarn-site.xml must have a minimum set of properties in order for the IReS-Platform to work correctly. This minimum set of properties can be found in yarn-site.xml file of this repository.
