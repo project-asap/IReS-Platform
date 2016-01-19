@@ -67,9 +67,7 @@ To run asap-server successfully and correctly, two things must be done. The firs
 
 --> As for the ASAP server's home folder, the corresponding file
 
-<ul>
-<li>$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server</li>
-</ul>
+<code>$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server</code>
 
 should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "asap-platform/asap-server/target" and thus under the line
 
