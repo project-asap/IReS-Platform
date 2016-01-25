@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+	<!-- Site specific YARN configuration properties -->
+
+	<!-- Configurations for Resource Manager -->
+	<property>
+	  <name>yarn.resourcemanager.hostname</name>
+	  <value>master</value>
+	  <description>The hostname of the RM.</description>
+	</property>
+  
+  <!-- Capacity Scheduler -->
+  <!-- https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html -->
+  <property>
+    <name>yarn.resourcemanager.scheduler.class</name>
+    <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>256</value>
+    <description>
+      The minimum allocation for every container request at the RM,
+      in MBs. Memory requests lower than this will throw an
+      InvalidResourceRequestException.
+    </description>
+  </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>8192</value>
+    <description>
+        The maximum allocation for every container request at the RM,
+        in MBs. Memory requests higher than this will throw an 
+        InvalidResourceRequestException.
+    </description>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-vcores</name>
+    <value>1</value>
+    <description>
+      The minimum allocation for every container request at the RM, in
+      terms of virtual CPU cores. Requests lower than this will throw
+      an InvalidResourceRequestException.
+    </description>    
+  </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-vcores</name>
+    <value>8</value>
+    <description>
+      The maximum allocation for every container request at the RM, in
+      terms of virtual CPU cores. Requests higher than this will throw 
+      an InvalidResourceRequestException.
+    </description>    
+  </property>
+
+  <!-- Configurations for NodeManager -->
+  <!-- Path definition of resources folder, a custom property -->
+  <property>
+    <name>yarn.nodemanager.resources-folder.path</name>
+    <value>/home/hadoop/resources</value>
+    <description>
+      This folder contains all the custom files or scripts that YARN
+      various properties like yarn.nodemanager.health-checker.script.path
+      and yarn.resourcemanager.nodes.exclude-path may need for their
+      execution. See the description of these commands for further info.
+      Change the value of this property to reflect the path of yours
+      "resources" folder
+    </description>
+  </property>
+  <!-- Set NodeManager quotas for containers
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>6144</value>
+    <description>
+      Amount of physical memory, in MB, that can be allocated for containers.
+    </description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value>4</value>
+    <description>
+      Number of vcores that can be allocated for containers. This is used by
+      the RM scheduler when allocating resources for containers. This is not
+      used to limit the number of physical cores used by YARN containers.
+    </description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.remote-app-log-dir</name>
+    <value>/logs</value>
+    <description>
+      	Where to aggregate logs to.
+    </description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.remote-app-log-dir-suffix</name>
+    <value>logs</value>
+    <description>
+      The remote log dir will be created at {yarn.nodemanager.remote-app-log-dir}/${user}/{thisParam} 
+    </description>
+  </property>  
+  <!-- To run Map Reduce applications -->
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+    <description>
+			A comma separated list of services where service name should only
+			contain a-zA-Z0-9_ and can not start with numbers
+		</description>
+  </property>
+  <!-- Run a custom script to check the health of this node -->
+  <property>
+    <name>yarn.nodemanager.health-checker.script.path</name>
+    <value>{yarn.nodemanager.resources-folder.path}/monitoring/nmhealth.sh</value>
+    <description>The health check script to run.</description>
+  </property>	
+  <property>
+    <name>yarn.nodemanager.health-checker.script.opts</name>
+    <value>"Health script is running!"</value>
+    <description>The arguments to pass to the health check script.</description>
+  </property>	
+  <property>
+    <name>yarn.nodemanager.health-checker.interval-ms</name>
+    <value>3000</value>
+    <description>Frequency of running node health script..</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.health-checker.script.timeout-ms</name>
+    <value>5000</value>
+    <description>Script time out period.</description>
+  </property>
+  
+  <!-- Configurations for History Server -->
+  <property>
+    <name>yarn.log-aggregation.retain-seconds</name>
+    <value>-1</value>
+    <description>
+      How long to keep aggregation logs before deleting them.
+      -1 disables. Be careful set this too small and you will
+      spam the name node.
+    </description>
+  </property>
+  <property>
+    <name>yarn.log-aggregation.retain-check-interval-seconds</name>
+    <value>-1</value>
+    <description>
+      How long to wait between aggregated log retention checks.
+      If set to 0 or a negative value then the value is computed
+      as one-tenth of the aggregated log retention time. Be careful
+      set this too small and you will spam the name node.
+    </description>  
+  </property>
+  <property>
+    <name>yarn.node-labels.fs-store.uri</name>
+    <value>hdfs://master:9000/node-label-store</value>
+    <description>
+      none
+    </description>
+  </property>
+</configuration>
