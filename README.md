@@ -53,7 +53,7 @@ To do so, the pom.xml file of the <code>asap-platform</code> and <code>cloudera-
 <ul>
   <li>for the <code>asap-platform</code> edit the file <code>$IRES_HOME/asap-platform/pom.xml</code>. In particular, find the line about <code>hadoop.version</code> and between the tags write the version number of the currently installed YARN version e.g. 2.7.1 if the currently installed YARN is hadoop-2.7.1
   </li>
-  <li>for the <code>cloudera-kitten</code> edit the file <code>$IRES_HOME/cloudera-kitten/pom.xml</code>. Again, find the line <code><hadoop.version></hadoop.version></code> and write the version number of the currently installed YARN version like before.
+  <li>for the <code>cloudera-kitten</code> edit the file <code>$IRES_HOME/cloudera-kitten/pom.xml</code>. Again, find the line about <code>hadoop.version</code> and write the version number of the currently installed YARN version like before.
   </li>
 </ul>
 
