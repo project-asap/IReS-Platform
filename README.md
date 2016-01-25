@@ -51,7 +51,7 @@ Then update IReS-Platform pom.xml files to point to the currently installed YARN
 To do so, the pom.xml file of the <code>asap-platform</code> and <code>cloudera-kitten</code> folders should be updated in order for the Maven to take in account the currently YARN version installed during the building phase. To do so, navigate to <code>$IRES_HOME</code> folder and then
 
 <ul>
-  <li>for the <code>asap-platform</code> edit the file <code>$IRES_HOME/asap-platform/pom.xml</code>. In particular, find the line \<hadoop.version> \</hadoop.version> and between the tags \<hadoop.version>, \</hadoop.version> write the version number of the currently installed YARN version e.g. <code><hadoop.version>2.7.1</hadoop.version></code> if the currently installed YARN is hadoop-2.7.1
+  <li>for the <code>asap-platform</code> edit the file <code>$IRES_HOME/asap-platform/pom.xml</code>. In particular, find the line `<hadoop.version>` `</hadoop.version>` and between the tags `<hadoop.version>`, `</hadoop.version>` write the version number of the currently installed YARN version e.g. <code><hadoop.version>2.7.1</hadoop.version></code> if the currently installed YARN is hadoop-2.7.1
   </li>
   <li>for the <code>cloudera-kitten</code> edit the file <code>$IRES_HOME/cloudera-kitten/pom.xml</code>. Again, find the line <code><hadoop.version></hadoop.version></code> and write the version number of the currently installed YARN version like before.
   </li>
