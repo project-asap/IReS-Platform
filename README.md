@@ -57,19 +57,13 @@ To do so, the pom.xml file of the <code>asap-platform</code> and <code>cloudera-
   </li>
 </ul>
 
-Then, in each of the directories below
-
-<ol>
-<li>$IRES_HOME/cloudera-kitten</li>
-<li>$IRES_HOME/panic</li>
-<li>$IRES_HOME/asap-platform</li>
-</ol>
-
-run the command
+Then, navigate to the folder <code>$IRES_HOME/panic</code> and build the corresponding project by runninng
 
 <code>sudo mvn clean install -DskipTests</code>
 
-to build IReS-Platform project. In the end of each build you should see a "BUILD SUCCESS" message. The order of the directories above should be followed.
+Do the same for the <code>$IRES_HOME/cloudera-kitten</code> folder and ignore the message "BUILD FAILURE" for the moment if that message occur. Now, build similarly the <code>$IRES_HOME/asap-platform</code> folder and ingore again a possible "BUILD FAILURE" message. Repeat the process for the last two folders with the same order i.e. first build <code>$IRES_HOME/cloudera-kitten</code> and afterwards build <code>$IRES_HOME/asap-platform</code>. 
+
+In the end of each build you should see a "BUILD SUCCESS" message. The building order of the directories above should be followed.
 
 Apart from the "BUILD SUCCESS" message, you should also see a newly created folder by the name "target" for each of the directories above i.e. cloudera-kitten, panic and asap-platform if it did not already exist.
 
