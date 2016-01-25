@@ -63,7 +63,7 @@ to build IReS-Platform project. In the end of each build you should see a "BUILD
 Apart from the "BUILD SUCCESS" message, you should also see a newly created folder by the name "target" for each of the directories above i.e. cloudera-kitten, panic and asap-platform if it did not already exist.
 
 <h5>Update</h5>
-To run asap-server successfully and correctly, two things must be done. The first thing is to define the home folder of the ASAP server. The second one is to copy the cluster configuration files to the corresponding folder of the ASAP server. 
+To run asap-server successfully and correctly, three things must be done. The first thing is to define the home folder of the ASAP server. The second one is to copy the cluster configuration files to the corresponding folder of the ASAP server. The third is to confirm that the current YARN version installed is the same with the one the IReS-Platform expects. 
 
 --> As for the ASAP server's home folder, the corresponding file
 
@@ -87,3 +87,14 @@ Notice that the folder "$IRES_HOME/asap-platform/asap-server/target" has been cr
 <code>YARN=/home/$USER/yarn</code>
 
 Copy the <code>$YARN/etc/hadoop/core-site.xml</code> and <code>$YARN/etc/hadoop/yarn-site.xml</code> files into the <code>$IRES_HOME/asap-platform/asap-server/target/conf</code> directory. Finally, the yarn-site.xml must have a minimum set of properties in order for the IReS-Platform to work correctly. This minimum set of properties can be found in yarn-site-min.xml file of this repository. Similarly for the core-site.xml file there is a core-site-min.xml into this repository.
+
+--> Update IReS-Platform YARN version to the currently installed
+
+For this step, the pom.xml file of the asap-platform and cloudera-kitten folders should be updated in order to "see" the YARN version currently installed. To do so, navigate to <code>$IRES_HOME</code> folder and then
+
+<ul>
+  <li>for the <code>asap-platform</code> edit the file <code>$IRES_HOME/asap-platform/pom.xml</code>. In particular, find the line <code><hadoop.version></hadoop.version></code> and between the tags <code><hadoop.version>, </hadoop.version></code> write the version number of the currently installed YARN version e.g. <code><hadoop.version>2.7.1</hadoop.version></code> if the currently installed YARN is hadoop-2.7.1
+  </li>
+  <li>for the <code>cloudera-kitten</code> edit the file <code>$IRES_HOME/cloudera-kitten/pom.xml</code>. Again, find the line <code><hadoop.version></hadoop.version></code> and write the version number of the currently installed YARN version like before.
+  </li>
+</ul>
