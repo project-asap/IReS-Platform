@@ -25,6 +25,8 @@ import net.sourceforge.jeval.EvaluationException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
+import org.apache.hadoop.yarn.client.api.YarnClient;
+import org.apache.hadoop.yarn.client.cli.YarnCLI;
 import org.apache.log4j.Logger;
 
 import com.cloudera.kitten.client.YarnClientService;
@@ -84,7 +86,8 @@ public class RunningWorkflowLibrary {
 	}
 
 	private static YarnClientService startYarnClientService(WorkflowDictionary d, MaterializedWorkflow1 mw) throws Exception {
-
+		YarnCLI cli = null;
+		YarnClient c = cli.getClient();
 	    YarnClientService service = null;
 		HashMap<String,String> operators = new HashMap<String, String>();
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();

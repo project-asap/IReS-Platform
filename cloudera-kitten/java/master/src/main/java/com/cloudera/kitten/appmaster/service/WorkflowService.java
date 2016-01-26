@@ -175,7 +175,7 @@ protected ContainerLaunchContextFactory factory;
   @Override
   protected void runOneIteration() throws Exception {
 
-	  AbstractClient.issueRequest(parameters.jobName, parameters.workflow);
+	  AbstractClient.issueRequest(conf, parameters.jobName, parameters.workflow);
     if (totalFailures.get() > parameters.getAllowedFailures() ||
         allTrackersFinished()) {
       stop();

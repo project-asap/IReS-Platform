@@ -101,16 +101,6 @@
         <finalName>asap-server</finalName>
     </build>
     <dependencies>
-    	<dependency>
-      		<groupId>org.apache.hadoop</groupId>
-      		<artifactId>hadoop-yarn-client</artifactId>
-      		<version>${hadoop.version}</version>
-    	</dependency>
-    	<dependency>
-      		<groupId>org.apache.hadoop</groupId>
-      		<artifactId>hadoop-common</artifactId>
-      		<version>${hadoop.version}</version>
-    	</dependency>
         <dependency>
             <groupId>gr.ntua.ece.cslab</groupId>
             <artifactId>panic-core</artifactId>
@@ -134,7 +124,12 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-servlet</artifactId>
-            <version>1.18.1</version>
+            <version>1.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-core</artifactId>
+            <version>1.19</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -174,8 +169,44 @@
     	<dependency>
     		<groupId>gr.ntua.cslab</groupId>
     		<artifactId>asap-beans</artifactId>
-    		<version>0.1-SNAPSHOT</version>
-    	</dependency>
+		<version>0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-hdfs</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>runtime</scope>
+		<exclusions>
+                        <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                        </exclusion>
+                </exclusions>
+        </dependency>
+        <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-yarn-client</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>runtime</scope>
+		<exclusions>
+        		<exclusion>
+          			<groupId>*</groupId> 
+          			<artifactId>*</artifactId>
+        		</exclusion>
+      		</exclusions>
+        </dependency>
+        <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${hadoop.version}</version>
+                <scope>runtime</scope>
+        	<exclusions>
+                        <exclusion>
+                                <groupId>*</groupId>
+                                <artifactId>*</artifactId>
+                        </exclusion>
+                </exclusions>
+	</dependency>
     </dependencies>
 
 </project>

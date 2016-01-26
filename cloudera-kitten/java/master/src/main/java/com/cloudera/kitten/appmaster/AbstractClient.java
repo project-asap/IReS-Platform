@@ -15,12 +15,14 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 public class AbstractClient {
 
 	private static final Log LOG = LogFactory.getLog(AbstractClient.class);
     /**
      * Issues a new Request and returns a string with the response - if  any.
+     * @param conf 
      * @param requestType
      * @param document
      * @param input
@@ -28,8 +30,9 @@ public class AbstractClient {
      * @throws MalformedURLException
      * @throws IOException 
      */
-    public static String issueRequest(String id, WorkflowDictionary workflow) {
-        String urlString = "http://master:1323/runningWorkflows/report/"+id+"/";
+    public static String issueRequest(YarnConfiguration conf, String id, WorkflowDictionary workflow) {
+    	String masterDNS = conf.get("yarn.resourcemanager.address").split(":")[0];
+        String urlString = "http://"+masterDNS+":1323/runningWorkflows/report/"+id+"/";
         String ret="";
 		try {
 	        LOG.info("Issuing urlString: "+urlString);
