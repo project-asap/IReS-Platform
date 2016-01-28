@@ -368,6 +368,8 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     List<String> oldcmds = cmds;
     cmds = new ArrayList<String>();
+    cmds.add("asap monitor start");
+    
     String outdir = dir+"/"+this.name;//+"_"+globalContainerId;
 
 	LOG.info("Inputs: "+operator.getInputFiles());
@@ -395,6 +397,9 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     for(String f : stageOutFiles){
 	    cmds.add("hdfs dfs -moveFromLocal "+f+" "+outdir);
     }
+    
+    cmds.add("asap report -cm -e "+this.name);
+    
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);
     globalContainerId++;
@@ -402,7 +407,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 	LOG.info("Commands: "+cmds);
 	
     cmds = new ArrayList<String>();
-    cmds.add("./"+execScript+" 1> <LOG_DIR>/stdout 2> <LOG_DIR>/stderr");
+    cmds.add("/bin/bash -l "+execScript+" 1> <LOG_DIR>/stdout 2> <LOG_DIR>/stderr");
     
     return cmds;
   }

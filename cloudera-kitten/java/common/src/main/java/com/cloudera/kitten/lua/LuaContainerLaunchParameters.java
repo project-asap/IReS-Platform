@@ -305,12 +305,17 @@ private int globalContainerId;
     
     List<String> stageOutFiles = getStageOutFiles();
     //System.out.println("stageOutFiles: "+stageOutFiles);
+    
+    
     cmds.add("ls -ltr");
     String outdir = dir+"/"+this.name+"_"+globalContainerId;
     cmds.add("hdfs dfs -mkdir "+outdir);
     for(String f : stageOutFiles){
 	    cmds.add("hdfs dfs -moveFromLocal "+f+" "+outdir);
     }
+
+    
+    
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);
     globalContainerId++;
