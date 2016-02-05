@@ -36,6 +36,7 @@ import com.cloudera.kitten.util.LocalDataHelper;
 
 public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,WorkflowDictionary> runningWorkflows;
+	private static ConcurrentHashMap<String,MaterializedWorkflow1> runningMaterializedWorkflows;
 	private static ConcurrentHashMap<String,YarnClientService> runningServices;
 	public static ConcurrentHashMap<String,ApplicationReport> workflowsReport;
 	
@@ -46,6 +47,7 @@ public class RunningWorkflowLibrary {
 		runningWorkflows = new ConcurrentHashMap<String, WorkflowDictionary>();
 		runningServices = new ConcurrentHashMap<String, YarnClientService>();
 		workflowsReport =  new ConcurrentHashMap<String, ApplicationReport>();
+		runningMaterializedWorkflows=  new ConcurrentHashMap<String, MaterializedWorkflow1>();
 	    conf = new Configuration();
         (new Thread(new YarnServiceHandler())).start();
 	}
@@ -75,11 +77,13 @@ public class RunningWorkflowLibrary {
 	}
 
 	public static void executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
+		runningMaterializedWorkflows.put(materializedWorkflow.name, materializedWorkflow);
 		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary("\n");
 		for(OperatorDictionary op : wd.getOperators()){
 			if(op.getStatus().equals("running"))
 				op.setStatus("warn");
 		}
+		
 		YarnClientService service = startYarnClientService(wd, materializedWorkflow);
 		runningServices.put(materializedWorkflow.name, service);
 		runningWorkflows.put(materializedWorkflow.name, wd);
@@ -146,5 +150,10 @@ public class RunningWorkflowLibrary {
 
 	public static void setWorkFlow(String id, WorkflowDictionary workflow) {
 		runningWorkflows.put(id, workflow);
+	}
+
+	public static void replan(String id) {
+		AbstractWorkflow1 aw = runningMaterializedWorkflows.get(id).getAbstractWorkflow();
+		
 	}
 }

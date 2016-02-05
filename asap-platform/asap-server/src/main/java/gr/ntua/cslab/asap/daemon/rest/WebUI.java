@@ -517,6 +517,30 @@ public class WebUI {
     	ret+="</div><div  class=\"mainpage\">";
     	
     	ret+=runningWorkflowUp+"/runningWorkflows/"+id+runningWorkflowLow;
+    	
+
+    	ret+="<form action=\"/web/runningWorkflows/replan\" method=\"get\">"
+    		+ "<input type=\"hidden\" name=\"id\" value=\""+id+"\">"
+			+ "<p align=\"right\"><input  class=\"styled-button\" type=\"submit\" value=\"Replan Workflow\"></form>";
+    	
+    	ret += footer;
+    	return ret;
+    }
+    
+
+    @GET
+    @Path("/runningWorkflows/replan/")
+    @Produces(MediaType.TEXT_HTML)
+    public String replanWorkflow(@QueryParam("id") String id) throws Exception{
+    	RunningWorkflowLibrary.replan(id);
+    	String trackingUrl = RunningWorkflowLibrary.getTrackingUrl(id);
+    	String ret = header+
+    			"Tracking URL: <a id=\"trackingURL\" href=\""+trackingUrl+"\">"+trackingUrl+"</a>"+
+    			"<p id=\"state\">State: "+RunningWorkflowLibrary.getState(id)+"</p>";
+    	ret+="</div><div  class=\"mainpage\">";
+    	
+    	ret+=runningWorkflowUp+"/runningWorkflows/"+id+runningWorkflowLow;
+    	
     	ret += footer;
     	return ret;
     }

@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.daemon;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
+import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
@@ -179,6 +180,7 @@ public class Main {
 		AbstractWorkflowLibrary.initialize(ServerStaticComponents.properties.getProperty("asap.dir")+"/abstractWorkflows");
 		MaterializedWorkflowLibrary.initialize(ServerStaticComponents.properties.getProperty("asap.dir")+"/workflows");
 		RunningWorkflowLibrary.initialize();
+		ClusterStatusLibrary.initialize();
 	}
 	
 	

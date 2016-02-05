@@ -78,6 +78,7 @@ public class AbstractWorkflow1 {
 		parsePolicy(policy);
 		String fullName=name+"_"+nameExtention;
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);
+		materializedWorkflow.setAbstractWorkflow(this);
 		materializedWorkflow.setPolicy(groupInputs, optimizationFunction, functionTarget);
 		Workflow1DPTable dpTable = new Workflow1DPTable();
 		for(WorkflowNode t : targets){

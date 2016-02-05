@@ -1,5 +1,6 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
+Constraints.Engine=MapReduce
 Constraints.Output0.Engine.FS=HDFS
 Constraints.Output0.type=SequenceFile
 Constraints.OpSpecification.Algorithm.name=TF_IDF

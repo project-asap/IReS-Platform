@@ -696,4 +696,9 @@ public class Operator {
 		return this.dataSource;
 	}
 
+
+	public String getEngine() {
+		return optree.getParameter("Constraints.Engine");
+	}
+
 }

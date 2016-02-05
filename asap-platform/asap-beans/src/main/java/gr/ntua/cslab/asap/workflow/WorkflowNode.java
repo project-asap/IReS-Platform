@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.workflow;
 
+import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
@@ -80,6 +81,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			if(isAbstract){
 				List<Operator> operators = OperatorLibrary.getMatches(abstractOperator);
 				for(Operator op : operators){
+					if(!ClusterStatusLibrary.checkEngineStatus(op))
+						continue;
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();
 					//Double operatorInputCost= 0.0;
 					List<WorkflowNode> plan = new ArrayList<WorkflowNode>();

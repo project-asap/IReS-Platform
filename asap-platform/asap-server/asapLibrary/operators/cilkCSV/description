@@ -2,7 +2,7 @@ Constraints.Output0.Engine.FS=Local
 Constraints.OpSpecification.Algorithm.name=k-means
 Constraints.Input0.Engine.FS=Local
 Constraints.Input0.type=arff
-Constraints.EngineSpecification.Centralized=Cilk
+Constraints.Engine=Cilk
 Constraints.Output.number=1
 Constraints.Input.number=1
 

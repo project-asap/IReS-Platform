@@ -25,6 +25,8 @@ import net.sourceforge.jeval.EvaluationException;
 import org.apache.log4j.Logger;
 
 public class MaterializedWorkflow1 {
+	private AbstractWorkflow1 abstractWorkflow;
+
 	private List<WorkflowNode> targets;
 	private HashMap<String,List<WorkflowNode>> bestPlans;
 	public double optimalCost;
@@ -52,6 +54,14 @@ public class MaterializedWorkflow1 {
 		nodes = new HashMap<String, WorkflowNode>();
 	}
 
+	public AbstractWorkflow1 getAbstractWorkflow() {
+		return abstractWorkflow;
+	}
+
+	public void setAbstractWorkflow(AbstractWorkflow1 abstractWorkflow) {
+		this.abstractWorkflow = abstractWorkflow;
+	}
+	
 	public void setBestPlan(String target, List<WorkflowNode> plan){
 		logger.info("Target: "+target);
 		logger.info("Best plan: ");

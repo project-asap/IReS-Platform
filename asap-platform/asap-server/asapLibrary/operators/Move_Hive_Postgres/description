@@ -1,5 +1,6 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
+Constraints.Engine=PostgreSQL
 Constraints.Output.number=1
 Constraints.Input.number=1
 Constraints.Output0.type=SQL
