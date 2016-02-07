@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "operator")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OperatorDictionary {
-	private String name, cost, status, isOperator, isAbstract, description;
+	private String name, cost, status, isOperator, isAbstract, description, abstractName;
 	private boolean isTarget;
 	private List<String> input;
 	
@@ -18,7 +18,8 @@ public class OperatorDictionary {
 		input = new ArrayList<String>();
 	}
 	
-	public OperatorDictionary(String name, String cost, String status, String isOperator, String isAbstract, String description, boolean isTarget) {
+	public OperatorDictionary(String abstractName, String name, String cost, String status, String isOperator, String isAbstract, String description, boolean isTarget) {
+		this.abstractName=abstractName;
 		this.name = name;
 		this.cost = cost;
 		this.status = status;
@@ -94,6 +95,14 @@ public class OperatorDictionary {
 
 	public void setIsAbstract(String isAbstract) {
 		this.isAbstract = isAbstract;
+	}
+
+	public String getAbstractName() {
+		return abstractName;
+	}
+
+	public void setAbstractName(String abstractName) {
+		this.abstractName = abstractName;
 	}
 	
 	

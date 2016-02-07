@@ -14,9 +14,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,7 +39,8 @@ import com.cloudera.kitten.util.LocalDataHelper;
 
 public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,WorkflowDictionary> runningWorkflows;
-	private static ConcurrentHashMap<String,MaterializedWorkflow1> runningMaterializedWorkflows;
+	private static ConcurrentHashMap<String,WorkflowDictionary> toRunWorkflows;
+	private static ConcurrentHashMap<String,AbstractWorkflow1> runningAbstractWorkflows;
 	private static ConcurrentHashMap<String,YarnClientService> runningServices;
 	public static ConcurrentHashMap<String,ApplicationReport> workflowsReport;
 	
@@ -47,7 +51,8 @@ public class RunningWorkflowLibrary {
 		runningWorkflows = new ConcurrentHashMap<String, WorkflowDictionary>();
 		runningServices = new ConcurrentHashMap<String, YarnClientService>();
 		workflowsReport =  new ConcurrentHashMap<String, ApplicationReport>();
-		runningMaterializedWorkflows=  new ConcurrentHashMap<String, MaterializedWorkflow1>();
+		runningAbstractWorkflows=  new ConcurrentHashMap<String, AbstractWorkflow1>();
+		toRunWorkflows = new ConcurrentHashMap<String,WorkflowDictionary>();
 	    conf = new Configuration();
         (new Thread(new YarnServiceHandler())).start();
 	}
@@ -57,19 +62,36 @@ public class RunningWorkflowLibrary {
 	}
 	
 	public static WorkflowDictionary getWorkflow(String name) throws Exception{
-		WorkflowDictionary wd = runningWorkflows.get(name);
-		wd.replaceDescription("\n","<br>");
-		/*Random r = new Random();
-		for(OperatorDictionary op: wd.getOperators()){
-			if(r.nextBoolean()){
-				op.setStatus("running");
-			}
-			else{
-				op.setStatus("stopped");
-			}
-		}*/
-		//return mw.toWorkflowDictionary("<br>");
-		return wd;
+		if(toRunWorkflows.containsKey(name)){
+			WorkflowDictionary wd = toRunWorkflows.get(name);
+			wd.replaceDescription("\n","<br>");
+			/*Random r = new Random();
+			for(OperatorDictionary op: wd.getOperators()){
+				if(r.nextBoolean()){
+					op.setStatus("running");
+				}
+				else{
+					op.setStatus("stopped");
+				}
+			}*/
+			//return mw.toWorkflowDictionary("<br>");
+			return wd;
+		}
+		else{
+			WorkflowDictionary wd = runningWorkflows.get(name);
+			wd.replaceDescription("\n","<br>");
+			/*Random r = new Random();
+			for(OperatorDictionary op: wd.getOperators()){
+				if(r.nextBoolean()){
+					op.setStatus("running");
+				}
+				else{
+					op.setStatus("stopped");
+				}
+			}*/
+			//return mw.toWorkflowDictionary("<br>");
+			return wd;
+		}
 	}
 
 	public static List<String> getWorkflows() {
@@ -77,7 +99,7 @@ public class RunningWorkflowLibrary {
 	}
 
 	public static void executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
-		runningMaterializedWorkflows.put(materializedWorkflow.name, materializedWorkflow);
+		runningAbstractWorkflows.put(materializedWorkflow.name, materializedWorkflow.getAbstractWorkflow());
 		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary("\n");
 		for(OperatorDictionary op : wd.getOperators()){
 			if(op.getStatus().equals("running"))
@@ -90,8 +112,6 @@ public class RunningWorkflowLibrary {
 	}
 
 	private static YarnClientService startYarnClientService(WorkflowDictionary d, MaterializedWorkflow1 mw) throws Exception {
-		YarnCLI cli = null;
-		YarnClient c = cli.getClient();
 	    YarnClientService service = null;
 		HashMap<String,String> operators = new HashMap<String, String>();
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
@@ -152,8 +172,29 @@ public class RunningWorkflowLibrary {
 		runningWorkflows.put(id, workflow);
 	}
 
-	public static void replan(String id) {
-		AbstractWorkflow1 aw = runningMaterializedWorkflows.get(id).getAbstractWorkflow();
+	public static void replan(String id) throws Exception {
+		HashMap<String,WorkflowNode> materilizedDatasets = new HashMap<String,WorkflowNode>();
 		
+		WorkflowDictionary wd = runningWorkflows.get(id);
+		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(id, "/tmp");
+		materializedWorkflow.readFromWorkflowDictionary(wd);
+		for(OperatorDictionary op : wd.getOperators()){
+			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("running")){
+
+				logger.info(op.getName()+" : "+op.getAbstractName());
+
+				WorkflowNode n = new WorkflowNode(false, false,op.getAbstractName());
+				Dataset temp = new Dataset(op.getName());
+				temp.readPropertiesFromString(op.getDescription().replace("<br>", "\n"));
+				n.setDataset(temp);
+				materilizedDatasets.put(op.getAbstractName(), n);
+			}
+		}
+		logger.info("Datasets: "+materilizedDatasets);
+		
+		AbstractWorkflow1 aw = runningAbstractWorkflows.get(id);
+		
+		MaterializedWorkflow1 mwNew =aw.replan(materilizedDatasets);
+		toRunWorkflows.put(id, mwNew.toWorkflowDictionary("\n"));
 	}
 }

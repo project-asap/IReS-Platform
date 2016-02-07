@@ -17,9 +17,9 @@ public class ClusterStatusLibrary {
 
 	public static void initialize() throws Exception{
 		status = new ConcurrentHashMap<String,Boolean>();
-		status.put("WEKA", false);
+		status.put("WEKA", true);
 		status.put("Spark", true);
-		status.put("MapReduce", false);
+		status.put("MapReduce", true);
 	}
 	
 	public static boolean getStatus(String component){

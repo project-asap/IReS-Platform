@@ -540,7 +540,10 @@ public class WebUI {
     	ret+="</div><div  class=\"mainpage\">";
     	
     	ret+=runningWorkflowUp+"/runningWorkflows/"+id+runningWorkflowLow;
-    	
+
+    	ret+="<form action=\"/web/runningWorkflows/replan\" method=\"get\">"
+    		+ "<input type=\"hidden\" name=\"id\" value=\""+id+"\">"
+			+ "<p align=\"right\"><input  class=\"styled-button\" type=\"submit\" value=\"Replan Workflow\"></form>";
     	ret += footer;
     	return ret;
     }
@@ -578,6 +581,10 @@ public class WebUI {
     	ret+="</div><div  class=\"mainpage\">";
     	
     	ret+=runningWorkflowUp+"/runningWorkflows/"+workflowName+runningWorkflowLow;
+
+    	ret+="<form action=\"/web/runningWorkflows/replan\" method=\"get\">"
+    		+ "<input type=\"hidden\" name=\"id\" value=\""+workflowName+"\">"
+			+ "<p align=\"right\"><input  class=\"styled-button\" type=\"submit\" value=\"Replan Workflow\"></form>";
     	
     	ret += footer;
     	return ret;

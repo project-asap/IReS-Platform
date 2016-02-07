@@ -59,6 +59,13 @@ public class RunningWorkflows {
         return RunningWorkflowLibrary.getWorkflow(id);
     }
 	
+	@GET
+	@Produces("application/XML")
+	@Path("replan/{id}/")
+    public void replan(@PathParam("id") String id) throws Exception {
+        RunningWorkflowLibrary.replan(id);
+    }
+	
 	@POST
     @Path("report/{id}/")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)

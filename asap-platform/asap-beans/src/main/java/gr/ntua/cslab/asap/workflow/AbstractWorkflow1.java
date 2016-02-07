@@ -38,9 +38,11 @@ public class AbstractWorkflow1 {
 	public String name, directory;
 	private static Logger logger = Logger.getLogger(AbstractWorkflow1.class.getName());
 	
+	private HashMap<String, WorkflowNode> materilizedDatasets;
 	public HashMap<String,String> groupInputs;
 	public String optimizationFunction;
 	public String functionTarget;
+	private String policy;
 
 	@Override
 	public String toString() {
@@ -52,6 +54,7 @@ public class AbstractWorkflow1 {
 		this.name=name;
 		targets = new ArrayList<WorkflowNode>();
 		workflowNodes = new HashMap<String, WorkflowNode>();
+		materilizedDatasets = new HashMap<String, WorkflowNode>();
 	}
 	
 	public AbstractWorkflow1(String name, String directory) {
@@ -78,12 +81,16 @@ public class AbstractWorkflow1 {
 		parsePolicy(policy);
 		String fullName=name+"_"+nameExtention;
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);
+		if(materilizedDatasets!=null)
+			materializedWorkflow.materilizedDatasets=materilizedDatasets;
+		else
+			materializedWorkflow.materilizedDatasets=new HashMap<>();
 		materializedWorkflow.setAbstractWorkflow(this);
 		materializedWorkflow.setPolicy(groupInputs, optimizationFunction, functionTarget);
 		Workflow1DPTable dpTable = new Workflow1DPTable();
 		for(WorkflowNode t : targets){
 			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable);
-			WorkflowNode temp = new WorkflowNode(false, false);
+			WorkflowNode temp = new WorkflowNode(false, false, t.getName());
 			temp.setDataset(t.dataset);
 			//System.out.println(l+"fsdgd");
 			temp.addInputs(l);
@@ -119,7 +126,17 @@ public class AbstractWorkflow1 {
 		return materializedWorkflow;
 	}
 	
+
+	public MaterializedWorkflow1 replan(
+			HashMap<String, WorkflowNode> materilizedDatasets) throws Exception {
+		this.materilizedDatasets=materilizedDatasets;
+		return materialize("execTime", "", policy);
+	}
+
+
+	
 	public String parsePolicy(String policy) {
+		this.policy=policy;
 		groupInputs = new HashMap<String, String>();
 		String[] p = policy.split("\n");
 		for (int i = 0; i < p.length; i++) {
@@ -191,7 +208,7 @@ public class AbstractWorkflow1 {
 
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isFile() && !files[i].isHidden()) {
-				WorkflowNode n = new WorkflowNode(true, true);
+				WorkflowNode n = new WorkflowNode(true, true,"");
 				AbstractOperator temp = new AbstractOperator(files[i].getName());
 				temp.readPropertiesFromFile(files[i]);
 				n.setAbstractOperator(temp);
@@ -205,10 +222,10 @@ public class AbstractWorkflow1 {
 			if (files[i].isFile() && !files[i].isHidden()) {
 				WorkflowNode n =null;
 				if(files[i].getName().startsWith("d")){
-					n = new WorkflowNode(false, true);
+					n = new WorkflowNode(false, true,"");
 				}
 				else{
-					n = new WorkflowNode(false, false);
+					n = new WorkflowNode(false, false, "");
 				}
 				Dataset temp = new Dataset(files[i].getName());
 				temp.readPropertiesFromFile(files[i]);
@@ -318,25 +335,25 @@ public class AbstractWorkflow1 {
 		WorkflowNode n =null;
 		switch (t) {
 		case 1:
-			n = new WorkflowNode(true, true);
+			n = new WorkflowNode(true, true,"");
 			n.setAbstractOperator(AbstractOperatorLibrary.getOperator(name));
 			break;
 		case 2:
-			n = new WorkflowNode(true, false);
+			n = new WorkflowNode(true, false,"");
 			n.setOperator(OperatorLibrary.getOperator(name));
 			break;
 		case 3:
-			n = new WorkflowNode(false, true);
+			n = new WorkflowNode(false, true,"");
 			n.setDataset(new Dataset(name));
 			break;
 		case 4:
-			n = new WorkflowNode(false, false);
+			n = new WorkflowNode(false, false,"");
 			n.setDataset(DatasetLibrary.getDataset(name));
 			
 			break;
 
 		default:
-			n = new WorkflowNode(false, false);
+			n = new WorkflowNode(false, false,"");
 			break;
 		}
 		
@@ -361,7 +378,7 @@ public class AbstractWorkflow1 {
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws NumberFormatException, EvaluationException {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
-	    	OperatorDictionary op = new OperatorDictionary(n.toStringNorecursive(), n.getCost()+"", 
+	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"", 
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){
@@ -432,7 +449,7 @@ public class AbstractWorkflow1 {
 		d1.add("Optimization.size","1TB");
 		d1.add("Optimization.uniqueKeys","1.3 billion");
 
-		WorkflowNode t1 = new WorkflowNode(false,false);
+		WorkflowNode t1 = new WorkflowNode(false,false,"");
 		t1.setDataset(d1);
 		//d1.writeToPropertiesFile(d1.datasetName);
 		
@@ -445,7 +462,7 @@ public class AbstractWorkflow1 {
 		d2.add("Optimization.size","1GB");
 		d2.add("Optimization.uniqueKeys","1 million");
 
-		WorkflowNode t2 = new WorkflowNode(false,false);
+		WorkflowNode t2 = new WorkflowNode(false,false,"");
 		t2.setDataset(d2);
 		//d2.writeToPropertiesFile(d2.datasetName);
 
@@ -457,7 +474,7 @@ public class AbstractWorkflow1 {
 		abstractOp.add("Constraints.Output0.DataInfo.Attributes.number","2");
 		abstractOp.addRegex(new NodeName("Constraints.OpSpecification.Algorithm.Join", new NodeName(".*", null, true), false), ".*");
 
-		WorkflowNode op1 = new WorkflowNode(true,true);
+		WorkflowNode op1 = new WorkflowNode(true,true,"");
 		op1.setAbstractOperator(abstractOp);
 		//abstractOp.writeToPropertiesFile(abstractOp.opName);
 
@@ -468,15 +485,15 @@ public class AbstractWorkflow1 {
 		abstractOp1.add("Constraints.Output0.DataInfo.Attributes.number","2");
 		abstractOp1.addRegex(new NodeName("Constraints.OpSpecification.Algorithm.Sort", new NodeName(".*", null, true), false), ".*");
 
-		WorkflowNode op2 = new WorkflowNode(true,true);
+		WorkflowNode op2 = new WorkflowNode(true,true,"");
 		op2.setAbstractOperator(abstractOp1);
 		//abstractOp1.writeToPropertiesFile(abstractOp1.opName);
 		
 		Dataset d3 = new Dataset("d3");
-		WorkflowNode t3 = new WorkflowNode(false,true);
+		WorkflowNode t3 = new WorkflowNode(false,true,"");
 		t3.setDataset(d3);
 		Dataset d4 = new Dataset("d4");
-		WorkflowNode t4 = new WorkflowNode(false,true);
+		WorkflowNode t4 = new WorkflowNode(false,true,"");
 		t4.setDataset(d4);
 		
 		op1.addInput(t1);
@@ -494,7 +511,6 @@ public class AbstractWorkflow1 {
 		mw.printNodes();
 		
 	}
-
 
 
 

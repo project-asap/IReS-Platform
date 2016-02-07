@@ -38,6 +38,8 @@ public class MaterializedWorkflow1 {
 	private static Logger logger = Logger.getLogger(MaterializedWorkflow1.class.getName());
 	public HashMap<String,WorkflowNode> nodes;
 	public String directory;
+
+	public HashMap<String, WorkflowNode> materilizedDatasets;
 	
 	@Override
 	public String toString() {
@@ -52,6 +54,7 @@ public class MaterializedWorkflow1 {
 		optimalCost=0.0;
 		count=0;
 		nodes = new HashMap<String, WorkflowNode>();
+		materilizedDatasets = new HashMap<String, WorkflowNode>();
 	}
 
 	public AbstractWorkflow1 getAbstractWorkflow() {
@@ -104,14 +107,14 @@ public class MaterializedWorkflow1 {
 			if(op.getStatus().equals("warn")){
 				nodesActive.add(op.getName());
 				if(op.getIsOperator().equals("true")){
-					WorkflowNode n = new WorkflowNode(true, false);
+					WorkflowNode n = new WorkflowNode(true, false,op.getAbstractName());
 					Operator temp = new Operator(op.getName(),"");
 					temp.readPropertiesFromString(op.getDescription());
 					n.setOperator(temp);
 					nodes.put(temp.opName, n);
 				}
 				else{
-					WorkflowNode n = new WorkflowNode(false, false);
+					WorkflowNode n = new WorkflowNode(false, false,op.getAbstractName());
 					Dataset temp = new Dataset(op.getName());
 					temp.readPropertiesFromString(op.getDescription());
 					n.setDataset(temp);
@@ -176,7 +179,7 @@ public class MaterializedWorkflow1 {
 
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) {
-				WorkflowNode n = new WorkflowNode(true, false);
+				WorkflowNode n = new WorkflowNode(true, false,"");
 				Operator temp = new Operator(files[i].getName(),files[i].toString());
 				temp.readFromDir();
 				n.setOperator(temp);
@@ -188,7 +191,7 @@ public class MaterializedWorkflow1 {
 
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isFile()) {
-				WorkflowNode n = new WorkflowNode(false, false);
+				WorkflowNode n = new WorkflowNode(false, false,"");
 				Dataset temp = new Dataset(files[i].getName());
 				temp.readPropertiesFromFile(files[i]);
 				n.setDataset(temp);
