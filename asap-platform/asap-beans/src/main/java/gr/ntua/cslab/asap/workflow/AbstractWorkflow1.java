@@ -239,7 +239,7 @@ public class AbstractWorkflow1 {
 		}
 		folder = new File(directory+"/datasets");
 		/* vpapa: read only if datasets folder exists and it has content */
-		if( folder.exists(){
+		if( folder.exists()){
 			files = folder.listFiles();
 			if( files != null && files.length > 0){
 				for (int i = 0; i < files.length; i++) {
