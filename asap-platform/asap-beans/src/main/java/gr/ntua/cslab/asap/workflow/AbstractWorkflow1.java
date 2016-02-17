@@ -238,23 +238,28 @@ public class AbstractWorkflow1 {
 			} 
 		}
 		folder = new File(directory+"/datasets");
-		files = folder.listFiles();
-
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isFile() && !files[i].isHidden()) {
-				WorkflowNode n =null;
-				if(files[i].getName().startsWith("d")){
-					n = new WorkflowNode(false, true,"");
-				}
-				else{
-					n = new WorkflowNode(false, false, "");
-				}
-				Dataset temp = new Dataset(files[i].getName());
-				temp.readPropertiesFromFile(files[i]);
-				n.setDataset(temp);
-				nodes.put(temp.datasetName, n);
-			} 
+		/* vpapa: read only if datasets folder exists and it has content */
+		if( folder.exists(){
+			files = folder.listFiles();
+			if( files != null && files.length > 0){
+				for (int i = 0; i < files.length; i++) {
+					if (files[i].isFile() && !files[i].isHidden()) {
+						WorkflowNode n =null;
+						if(files[i].getName().startsWith("d")){
+							n = new WorkflowNode(false, true,"");
+						}
+						else{
+							n = new WorkflowNode(false, false, "");
+						}
+						Dataset temp = new Dataset(files[i].getName());
+						temp.readPropertiesFromFile(files[i]);
+						n.setDataset(temp);
+						nodes.put(temp.datasetName, n);
+					} 
+				}				
+			}
 		}
+		//putting nodes into workflowNodes make them available for printing at IReS WUI
 		workflowNodes.putAll(nodes);
 		File edgeGraph = new File(directory+"/graph");
 		FileInputStream fis = new FileInputStream(edgeGraph);
