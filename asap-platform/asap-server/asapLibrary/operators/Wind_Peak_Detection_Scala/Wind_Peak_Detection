@@ -32,7 +32,7 @@ Constraints.Output0.Engine.FS=HDFS
 # MODELING #
 ############
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.binSize=Double,0.1,0.1,1.0
+Optimization.inputSpace.binSize=Double,0.1,1.0,0.1
 #OPTIMIZATION METRIC( mandatory)
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.outputSpace.execTime=Double

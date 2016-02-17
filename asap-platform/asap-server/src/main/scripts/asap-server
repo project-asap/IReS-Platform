@@ -3,7 +3,7 @@
 # to be executed as a service.
 
 #IRES_HOME=/path/to/IReS-Platform_project
-IRES_HOME=/Users/npapa/Documents/workspaceASAP/IReS-Platform
+IRES_HOME=/home/bill/PhD/projects/upload_asap/IReS-Platform
 [ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="$IRES_HOME/asap-platform/asap-server/target"
 
 LIB_DIR=$ASAP_SERVER_HOME/lib

@@ -22,7 +22,9 @@ Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.Engine.FS=HDFS
-Constraints.Input0.type=TextFile
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.Engine.FS=HDFS
@@ -31,8 +33,9 @@ Constraints.Output0.Engine.FS=HDFS
 # MODELING #
 ############
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.region=Double,1.0,1.0,10.0
-Optimization.inputSpace.timeFrame=Double,62015.0,30000.0,122015.0
+#type,min_value,max_value,step
+Optimization.inputSpace.region=Double,1.0,10.0,1.0
+Optimization.inputSpace.timeFrame=Double,62015.0,122015.0,30000.0
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 #optimization metric function

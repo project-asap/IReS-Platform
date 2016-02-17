@@ -1,9 +1,7 @@
-filtered_data,Wind_Data_Filter
-Wind_Data_Filter,d1
-d1,Wind_User_Profiling
-Wind_User_Profiling,d2
-d2,Wind_Kmeans
-Wind_Kmeans,d3
-d3,Wind_Stereotype_Classification
-Wind_Stereotype_Classification,d4
-d4,$$target
+cdr_data,Wind_User_Profiling
+Wind_User_Profiling,d1
+d1,Wind_Kmeans
+Wind_Kmeans,d2
+d2,Wind_Stereotype_Classification
+Wind_Stereotype_Classification,d3
+d3,$$target
