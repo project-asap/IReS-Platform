@@ -53,11 +53,6 @@ public class RunningWorkflows {
         return RunningWorkflowLibrary.getState(id);
     }
 	
-	@GET
-	@Path("execute/{id}")
-    public void execute(@PathParam("id") String id) throws Exception {
-        RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(id));
-    }
 
 	@GET
 	@Produces("application/XML")
