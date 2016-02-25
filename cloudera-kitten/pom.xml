@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Versions for dependencies -->
-    <hadoop.version>2.6.0-cdh5.4.5</hadoop.version>
+    <hadoop.version>${hadoop.version}</hadoop.version>
     <guava.version>11.0.2</guava.version>
     <luaj.version>2.0.2</luaj.version>
     <junit.version>4.8.2</junit.version>
@@ -43,4 +43,26 @@
       <url>https://repository.cloudera.com/artifactory/libs-release-local/</url>
     </repository>
   </distributionManagement>
+  
+    <!-- Define different profiles according the installation environment -->
+    <profiles>
+        <profile>
+            <id>common</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <hadoop.version>2.7.1</hadoop.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>imr</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <hadoop.version>2.6.0-cdh5.4</hadoop.version>
+            </properties>
+        </profile>
+    </profiles>
 </project>

@@ -1,0 +1,50 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	09/ 01/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/PeakDetection.md
+################################################################################
+#
+#Description
+#	This is the concrete version of the distribution_computation operator from
+#	wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=distribution_computation
+#ENGINE
+Constraints.EngineSpecification.Distributed=Spark
+#INPUT( mandatory)
+Constraints.Input.number=1
+Constraints.Input0.Engine.FS=HDFS
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+Constraints.Output0.Engine.FS=HDFS
+
+############
+# MODELING #
+############
+#OPTIMIZATION METRIC( mandatory inputSpace, outputSpace properties)
+Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.execTime=Double
+Optimization.execTime=3.0
+
+#############
+# EXECUTION #
+#############
+#LUA CONFIGURATION FILE( mandatory)
+Execution.LuaScript=Distribution_Computation.lua
+#EXECUTION ARGUMENTS( optional)
+Execution.Arguments.number=3
+Execution.Argument0=spark://localhost:7077
+Execution.Argument1=/output/trainingData
+Execution.Argument2=/output
+#EXECUTION OUTPUT( mandatory)
+Execution.Output0.path=$HDFS_OP_DIR/distribution_computation.txt

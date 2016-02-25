@@ -1,0 +1,55 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	09/ 01/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/Sociometer.md
+################################################################################
+#
+#Description
+#	This is the concrete version of the data_filter operator from wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=data_filter
+#ENGINE
+Constraints.EngineSpecification.Distributed=Spark
+#INPUT( mandatory)
+Constraints.Input.number=1
+Constraints.Input0.Engine.FS=HDFS
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+Constraints.Output0.Engine.FS=HDFS
+
+############
+# MODELING #
+############
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.execTime=3.0
+
+#############
+# EXECUTION #
+#############
+#LUA CONFIGURATION FILE( mandatory)
+Execution.LuaScript=Data_Filter.lua
+#EXECUTION ARGUMENTS( optional)
+Execution.Arguments.number=7
+Execution.Argument0=/dataset_simulated
+Execution.Argument1=/output
+Execution.Argument2=2015-06-01
+Execution.Argument3=2015-06-02
+Execution.Argument4=2015-06-03
+Execution.Argument5=None
+Execution.Argument6=/voronoi
+#EXECUTION OUTPUT( mandatory)
+Execution.Output0.path=$HDFS_OP_DIR/data_filter.txt

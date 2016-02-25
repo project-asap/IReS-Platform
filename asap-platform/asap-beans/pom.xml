@@ -30,25 +30,19 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-hdfs</artifactId>
-                <version>${hadoop.version}</version>
-                <scope>provided</scope>
-        </dependency>
-        <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-yarn-client</artifactId>
-                <version>${hadoop.version}</version>
-                <scope>provided</scope>
-        </dependency>
-        <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-common</artifactId>
-                <version>${hadoop.version}</version>
-                <scope>provided</scope>
-        </dependency>
-	<dependency>
+    	<dependency>
+			 <groupId>org.apache.hadoop</groupId>
+			 <artifactId>hadoop-yarn-client</artifactId>
+			 <version>${hadoop.version}</version>
+			 <scope>${scope.value}</scope>
+		</dependency>
+		<dependency>
+			 <groupId>org.apache.hadoop</groupId>
+			 <artifactId>hadoop-common</artifactId>
+			 <version>${hadoop.version}</version>
+			 <scope>${scope.value}</scope>
+		</dependency>
+		<dependency>
             <groupId>gr.ntua.ece.cslab</groupId>
             <artifactId>panic-core</artifactId>
             <version>0.1</version>
@@ -111,4 +105,35 @@
 
     </dependencies>
 
+   <!-- Define different profiles according the installation environment -->
+    <profiles>
+        <profile>
+            <id>common</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <hadoop.version>2.7.1</hadoop.version>
+				<scope.value>compile</scope.value>
+            </properties>
+        </profile>
+        <profile>
+            <id>imr</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <hadoop.version>2.6.0-cdh5.4</hadoop.version>
+				<scope.value>provided</scope.value>
+            </properties>
+	        <dependencies>
+                <dependency>
+                    <groupId>org.apache.hadoop</groupId>
+                    <artifactId>hadoop-hdfs</artifactId>
+                    <version>${hadoop.version}</version>
+                    <scope>${scope.value}</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>

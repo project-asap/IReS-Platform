@@ -1,0 +1,56 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	09/ 01/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/Sociometer.md
+################################################################################
+#
+#Description
+#	This is the concrete version of the k means operator from wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=kmeans
+#ENGINE
+Constraints.EngineSpecification.Distributed=Spark
+#INPUT( mandatory)
+Constraints.Input.number=1
+Constraints.Input0.Engine.FS=HDFS
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+Constraints.Output0.Engine.FS=HDFS
+
+############
+# MODELING #
+############
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+#type,min_value,max_value,step
+Optimization.inputSpace.profiles=Double,0.1,0.9,0.1
+Optimization.inputSpace.centroids=Double,10.0,100.0,10.0
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+
+#############
+# EXECUTION #
+#############
+#LUA CONFIGURATION FILE( mandatory)
+Execution.LuaScript=Kmeans.lua
+#EXECUTION ARGUMENTS( optional)
+Execution.Arguments.number=5
+Execution.Argument0=roma
+Execution.Argument1=06-2015
+Execution.Argument2=archetipi.csv
+Execution.Argument3=100
+Execution.Argument4=0.4
+#EXECUTION OUTPUT( mandatory)
+Execution.Output0.path=$HDFS_OP_DIR/kmeans.txt

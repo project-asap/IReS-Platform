@@ -1,0 +1,55 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	09/ 01/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/Sociometer.md
+################################################################################
+#
+#Description
+#	This is the concrete version of the user_profiling operator from wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=user_profiling
+#ENGINE
+Constraints.EngineSpecification.Distributed=Spark
+#INPUT( mandatory)
+Constraints.Input.number=1
+Constraints.Input0.Engine.FS=HDFS
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+Constraints.Output0.Engine.FS=HDFS
+
+############
+# MODELING #
+############
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+#type,min_value,max_value,step
+Optimization.inputSpace.region=Double,1.0,10.0,1.0
+Optimization.inputSpace.timeFrame=Double,62015.0,92015.0,30000.0
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+
+#############
+# EXECUTION #
+#############
+#LUA CONFIGURATION FILE( mandatory)
+Execution.LuaScript=User_Profiling.lua
+#EXECUTION ARGUMENTS( optional)
+Execution.Arguments.number=4
+Execution.Argument0=dataset
+Execution.Argument1=centro_roma.csv
+Execution.Argument2=roma
+Execution.Argument3=06-2015
+#EXECUTION OUTPUT( mandatory)
+Execution.Output0.path=$HDFS_OP_DIR/user_profiling.txt

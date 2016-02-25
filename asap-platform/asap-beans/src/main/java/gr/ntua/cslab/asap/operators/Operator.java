@@ -74,8 +74,23 @@ public class Operator {
         List<OutputSpacePoint> outPoints = new ArrayList<>();
 		inputSpace = new HashMap<String, String>();
 		outputSpace = new HashMap<String, String>();
-		optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
-		optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
+		/* vpapa: Optimization.inputSpace and Optimization.outputSpace are mandatory
+			fields of an operator description file
+		*/
+		try{
+			optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
+			optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
+		}
+		catch( NullPointerException npe){
+			System.out.println( "ERROR: From operator " + opName + "'s description file either"
+								+ " Optimization.inputSpace or Optimization.outputSpace"
+								+ " parameter or both are missing. Add them appropriately.");
+			logger.info( "ERROR: From operator " + opName + "'s description file either"
+								+ " Optimization.inputSpace or Optimization.outputSpace"
+								+ " parameter or both are missing. Add them appropriately.");
+			npe.printStackTrace();
+		}
+		
 		inputSource = optree.getParameter("Optimization.inputSource.type");
 		minTotalError = Double.MAX_VALUE;
 
@@ -527,8 +542,26 @@ public class Operator {
 					val = n.inputs.get(0).dataset.getParameter("Optimization." + s[1]);
 					v = Double.parseDouble(val);
 				} else {
-					val = n.dataset.getParameter("Optimization." + s[1]);
-					v = Double.parseDouble(val);
+					/* vpapa: a concrete dataset for which the corresponding operator
+						that loads it has declared and optimization parameter for
+						it should have also into its description file the corresponding
+						optimization parameter
+					*/
+					try{
+						val = n.dataset.getParameter("Optimization." + s[1]);
+						v = Double.parseDouble(val);
+					}
+					catch( NullPointerException npe){
+						System.out.println( "ERROR: For the concrete dataset " + n.dataset.datasetName
+											+ " the property Optimization." + s[ 1]
+											+ " is missing or not set properly into"
+											+ " its description file.");
+						logger.info( "ERROR: For the concrete dataset " + n.dataset.datasetName
+											+ " the property Optimization." + s[ 1]
+											+ " is missing or not set properly into"
+											+ " its description file.");
+						npe.printStackTrace();
+					}
 				}
 				values.put(inVar, v);
 			} else {
@@ -700,5 +733,4 @@ public class Operator {
 	public String getEngine() {
 		return optree.getParameter("Constraints.Engine");
 	}
-
 }

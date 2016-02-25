@@ -1,0 +1,19 @@
+#
+#Thur Nov 05 20:48:00 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=multiway
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Input0.type=TextFile
+Constraints.Input1.type=TextFile
+Constraints.Input2.type=TextFile
+Constraints.Input3.type=TextFile
+Constraints.EngineSpecification.Distributed=Yarn
+Constraints.Output.number=1
+Constraints.Input.number=4
+Optimization.inputSpace.reducers=Double,20.0,100.0,20.0
+Optimization.inputSpace.cpus=Double,20.0,64.0,8.0
+Optimization.outputSpace.execTime=Double
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Execution.LuaScript=multiway_mapreduce.lua
+Execution.Arguments.number=0
+Execution.Output0.path=$HDFS_OP_DIR/kmeans.txt

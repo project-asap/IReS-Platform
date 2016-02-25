@@ -30,24 +30,43 @@ public class TestWorkflows {
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
 		Dataset d1 = new Dataset("crawlDocuments");
 
+<<<<<<< HEAD
 		WorkflowNode t1 = new WorkflowNode(false,false,"crawlDocuments");
 		t1.setDataset(d1);
 
 		AbstractOperator abstractOp = new AbstractOperator("TF_IDF");
 		WorkflowNode op1 = new WorkflowNode(true,true,"TF_IDF");
+=======
+		WorkflowNode t1 = new WorkflowNode(false,false, "t1");
+		t1.setDataset(d1);
+
+		AbstractOperator abstractOp = new AbstractOperator("TF_IDF");
+		WorkflowNode op1 = new WorkflowNode(true,true, "TF_IDF");
+>>>>>>> 05b0b7082da4f48af82b7922d3bb2952c1c41ba6
 		op1.setAbstractOperator(abstractOp);
 		//abstractOp.writeToPropertiesFile(abstractOp.opName);
 
 		AbstractOperator abstractOp1 = new AbstractOperator("k-Means");
+<<<<<<< HEAD
 		WorkflowNode op2 = new WorkflowNode(true,true,"k-Means");
+=======
+		WorkflowNode op2 = new WorkflowNode(true,true, "k-Means");
+>>>>>>> 05b0b7082da4f48af82b7922d3bb2952c1c41ba6
 		op2.setAbstractOperator(abstractOp1);
 		//abstractOp1.writeToPropertiesFile(abstractOp1.opName);
 		
 		Dataset d2 = new Dataset("d2");
+<<<<<<< HEAD
 		WorkflowNode t2 = new WorkflowNode(false,true,"d2");
 		t2.setDataset(d2);
 		Dataset d3 = new Dataset("d3");
 		WorkflowNode t3 = new WorkflowNode(false,true,"d3");
+=======
+		WorkflowNode t2 = new WorkflowNode(false,true, "t2");
+		t2.setDataset(d2);
+		Dataset d3 = new Dataset("d3");
+		WorkflowNode t3 = new WorkflowNode(false,true, "t3");
+>>>>>>> 05b0b7082da4f48af82b7922d3bb2952c1c41ba6
 		t3.setDataset(d3);
 		
 		op1.addInput(t1);

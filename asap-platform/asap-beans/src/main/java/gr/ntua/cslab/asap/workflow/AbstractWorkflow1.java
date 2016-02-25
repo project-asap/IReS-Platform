@@ -88,43 +88,67 @@ public class AbstractWorkflow1 {
 		materializedWorkflow.setAbstractWorkflow(this);
 		materializedWorkflow.setPolicy(groupInputs, optimizationFunction, functionTarget);
 		Workflow1DPTable dpTable = new Workflow1DPTable();
-		for(WorkflowNode t : targets){
-			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable);
-			WorkflowNode temp = new WorkflowNode(false, false, t.getName());
-			temp.setDataset(t.dataset);
-			//System.out.println(l+"fsdgd");
-			temp.addInputs(l);
-			materializedWorkflow.addTarget(temp);
-			Double bestCost=0.0;
-			List<WorkflowNode> bestPlan=null;
-			if(functionTarget.contains("min")){
-				bestCost=Double.MAX_VALUE;
-				for(WorkflowNode r : l){
-					Double tempCost = dpTable.getCost(r.dataset);
-					if(tempCost<bestCost){
-						bestCost=tempCost;
-						bestPlan=dpTable.getPlan(r.dataset);
-					}
-				}
-			}
-			else if(functionTarget.contains("max")){
-				bestCost = -Double.MAX_VALUE;
-				for(WorkflowNode r : l){
-					Double tempCost = dpTable.getCost(r.dataset);
-					if(tempCost>bestCost){
-						bestCost=tempCost;
-						bestPlan=dpTable.getPlan(r.dataset);
-					}
-				}
-			}
-			bestPlan.add(t);
-			materializedWorkflow.setBestPlan(t.toStringNorecursive(), bestPlan);
-			logger.info("Optimal cost: "+bestCost);
-			materializedWorkflow.optimalCost=bestCost;
-		}
+		WorkflowNode temp = null;
+		Double bestCost = 0.0;
+		Double tempCost = 0.0;
+		List<WorkflowNode> bestPlan=null;
 		
+		for(WorkflowNode t : targets){
+			logger.info( "Materializing workflow node: " + t.toStringNorecursive());
+			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable);
+			/* vpapa: assert that WorkflowNode.materialize() returned something
+				valid
+			*/
+			if( l != null && !l.isEmpty()){							
+				if(functionTarget.contains("min")){
+					bestCost=Double.MAX_VALUE;
+					for(WorkflowNode r : l){
+						tempCost = dpTable.getCost(r.dataset);
+						if(tempCost<bestCost){
+							bestCost=tempCost;
+							bestPlan=dpTable.getPlan(r.dataset);
+						}
+					}
+				}
+				else if(functionTarget.contains("max")){
+					bestCost = -Double.MAX_VALUE;
+					for(WorkflowNode r : l){
+						tempCost = dpTable.getCost(r.dataset);
+						if(tempCost>bestCost){
+							bestCost=tempCost;
+							bestPlan=dpTable.getPlan(r.dataset);
+						}
+					}
+				}
+				/* vpapa: target may have or may have not a dataset
+				*/
+				if( t.dataset != null){
+					/* vpapa: temp below is going to be the next WorkflowNode
+						having as materialized dataset the dataset of the current
+						target WorkflowNode and as input the current target itself
+					*/
+					temp = new WorkflowNode(false, false, t.getName());
+					temp.setDataset( t.dataset);
+					//System.out.println(l);
+					temp.addInputs(l);
+					materializedWorkflow.addTarget(temp);
+				}
+				else{
+					/* vpapa: in the absence of a dataset still the operator should
+						be added to the workflow
+					*/
+					temp = l.get( 0).inputs.get( 0);
+					temp.setDataset( l.get( 0).dataset);
+					materializedWorkflow.addTarget(temp);
+				}
+				bestPlan.add(t);
+				materializedWorkflow.setBestPlan(t.toStringNorecursive(), bestPlan);
+				logger.info("Optimal cost: "+bestCost);
+				materializedWorkflow.optimalCost=bestCost;
+			}
+		}
 		return materializedWorkflow;
-	}
+	}// end of AbstractWorkflow1 materialize
 	
 
 	public MaterializedWorkflow1 replan(
@@ -196,8 +220,6 @@ public class AbstractWorkflow1 {
 		}
     	
 		graphWritter.close();
-        
-        
 	}
 	
 
@@ -216,39 +238,61 @@ public class AbstractWorkflow1 {
 			} 
 		}
 		folder = new File(directory+"/datasets");
-		files = folder.listFiles();
-
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isFile() && !files[i].isHidden()) {
-				WorkflowNode n =null;
-				if(files[i].getName().startsWith("d")){
-					n = new WorkflowNode(false, true,"");
-				}
-				else{
-					n = new WorkflowNode(false, false, "");
-				}
-				Dataset temp = new Dataset(files[i].getName());
-				temp.readPropertiesFromFile(files[i]);
-				n.setDataset(temp);
-				nodes.put(temp.datasetName, n);
-			} 
+		/* vpapa: read only if datasets folder exists and it has content */
+		if( folder.exists()){
+			files = folder.listFiles();
+			if( files != null && files.length > 0){
+				for (int i = 0; i < files.length; i++) {
+					if (files[i].isFile() && !files[i].isHidden()) {
+						WorkflowNode n =null;
+						if(files[i].getName().startsWith("d")){
+							n = new WorkflowNode(false, true,"");
+						}
+						else{
+							n = new WorkflowNode(false, false, "");
+						}
+						Dataset temp = new Dataset(files[i].getName());
+						temp.readPropertiesFromFile(files[i]);
+						n.setDataset(temp);
+						nodes.put(temp.datasetName, n);
+					} 
+				}				
+			}
 		}
+		//putting nodes into workflowNodes make them available for printing at IReS WUI
 		workflowNodes.putAll(nodes);
 		File edgeGraph = new File(directory+"/graph");
 		FileInputStream fis = new FileInputStream(edgeGraph);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 	 
 		String line = null;
-		while ((line = br.readLine()) != null) {
-			String[] e =line.split(",");
-			if(e[1].equals("$$target")){
-				this.targets.add(nodes.get(e[0]));
+		String[] e	= null;
+		/* vpapa: operators or datasets defined in graph file may be missing from
+			the corresponding folders or misswritten into abstract workflow's graph
+			file
+		*/
+		try{		
+			while ((line = br.readLine()) != null) {
+				e = line.split(",");
+				if(e[1].equals("$$target")){
+					this.targets.add(nodes.get(e[0]));
+				}
+				else{
+					WorkflowNode src = nodes.get(e[0]);
+					WorkflowNode dest = nodes.get(e[1]);
+					dest.inputs.add(src);
+				}
 			}
-			else{
-				WorkflowNode src = nodes.get(e[0]);
-				WorkflowNode dest = nodes.get(e[1]);
-				dest.inputs.add(src);
-			}
+		}
+		catch( NullPointerException npe){
+			System.out.println( "ERROR: The corresponding files of operators or datasets"
+								+ " " + e[ 0] + " and " + e[ 1] + " it looks like"
+								+ " that they are missing from the relative folders"
+								+ "or miswritten into abstract workflow's graph file.");
+			logger.info( "ERROR: The corresponding files of operators or datasets"
+								+ " " + e[ 0] + " and " + e[ 1] + " it looks like"
+								+ " that they are missing from the relative folders"
+								+ "or miswritten into abstract workflow's graph file.");
 		}
 		br.close();
 	}
@@ -511,10 +555,4 @@ public class AbstractWorkflow1 {
 		mw.printNodes();
 		
 	}
-
-
-
-
-
-
 }

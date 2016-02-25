@@ -1,0 +1,25 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	09/ 01/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/PeakDetection.md
+################################################################################
+#
+#Description
+#	This is the abstract version of the data_filter operator from wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=peak_detection
+#INPUT( mandatory)
+Constraints.Input.number=1
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
