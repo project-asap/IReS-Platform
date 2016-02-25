@@ -4,6 +4,7 @@ import gr.ntua.cslab.asap.rest.beans.*;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary;
+import gr.ntua.cslab.asap.daemon.RunningWorkflowLibrary;
 
 import java.io.IOException;
 import java.util.List;
@@ -68,5 +69,11 @@ public class AbstractWorkflows {
 	@Path("materialize/{id}/")
     public String materializeWorkflow(@PathParam("id") String id,@QueryParam("policy") String policy) throws Exception {
         return AbstractWorkflowLibrary.getMaterializedWorkflow(id, policy);
+    }
+
+	@GET
+	@Path("execute/{id}")
+    public void execute(@PathParam("id") String id) throws Exception {
+        RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(id));
     }
 }

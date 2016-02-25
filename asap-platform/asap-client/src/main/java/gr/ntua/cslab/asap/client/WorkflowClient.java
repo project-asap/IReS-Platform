@@ -43,6 +43,10 @@ public class WorkflowClient extends RestClient{
 		return issueRequest("GET", "abstractWorkflows/materialize/"+name+"?policy="+URLEncoder.encode(policy,"UTF-8"), null);
 	}
 
+	public String executeWorkflow(String name) throws MalformedURLException, IOException {
+		return issueRequest("GET", "abstractWorkflows/execute/"+name, null);
+	}
+	
 	public void removeMaterializedWorkflow(String name) throws MalformedURLException, IOException {
 		issueRequest("GET", "workflows/remove/"+URLEncoder.encode(name,"UTF-8"), null);
 	}

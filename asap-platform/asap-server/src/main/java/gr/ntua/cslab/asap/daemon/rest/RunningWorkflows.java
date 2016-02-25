@@ -1,6 +1,7 @@
 package gr.ntua.cslab.asap.daemon.rest;
 
 import gr.ntua.cslab.asap.rest.beans.*;
+import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.daemon.RunningWorkflowLibrary;
 import gr.ntua.cslab.asap.utils.Utils;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
@@ -50,6 +51,12 @@ public class RunningWorkflows {
 	@Path("{id}/state")
     public String getState(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
         return RunningWorkflowLibrary.getState(id);
+    }
+	
+	@GET
+	@Path("execute/{id}")
+    public void execute(@PathParam("id") String id) throws Exception {
+        RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(id));
     }
 
 	@GET
