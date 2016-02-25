@@ -23,7 +23,7 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
 public class TestWorkflows {
 	public static void main(String[] args) throws Exception {
 
-		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
+		ClientConfiguration conf = new ClientConfiguration("asap-master", 1323);
 		WorkflowClient cli = new WorkflowClient();
 		cli.setConfiguration(conf);
 		

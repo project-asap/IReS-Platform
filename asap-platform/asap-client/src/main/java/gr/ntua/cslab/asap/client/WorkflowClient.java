@@ -35,19 +35,19 @@ public class WorkflowClient extends RestClient{
 		issueRequest("POST", "abstractWorkflows/add/"+abstractWorkflow.name, params);
 	}
 
-	public void removeAbstractWorkflow(String name) throws MalformedURLException, IOException {
+	public void removeAbstractWorkflow(String name) throws Exception {
 		issueRequest("GET", "abstractWorkflows/remove/"+name, null);
 	}
 
-	public String materializeWorkflow(String name, String policy) throws MalformedURLException, IOException {
+	public String materializeWorkflow(String name, String policy) throws Exception {
 		return issueRequest("GET", "abstractWorkflows/materialize/"+name+"?policy="+URLEncoder.encode(policy,"UTF-8"), null);
 	}
 
-	public String executeWorkflow(String name) throws MalformedURLException, IOException {
+	public String executeWorkflow(String name) throws Exception {
 		return issueRequest("GET", "abstractWorkflows/execute/"+name, null);
 	}
 	
-	public void removeMaterializedWorkflow(String name) throws MalformedURLException, IOException {
+	public void removeMaterializedWorkflow(String name) throws Exception {
 		issueRequest("GET", "workflows/remove/"+URLEncoder.encode(name,"UTF-8"), null);
 	}
     

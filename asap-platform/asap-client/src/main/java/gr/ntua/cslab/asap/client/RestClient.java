@@ -1,9 +1,7 @@
 package gr.ntua.cslab.asap.client;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -42,7 +40,7 @@ public class RestClient {
      * @throws MalformedURLException
      * @throws IOException 
      */
-    public String issueRequest(String requestType, String document, String input) throws MalformedURLException, IOException {
+    public String issueRequest(String requestType, String document, String input) throws Exception {
         String urlString = "http://"+configuration.getHost()+":"+configuration.getPort()+"/"+document;
         System.out.println(urlString);
         URL url = new URL(urlString);

@@ -17,8 +17,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
 
-import net.sourceforge.jeval.EvaluationException;
-import net.sourceforge.jeval.Evaluator;
+//import net.sourceforge.jeval.EvaluationException;
+//import net.sourceforge.jeval.Evaluator;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
@@ -419,7 +419,7 @@ public class AbstractWorkflow1 {
 		}
 	}
 
-	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws NumberFormatException, EvaluationException {
+	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws Exception {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
 	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"", 
@@ -433,7 +433,7 @@ public class AbstractWorkflow1 {
 		return ret;
 	}
 	
-	public WorkflowDictionary toWorkflowDictionaryRecursive(String delimiter) throws NumberFormatException, EvaluationException {
+	public WorkflowDictionary toWorkflowDictionaryRecursive(String delimiter) throws Exception {
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
 		}
@@ -447,39 +447,6 @@ public class AbstractWorkflow1 {
 	
 	public static void main(String[] args) throws Exception{
 
-
-		Evaluator evaluator = new Evaluator();
-
-		try {
-
-			/**
-			 * This sample shows a basic math function.
-			 */
-			System.out.println(evaluator.evaluate("abs(-1)"));
-
-			/**
-			 * This sample shows a math function used in a more complex
-			 * mathematical expression.
-			 */
-			System.out.println(evaluator.evaluate("pow(3,3) "));
-
-			/**
-			 * This sample shows another math function.
-			 */
-			System.out.println(evaluator.evaluate("acos(0.1)"));
-
-			/**
-			 * This sample shows an invalid expression. The "round" function
-			 * requires an argument.
-			 */
-			System.out.println("An exception is expected in the "
-					+ "next evaluation.");
-			System.out.println(evaluator.evaluate("round(3.7)"));
-		} catch (EvaluationException ee) {
-			System.out.println(ee);
-		}
-		
-		System.exit(0);
 
 		MaterializedOperators library =  new MaterializedOperators();
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("test");
