@@ -41,7 +41,7 @@ public class AbstractWorkflowLibrary {
 		}
 	}
 	
-	public static WorkflowDictionary getWorkflow(String name, String delimiter) throws NumberFormatException, EvaluationException{
+	public static WorkflowDictionary getWorkflow(String name, String delimiter) throws Exception{
 		return abstractWorkflows.get(name).toWorkflowDictionary(delimiter);
 	}
 
@@ -62,7 +62,6 @@ public class AbstractWorkflowLibrary {
 
 	public static String getGraphDescription(String workflowName) throws IOException {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
-		
 		return aw.graphToString();
 	}
 

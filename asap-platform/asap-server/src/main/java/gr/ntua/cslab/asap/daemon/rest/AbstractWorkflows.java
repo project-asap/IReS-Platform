@@ -34,7 +34,7 @@ public class AbstractWorkflows {
 	@GET
 	@Produces("application/json")
 	@Path("{id}/")
-    public WorkflowDictionary getDescription(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+    public WorkflowDictionary getDescription(@PathParam("id") String id) throws Exception {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
 
@@ -42,10 +42,11 @@ public class AbstractWorkflows {
 	@GET
 	@Produces("application/XML")
 	@Path("XML/{id}/")
-    public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+    public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws Exception {
         return AbstractWorkflowLibrary.getWorkflow(id, "<br>");
     }
 	
+
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

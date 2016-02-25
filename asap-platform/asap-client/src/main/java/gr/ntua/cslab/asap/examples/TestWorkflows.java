@@ -16,6 +16,7 @@ import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.NodeName;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
@@ -23,9 +24,15 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
 public class TestWorkflows {
 	public static void main(String[] args) throws Exception {
 
-		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
+		ClientConfiguration conf = new ClientConfiguration("asap-master", 1323);
 		WorkflowClient cli = new WorkflowClient();
 		cli.setConfiguration(conf);
+		
+		WorkflowDictionary wd = cli.getMaterializedWorkflowDescription("abstractTest1_2016_02_25_12:01:56");
+		for(OperatorDictionary op : wd.getOperators()){
+			if(op.getIsOperator().equals("true"))
+				System.out.println(op.getNameNoID()+" "+op.getCost());
+		}
 		
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
 		Dataset d1 = new Dataset("crawlDocuments");

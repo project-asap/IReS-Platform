@@ -1,6 +1,7 @@
 package gr.ntua.cslab.asap.client;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
@@ -10,6 +11,8 @@ import java.util.StringTokenizer;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Operator;
@@ -41,6 +44,33 @@ public class WorkflowClient extends RestClient{
 
 	public String materializeWorkflow(String name, String policy) throws Exception {
 		return issueRequest("GET", "abstractWorkflows/materialize/"+name+"?policy="+URLEncoder.encode(policy,"UTF-8"), null);
+	}
+	
+	public WorkflowDictionary getAbstractWorkflowDescription(String name) throws Exception {
+		String ret = issueRequest("GET", "abstractWorkflows/XML/"+name, null);
+		JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
+		Unmarshaller u = jaxbContext.createUnmarshaller();
+		StringBuffer xmlStr = new StringBuffer( ret );
+		WorkflowDictionary wd = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
+		return wd;
+	}
+	
+	public WorkflowDictionary getMaterializedWorkflowDescription(String name) throws Exception {
+		String ret = issueRequest("GET", "workflows/XML/"+name, null);
+		JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
+		Unmarshaller u = jaxbContext.createUnmarshaller();
+		StringBuffer xmlStr = new StringBuffer( ret );
+		WorkflowDictionary wd = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
+		return wd;
+	}
+	
+	public WorkflowDictionary getRunningWorkflowDescription(String name) throws Exception {
+		String ret = issueRequest("GET", "runningWorkflows/XML/"+name, null);
+		JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
+		Unmarshaller u = jaxbContext.createUnmarshaller();
+		StringBuffer xmlStr = new StringBuffer( ret );
+		WorkflowDictionary wd = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
+		return wd;
 	}
 
 	public String executeWorkflow(String name) throws Exception {
