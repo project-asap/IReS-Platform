@@ -277,10 +277,15 @@ public class AbstractWorkflow1 {
 				if(e[1].equals("$$target")){
 					this.targets.add(nodes.get(e[0]));
 				}
-				else{
+				else if(e.length==2){
 					WorkflowNode src = nodes.get(e[0]);
 					WorkflowNode dest = nodes.get(e[1]);
 					dest.inputs.add(src);
+				}
+				else if(e.length==3){
+					WorkflowNode src = nodes.get(e[0]);
+					WorkflowNode dest = nodes.get(e[1]);
+					dest.inputs.add(Integer.parseInt(e[2]), src);
 				}
 			}
 		}

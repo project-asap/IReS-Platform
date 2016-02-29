@@ -1,0 +1,7 @@
+#
+#Tue Feb 03 18:37:47 EET 2015
+Constraints.Output.number=1
+Constraints.Input.number=2
+Constraints.Input1.type=lr_model
+Constraints.Input0.type=vectors
+Constraints.OpSpecification.Algorithm.name=lr_classify
