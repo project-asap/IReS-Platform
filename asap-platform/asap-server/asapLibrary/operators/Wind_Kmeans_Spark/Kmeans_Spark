@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	09/ 01/ 2016
-#Previous update	:	none
+#Last update		:	26/ 02/ 2016
+#Previous update	:	09/ 02/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
@@ -8,7 +8,7 @@
 ################################################################################
 #
 #Description
-#	This is the concrete version of the k means operator from wind workflow
+#	This is the concrete version of the k means operator from wind workflow.
 #Description_End
 
 #################
@@ -52,5 +52,10 @@ Execution.Argument1=06-2015
 Execution.Argument2=archetipi.csv
 Execution.Argument3=100
 Execution.Argument4=0.4
+#EXECUTION COPY FILES( optional)
+#copy input to operator's local folder to use it
+Execution.copyToLocal=In0.path
+#copy operator's output to HDFS so as the following operator to access it
+Execution.copyFromLocal=centroids/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/kmeans.txt
+Execution.Output0.path=$HDFS_OP_DIR/centroids/roma-06-2015.p

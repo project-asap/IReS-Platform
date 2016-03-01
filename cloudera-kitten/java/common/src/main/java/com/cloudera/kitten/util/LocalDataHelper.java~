@@ -56,18 +56,14 @@ public class LocalDataHelper {
   
   public static InputStream getFileOrResource(String name) {
     File f = new File(name);
-    if( f.exists()){
-    	try{
-        	return new FileInputStream(f);
-      	}
-      	catch (FileNotFoundException e){
-        	LOG.error("A file suddenly disappeared", e);
-      	}
-    }
-    else{
-        	LOG.info( "WARN: File " + name + " does not exist!");
-			LOG.info( "A NullPointerException may be thrown afterwards because of this.");
-      		return LocalDataHelper.class.getResourceAsStream(name);
+    if (f.exists()) {
+      try {
+        return new FileInputStream(f);
+      } catch (FileNotFoundException e) {
+        LOG.error("A file suddenly disappeared", e);
+      }
+    } else {
+      return LocalDataHelper.class.getResourceAsStream(name);
     }
     return null;
   }

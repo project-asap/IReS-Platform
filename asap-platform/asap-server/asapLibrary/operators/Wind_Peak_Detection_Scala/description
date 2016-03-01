@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	09/ 01/ 2016
-#Previous update	:	none
+#Last update		:	01/ 03/ 2016
+#Previous update	:	09/ 02/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
@@ -19,14 +19,16 @@ Constraints.OpSpecification.Algorithm.name=peak_detection
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
 Constraints.Input0.Engine.FS=HDFS
+Constraints.Input1.Engine.FS=HDFS
 #if the input type is specified it should be also specified appropriately into
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
 Constraints.Output0.Engine.FS=HDFS
+Constraints.Output1.Engine.FS=HDFS
 
 ############
 # MODELING #
@@ -46,9 +48,16 @@ Execution.LuaScript=Peak_Detection.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=5
 Execution.Argument0=spark://localhost:7077
-Execution.Argument1=/output/cpBase
-Execution.Argument2=/output/testData
+Execution.Argument1=In0.path
+Execution.Argument2=In1.path
 Execution.Argument3=/output
 Execution.Argument4=0.1
+#copy input to operator's local folder to use it
+Execution.copyToLocal=In0.path
+Execution.copyToLocal=In1.path
+#copy operator's output to HDFS so as the following operator to access it
+Execution.copyFromLocal=output/events
+Execution.copyFromLocal=output/eventsFilter
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/peak_detection.txt
+Execution.Output0.path=$HDFS_OP_DIR/output/events
+Execution.Output1.path=$HDFS_OP_DIR/output/eventsFilter

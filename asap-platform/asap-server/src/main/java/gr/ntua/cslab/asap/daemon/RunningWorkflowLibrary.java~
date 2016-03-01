@@ -115,10 +115,6 @@ public class RunningWorkflowLibrary {
 	    YarnClientService service = null;
 		HashMap<String,String> operators = new HashMap<String, String>();
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
-		LuaYarnClientParameters params = null;
-		String luafilename = null;
-		int luafileindex = 0;
-
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
 				/* vpapa: retrieve the .lua file specified for this operator from

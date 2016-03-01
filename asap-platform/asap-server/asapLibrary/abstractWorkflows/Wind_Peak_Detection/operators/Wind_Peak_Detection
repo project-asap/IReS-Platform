@@ -8,7 +8,7 @@
 ################################################################################
 #
 #Description
-#	This is the concrete version of the data_filter operator from wind workflow.
+#	This is the abstract version of the data_filter operator from wind workflow.
 #Description_End
 
 #################
@@ -16,39 +16,10 @@
 #################
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=peak_detection
-#ENGINE
-Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
-Constraints.Input.number=1
-Constraints.Input0.Engine.FS=HDFS
+Constraints.Input.number=2
 #if the input type is specified it should be also specified appropriately into
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=1
-Constraints.Output0.Engine.FS=HDFS
-
-############
-# MODELING #
-############
-#OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.binSize=Double,0.1,0.1,1.0
-#OPTIMIZATION METRIC( mandatory)
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.outputSpace.execTime=Double
-Optimization.execTime=3.0
-
-#############
-# EXECUTION #
-#############
-#LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Peak_Detection.lua
-#EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=5
-Execution.Argument0=spark://localhost:7077
-Execution.Argument1=/output/cpBase
-Execution.Argument2=/output/testData
-Execution.Argument3=/output
-Execution.Argument4=0.1
-#EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/peak_detection.txt
+Constraints.Output.number=2

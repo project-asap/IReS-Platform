@@ -34,7 +34,7 @@ DESCRIPTION
 
 echo -e "Starting user_profilo.py script ..."
 #pass command line arguments explicitly
-pyspark user_profilo.py dataset centro_roma.csv roma 06-2015
+#pyspark user_profilo.py dataset centro_roma.csv roma 06-2015
 #pass command line arguments implicitly through description file
 pyspark user_profilo.py $1 $2 $3 $4
 echo -e "... user_profilo.py script ended"

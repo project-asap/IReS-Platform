@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	09/ 01/ 2016
-#Previous update	:	none
+#Last update		:	01/ 03/ 2016
+#Previous update	:	09/ 02/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
@@ -25,8 +25,9 @@ Constraints.Input0.Engine.FS=HDFS
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
 Constraints.Output0.Engine.FS=HDFS
+Constraints.Output1.Engine.FS=HDFS
 
 ############
 # MODELING #
@@ -45,12 +46,19 @@ Execution.LuaScript=Data_Filter.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=8
 Execution.Argument0=spark://localhost:7077
-Execution.Argument1=/dataset_simulated
+Execution.Argument1=In0.path
 Execution.Argument2=/output
 Execution.Argument3=2015-06-01
 Execution.Argument4=2015-06-02
 Execution.Argument5=2015-06-03
 Execution.Argument6=None
 Execution.Argument7=/voronoi
+#EXECUTION COPY FILES( optional)
+#copy input to operator's local folder to use it
+Execution.copyToLocal=In0.path
+#copy operator's output to HDFS so as the following operator to access it
+Execution.copyFromLocal=output/trainingData
+Execution.copyFromLocal=output/testData
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/data_filter.txt
+Execution.Output0.path=$HDFS_OP_DIR/output/trainingData
+Execution.Output1.path=$HDFS_OP_DIR/output/testData

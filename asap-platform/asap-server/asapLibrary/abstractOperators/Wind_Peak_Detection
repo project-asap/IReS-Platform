@@ -17,9 +17,9 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=peak_detection
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
 #if the input type is specified it should be also specified appropriately into
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
