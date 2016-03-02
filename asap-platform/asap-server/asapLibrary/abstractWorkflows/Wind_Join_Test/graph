@@ -1,4 +1,4 @@
-cdr,Wind_Join_Test
-voronoi,Wind_Join_Test
-Wind_Join_Test,result
-result,$$target
+cdr_join,Wind_Join_Test
+voronoi_join,Wind_Join_Test
+Wind_Join_Test,result_join
+result_join,$$target

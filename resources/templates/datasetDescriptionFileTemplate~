@@ -1,0 +1,38 @@
+#Author				:	
+#Last update		:	
+#Previous update	:	
+#Platform			:	
+#Github				:	
+################################################################################
+#
+#Description
+#	This is the concrete version of the dataset_name dataset implemented for ...
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#DATASET
+Constraints.OpSpecification.Algorithm.name=
+#ENGINE
+#Engine type, if it is a filesystem e.g. HDFS or a database e.g. Postgres
+#Constraints.Engine.FS=
+#Constraints.Engine=
+#INPUT( mandatory)
+Constraints.Input.number=
+
+#OUTPUT( mandatory)
+Constraints.Output.number=
+
+############
+# MODELING #
+############
+#OPTIMIZATION METRIC( mandatory, at least one)
+#Optimization.size=
+
+#############
+# EXECUTION #
+#############
+#The location of dataset either as a path in a filesystem or a as a schema in a database
+#Execution.path=
+#Execution.schema=

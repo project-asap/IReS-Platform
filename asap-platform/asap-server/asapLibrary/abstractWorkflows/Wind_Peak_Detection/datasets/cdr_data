@@ -31,4 +31,4 @@ Optimization.size=1E9
 #############
 # EXECUTION #
 #############
-Execution.path=hdfs:///user/hadoop/data_simulated
+Execution.path=hdfs:///user/hadoop/data_simulated_mini

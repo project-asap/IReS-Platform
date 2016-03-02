@@ -1,0 +1,23 @@
+#Author				:	
+#Last update		:	
+#Previous update	:	
+#Platform			:	
+#Github				:	
+#Work package		:	
+#Github				:	
+#########################################################################
+#
+#Description
+#	This is the abstract version of the operator_name operator implemented for ...
+#	For an abstract operator a minimum configuration is needed.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=
+#INPUT( mandatory)
+Constraints.Input.number=
+#OUTPUT( mandatory)
+Constraints.Output.number=
