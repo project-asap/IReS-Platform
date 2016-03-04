@@ -54,6 +54,9 @@ public class RunningWorkflowLibrary {
 		runningAbstractWorkflows=  new ConcurrentHashMap<String, AbstractWorkflow1>();
 		toRunWorkflows = new ConcurrentHashMap<String,WorkflowDictionary>();
 	    conf = new Configuration();
+	    for( Entry<Object, Object> p : ServerStaticComponents.properties.entrySet()){
+			conf.set(p.getKey().toString(), p.getValue().toString());
+	    }
         (new Thread(new YarnServiceHandler())).start();
 	}
 	

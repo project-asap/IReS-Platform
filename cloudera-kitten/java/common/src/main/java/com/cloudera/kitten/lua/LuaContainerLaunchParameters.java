@@ -305,13 +305,14 @@ private int globalContainerId;
     
     List<String> stageOutFiles = getStageOutFiles();
     //System.out.println("stageOutFiles: "+stageOutFiles);
-    
+
+    String hdfs = conf.get("asap.hdfs_path");
     
     cmds.add("ls -ltr");
     String outdir = dir+"/"+this.name+"_"+globalContainerId;
-    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -mkdir "+outdir);
+    cmds.add(hdfs +" dfs -mkdir "+outdir);
     for(String f : stageOutFiles){
-	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -moveFromLocal "+f+" "+outdir);
+	    cmds.add(hdfs +" dfs -moveFromLocal "+f+" "+outdir);
     }
 
     

@@ -363,10 +363,12 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     //System.out.println("Dir: " +dir);
     //String args = opName+" "+operator.getArguments();
     String args = operator.getArguments();
-    
+
+    String hdfs = conf.get("asap.hdfs_path");
+    String asap = conf.get("asap.asap_path");
     List<String> oldcmds = cmds;
     cmds = new ArrayList<String>();
-    cmds.add("asap monitor start");
+    cmds.add(asap +" monitor start");
     
     String outdir = dir+"/"+this.name;//+"_"+globalContainerId;
 
@@ -375,10 +377,10 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
   		String inPath = e.getValue().replace("$HDFS_DIR", dir);
   		inPath = inPath.replace("$HDFS_OP_DIR", outdir);
   		LOG.info("adding hdfs input: "+e);
-	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -copyToLocal "+inPath+" .");
+	    cmds.add(hdfs +" dfs -copyToLocal "+inPath+" .");
 		
 	}
-    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -mkdir "+outdir);
+    cmds.add(hdfs +" dfs -mkdir "+outdir);
     args = args.replace("$HDFS_DIR", dir);
     args = args.replace("$HDFS_OP_DIR", outdir);
     for(String c : oldcmds){
@@ -396,7 +398,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -moveFromLocal "+f+" "+outdir);
     }
     
-    cmds.add("asap report -cm -e "+this.name);
+    cmds.add(asap +" report -cm -e "+this.name);
     
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);

@@ -46,6 +46,7 @@ public class LuaYarnClientParameters implements YarnClientParameters {
   private static final Log LOG = LogFactory.getLog(LuaYarnClientParameters.class);
   
   private final List<LuaWrapper> env;
+  public LuaWrapper masterEnv;
   private final Configuration conf;
   private final Extras extras;
 
@@ -63,6 +64,7 @@ private String jobName;
   public LuaYarnClientParameters(String script, String jobName, Configuration conf,
       Map<String, Object> extraLuaValues, Map<String, String> resources) {
 	  this.env = new ArrayList<LuaWrapper>();
+	  this.masterEnv = new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator");
     this.env.add(new LuaWrapper(script, extraLuaValues).getTable(jobName));
     this.conf = initConf(env.get(0), conf);
     this.extras = new Extras();
@@ -83,8 +85,7 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
 	  	this.env = new ArrayList<LuaWrapper>();
 	    this.extras = new Extras();
 	    //String dir = "/opt/npapa/asapWorkflow/";
-
-  		this.env.add(new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator"));
+	    masterEnv = new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator");
   	    this.extras.putResource("BasicLuaConf.lua", "asapLibrary/BasicLuaConf.lua");
 	  	for( Entry<String, String> e : operators.entrySet()){
 	  		this.env.add(new LuaWrapper(e.getValue(), extraLuaValues).getTable("operator"));
@@ -101,7 +102,10 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
 	  		}
 	  	}
 	  	this.jobName=workflow;
-	    this.conf = initConf(env.get(0), conf);
+	    this.conf = initConf(masterEnv, conf);
+
+	    System.out.println("1!!!!!!" +this.conf.get("asap.hdfs_path"));
+	    
 	    this.extras.putEnv(LuaFields.KITTEN_JOB_NAME, name);
 	    this.extras.putResource(LuaFields.KITTEN_WORKFLOW_CONFIG_FILE, workflow);
 	    this.extras.putAllResources(resources);
@@ -157,11 +161,9 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
     Map<String, URI> localToUris = mapLocalFiles(applicationId);
     extras.putEnv(LuaFields.KITTEN_LOCAL_FILE_TO_URI, LocalDataHelper.serialize(localToUris));
 
-    for(LuaWrapper e : env){
-
-    	if(!e.isNil(LuaFields.MASTER))
-    		return new LuaContainerLaunchParameters(e.getTable(LuaFields.MASTER), "master", conf, localToUris, extras);
-    }
+	if(!masterEnv.isNil(LuaFields.MASTER))
+		return new LuaContainerLaunchParameters(masterEnv.getTable(LuaFields.MASTER), "master", conf, localToUris, extras);
+    
     LOG.error("Error master description not found");
     return null;
     
@@ -185,11 +187,11 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
         LOG.error("Error copying local file " + localFileName + " to hdfs", e);
       }
     }
+	if(!masterEnv.isNil(LuaFields.MASTER))
+		mapLocalFiles(masterEnv.getTable(LuaFields.MASTER), lfh);
     for(LuaWrapper e : env){
 	    // Map all of the local files that the appmaster will need.
 	    
-    	if(!e.isNil(LuaFields.MASTER))
-    		mapLocalFiles(e.getTable(LuaFields.MASTER), lfh);
 	    
 	    // Map all of the files that the containers will need.   
 	    if (!e.isNil(LuaFields.CONTAINERS)) {
@@ -224,7 +226,8 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
   
   @Override
   public long getClientTimeoutMillis() {
-    return env.get(0).isNil(LuaFields.TIMEOUT) ? -1 : env.get(0).getLong(LuaFields.TIMEOUT);
+	  return 1000000000;
+    //return env.get(0).isNil(LuaFields.TIMEOUT) ? -1 : env.get(0).getLong(LuaFields.TIMEOUT);
   }
 
 
