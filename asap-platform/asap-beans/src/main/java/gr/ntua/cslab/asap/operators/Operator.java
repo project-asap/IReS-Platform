@@ -80,7 +80,8 @@ public class Operator {
 			fields of an operator description file
 		*/
 		try{
-			optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
+			if(optree.getNode("Optimization.inputSpace")!=null)
+				optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
 			optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		}
 		catch( NullPointerException npe){

@@ -113,6 +113,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		LOG.info("Operators: "+operators);
 		
 		int i =0;
+		//LuaWrapper l = new LuaWrapper("BasicLuaConf.lua", loadExtras(extras)).getTable("operator");
 		for(Entry<String, String> e : operators.entrySet()){
 			LuaWrapper l = new LuaWrapper(e.getValue(), loadExtras(extras)).getTable("operator");
 			if(i==0)

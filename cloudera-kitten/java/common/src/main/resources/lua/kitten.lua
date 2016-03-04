@@ -18,9 +18,9 @@ function yarn(t)
   if not t.name then
     error("Every yarn configuration must have an app name")
   end
-  if not t.master then
-    error("Every yarn configuration must specify a master")
-  end
+  --if not t.master then
+  --  error("Every yarn configuration must specify a master")
+  --end
 
   local t_check = function(v, field, expected_type)
     if "function" == type(v) then
@@ -74,7 +74,7 @@ function yarn(t)
   end
 
   -- Verify that the master is configured correctly.
-  t.master = clp_check(t.master, "master")
+  --t.master = clp_check(t.master, "master")
 
   -- Verify the container(s) configuration.
   if t.container then

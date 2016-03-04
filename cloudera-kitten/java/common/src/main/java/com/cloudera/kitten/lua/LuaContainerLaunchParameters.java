@@ -309,9 +309,9 @@ private int globalContainerId;
     
     cmds.add("ls -ltr");
     String outdir = dir+"/"+this.name+"_"+globalContainerId;
-    cmds.add("hdfs dfs -mkdir "+outdir);
+    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -mkdir "+outdir);
     for(String f : stageOutFiles){
-	    cmds.add("hdfs dfs -moveFromLocal "+f+" "+outdir);
+	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -moveFromLocal "+f+" "+outdir);
     }
 
     

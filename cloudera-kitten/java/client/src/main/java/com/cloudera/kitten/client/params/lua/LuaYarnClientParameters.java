@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
+import org.apache.log4j.pattern.LogEvent;
 
 import com.cloudera.kitten.ContainerLaunchParameters;
 import com.cloudera.kitten.client.YarnClientParameters;
@@ -82,6 +83,9 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
 	  	this.env = new ArrayList<LuaWrapper>();
 	    this.extras = new Extras();
 	    //String dir = "/opt/npapa/asapWorkflow/";
+
+  		this.env.add(new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator"));
+  	    this.extras.putResource("BasicLuaConf.lua", "asapLibrary/BasicLuaConf.lua");
 	  	for( Entry<String, String> e : operators.entrySet()){
 	  		this.env.add(new LuaWrapper(e.getValue(), extraLuaValues).getTable("operator"));
 	  	    this.extras.putResource(e.getKey()+".lua", e.getValue());
@@ -137,9 +141,9 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
     
   @Override
   public String getApplicationName() {
-	  if(env.size()==1)
-		  return env.get(0).getString(LuaFields.APP_NAME);
-	  else
+//	  if(env.size()==1)
+//		  return env.get(0).getString(LuaFields.APP_NAME);
+//	  else
 		  return "Executing workflow: "+jobName;
   }
 
@@ -152,7 +156,15 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
   public ContainerLaunchParameters getApplicationMasterParameters(ApplicationId applicationId) {
     Map<String, URI> localToUris = mapLocalFiles(applicationId);
     extras.putEnv(LuaFields.KITTEN_LOCAL_FILE_TO_URI, LocalDataHelper.serialize(localToUris));
-    return new LuaContainerLaunchParameters(env.get(0).getTable(LuaFields.MASTER), "master", conf, localToUris, extras);
+
+    for(LuaWrapper e : env){
+
+    	if(!e.isNil(LuaFields.MASTER))
+    		return new LuaContainerLaunchParameters(e.getTable(LuaFields.MASTER), "master", conf, localToUris, extras);
+    }
+    LOG.error("Error master description not found");
+    return null;
+    
   }
 
   private Map<String, URI> mapLocalFiles(ApplicationId applicationId) {
@@ -175,7 +187,9 @@ public LuaYarnClientParameters(String name, String workflow, HashMap<String, Str
     }
     for(LuaWrapper e : env){
 	    // Map all of the local files that the appmaster will need.
-	    mapLocalFiles(e.getTable(LuaFields.MASTER), lfh);
+	    
+    	if(!e.isNil(LuaFields.MASTER))
+    		mapLocalFiles(e.getTable(LuaFields.MASTER), lfh);
 	    
 	    // Map all of the files that the containers will need.   
 	    if (!e.isNil(LuaFields.CONTAINERS)) {

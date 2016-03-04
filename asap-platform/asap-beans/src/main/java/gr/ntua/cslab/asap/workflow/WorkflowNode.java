@@ -96,7 +96,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 	public List<WorkflowNode> materialize(String metric, MaterializedWorkflow1 materializedWorkflow, Workflow1DPTable dpTable, String fromName) throws Exception {
 		logger.info("Processing : " + toStringNorecursive()+" from name: "+fromName);
-		System.out.println("Processing : " + toStringNorecursive()+" from name: "+fromName);
+		//System.out.println("Processing : " + toStringNorecursive()+" from name: "+fromName);
 		List<WorkflowNode> ret = new ArrayList<WorkflowNode>();
 		List<List<WorkflowNode>> materializedInputs = new ArrayList<List<WorkflowNode>>();
 		WorkflowNode temp = null;
@@ -378,7 +378,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						
 						//int outputs =Integer.parseInt(op.getParameter("Constraints.Output.number"));
 						int outN=0;
-						System.out.println(fromName);
+						//System.out.println(fromName);
 						for (WorkflowNode out : outputs) {
 							WorkflowNode tempOutputNode = new WorkflowNode(false, false,"");
 							Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
@@ -388,7 +388,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							//tempOutput.outputFor(op, 0, temp.inputs);
 							tempOutputNode.setDataset(tempOutput);
 							tempOutputNode.addInput(temp);
-							System.out.println(out.getName()+" "+fromName);
+							//System.out.println(out.getName()+" "+fromName);
 							if(out.getName().equals(fromName)){
 								ret.add(tempOutputNode);
 								plan.add(tempOutputNode);

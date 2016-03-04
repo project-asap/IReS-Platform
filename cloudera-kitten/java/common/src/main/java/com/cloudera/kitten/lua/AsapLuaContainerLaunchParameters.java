@@ -375,10 +375,10 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
   		String inPath = e.getValue().replace("$HDFS_DIR", dir);
   		inPath = inPath.replace("$HDFS_OP_DIR", outdir);
   		LOG.info("adding hdfs input: "+e);
-	    cmds.add("hdfs dfs -copyToLocal "+inPath+" .");
+	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -copyToLocal "+inPath+" .");
 		
 	}
-    cmds.add("hdfs dfs -mkdir "+outdir);
+    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -mkdir "+outdir);
     args = args.replace("$HDFS_DIR", dir);
     args = args.replace("$HDFS_OP_DIR", outdir);
     for(String c : oldcmds){
@@ -393,7 +393,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     List<String> stageOutFiles = getStageOutFiles();
     for(String f : stageOutFiles){
-	    cmds.add("hdfs dfs -moveFromLocal "+f+" "+outdir);
+	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -moveFromLocal "+f+" "+outdir);
     }
     
     cmds.add("asap report -cm -e "+this.name);
