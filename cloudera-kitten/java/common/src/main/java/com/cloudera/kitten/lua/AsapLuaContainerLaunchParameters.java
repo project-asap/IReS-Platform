@@ -14,9 +14,7 @@
  */
 package com.cloudera.kitten.lua;
 
-import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
-import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 

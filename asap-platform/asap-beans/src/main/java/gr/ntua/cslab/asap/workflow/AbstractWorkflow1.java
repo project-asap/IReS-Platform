@@ -95,7 +95,7 @@ public class AbstractWorkflow1 {
 		
 		for(WorkflowNode t : targets){
 			logger.info( "Materializing workflow node: " + t.toStringNorecursive());
-			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable);
+			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable,t.getName());
 			/* vpapa: assert that WorkflowNode.materialize() returned something
 				valid
 			*/
@@ -245,14 +245,15 @@ public class AbstractWorkflow1 {
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].isFile() && !files[i].isHidden()) {
 						WorkflowNode n =null;
-						if(files[i].getName().startsWith("d")){
+						Dataset temp = new Dataset(files[i].getName());
+						temp.readPropertiesFromFile(files[i]);
+						int metadatsize =temp.datasetTree.tree.size();
+						if(metadatsize==0){
 							n = new WorkflowNode(false, true,"");
 						}
 						else{
 							n = new WorkflowNode(false, false, "");
 						}
-						Dataset temp = new Dataset(files[i].getName());
-						temp.readPropertiesFromFile(files[i]);
 						n.setDataset(temp);
 						nodes.put(temp.datasetName, n);
 					} 
@@ -280,12 +281,20 @@ public class AbstractWorkflow1 {
 				else if(e.length==2){
 					WorkflowNode src = nodes.get(e[0]);
 					WorkflowNode dest = nodes.get(e[1]);
-					dest.inputs.add(src);
+					dest.addInput(src);
+					src.addOutput(dest);
 				}
 				else if(e.length==3){
 					WorkflowNode src = nodes.get(e[0]);
 					WorkflowNode dest = nodes.get(e[1]);
-					dest.inputs.add(Integer.parseInt(e[2]), src);
+					if(dest.isOperator){
+						dest.addInput(Integer.parseInt(e[2]), src);
+						src.addOutput(dest);
+					}
+					else{
+						dest.addInput(src);
+						src.addOutput(Integer.parseInt(e[2]), dest);
+					}
 				}
 			}
 		}

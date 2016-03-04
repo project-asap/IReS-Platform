@@ -36,6 +36,8 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.ObjectUtils.Null;
+
 
 public class Operator {
 	public HashMap<String, List<Model>> models;
@@ -521,7 +523,7 @@ public class Operator {
 		InputSpacePoint in = new InputSpacePoint();
 		HashMap<String, Double> values = new HashMap<String, Double>();
 		for (String inVar : inputSpace.keySet()) {
-			System.out.println("InVar: "+inVar);
+			//System.out.println("InVar: "+inVar);
 			String[] s = inVar.split("\\.");
 
 			/*
@@ -535,48 +537,36 @@ public class Operator {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;
 				WorkflowNode n = inputs.get(index);
-				System.out.println("Index: "+index);
+				//System.out.println("Index: "+index +" "+s[1]);
 
 				Double v = null;
-				if (n.isOperator) {
-					val = n.inputs.get(0).dataset.getParameter("Optimization." + s[1]);
-					v = Double.parseDouble(val);
-				} else {
-					/* vpapa: a concrete dataset for which the corresponding operator
-						that loads it has declared and optimization parameter for
-						it should have also into its description file the corresponding
-						optimization parameter
-					*/
-					try{
-						val = n.dataset.getParameter("Optimization." + s[1]);
+				if (!n.isOperator) {
+					val = n.dataset.getParameter("Optimization." + s[1]);
+					if(val==null){
+						//System.out.println("Null: "+s[0]);
+						v=null;
+					}
+					else{
 						v = Double.parseDouble(val);
+						//System.out.println(v);
 					}
-					catch( NullPointerException npe){
-						System.out.println( "ERROR: For the concrete dataset " + n.dataset.datasetName
-											+ " the property Optimization." + s[ 1]
-											+ " is missing or not set properly into"
-											+ " its description file.");
-						logger.info( "ERROR: For the concrete dataset " + n.dataset.datasetName
-											+ " the property Optimization." + s[ 1]
-											+ " is missing or not set properly into"
-											+ " its description file.");
-						npe.printStackTrace();
-					}
-				}
+				} 
 				values.put(inVar, v);
 			} else {
-				System.out.println("Null: "+s[0]);
+				//System.out.println("Null: "+s[0]);
 				//System.out.println("in value "+ 2.0);
 				//values.put(inVar, 2.0);
 				values.put(inVar, null);
 
 			}
 		}
+		//System.out.println(values);
 		in.setValues(values);
 		OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy, optree);
 		retMetrics.putAll(out.getOutputPoints());
 		logger.info("Output metrics: " + retMetrics);
 		for (Entry<String, Double> e : inputMetrics.entrySet()) {
+			logger.info(e.getKey() +" "+ e.getValue());
 			retMetrics.put(e.getKey(), e.getValue() + retMetrics.get(e.getKey()));
 		}
 		logger.info("Output metrics added with input: " + retMetrics);

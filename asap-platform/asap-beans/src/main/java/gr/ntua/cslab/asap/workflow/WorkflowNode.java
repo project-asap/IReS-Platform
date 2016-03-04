@@ -35,7 +35,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	public Operator operator;
 	public AbstractOperator abstractOperator;
 	public Dataset dataset;
-	public List<WorkflowNode> inputs;
+	public List<WorkflowNode> inputs, outputs;
 	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
 	public boolean copyToLocal=false, copyToHDFS=false;
 	
@@ -44,7 +44,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		this.abstractName = abstractName;
 		this.isOperator = isOperator;
 		this.isAbstract = isAbstract;
-		inputs = new ArrayList<WorkflowNode>();
+		inputs = new ArrayList<WorkflowNode>(10);
+		outputs = new ArrayList<WorkflowNode>(10);
 		visited=false;
 		optimalCost=0.0;
 	} 
@@ -72,17 +73,41 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	public void addInput(WorkflowNode input){
 		inputs.add(input);
 	}
+	
+	public void addOutput(WorkflowNode input){
+		outputs.add(input);
+	}
+	
+	public void addInput(int index, WorkflowNode input) {
+		inputs.add(index,input);
+	}
+
+	public void addOutput(int index, WorkflowNode input) {
+		outputs.add(index,input);
+	}
 
 	public void addInputs(List<WorkflowNode> inputs){
 		this.inputs.addAll(inputs);
+		for(WorkflowNode in : inputs){
+			in.outputs.add(this);
+		}
 	}
 
 
-	public List<WorkflowNode> materialize(String metric, MaterializedWorkflow1 materializedWorkflow, Workflow1DPTable dpTable) throws Exception {
-		logger.info("Processing : " + toStringNorecursive());
+	public List<WorkflowNode> materialize(String metric, MaterializedWorkflow1 materializedWorkflow, Workflow1DPTable dpTable, String fromName) throws Exception {
+		logger.info("Processing : " + toStringNorecursive()+" from name: "+fromName);
+		System.out.println("Processing : " + toStringNorecursive()+" from name: "+fromName);
 		List<WorkflowNode> ret = new ArrayList<WorkflowNode>();
 		List<List<WorkflowNode>> materializedInputs = new ArrayList<List<WorkflowNode>>();
 		WorkflowNode temp = null;
+		if(!isOperator){
+			List<WorkflowNode> p = dpTable.getPlan(dataset);
+			if(p!=null){
+				ret.addAll(p);
+				return ret;
+			}
+		}
+			
 		
 		//check if intermediate results exist (replan)
 		if( !isOperator){
@@ -102,7 +127,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 		
 		for(WorkflowNode in : inputs){
-			List<WorkflowNode> l = in.materialize(metric, materializedWorkflow,dpTable);
+			List<WorkflowNode> l = in.materialize(metric, materializedWorkflow,dpTable,getName());
 			materializedInputs.add(l);
 		}
 		logger.info( "Materialized inputs: " + materializedInputs);
@@ -293,10 +318,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							i++;
 						}
 						
-						WorkflowNode tempOutputNode = new WorkflowNode(false, false,"");
-						Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
-						materializedWorkflow.count++;
-						
+							
 						/* vpapa: move out some common defitions in the following if else
 							statement
 						*/
@@ -350,17 +372,40 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							}
 				        }
 						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
-						op.outputFor(tempOutput, 0, nextMetrics, temp.inputs);
-						
-						//tempOutput.outputFor(op, 0, temp.inputs);
-						tempOutputNode.setDataset(tempOutput);
-						tempOutputNode.addInput(temp);
-						ret.add(tempOutputNode);
+
 						temp.setOptimalCost(optCost-prevCost);
 						plan.add(temp);
-						plan.add(tempOutputNode);
-						//System.out.println(nextMetrics);
-						dpTable.addRecord(tempOutput, plan, optCost, bestInputMetrics);
+						
+						//int outputs =Integer.parseInt(op.getParameter("Constraints.Output.number"));
+						int outN=0;
+						System.out.println(fromName);
+						for (WorkflowNode out : outputs) {
+							WorkflowNode tempOutputNode = new WorkflowNode(false, false,"");
+							Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
+							materializedWorkflow.count++;
+							op.outputFor(tempOutput, outN, nextMetrics, temp.inputs);
+							
+							//tempOutput.outputFor(op, 0, temp.inputs);
+							tempOutputNode.setDataset(tempOutput);
+							tempOutputNode.addInput(temp);
+							System.out.println(out.getName()+" "+fromName);
+							if(out.getName().equals(fromName)){
+								ret.add(tempOutputNode);
+								plan.add(tempOutputNode);
+								//System.out.println(nextMetrics);
+								dpTable.addRecord(tempOutput, plan, optCost, bestInputMetrics);
+							}
+							else{
+								out.inputs.add(tempOutputNode);
+								ArrayList<WorkflowNode> tp = new ArrayList<>();
+								tp.add(tempOutputNode);
+								//System.out.println(nextMetrics);
+								dpTable.addRecord(tempOutput, tp, optCost, bestInputMetrics);
+								dpTable.addRecord(out.dataset, tp, optCost, bestInputMetrics);
+							}
+							
+							outN++;
+						}
 					}
 				}
 			}//end of if operator is abstract
@@ -660,18 +705,36 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	}
 	
 	public void graphToString(BufferedWriter graphWritter) throws IOException {
-		for(WorkflowNode n : inputs){
-			graphWritter.write(n.toStringNorecursive() +","+toStringNorecursive());
-			graphWritter.newLine();
+		if(isOperator){
+			int i=0;
+			for(WorkflowNode n : inputs){
+				graphWritter.write(n.toStringNorecursive() +","+toStringNorecursive()+","+i);
+				graphWritter.newLine();
+				i++;
+			}
+			i=0;
+			for(WorkflowNode n : outputs){
+				graphWritter.write(toStringNorecursive()+","+n.toStringNorecursive()+","+i);
+				graphWritter.newLine();
+				i++;
+			}
 		}
 	}
 
 	public void graphToStringRecursive(BufferedWriter graphWritter) throws IOException {
 
-		if(!visited){
+		if(!visited && isOperator){
+			int i=0;
 			for(WorkflowNode n : inputs){
-				graphWritter.write(n.toStringNorecursive() +","+toStringNorecursive());
+				graphWritter.write(n.toStringNorecursive() +","+toStringNorecursive()+","+i);
 				graphWritter.newLine();
+				i++;
+			}
+			i=0;
+			for(WorkflowNode n : outputs){
+				graphWritter.write(toStringNorecursive()+","+n.toStringNorecursive()+","+i);
+				graphWritter.newLine();
+				i++;
 			}
 			for(WorkflowNode n : inputs){
 				n.graphToString(graphWritter);

@@ -34,6 +34,7 @@ public class OptimizeMissingMetrics {
         * */
         for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
+				//System.out.println("searching "+e.getKey());
 				String[] miss = optree.getNode("Optimization.inputSpace."+e.getKey()).toString()
 						.replaceAll("\\(", "")
 						.replaceAll("\\)", "")
