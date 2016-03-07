@@ -21,3 +21,5 @@ Constraints.Input0.type=SQL
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
