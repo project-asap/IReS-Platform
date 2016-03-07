@@ -395,7 +395,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     List<String> stageOutFiles = getStageOutFiles();
     for(String f : stageOutFiles){
-	    cmds.add("/opt/hadoop-2.7.0/bin/hdfs dfs -moveFromLocal "+f+" "+outdir);
+	    cmds.add(hdfs+" dfs -moveFromLocal "+f+" "+outdir);
     }
     
     //cmds.add(asap +" report -cm -e "+this.name);
