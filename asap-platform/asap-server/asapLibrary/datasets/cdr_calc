@@ -1,3 +1,28 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	07/ 03/ 2016
+#Previous update	:	01/ 03/ 2016
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+################################################################################
+#
+#Description
+#	This is the input dataset of the Wind_Calc_Test operator implemented for PostgreSQL.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+Constraints.type=SQL
+Constraints.Engine.SQL=PostgreSQL
+Constraints.Engine.location=hdp1.itc.unipi.it
+
+############
+# MODELING #
+############
+Optimization.size=4.50E08
+
+#############
+# EXECUTION #
+#############
 Execution.name=CDR
 Execution.schema=(ID int, TS timestamp, NUM int)
-Constraints.Engine.fs=hdfs
