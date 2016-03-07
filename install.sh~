@@ -46,10 +46,11 @@ do
 			 		--title="List of errors found!" \
 			 		--text="$errors\n\nContact administrator to fix them."
 			exit
+		else
+			# remove log.txt since everything went well
+			rm log.txt
+			cd ../
 		fi
-		# remove log.txt since everything went well
-		rm log.txt
-		cd ../
 		percentage=$(( $percentage + 33))
 		echo $percentage 
 	done | zenity --progress --text="Building ASAP server ... please wait" --percentage=0 --auto-close
