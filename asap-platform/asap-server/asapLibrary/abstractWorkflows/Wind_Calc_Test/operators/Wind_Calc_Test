@@ -14,7 +14,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.Algorithm.name=Calc_SQL_query
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL

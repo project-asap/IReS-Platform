@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	02/ 03/ 2016
-#Previous update	:	none
+#Last update		:	07/ 03/ 2016
+#Previous update	:	02/ 03/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 ################################################################################
@@ -13,20 +13,20 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.Algorithm.name=Calc_SQL_query
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=slave1
+Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=slave1
+Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT( optional)
 Constraints.OpSpecification.SQL_query="SELECT *, $2 AS $3 FROM $1"
 
