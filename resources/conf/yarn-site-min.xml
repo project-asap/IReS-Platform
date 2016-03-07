@@ -3,9 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,6 +63,50 @@
     </description>    
   </property>
 
+	<!-- Custom services running on YARN cluster nodes -->
+	<!-- services per node -->
+	<property>
+        <name>yarn.nodemanager.services-running.per-node</name>
+        <value>path:PostgreSQL Spark,slave1:HIVE,slave2:HBASE WEKA</value>
+        <description>
+        	On the nodes of a YARN cluster except the daemons of YARN may run also other
+        	services like databases. The declaration of these services per node can be done
+        	through this property in the form below, where hosts are separated by ",", host
+        	services are separated by " " and host is separated by its services with ":" e.g.
+        	host1:service1 service2 ...,host2:service3 service4 ...,host3:service5
+        </description>
+    </property>
+    <!-- services' command to test their availability -->
+    <property>
+        <name>yarn.nodemanager.services-running.check-availability</name>
+        <value>
+        	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
+        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
+        </value>
+        <description>
+        	The commands to check the availability( running or not) of services declared in
+        	yarn.nodemanager.services-running.per-node property. For example, for PostgreSQL
+        	database service the command is 
+        	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}'
+        	or for a Mysql database service the command is
+        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
+		NOTE: the commands must be separated by a double semicolon i.e. ";;"
+        </description>
+    </property>
+    <!-- service command output message -->
+    <property>
+        <name>yarn.nodemanager.services-running.check-status</name>
+        <value>
+        	PostgreSQL:online, Mysql:Uptime
+        </value>
+        <description>
+        	The expected output message of the commands declared into
+        	yarn.nodemanager.services-running.check-availability property if they are
+        	running. For example, PostgreSQL:online,Mysql:uptime
+        </description>
+    </property>
+    <!-- -->
+
   <!-- Configurations for NodeManager -->
   <!-- Path definition of resources folder, a custom property -->
   <property>
@@ -109,7 +151,8 @@
     <description>
       The remote log dir will be created at {yarn.nodemanager.remote-app-log-dir}/${user}/{thisParam} 
     </description>
-  </property>  
+  </property>
+  -->
   <!-- To run Map Reduce applications -->
   <property>
     <name>yarn.nodemanager.aux-services</name>
@@ -122,7 +165,7 @@
   <!-- Run a custom script to check the health of this node -->
   <property>
     <name>yarn.nodemanager.health-checker.script.path</name>
-    <value>{yarn.nodemanager.resources-folder.path}/monitoring/nmhealth.sh</value>
+    <value>${yarn.nodemanager.resources-folder.path}/monitoring/nmhealth.sh</value>
     <description>The health check script to run.</description>
   </property>	
   <property>
@@ -163,7 +206,7 @@
   </property>
   <property>
     <name>yarn.node-labels.fs-store.uri</name>
-    <value>hdfs://master:9000/node-label-store</value>
+    <value>hdfs://${yarn.resourcemanager.hostname}:9000/node-label-store</value>
     <description>
       none
     </description>
