@@ -6,7 +6,7 @@
 ################################################################################
 #
 #Description
-#	This is the input dataset of the Wind_Join_Test operator implemented for PostgreSQL.
+#	This is the input dataset CDR of the Wind_Join_Test operator implemented for PostgreSQL.
 #Description_End
 
 #################

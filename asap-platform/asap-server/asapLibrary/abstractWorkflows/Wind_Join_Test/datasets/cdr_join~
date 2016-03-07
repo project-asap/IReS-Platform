@@ -6,7 +6,7 @@
 ################################################################################
 #
 #Description
-#	This is the input dataset Voronoi of the Wind_Join_Test operator implemented for PostgreSQL.
+#	This is the input dataset of the Wind_Join_Test operator implemented for PostgreSQL.
 #Description_End
 
 #################
@@ -24,5 +24,5 @@ Optimization.size=4.50E08
 #############
 # EXECUTION #
 #############
-Execution.name=VORONOI
-Execution.schema=(rID int, aID int)
+Execution.name=CDR
+Execution.schema=(ID int, TS timestamp, NUM int, aID int)
