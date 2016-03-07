@@ -46,11 +46,10 @@ do
 			 		--title="List of errors found!" \
 			 		--text="$errors\n\nContact administrator to fix them."
 			exit
-		else
-			# remove log.txt since everything went well
-			rm log.txt
-			cd ../
 		fi
+		# remove log.txt since everything went well
+		rm log.txt
+		cd ../
 		percentage=$(( $percentage + 33))
 		echo $percentage 
 	done | zenity --progress --text="Building ASAP server ... please wait" --percentage=0 --auto-close
@@ -105,9 +104,9 @@ do
 	# set asap.properties file
 	# append
 	# path of hdfs command of Hadoop YARN
-	echo "asap.hdfs_path = $YARN_HOME" >> asap-platform/asap-server/src/main/resources/asap.properties
+	sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path ="$YARN_HOME":" asap-platform/asap-server/src/main/resources/asap.properties
 	# path of asap command of ASAP server which does the reporting( takine measures)
-	echo "asap.asap_path = /home/$USER/asap/bin/asap" >> asap-platform/asap-server/src/main/resources/asap.properties	
+	sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" asap-platform/asap-server/src/main/resources/asap.properties
 	
 #	echo $HOST_NAME
 #	echo $YARN_HOME

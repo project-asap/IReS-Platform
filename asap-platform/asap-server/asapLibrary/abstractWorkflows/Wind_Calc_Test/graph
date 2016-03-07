@@ -1,3 +1,3 @@
 cdr_calc,Wind_Calc_Test
-Wind_Calc_Test,result_calc
-result_calc,$$target
+Wind_Calc_Test,d1
+d1,$$target

@@ -104,9 +104,9 @@ do
 	# set asap.properties file
 	# append
 	# path of hdfs command of Hadoop YARN
-	echo "asap.hdfs_path = $YARN_HOME" >> asap-platform/asap-server/src/main/resources/asap.properties
+	sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path ="$YARN_HOME"/bin/hdfs:" asap-platform/asap-server/src/main/resources/asap.properties
 	# path of asap command of ASAP server which does the reporting( takine measures)
-	echo "asap.asap_path = /home/$USER/asap/bin/asap" >> asap-platform/asap-server/src/main/resources/asap.properties	
+	sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" asap-platform/asap-server/src/main/resources/asap.properties
 	
 #	echo $HOST_NAME
 #	echo $YARN_HOME

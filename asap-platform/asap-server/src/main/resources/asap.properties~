@@ -10,5 +10,3 @@ server.plain.port = 1323
 
 asap.dir = asapLibrary
 asap.basicLuaConf = asapLibrary/BasicLuaConf.lua
-asap.hdfs_path = /home/bill/PhD/projects/engines/hadoop-2.7.1
-asap.asap_path = /home/bill/asap/bin/asap
