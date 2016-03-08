@@ -14,7 +14,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.opSpecification.Algorithm.name=WIND_MultiJoin_Postgres
+Constraints.OpSpecification.Algorithm.name=WIND_MultiJoin_Postgres
 #INPUT( mandatory)
 Constraints.Input.number=4
 Constraints.Input0.type=SQL

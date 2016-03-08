@@ -1,5 +1,13 @@
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WIND_Filter_cdr_rIDnull_Postgres
+#INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
+#OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
-Constraints.opSpecification.Algorithm.name=WIND_Filter_cdr_rIDnull_Postgres
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
