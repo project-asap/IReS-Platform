@@ -25,4 +25,4 @@ Constraints.Input3.type=SQL
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 #PREPARED STATEMENT
-Constraints.OpSpecification.SQL_query="SELECT *, $2 AS $3 FROM $1"
+Constraints.OpSpecification.SQL_query="SELECT $3 FROM $1 WHERE $2"
