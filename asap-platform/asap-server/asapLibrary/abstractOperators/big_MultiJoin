@@ -1,8 +1,0 @@
-Constraints.Input.number=4
-Constraints.Input0.type=SQL
-Constraints.Input1.type=SQL
-Constraints.Input2.type=SQL
-Constraints.Input3.type=SQL
-Constraints.Output.number=1
-Constraints.Output0.type=SQL
-Constraints.opSpecification.Algorithm.name=WIND_MultiJoin_Postgres
