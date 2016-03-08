@@ -5,7 +5,7 @@
 Constraints.OpSpecification.Algorithm.name=WIND_Join_CDR_VORONOI_Postgres
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=2
 #Input0

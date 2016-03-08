@@ -5,17 +5,17 @@
 Constraints.OpSpecification.Algorithm.name=WIND_Filter_cdr_rIDnull_Postgres
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=hdp1
+Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=hdp1
+Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
 

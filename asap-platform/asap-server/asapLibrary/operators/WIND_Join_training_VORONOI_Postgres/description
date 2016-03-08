@@ -5,22 +5,22 @@
 Constraints.OpSpecification.Algorithm.name=WIND_Join_training_VORONOI_Postgres
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=2
 #Input0
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=hdp1
+Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #Input1
 Constraints.Input1.type=SQL
 Constraints.Input1.Engine.SQL=PostgreSQL
-Constraints.Input1.Engine.location=hdp1
+Constraints.Input1.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=hdp1
+Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 ON $3"
 
