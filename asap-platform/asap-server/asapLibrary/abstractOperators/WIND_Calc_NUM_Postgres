@@ -7,7 +7,8 @@ Constraints.OpSpecification.Algorithm.name=WIND_Calc_NUM_Postgres
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
 Constraints.Output0.type=SQL
+Constraints.Output1.type=SQL
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"

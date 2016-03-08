@@ -364,33 +364,38 @@ public class Operator {
         logger.info( "at position: " + position);
         logger.info( "and inputs: " + inputs);
         SpecTreeNode variables = optree.getNode("Execution.Output" + position);
-        logger.info( "Execution variables are: " + variables);
 		HashMap<String, String> val = new HashMap<String, String>();
 		variables.toKeyValues("", val);
         logger.info( "Execution variables are: " + variables);
-		for (Entry<String, String> e : val.entrySet()) {
-			if (e.getKey().equals("path")) {
-				copyExecPath(d, e.getValue());
-			} else {
-				String[] s = e.getValue().split("\\.");
-				if (s[0].startsWith("In")) {
-					int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
-					//System.out.println("data index "+ index);
-					WorkflowNode n = inputs.get(index);
-					String v = "";
-					if (n.isOperator)
-						v = n.inputs.get(0).dataset.getParameter("Execution." + s[1]);
-					else
-						v = n.dataset.getParameter("Execution." + s[1]);
-					if (v == null) {
-						v = "_";
-					}
-					d.add("Execution." + e.getKey(), v);
+        try{
+			for (Entry<String, String> e : val.entrySet()) {
+				if (e.getKey().equals("path")) {
+					copyExecPath(d, e.getValue());
 				} else {
-					d.add("Execution." + e.getKey(), e.getValue());
+					String[] s = e.getValue().split("\\.");
+					if (s[0].startsWith("In")) {
+						int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
+						//System.out.println("data index "+ index);
+						WorkflowNode n = inputs.get(index);
+						String v = "";
+						if (n.isOperator)
+							v = n.inputs.get(0).dataset.getParameter("Execution." + s[1]);
+						else
+							v = n.dataset.getParameter("Execution." + s[1]);
+						if (v == null) {
+							v = "_";
+						}
+						d.add("Execution." + e.getKey(), v);
+					} else {
+						d.add("Execution." + e.getKey(), e.getValue());
+					}
 				}
-			}
-		}
+			}        
+        }
+        catch( NullPointerException npe){
+        	logger.info( "ERROR: There is a problem with Execution.Output properties for some");
+        	logger.info( "description file( s).")
+        }
 	}
 
 	public void outputFor(Dataset d, int position,
@@ -400,7 +405,13 @@ public class Operator {
 		if (d.datasetTree == null)
 			d.datasetTree = new SpecTree();
 
-		copyExecVariables(d, position, inputs);
+		try{
+			copyExecVariables(d, position, inputs);
+		}
+		catch( NullPointerException npe){
+        	logger.info( "ERROR: There is also a problem with Constraints.Output properties");
+        	logger.info( " for the same description file( s).");
+		}
 		generateOptimizationMetrics(d, position, nextMetrics);
 	}
 

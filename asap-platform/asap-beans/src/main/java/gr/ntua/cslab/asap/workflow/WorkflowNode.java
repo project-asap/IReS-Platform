@@ -180,16 +180,16 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								the logs
 							*/
 							if( !tempInput.checkMatch(in.dataset)){
-								logger.info( "ERROR: There is an input mismatch. Check"
-											+ " if the property Constraints.Inputx.type"
-											+ " is defined for some input x into operator"
-											+ op.opName + "'s description file but it is"
-											+ " not defined appropriately into the description"
-											+ " file of the corresponding input( dataset) x."
-											+ " This message should be taken as a real error when"
-											+ " the materialization seems to succeed when pushing"
-											+ " 'Materialize Workflow' button but the workflow"
-											+ " is not displayed at all.");
+								logger.info( "ERROR: For operator " + op.opName + " there "
+											+ " is an input mismatch. Check inside its"
+											+ " description file if all properties Constraints.Input"
+											+ " for some input x match with all the corresponding"
+											+ " properties of the input dataset x, probably a"
+											+ " materialized one, like the very first input( s)"
+											+ " of the workflow. This message should be taken"
+											+ " as a real error when the materialization seems"
+											+ " to succeed when pushing 'Materialize Workflow'"
+											+ " button but the workflow is not displayed at all.");
 							}
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
@@ -388,7 +388,19 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
                             logger.info( "outN: " + outN);
                             logger.info( "nextMetrics: " + nextMetrics);
                             logger.info( "temp.inputs: " + temp.inputs);
-							op.outputFor(tempOutput, outN, nextMetrics, temp.inputs);
+                            try{
+								op.outputFor(tempOutput, outN, nextMetrics, temp.inputs);                            
+                            }
+                            catch( NullPointerException npe){
+	                           	logger.info( "ERROR: For operator " + op.opName + " there is a");
+	                           	logger.info( "mismatch between the Constraints.Output and");
+	                           	logger.info( "Execution.Output properties inside its description");
+	                           	logger.info( "file. Or maybe, these properties match between them");
+	                           	logger.info( "but they may have a mismatch with the graph file");
+	                           	logger.info( "of the workflow where this operator belongs, e.g. from");
+	                           	logger.info( "the graph file the operatos has x outputs but in the");
+	                           	logger.info( "description file y outputs where declared.");
+                            }
 
 							//tempOutput.outputFor(op, 0, temp.inputs);
 							tempOutputNode.setDataset(tempOutput);

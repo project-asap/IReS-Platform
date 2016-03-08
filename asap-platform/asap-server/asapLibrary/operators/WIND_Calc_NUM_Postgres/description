@@ -12,7 +12,12 @@ Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
+#Output0
+Constraints.Output0.type=SQL
+Constraints.Output0.Engine.SQL=PostgreSQL
+Constraints.Output0.Engine.location=hdp1.itc.unipi.it
+#Output1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
 Constraints.Output0.Engine.location=hdp1.itc.unipi.it
@@ -50,3 +55,4 @@ Execution.Argument3=dbname
 #EXECUTION OUTPUT( mandatory)
 Execution.Output0.name=data
 Execution.Output0.schema=(*)
+Execution.Output1.schema=(*)
