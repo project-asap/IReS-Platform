@@ -5,30 +5,30 @@
 Constraints.OpSpecification.Algorithm.name=WIND_MultiJoin_Postgres
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=4
 #Input0
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=hdp1
+Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #Input1
 Constraints.Input1.type=SQL
 Constraints.Input1.Engine.SQL=PostgreSQL
-Constraints.Input1.Engine.location=hdp1
+Constraints.Input1.Engine.location=hdp1.itc.unipi.it
 #Input2
 Constraints.Input2.type=SQL
 Constraints.Input2.Engine.SQL=PostgreSQL
-Constraints.Input2.Engine.location=hdp1
+Constraints.Input2.Engine.location=hdp1.itc.unipi.it
 #Input3
 Constraints.Input3.type=SQL
 Constraints.Input3.Engine.SQL=PostgreSQL
-Constraints.Input3.Engine.location=hdp1
+Constraints.Input3.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=hdp1
+Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT $3 FROM $1 WHERE $2"
 
