@@ -1,0 +1,6 @@
+Constraints.type=SQL
+Constraints.Engine.SQL=PostgreSQL
+Constraints.Engine.location=hdp1.itc.unipi.it
+Optimization.size=4.50E08
+Execution.name=events_filter
+Execution.schema=(rID int, hour int, DOY int, DOW int, ratio float)

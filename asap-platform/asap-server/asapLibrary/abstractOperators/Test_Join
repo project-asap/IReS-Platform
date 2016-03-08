@@ -1,0 +1,6 @@
+Constraints.Input.number=2
+Constraints.Input0.type=SQL
+Constraints.Input1.type=SQL
+Constraints.Output.number=1
+Constraints.Output0.type=SQL
+Constraints.opSpecification.Algorithm.name=Test_Join_Postgres
