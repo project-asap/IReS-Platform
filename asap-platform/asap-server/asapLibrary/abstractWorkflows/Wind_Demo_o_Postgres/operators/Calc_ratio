@@ -1,5 +1,0 @@
-Constraints.Input.number=1
-Constraints.Input0.type=SQL
-Constraints.Output.number=1
-Constraints.Output0.type=SQL
-Constraints.opSpecification.Algorithm.name=WIND_Calc_ratio_Postgres
