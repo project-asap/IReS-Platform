@@ -40,6 +40,8 @@ Optimization.inputSpace.timeFrame=Double,62015.0,122015.0,30000.0
 Optimization.outputSpace.execTime=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=1.0
 
 #############
 # EXECUTION #

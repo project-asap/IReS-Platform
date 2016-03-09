@@ -1,5 +1,9 @@
 -- The command to execute.
 SHELL_COMMAND = "./Stereotype_Classification.sh"
+
+-- Home directory of operator
+STEREOTYPE_CLASSIFICATION_HOME = "asapLibrary/operators/Wind_Stereotype_Classification_Spark"
+
 -- The actual distributed shell job.
 operator = yarn {
 	name = "Execute Stereotype_Classification_Spark Operator",

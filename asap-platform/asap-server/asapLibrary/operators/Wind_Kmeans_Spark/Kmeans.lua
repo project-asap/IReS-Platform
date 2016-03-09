@@ -1,5 +1,9 @@
 -- The command to execute.
 SHELL_COMMAND = "./Kmeans.sh"
+
+-- Home directory of operator
+KMEANS_HOME = "asapLibrary/operators/Wind_Kmeans_Spark"
+
 -- The actual distributed shell job.
 operator = yarn {
 	name = "Execute Kmeans_Spark Operator",

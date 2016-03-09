@@ -30,5 +30,7 @@ echo -e "Starting clustering.py script ..."
 #pass command line arguments explicitly
 #pyspark clustering.py roma 06-2015 archetipi.csv 100 0.4
 #pass command line arguments implicitly through description file
-pyspark clustering.py $1 $2 $3 $4 $5
+#pyspark clustering.py $1 $2 $3 $4 $5
+SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
+$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 clustering.py roma 01-06-2015
 echo -e "... clustering.py script ended"

@@ -1,12 +1,16 @@
 -- The command to execute.
 SHELL_COMMAND = "./User_Profiling.sh"
+
+-- Home directory of operator
+USER_PROFILING_HOME = "asapLibrary/operators/Wind_User_Profiling_Spark"
+
 -- The actual distributed shell job.
 operator = yarn {
 	name = "Execute User_Profiling_Spark Operator",
   	timeout = 10000000,
   	memory = 1024,
   	cores = 1,
-	nodes = "master",
+	nodes = "hdp1.itc.unipi.it",
   	master = {
     		env = base_env,
     		resources = base_resources,
