@@ -93,7 +93,7 @@ public class Operator {
 								+ " parameter or both are missing. Add them appropriately.");
 			npe.printStackTrace();
 		}
-		
+
 		inputSource = optree.getParameter("Optimization.inputSource.type");
 		minTotalError = Double.MAX_VALUE;
 
@@ -359,9 +359,15 @@ public class Operator {
 	}
 
 	public void copyExecVariables(Dataset d, int position, List<WorkflowNode> inputs) {
-		SpecTreeNode variables = optree.getNode("Execution.Output" + position);
+		logger.info( "Copying execution parameters for" );
+        logger.info( "dataset: " + d.datasetName);
+        logger.info( "at position: " + position);
+        logger.info( "and inputs: " + inputs);
+        SpecTreeNode variables = optree.getNode("Execution.Output" + position);
+        logger.info( "Execution variables are: " + variables);
 		HashMap<String, String> val = new HashMap<String, String>();
 		variables.toKeyValues("", val);
+        logger.info( "Execution variables are: " + variables);
 		for (Entry<String, String> e : val.entrySet()) {
 			if (e.getKey().equals("path")) {
 				copyExecPath(d, e.getValue());
@@ -551,7 +557,7 @@ public class Operator {
 						v = Double.parseDouble(val);
 						//System.out.println(v);
 					}
-				} 
+				}
 				values.put(inVar, v);
 			} else {
 				//System.out.println("Null: "+s[0]);

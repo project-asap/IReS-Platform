@@ -16,7 +16,7 @@
 	<!-- Configurations for Resource Manager -->
 	<property>
 	  <name>yarn.resourcemanager.hostname</name>
-	  <value>master</value>
+	  <value></value>
 	  <description>The hostname of the RM.</description>
 	</property>
   
