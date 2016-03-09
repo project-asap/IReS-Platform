@@ -79,8 +79,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	}
 
 	public void addInput(int index, WorkflowNode input) {
-        System.out.println( inputs );
-        System.out.println( index + " " + input );
 		inputs.add(index,input);
 	}
 
