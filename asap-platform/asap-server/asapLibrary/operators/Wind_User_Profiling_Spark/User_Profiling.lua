@@ -32,8 +32,8 @@ operator = yarn {
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["user_profilo.py"] = {
-       				file = USER_PROFILING_HOME .. "/user_profilo.py",
+    			["user_profiling.py"] = {
+       				file = USER_PROFILING_HOME .. "/user_profiling.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
