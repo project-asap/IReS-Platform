@@ -79,6 +79,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	}
 
 	public void addInput(int index, WorkflowNode input) {
+        System.out.println( inputs );
+        System.out.println( index + " " + input );
 		inputs.add(index,input);
 	}
 
@@ -389,7 +391,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
                             logger.info( "nextMetrics: " + nextMetrics);
                             logger.info( "temp.inputs: " + temp.inputs);
                             try{
-								op.outputFor(tempOutput, outN, nextMetrics, temp.inputs);                            
+								op.outputFor(tempOutput, outN, nextMetrics, temp.inputs);
                             }
                             catch( NullPointerException npe){
 	                           	logger.info( "ERROR: For operator " + op.opName + " there is a");

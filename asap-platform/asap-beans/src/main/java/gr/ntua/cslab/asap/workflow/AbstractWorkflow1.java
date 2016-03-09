@@ -37,7 +37,7 @@ public class AbstractWorkflow1 {
 	private HashMap<String,WorkflowNode> workflowNodes;
 	public String name, directory;
 	private static Logger logger = Logger.getLogger(AbstractWorkflow1.class.getName());
-	
+
 	private HashMap<String, WorkflowNode> materilizedDatasets;
 	public HashMap<String,String> groupInputs;
 	public String optimizationFunction;
@@ -56,7 +56,7 @@ public class AbstractWorkflow1 {
 		workflowNodes = new HashMap<String, WorkflowNode>();
 		materilizedDatasets = new HashMap<String, WorkflowNode>();
 	}
-	
+
 	public AbstractWorkflow1(String name, String directory) {
 		this.directory = directory;
 		this.name=name;
@@ -71,7 +71,7 @@ public class AbstractWorkflow1 {
 	public void addTargets(List<WorkflowNode> targets) {
 		this.targets.addAll(targets);
 	}
-	
+
 	public List<WorkflowNode> getTargets() {
 		return targets;
 	}
@@ -92,14 +92,14 @@ public class AbstractWorkflow1 {
 		Double bestCost = 0.0;
 		Double tempCost = 0.0;
 		List<WorkflowNode> bestPlan=null;
-		
+
 		for(WorkflowNode t : targets){
 			logger.info( "Materializing workflow node: " + t.toStringNorecursive());
 			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable,t.getName());
 			/* vpapa: assert that WorkflowNode.materialize() returned something
 				valid
 			*/
-			if( l != null && !l.isEmpty()){							
+			if( l != null && !l.isEmpty()){
 				if(functionTarget.contains("min")){
 					bestCost=Double.MAX_VALUE;
 					for(WorkflowNode r : l){
@@ -149,7 +149,7 @@ public class AbstractWorkflow1 {
 		}
 		return materializedWorkflow;
 	}// end of AbstractWorkflow1 materialize
-	
+
 
 	public MaterializedWorkflow1 replan(
 			HashMap<String, WorkflowNode> materilizedDatasets) throws Exception {
@@ -158,7 +158,7 @@ public class AbstractWorkflow1 {
 	}
 
 
-	
+
 	public String parsePolicy(String policy) {
 		this.policy=policy;
 		groupInputs = new HashMap<String, String>();
@@ -188,13 +188,13 @@ public class AbstractWorkflow1 {
 		return "";
 		//System.out.println(functionTarget);
 	}
-	
+
 	public void writeToDir(String directory) throws Exception {
 
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
 		}
-		
+
         File workflowDir = new File(directory);
         if (!workflowDir.exists()) {
         	workflowDir.mkdirs();
@@ -209,19 +209,19 @@ public class AbstractWorkflow1 {
         }
         File edgeGraph = new File(directory+"/graph");
     	FileOutputStream fos = new FileOutputStream(edgeGraph);
-    	 
+
     	BufferedWriter graphWritter = new BufferedWriter(new OutputStreamWriter(fos));
-    	
+
 
 		for(WorkflowNode t : targets){
 			t.writeToDir(directory+"/operators",directory+"/datasets",graphWritter);
 			graphWritter.write(t.toStringNorecursive() +",$$target");
 			graphWritter.newLine();
 		}
-    	
+
 		graphWritter.close();
 	}
-	
+
 
 	public void readFromDir(String directory) throws IOException {
 		HashMap<String,WorkflowNode> nodes = new HashMap<String, WorkflowNode>();
@@ -235,7 +235,7 @@ public class AbstractWorkflow1 {
 				temp.readPropertiesFromFile(files[i]);
 				n.setAbstractOperator(temp);
 				nodes.put(temp.opName, n);
-			} 
+			}
 		}
 		folder = new File(directory+"/datasets");
 		/* vpapa: read only if datasets folder exists and it has content */
@@ -256,8 +256,8 @@ public class AbstractWorkflow1 {
 						}
 						n.setDataset(temp);
 						nodes.put(temp.datasetName, n);
-					} 
-				}				
+					}
+				}
 			}
 		}
 		//putting nodes into workflowNodes make them available for printing at IReS WUI
@@ -265,28 +265,30 @@ public class AbstractWorkflow1 {
 		File edgeGraph = new File(directory+"/graph");
 		FileInputStream fis = new FileInputStream(edgeGraph);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-	 
+
 		String line = null;
 		String[] e	= null;
+		WorkflowNode src = null;
+		WorkflowNode dest = null;
 		/* vpapa: operators or datasets defined in graph file may be missing from
 			the corresponding folders or misswritten into abstract workflow's graph
 			file
 		*/
-		try{		
+		try{
 			while ((line = br.readLine()) != null) {
 				e = line.split(",");
 				if(e[1].equals("$$target")){
 					this.targets.add(nodes.get(e[0]));
 				}
 				else if(e.length==2){
-					WorkflowNode src = nodes.get(e[0]);
-					WorkflowNode dest = nodes.get(e[1]);
+					src = nodes.get(e[0]);
+					dest = nodes.get(e[1]);
 					dest.addInput(src);
 					src.addOutput(dest);
 				}
 				else if(e.length==3){
-					WorkflowNode src = nodes.get(e[0]);
-					WorkflowNode dest = nodes.get(e[1]);
+					src = nodes.get(e[0]);
+					dest = nodes.get(e[1]);
 					if(dest.isOperator){
 						dest.addInput(Integer.parseInt(e[2]), src);
 						src.addOutput(dest);
@@ -308,9 +310,12 @@ public class AbstractWorkflow1 {
 								+ " that they are missing from the relative folders"
 								+ "or miswritten into abstract workflow's graph file.");
 		}
+        catch( IndexOutOfBoundsException iobe){
+             System.out.println( "ERROR: Destination: " + dest + "\nSource: " + src + "\nNumber: " + e[ 2]);
+        }
 		br.close();
 	}
-	
+
 
 	public void refresh() {
 		for(Entry<String, WorkflowNode> e : workflowNodes.entrySet()){
@@ -323,10 +328,10 @@ public class AbstractWorkflow1 {
 				workflowNodes.get(e.getKey()).dataset=d;
 			}
 		}
-		
+
 	}
 
-	
+
 	public String graphToString() throws IOException {
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		BufferedWriter graphWritter = new BufferedWriter(new OutputStreamWriter(bs));
@@ -339,11 +344,11 @@ public class AbstractWorkflow1 {
 			graphWritter.write(t.toStringNorecursive() +",$$target");
 			graphWritter.newLine();
 		}
-		
+
 		graphWritter.close();
 		return bs.toString("UTF-8");
 	}
-	
+
 	public String graphToStringRecursive() throws IOException {
 
 		for(WorkflowNode t : targets){
@@ -352,14 +357,14 @@ public class AbstractWorkflow1 {
 
 		ByteArrayOutputStream bs = new ByteArrayOutputStream();
 		BufferedWriter graphWritter = new BufferedWriter(new OutputStreamWriter(bs));
-    	
+
 
 		for(WorkflowNode t : targets){
 			t.graphToStringRecursive(graphWritter);
 			graphWritter.write(t.toStringNorecursive() +",$$target");
 			graphWritter.newLine();
 		}
-		
+
 		graphWritter.close();
 		return bs.toString("UTF-8");
 	}
@@ -372,7 +377,7 @@ public class AbstractWorkflow1 {
 		}
 		ByteArrayInputStream fis = new ByteArrayInputStream(workflowGraph.getBytes());
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-	 
+
 		String line = null;
 		while ((line = br.readLine()) != null) {
 			String[] e =line.split(",");
@@ -407,16 +412,16 @@ public class AbstractWorkflow1 {
 		case 4:
 			n = new WorkflowNode(false, false,"");
 			n.setDataset(DatasetLibrary.getDataset(name));
-			
+
 			break;
 
 		default:
 			n = new WorkflowNode(false, false,"");
 			break;
 		}
-		
+
 		workflowNodes.put(name,n);
-		
+
 	}
 
 	public void removeNode(String type, String name) {
@@ -436,7 +441,7 @@ public class AbstractWorkflow1 {
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws Exception {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
-	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"", 
+	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){
@@ -446,7 +451,7 @@ public class AbstractWorkflow1 {
 		}
 		return ret;
 	}
-	
+
 	public WorkflowDictionary toWorkflowDictionaryRecursive(String delimiter) throws Exception {
 		for(WorkflowNode t : targets){
 			t.setAllNotVisited();
@@ -457,8 +462,8 @@ public class AbstractWorkflow1 {
     	}
 		return ret;
 	}
-	
-	
+
+
 	public static void main(String[] args) throws Exception{
 
 
@@ -477,7 +482,7 @@ public class AbstractWorkflow1 {
 		WorkflowNode t1 = new WorkflowNode(false,false,"");
 		t1.setDataset(d1);
 		//d1.writeToPropertiesFile(d1.datasetName);
-		
+
 		Dataset d2 = new Dataset("mySQLDataset");
 		d2.add("Constraints.DataInfo.Attributes.number","2");
 		d2.add("Constraints.DataInfo.Attributes.Atr1.type","Varchar");
@@ -513,14 +518,14 @@ public class AbstractWorkflow1 {
 		WorkflowNode op2 = new WorkflowNode(true,true,"");
 		op2.setAbstractOperator(abstractOp1);
 		//abstractOp1.writeToPropertiesFile(abstractOp1.opName);
-		
+
 		Dataset d3 = new Dataset("d3");
 		WorkflowNode t3 = new WorkflowNode(false,true,"");
 		t3.setDataset(d3);
 		Dataset d4 = new Dataset("d4");
 		WorkflowNode t4 = new WorkflowNode(false,true,"");
 		t4.setDataset(d4);
-		
+
 		op1.addInput(t1);
 		op1.addInput(t2);
 		t3.addInput(op1);
@@ -534,6 +539,6 @@ public class AbstractWorkflow1 {
 		System.out.println(abstractWorkflow);
 		System.out.println(mw);
 		mw.printNodes();
-		
+
 	}
 }

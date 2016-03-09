@@ -390,11 +390,11 @@ public class Operator {
 						d.add("Execution." + e.getKey(), e.getValue());
 					}
 				}
-			}        
+			}
         }
         catch( NullPointerException npe){
         	logger.info( "ERROR: There is a problem with Execution.Output properties for some");
-        	logger.info( "description file( s).")
+        	logger.info( "description file( s).");
         }
 	}
 
