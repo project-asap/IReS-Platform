@@ -31,7 +31,12 @@ operator = yarn {
 					file = STEREOTYPE_CLASSIFICATION_HOME .. "/Stereotype_Classification.sh",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
-    			}
+    			},
+    			["stereo_type_classification.py"] = {
+					file = STEREOTYPE_CLASSIFICATION_HOME .. "/stereo_type_classification.py",
+      				type = "file",               -- other value: 'archive'
+      				visibility = "application",  -- other values: 'private', 'public'
+    			}    			
     		}		
  	}
 }

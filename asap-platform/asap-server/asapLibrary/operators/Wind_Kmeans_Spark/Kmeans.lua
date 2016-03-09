@@ -36,6 +36,11 @@ operator = yarn {
        				file = KMEANS_HOME .. "/archetipi.csv",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
+    			},
+    			["clustering.py"] = {
+       				file = KMEANS_HOME .. "/clustering.py",
+      				type = "file",               -- other value: 'archive'
+      				visibility = "application",  -- other values: 'private', 'public'
     			}
   			}		
  	}

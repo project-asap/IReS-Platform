@@ -37,8 +37,8 @@ operator = yarn {
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["centro_roma.csv"] = {
-					file = USER_PROFILING_HOME .. "/centro_roma.csv",
+    			["arre_roma.csv"] = {
+					file = USER_PROFILING_HOME .. "/arre_roma.csv",
 					type = "file",
 					visibility = "application"
 				}

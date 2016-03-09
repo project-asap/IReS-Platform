@@ -38,5 +38,5 @@ echo -e "Starting user_profiling.py script ..."
 #pass command line arguments implicitly through description file
 #pyspark user_profilo.py $1 $2 $3 $4
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
-$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 user_profiling.py hdfs:///dataset_simulated/06/1.csv centro_roma.csv roma 01-06-2015
+$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 user_profiling.py hdfs:///dataset_simulated/06/1.csv arre_roma.csv roma 01-06-2015
 echo -e "... user_profiling.py script ended"

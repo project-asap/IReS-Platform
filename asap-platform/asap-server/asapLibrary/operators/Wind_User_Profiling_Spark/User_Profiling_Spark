@@ -50,7 +50,7 @@ Execution.LuaScript=User_Profiling.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=4
 Execution.Argument0=In0.path
-Execution.Argument1=centro_roma.csv
+Execution.Argument1=arre_roma.csv
 Execution.Argument2=roma
 Execution.Argument3=06-2015
 #EXECUTION COPY FILES( optional)
