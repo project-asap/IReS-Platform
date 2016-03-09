@@ -313,12 +313,12 @@ public class AbstractWorkflow1 {
         catch( IndexOutOfBoundsException iobe){
              System.out.println( "ERROR: Destination: " + dest + " has " + src + "as source"
              					 + " at its input with number " + e[ 2] + ". However, " + dest
-             					 + " has " + inputs.size() + " inputs which is less than " + e[ 2] + "."
+             					 + " has " + dest.inputs.size() + " inputs which is less than " + e[ 2] + "."
              					 + " Make sure that the graph file is set appropriately of the"
              					 + " corresponding workflow for this operator i.e. " + dest + ".");
              logger.info( "ERROR: Destination: " + dest + " has " + src + "as source"
  					 + " at its input with number " + e[ 2] + ". However, " + dest
- 					 + " has " + inputs.size() + " inputs which is less than " + e[ 2] + "."
+ 					 + " has " + dest.inputs.size() + " inputs which is less than " + e[ 2] + "."
  					 + " Make sure that the graph file is set appropriately of the"
  					 + " corresponding workflow for this operator i.e. " + dest + ".");
         }
