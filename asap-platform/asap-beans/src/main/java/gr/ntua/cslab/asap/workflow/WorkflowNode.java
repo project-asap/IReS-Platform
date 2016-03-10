@@ -807,11 +807,29 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    		if(!dataset)
 		    			arg = n.operator.getParameter("Execution.Output0.path");*/
 		    	}
-		    	if(arg.contains(" ")){
-			    	ret+= "\""+arg+"\""+" ";
+		    	/* vpapa: an execution argument may be surrounded by double or single quotes
+		    		in which case no double or single quotes should be added and the argument
+		    		should be taken as is. If the argument is not surrounded by double quotes
+		    		and it also contains spaces, then it must be contained by double or single
+		    		quotes. This way bash interpreter can understand correctly the execution
+		    		arguments and the operator can be executed if no other error rises.
+		    	*/
+		    	//does argument starts and ends with double or single quotes?
+		    	if( ( arg.startsWith( "\"") && arg.endsWith( "\"")) || ( arg.startsWith( "'") && arg.endsWith( "'"))){
+		    		//return as is
+		    		ret += arg + " ";
 		    	}
 		    	else{
-			    	ret+= arg+" ";
+					//argument is not surrounded by double( single) quotes, does it contain spaces?
+					if(arg.contains(" ")){
+						//surround argument by double quotes
+						ret += "\"" + arg + "\"" + " ";
+					}
+					else{
+						//argument is not surrounded by double( single) quotes and it does
+						//not contain spaces
+						ret += arg + " ";
+					}  	
 		    	}
 			}
 			return ret;
