@@ -54,8 +54,9 @@ Execution.Argument0=roma
 Execution.Argument1=06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
-Execution.copyToLocal=In0.path
+#Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=sociometer/roma-06-2015.p
+#Execution.copyFromLocal=sociometer/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/sociometer/roma-06-2015.p
+#Execution.Output0.path=$HDFS_OP_DIR/sociometer/roma-06-2015.p
+Execution.Output0.path=hdfs:///sociometer/roma-06-2015.p

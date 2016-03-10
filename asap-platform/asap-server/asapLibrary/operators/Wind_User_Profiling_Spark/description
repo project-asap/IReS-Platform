@@ -50,13 +50,14 @@ Execution.LuaScript=User_Profiling.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=4
 Execution.Argument0=In0.path
-Execution.Argument1=arre_roma.csv
+Execution.Argument1=aree_roma.csv
 Execution.Argument2=roma
 Execution.Argument3=06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
-Execution.copyToLocal=In0.path
+#Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=profiles/roma-06-2015.p
+#Execution.copyFromLocal=profiles/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/profiles/roma-06-2015.p
+#Execution.Output0.path=$HDFS_OP_DIR/profiles/roma-06-2015.p
+Execution.Output0.path=hdfs:///profiles/roma-06-2015.p
