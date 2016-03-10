@@ -48,8 +48,8 @@ Optimization.cost=1.0
 Execution.LuaScript=WIND_Calc_NUM_Postgres.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=4
-Execution.Argument0="cdr_w_a GROUP BY user_id"
-Execution.Argument1="user_id, count(distinct(user_id)) as NUM"
+Execution.Argument0="data_raw GROUP BY hour, DOW, DOY"
+Execution.Argument1="count(distinct(user_id)) as NUM"
 Execution.Argument2=data
 Execution.Argument3=dbname
 #EXECUTION OUTPUT( mandatory)
