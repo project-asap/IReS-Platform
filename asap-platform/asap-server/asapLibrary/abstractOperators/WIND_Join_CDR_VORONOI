@@ -2,8 +2,8 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS_2
+Constraints.OpSpecification.Algorithm.name=WIND_Join_CDR_VORONOI
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
 #OUTPUT( mandatory)
 Constraints.Output.number=1

@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS_2
+Constraints.OpSpecification.Algorithm.name=WIND_Filter_training_data
 #INPUT( mandatory)
 Constraints.Input.number=1
 #OUTPUT( mandatory)
