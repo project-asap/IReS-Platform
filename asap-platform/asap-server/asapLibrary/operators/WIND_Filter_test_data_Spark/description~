@@ -2,20 +2,25 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Filter_training_data
+Constraints.OpSpecification.Algorithm.name=WIND_Filter_test_data
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
-Constraints.Input0.Engine.SQL=SparkSQL
+Constraints.Input0.Engine.SQL=PostgreSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
+#Output0
 Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=SparkSQL
+Constraints.Output0.Engine.SQL=PostgreSQL
 Constraints.Output0.Engine.location=hdp1.itc.unipi.it
+#Output1
+Constraints.Output1.type=SQL
+Constraints.Output1.Engine.SQL=PostgreSQL
+Constraints.Output1.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
 
@@ -40,13 +45,14 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=WIND_Filter_training_data_Postgres.lua
+Execution.LuaScript=WIND_Filter_test_data_Postgres.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=4
 Execution.Argument0=data
-Execution.Argument1="DOY>=1 AND DOY <=31"
-Execution.Argument2=training_data
+Execution.Argument1="DOY>=32"
+Execution.Argument2=test_data
 Execution.Argument3=dbname
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.name=training_data
+Execution.Output0.name=test_data
 Execution.Output0.schema=(*)
+Execution.Output1.schema=(*)

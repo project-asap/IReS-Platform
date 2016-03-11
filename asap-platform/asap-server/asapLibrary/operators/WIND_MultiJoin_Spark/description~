@@ -2,22 +2,35 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Filter_training_data
+Constraints.OpSpecification.Algorithm.name=WIND_MultiJoin
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=4
+#Input0
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=SparkSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it
+#Input1
+Constraints.Input1.type=SQL
+Constraints.Input1.Engine.SQL=SparkSQL
+Constraints.Input1.Engine.location=hdp1.itc.unipi.it
+#Input2
+Constraints.Input2.type=SQL
+Constraints.Input2.Engine.SQL=SparkSQL
+Constraints.Input2.Engine.location=hdp1.itc.unipi.it
+#Input3
+Constraints.Input3.type=SQL
+Constraints.Input3.Engine.SQL=SparkSQL
+Constraints.Input3.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=SparkSQL
+Constraints.Output0.Engine.SQL=PostgreSQL
 Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
-Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
+Constraints.OpSpecification.SQL_query="SELECT $3 FROM $1 WHERE $2"
 
 ############
 # MODELING #
@@ -25,6 +38,7 @@ Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
 #type,min_value,max_value,step
 Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+Optimization.inputSpace.In1.size=Double,1E7,1E10,l
 #OPTIMIZATION METRIC( mandatory, at least one)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
@@ -32,7 +46,7 @@ Optimization.outputSpace.cost=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.Out0.size=(In0.size)*0.1
+Optimization.Out0.size=(In0.size+In1.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
@@ -40,13 +54,14 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=WIND_Filter_training_data_Postgres.lua
+Execution.LuaScript=WIND_MultiJoin_Postgres.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=4
-Execution.Argument0=data
-Execution.Argument1="DOY>=1 AND DOY <=31"
-Execution.Argument2=training_data
-Execution.Argument3=dbname
+Execution.Arguments.number=5
+Execution.Argument0="test_data a, cp_base b, am, bm"
+Execution.Argument1="a.rid = b.rid and a.hour = b.hour and a.dow = b.dow and b.dow= bm.dow and a.doy = am.doy"
+Execution.Argument2="a.rid, a.hour, a.doy, a.dow, a.num as anum, b.num as bnum"
+Execution.Argument3=big_join
+Execution.Argument4=dbname
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.name=training_data
+Execution.Output0.name=big_join
 Execution.Output0.schema=(*)

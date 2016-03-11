@@ -9,17 +9,17 @@ Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.i
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
-Constraints.Input0.Engine.SQL=PostgreSQL
+Constraints.Input0.Engine.SQL=SparkSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=2
 #Output0
 Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=PostgreSQL
+Constraints.Output0.Engine.SQL=SparkSQL
 Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #Output1
 Constraints.Output1.type=SQL
-Constraints.Output1.Engine.SQL=PostgreSQL
+Constraints.Output1.Engine.SQL=SparkSQL
 Constraints.Output1.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"

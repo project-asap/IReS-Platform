@@ -2,22 +2,27 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Filter_training_data
+Constraints.OpSpecification.Algorithm.name=WIND_Join_CDR_VORONOI
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
+#Input0
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=SparkSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it
+#Input1
+Constraints.Input1.type=SQL
+Constraints.Input1.Engine.SQL=SparkSQL
+Constraints.Input1.Engine.location=hdp1.itc.unipi.it
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=SparkSQL
+Constraints.Output0.Engine.SQL=PostgreSQL
 Constraints.Output0.Engine.location=hdp1.itc.unipi.it
 #PREPARED STATEMENT
-Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 ON $3"
 
 ############
 # MODELING #
@@ -25,6 +30,7 @@ Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
 #type,min_value,max_value,step
 Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+Optimization.inputSpace.In1.size=Double,1E7,1E10,l
 #OPTIMIZATION METRIC( mandatory, at least one)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
@@ -32,7 +38,7 @@ Optimization.outputSpace.cost=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.Out0.size=(In0.size)*0.1
+Optimization.Out0.size=(In0.size+In1.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
@@ -40,13 +46,14 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=WIND_Filter_training_data_Postgres.lua
+Execution.LuaScript=WIND_Join_CDR_VORONOI_Postgres.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=4
-Execution.Argument0=data
-Execution.Argument1="DOY>=1 AND DOY <=31"
-Execution.Argument2=training_data
-Execution.Argument3=dbname
+Execution.Arguments.number=5
+Execution.Argument0=CDR
+Execution.Argument1=VORONOI
+Execution.Argument2="CDR.aID = VORONOI.aID"
+Execution.Argument3=cdr_wr
+Execution.Argument4=dbname
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.name=training_data
+Execution.Output0.name=cdr_wr
 Execution.Output0.schema=(*)
