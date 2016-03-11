@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Filter_test_data_Postgres
+Constraints.OpSpecification.Algorithm.name=WIND_Filter_test_data
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it

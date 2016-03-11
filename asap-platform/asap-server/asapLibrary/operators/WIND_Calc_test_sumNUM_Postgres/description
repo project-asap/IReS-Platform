@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Calc_test_sumNUM_Postgres
+Constraints.OpSpecification.Algorithm.name=WIND_Calc_test_sumNUM
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it

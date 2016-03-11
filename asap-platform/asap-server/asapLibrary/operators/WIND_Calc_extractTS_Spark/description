@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS_Postgres
+Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS
 #ENGINE
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
