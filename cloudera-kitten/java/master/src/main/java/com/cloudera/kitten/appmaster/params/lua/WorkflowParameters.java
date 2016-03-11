@@ -179,7 +179,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   @Override
   public int getAllowedFailures() {
     if (e0.isNil(LuaFields.TOLERATED_FAILURES)) {
-      return 4; // TODO: kind of arbitrary, no? :)
+      return 54; // TODO: kind of arbitrary, no? :)
     } else {
       return e0.getInteger(LuaFields.TOLERATED_FAILURES);
     }
