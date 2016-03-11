@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Calc_cpbase_sumNUM_Spark
+Constraints.OpSpecification.Algorithm.name=WIND_Calc_cpbase_sumNUM
 #ENGINE
 Constraints.Engine=Spark
 #INPUT( mandatory)
