@@ -7,3 +7,5 @@ Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS_2
 Constraints.Input.number=1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
+#PREPARED STATEMENT( optional)
+Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"

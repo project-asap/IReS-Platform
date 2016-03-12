@@ -19,3 +19,5 @@ Constraints.OpSpecification.Algorithm.name=WIND_MultiJoin
 Constraints.Input.number=4
 #OUTPUT( mandatory)
 Constraints.Output.number=1
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT $3 FROM $1 WHERE $2"

@@ -7,3 +7,5 @@ Constraints.OpSpecification.Algorithm.name=WIND_Filter_cdr_rIDnull
 Constraints.Input.number=1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
