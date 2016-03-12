@@ -119,9 +119,6 @@ public class SpecTree {
 						if(!n.checkMatch(n1)){
 							return false;
 						}
-						else{
-							logger.info( tree.getOpName())
-						}
 					}
 				}
 				if(!found){
