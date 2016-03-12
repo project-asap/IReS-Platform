@@ -236,7 +236,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 				}
 				p = Pattern.compile(value);
 				m = p.matcher(o1.value);
-				logger.log( "value: " + value + " o1.value: " + o1.value);
+				logger.info( "value: " + value + " o1.value: " + o1.value);
 				if(m.matches()){
 					return true;
 				}
