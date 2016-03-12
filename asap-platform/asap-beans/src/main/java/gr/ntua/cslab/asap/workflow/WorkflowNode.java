@@ -594,7 +594,19 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		String ret = "";
 		if(isOperator){
 			if(isAbstract)
-				ret+=abstractOperator.opName;
+				/* vpapa: similar to toStringNorecursive() case */
+				try{
+					ret+=abstractOperator.opName;
+				}
+				catch( NullPointerException npe){
+					System.out.println( "ERROR: The operator " + abstractName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractName
+										+ " into abstractOperators folder");
+					logger.info( "ERROR: The operator " + abstractName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractName
+										+ " into abstractOperators folder");
+					npe.printStackTrace();
+				}
 			else
 				ret+=operator.opName;
 		}

@@ -451,6 +451,8 @@ public class AbstractWorkflow1 {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
 			logger.info( "AbstractWorkflow1 WorkflowNode: " + n);
+			System.out.println( "AbstractWorkflow1 WorkflowNode: " + n);
+			System.out.println( "AbstractWorkflow1 WorkflowNode: " + n.getAbstractName());
 	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
