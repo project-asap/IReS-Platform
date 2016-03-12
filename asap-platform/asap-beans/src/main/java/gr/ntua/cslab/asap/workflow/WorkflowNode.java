@@ -134,8 +134,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(isOperator){
 			if(isAbstract){
 				List<Operator> operators = OperatorLibrary.getMatches(abstractOperator);
-				logger.info( "For abstract operator " + abstractOperator.opName + " the available"
-							 + " operator implementations are:\n " + operators);
+				//logger.info( "For abstract operator " + abstractOperator.opName + " the available"
+				//			 + " operator implementations are:\n " + operators);
 				for(Operator op : operators){
 					if(!ClusterStatusLibrary.checkEngineStatus(op))
 						continue;
