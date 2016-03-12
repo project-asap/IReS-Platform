@@ -236,6 +236,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 				}
 				p = Pattern.compile(value);
 				m = p.matcher(o1.value);
+				logger.log( "value: " + value + " o1.value: " + o1.value);
 				if(m.matches()){
 					return true;
 				}
@@ -271,7 +272,8 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 			else{
 				SpecTreeNode n1 = o1.children.get(n.getName());
 				if(n1!=null){
-					logger.info( n1);
+					logger.info( "Before recursion: " + n1);
+					logger.info( "Before recursion: " + n);
 					if(!n.checkMatch(n1))
 						logger.info( "No match found for: "+ n1);
 						return false;
