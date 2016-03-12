@@ -145,11 +145,13 @@ public class SpecTree {
 		for(SpecTreeNode n : tree.values()){
 			if( n.toString().indexOf( "OpSpecification") > -1){
 				System.out.println( "Inside getOpName()");
-				//ommit the 'OpSpecification{Algorithm{(name,' part
-				value = n.toString().split( ",")[ 1];
+				//keep from 'OpSpecification{Algorithm{(name, operator_name)}' to the end
+				value = n.toString().substring( n.toString().indexOf( "OpSpecification"));
+				//keep just the 'OpSpecification{Algorithm{(name, operator_name' part
+				value = value.substring( 0, value.indexOf( ")}"))
 				System.out.println( value);
-				//ommit the ')}'
-				value = value.split( ",")[ 0];
+				//take the operator_name
+				value = value.split( ",")[ 1];
 				System.out.println( value);
 				//now only the 'operator_name' part should be with some leading or trailing
 				//whitespaces
