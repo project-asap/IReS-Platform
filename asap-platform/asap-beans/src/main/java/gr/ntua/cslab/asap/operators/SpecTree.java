@@ -92,6 +92,29 @@ public class SpecTree {
 		}
 	}
 
+	public String getOpName(){
+		/* vpapa: return the name of the corresponding operator which expected to have this
+			form OpSpecification{Algorithm{(name, operator_name)}
+		*/
+		String value = "No_Operator_Name_Found";
+		for(SpecTreeNode n : tree.values()){
+			if( n.toString().startsWith( "OpSpecification")){
+				//ommit the 'OpSpecification{Algorithm{(name,' part
+				value = n.toString().split( ",")[ 1];
+				//ommit the ')}'
+				value = value.split( ",")[ 0];
+				//now only the 'operator_name' part should be with some leading or trailing
+				//whitespaces
+				if( value.equals( "")){
+					//no operator name has been specified
+					value = "No_Operator_Name_Found";
+				}
+				return value.trim();
+			}
+		}
+		return value;
+	}
+
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
 		logger.info( "\n\nChecking " + tree.getOpName() + " and " +  optree2.getOpName() + "for matching\n");
@@ -137,29 +160,6 @@ public class SpecTree {
 		return true;
 	}
 	
-	public String getOpName(){
-		/* vpapa: return the name of the corresponding operator which expected to have this
-			form OpSpecification{Algorithm{(name, operator_name)}
-		*/
-		String value = "No_Operator_Name_Found";
-		for(SpecTreeNode n : tree.values()){
-			if( n.toString().startsWith( "OpSpecification")){
-				//ommit the 'OpSpecification{Algorithm{(name,' part
-				value = n.toString().split( ",")[ 1];
-				//ommit the ')}'
-				value = value.split( ",")[ 0];
-				//now only the 'operator_name' part should be with some leading or trailing
-				//whitespaces
-				if( value.equals( "")){
-					//no operator name has been specified
-					value = "No_Operator_Name_Found";
-				}
-				return value.trim();
-			}
-		}
-		return value;
-	}
-
 	public SpecTree copyInputToOpSubTree(String prefix, String inout) {
 		SpecTree ret =  new SpecTree();
 
