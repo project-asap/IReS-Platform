@@ -449,13 +449,14 @@ public class AbstractWorkflow1 {
 
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws Exception {
 		WorkflowDictionary ret = new WorkflowDictionary();
-		System.out.println( "WorkflowNodes: " + workflowNodes);
-		System.out.println( "WorkflowNodes: " + workflowNodes.values());
+		logger.info( "WorkflowNodes: " + workflowNodes);
+		logger.info( "WorkflowNodes: " + workflowNodes.values());
+		/* vpapa: check for missing operators found in the workflow folder locally or in GitHub
+			and note them with a "MISSING" statement
+			TODO
+		*/
 		for(WorkflowNode n : workflowNodes.values()){
-			logger.info( "AbstractWorkflow1 WorkflowNode: " + n);
-			System.out.println( "AbstractWorkflow1 WorkflowNode: " + n);
-			System.out.println( "AbstractWorkflow1 WorkflowNode: " + n.getAbstractName());
-	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
+			OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){
