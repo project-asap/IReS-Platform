@@ -166,6 +166,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						}
 						HashMap<String,Double> oneInputMetrics = null;
 						WorkflowNode bestInput = null;
+						logger.info( "materializedInputs: " + materializedInputs);
 						for(WorkflowNode in : materializedInputs.get(i)){
 							logger.info("Checking: "+in.dataset.datasetName);
 							/* vpapa: in case the property Constraints.Inputx.type
