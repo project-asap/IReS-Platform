@@ -157,6 +157,12 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						temp.addInput(tempInputNode);
 
 						boolean inputMatches=false;
+						/* vpapa: if an input tx does not match with an operator it does not
+							mean that another input ty may match with the operator. For this,
+							before calling a move operator try all other inputs. Keep track
+							of the checked inputs with the variable below
+						*/
+						int checkedInputs = 0;
 						Double operatorOneInputCost=0.0;
 						if(materializedWorkflow.functionTarget.contains("min")){
 							operatorOneInputCost= Double.MAX_VALUE;
@@ -192,7 +198,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 											+ " to succeed when pushing 'Materialize Workflow'"
 											+ " button but the workflow is not displayed at all.");
 								logger.info( "Input dataset:\n" + in.dataset);
-								logger.info( "Input to be matched:\n" + tempInput);								
+								logger.info( "Input to be matched:\n" + tempInput);
+								//one input checked, go for the next
+								checkedInputs++;
+								if( checkedInputs < materializedInputs.size()){
+									//try next input if it exists
+									continue;
+								}
 							}
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
