@@ -143,7 +143,7 @@ public class SpecTree {
 		*/
 		String value = "No_Operator_Name_Found";
 		for(SpecTreeNode n : tree.values()){
-			if( n.toString().startsWith( "OpSpecification")){
+			if( n.toString().indexOf( "OpSpecification") > -1){
 				System.out.println( "Inside getOpName()");
 				//ommit the 'OpSpecification{Algorithm{(name,' part
 				value = n.toString().split( ",")[ 1];
