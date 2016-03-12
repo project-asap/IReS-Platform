@@ -223,8 +223,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								//generic move
 								logger.info("Check move ");
 								List<Operator> moveOps = OperatorLibrary.checkMove(in.dataset, tempInput);
+								logger.info( "Move operators: " + moveOps);
 								if(!moveOps.isEmpty()){
-									logger.info("true");
+									logger.info("Are there any available move operators? True");
 									inputMatches=true;
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
