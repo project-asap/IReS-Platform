@@ -251,6 +251,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 		}
 		for(SpecTreeNode n : children.values()){
 			logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
+			logger.info( n);
 			if(n.isRegex){
 				p = Pattern.compile(n.getName());
 				boolean found =false;
@@ -270,6 +271,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 			else{
 				SpecTreeNode n1 = o1.children.get(n.getName());
 				if(n1!=null){
+					logger.info( n1);
 					if(!n.checkMatch(n1))
 						logger.info( "No match found for: "+ n1);
 						return false;
