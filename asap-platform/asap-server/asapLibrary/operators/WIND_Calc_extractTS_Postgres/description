@@ -5,17 +5,17 @@
 Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS
 #ENGINE
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=hdp1.itc.unipi.it
+Constraints.Input0.Engine.location=hdp1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=hdp1.itc.unipi.it
+Constraints.Output0.Engine.location=hdp1
 #PREPARED STATEMENT( optional)
 Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"
 

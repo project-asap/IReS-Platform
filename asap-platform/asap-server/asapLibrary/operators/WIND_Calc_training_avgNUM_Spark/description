@@ -5,21 +5,22 @@
 Constraints.OpSpecification.Algorithm.name=WIND_Calc_training_avgNUM
 #ENGINE
 Constraints.Engine=SparkSQL
+Constraints.EngineSpecification.Distributed.SparkSQL.masterLocation=hdp1
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=SparkSQL
-Constraints.Input0.Engine.location=hdp1.itc.unipi.it
+Constraints.Input0.Engine.location=hdp1
 #OUTPUT( mandatory)
 Constraints.Output.number=2
 #Output0
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=SparkSQL
-Constraints.Output0.Engine.location=hdp1.itc.unipi.it
+Constraints.Output0.Engine.location=hdp1
 #Output1
 Constraints.Output1.type=SQL
 Constraints.Output1.Engine.SQL=SparkSQL
-Constraints.Output1.Engine.location=hdp1.itc.unipi.it
+Constraints.Output1.Engine.location=hdp1
 #PREPARED STATEMENT( optional)
 Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"
 

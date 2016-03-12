@@ -2,6 +2,8 @@
 # CONFIGURATION #
 #################
 Constraints.type=SQL
+Constraints.Engine.SQL=PostgreSQL
+Constraints.Engine.location=hdp1
 
 ############
 # MODELING #
