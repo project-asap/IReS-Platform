@@ -94,7 +94,7 @@ public class SpecTree {
 
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
-		logger.info( "\n\nChecking " + this.getOpName() + " and " +  optree2.getOpName() + "for matching\n");
+		logger.info( "\n\nChecking " + this.getOpName() + " and " +  optree2.getOpName() + " for matching\n");
 		logger.info( this.getOpName() + "  " + tree);
 		logger.info( optree2.getOpName() + "  " + optree2);
 		Pattern p = null;
@@ -144,15 +144,15 @@ public class SpecTree {
 		String value = "No_Operator_Name_Found";
 		for(SpecTreeNode n : tree.values()){
 			if( n.toString().indexOf( "OpSpecification") > -1){
-				System.out.println( "Inside getOpName()");
+				//System.out.println( "Inside getOpName()");
 				//keep from 'OpSpecification{Algorithm{(name, operator_name)}' to the end
 				value = n.toString().substring( n.toString().indexOf( "OpSpecification"));
 				//keep just the 'OpSpecification{Algorithm{(name, operator_name' part
 				value = value.substring( 0, value.indexOf( ")}"));
-				System.out.println( value);
+				//System.out.println( value);
 				//take the operator_name
 				value = value.split( ",")[ 1];
-				System.out.println( value);
+				//System.out.println( value);
 				//now only the 'operator_name' part should be with some leading or trailing
 				//whitespaces
 				if( value.equals( "")){
