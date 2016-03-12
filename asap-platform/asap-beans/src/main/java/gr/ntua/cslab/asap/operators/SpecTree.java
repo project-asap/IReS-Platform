@@ -144,10 +144,13 @@ public class SpecTree {
 		String value = "No_Operator_Name_Found";
 		for(SpecTreeNode n : tree.values()){
 			if( n.toString().startsWith( "OpSpecification")){
+				System.out.println( "Inside getOpName()");
 				//ommit the 'OpSpecification{Algorithm{(name,' part
 				value = n.toString().split( ",")[ 1];
+				System.out.println( value);
 				//ommit the ')}'
 				value = value.split( ",")[ 0];
+				System.out.println( value);
 				//now only the 'operator_name' part should be with some leading or trailing
 				//whitespaces
 				if( value.equals( "")){
