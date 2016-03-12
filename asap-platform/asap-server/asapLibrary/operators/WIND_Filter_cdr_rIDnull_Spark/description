@@ -9,12 +9,12 @@ Constraints.EngineSpecification.Distributed.SparkSQL.masterLocation=hdp1
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
-Constraints.Input0.Engine.SQL=PostegresSQL
+Constraints.Input0.Engine.SQL=PostgresSQL
 Constraints.Input0.Engine.location=hdp1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=PostegresSQL
+Constraints.Output0.Engine.SQL=PostgresSQL
 Constraints.Output0.Engine.location=hdp1
 #PREPARED STATEMENT
 Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"
