@@ -12,10 +12,13 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 public class SpecTreeNode implements Comparable<SpecTreeNode> {
 	public TreeMap<String,SpecTreeNode> children;
 	private String name, value;
 	public boolean isRegex;
+	private static Logger logger = Logger.getLogger( SpecTreeNode.class.getName());
 	
 	public SpecTreeNode(String name) {
 		children = new TreeMap<String,SpecTreeNode>();
@@ -219,7 +222,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 	
 	public boolean checkMatch(SpecTreeNode o1) {
 		//materialized operator o1
-		//System.out.println("checking: "+name);
+		logger.info("checking: "+name);
 		if(children.size()==0){
 			if(o1.children.size()==0){
 				if(value.startsWith("\"")){
@@ -234,7 +237,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					return true;
 				}
 				else{
-					//System.out.println("notFound: "+name+" this.value="+value+" o.value="+o1.value);
+					logger.info("notFound: "+name+" this.value="+value+" o.value="+o1.value);
 					return false;
 				}
 			}
