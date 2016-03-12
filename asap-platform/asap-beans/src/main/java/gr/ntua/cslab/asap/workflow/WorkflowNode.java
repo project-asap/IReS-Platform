@@ -158,7 +158,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 						boolean inputMatches=false;
 						/* vpapa: if an input tx does not match with an operator it does not
-							mean that another input ty may match with the operator. For this,
+							mean that another input ty may not match with the operator. For this,
 							before calling a move operator try all other inputs. Keep track
 							of the checked inputs with the variable below
 						*/
@@ -200,17 +200,15 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								logger.info( "Input dataset:\n" + in.dataset);
 								logger.info( "Input to be matched:\n" + tempInput);
 								//one input checked, go for the next
-								checkedInputs++;
 								logger.info( "checkedInputs: " + checkedInputs);
 								logger.info( "materializedInputs.size(): " + materializedInputs.size());
 								if( checkedInputs < materializedInputs.size()){
-									//try next input if it exists
-									i++;
+									checkedInputs++;
 									continue;
 								}
 								else{
 									//try for each input that does not match a move operator
-									i = 0;
+									//i = 0;
 								}
 							}
 							if( tempInput.checkMatch(in.dataset)){
