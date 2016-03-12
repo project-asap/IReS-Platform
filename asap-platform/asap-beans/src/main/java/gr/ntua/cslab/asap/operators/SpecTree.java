@@ -157,6 +157,7 @@ public class SpecTree {
 				return value.trim();
 			}
 		}
+		return value;
 	}
 
 	public SpecTree copyInputToOpSubTree(String prefix, String inout) {
