@@ -231,29 +231,29 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					if(value.equals(o1.value))
 						return true;
 					else{
-						logger.info( "Value " + value + " in not equal with " + o1.value);
+						//logger.info( "Value " + value + " in not equal with " + o1.value);
 						return false;					
 					}
 				}
 				p = Pattern.compile(value);
 				m = p.matcher(o1.value);
-				logger.info( "value: " + value + " o1.value: " + o1.value);
+				//logger.info( "value: " + value + " o1.value: " + o1.value);
 				if(m.matches()){
 					return true;
 				}
 				else{
-					logger.info("notFound: "+name+" this.value="+value+" o.value="+o1.value);
+					//logger.info("notFound: "+name+" this.value="+value+" o.value="+o1.value);
 					return false;
 				}
 			}
 			else{
-				logger.info( "o1.children.size() " + o1.children.size() + " is not zero.");
+				//logger.info( "o1.children.size() " + o1.children.size() + " is not zero.");
 				return false;
 			}
 		}
 		for(SpecTreeNode n : children.values()){
-			logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
-			logger.info( n);
+			//logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
+			//logger.info( n);
 			if(n.isRegex){
 				p = Pattern.compile(n.getName());
 				boolean found =false;
@@ -261,20 +261,20 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					m = p.matcher(n1.getName());
 					if(m.matches()){
 						found =true;
-						logger.info("found match: "+n.getName()+" "+n1.getName());
+						//logger.info("found match: "+n.getName()+" "+n1.getName());
 						return true;
 					}
 				}
 				if(!found){
-					logger.info("notFound: "+name);
+					//logger.info("notFound: "+name);
 					return false;
 				}
 			}
 			else{
 				SpecTreeNode n1 = o1.children.get(n.getName());
 				if(n1!=null){
-					logger.info( "Before recursion: " + n1);
-					logger.info( "Before recursion: " + n);
+					//logger.info( "Before recursion: " + n1);
+					//logger.info( "Before recursion: " + n);
 					if(!n.checkMatch(n1)){
 						logger.info( "No match found for: "+ n1);
 						return false;
@@ -282,7 +282,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 
 				}
 				else{
-					logger.info( "n1 is not null, n1: " + n1);
+					//logger.info( "n1 is not null, n1: " + n1);
 					return false;
 				}
 			}

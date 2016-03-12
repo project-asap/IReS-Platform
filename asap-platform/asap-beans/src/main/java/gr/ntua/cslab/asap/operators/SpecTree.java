@@ -95,8 +95,8 @@ public class SpecTree {
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
 		logger.info( "CHECKING " + this.getOpName() + " and " +  optree2.getOpName() + " for matching\n");
-		logger.info( this.getOpName() + "  " + tree);
-		logger.info( optree2.getOpName() + "  " + optree2);
+		//logger.info( this.getOpName() + "  " + tree);
+		//logger.info( optree2.getOpName() + "  " + optree2);
 		Pattern p = null;
 		for(SpecTreeNode n : tree.values()){
 			//logger.info( "SPECTREE: " + n.getName() + " " + "VALUE:\n" + n);
