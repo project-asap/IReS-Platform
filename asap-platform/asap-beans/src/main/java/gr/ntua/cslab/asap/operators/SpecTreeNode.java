@@ -222,7 +222,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 	
 	public boolean checkMatch(SpecTreeNode o1) {
 		//materialized operator o1
-		logger.info("checking: "+name);
+		//logger.info("checking: "+name);
 		Pattern p = null;
 		Matcher m = null;
 		if(children.size()==0){
@@ -261,7 +261,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					m = p.matcher(n1.getName());
 					if(m.matches()){
 						found =true;
-						logger.info("found match: "+n.getName()+" "+n1.getName());
+						//logger.info("found match: "+n.getName()+" "+n1.getName());
 						return true;
 					}
 				}
