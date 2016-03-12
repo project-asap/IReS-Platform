@@ -14,7 +14,7 @@ Constraints.Input0.Engine.SQL=PostgreSQL
 Constraints.Input0.Engine.location=hdp1
 #Input1
 Constraints.Input1.type=SQL
-Constraints.Input1.Engine.SQL=SparkSQL
+Constraints.Input1.Engine.SQL=PostgreSQL
 Constraints.Input1.Engine.location=hdp1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
