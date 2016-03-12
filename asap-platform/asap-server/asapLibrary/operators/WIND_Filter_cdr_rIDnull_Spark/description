@@ -9,7 +9,7 @@ Constraints.EngineSpecification.Distributed.SparkSQL.masterLocation=hdp1
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
-Constraints.Input0.Engine.SQL=PostgreSQL
+Constraints.Input0.Engine.SQL=SparkSQL
 Constraints.Input0.Engine.location=hdp1
 #OUTPUT( mandatory)
 Constraints.Output.number=1
