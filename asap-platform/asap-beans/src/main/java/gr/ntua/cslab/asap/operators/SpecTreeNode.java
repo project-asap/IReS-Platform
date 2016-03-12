@@ -248,7 +248,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 			}
 		}
 		for(SpecTreeNode n : children.values()){
-			System.out.println("Checking: "+n.getName()+" isRegex: "+n.isRegex);
+			logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
 			if(n.isRegex){
 				p = Pattern.compile(n.getName());
 				boolean found =false;
@@ -256,12 +256,12 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					m = p.matcher(n1.getName());
 					if(m.matches()){
 						found =true;
-						System.out.println("found match: "+n.getName()+" "+n1.getName());
+						logger.info("found match: "+n.getName()+" "+n1.getName());
 						return true;
 					}
 				}
 				if(!found){
-					System.out.println("notFound: "+name);
+					logger.info("notFound: "+name);
 					return false;
 				}
 			}
