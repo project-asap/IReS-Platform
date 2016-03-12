@@ -206,6 +206,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									i++;
 									continue;
 								}
+								else{
+									//try for each input that does not match a move operator
+									i = 0;
+								}
 							}
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
