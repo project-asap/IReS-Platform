@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 public class SpecTree {
 
 	public TreeMap<String,SpecTreeNode> tree;
-	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
+	private static Logger logger = Logger.getLogger( SpecTree.class.getName());
 	
 	public SpecTree() {
 		tree= new TreeMap<String,SpecTreeNode>();
