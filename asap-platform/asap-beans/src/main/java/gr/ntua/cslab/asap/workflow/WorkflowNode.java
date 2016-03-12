@@ -174,7 +174,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						WorkflowNode bestInput = null;
 						logger.info( "materializedInputs: " + materializedInputs);
 						for(WorkflowNode in : materializedInputs.get(i)){
-							logger.info("Checking: "+in.dataset.datasetName);
+							logger.info("CHECKING INPUT DATASET: "+in.dataset.datasetName);
 							/* vpapa: in case the property Constraints.Inputx.type
 								is defined into an operator's description file for
 								some input x( or all of them) but the property is not
