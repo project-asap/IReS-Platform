@@ -94,9 +94,9 @@ public class SpecTree {
 
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
-		logger.info( "\n\nChecking match ...\n");
-		logger.info( "SpecTree: " + tree);
-		logger.info( "OpTree: " + optree2);
+		logger.info( "\n\nChecking " + tree.getOpName() + " and " +  optree2.getOpName() + "for matching\n");
+		logger.info( tree.getOpName() + "  " + tree);
+		logger.info( optree2.getOpName() + "  " + optree2);
 		Pattern p = null;
 		for(SpecTreeNode n : tree.values()){
 			logger.info( "SPECTREE: " + n.getName() + " " + "VALUE:\n" + n);
@@ -104,6 +104,8 @@ public class SpecTree {
 				return optree2.tree.size()>0;
 			}
 			else{
+				//verify that properties of the same group get checked e.g. Constraints with
+				//Constraints
 				p = Pattern.compile( n.getName());
 				boolean found =false;
 				for( SpecTreeNode n1 : optree2.tree.values()){
@@ -113,8 +115,12 @@ public class SpecTree {
 					if( m.matches()){
 						found =true;
 						logger.info( "found match: "+n.getName()+" "+n1.getName());
+						//check that the properties themselves match
 						if(!n.checkMatch(n1)){
 							return false;
+						}
+						else{
+							logger.info( tree.getOpName())
 						}
 					}
 				}
@@ -132,6 +138,28 @@ public class SpecTree {
 			}
 		}
 		return true;
+	}
+	
+	public String getOpName(){
+		/* vpapa: return the name of the corresponding operator which expected to have this
+			form OpSpecification{Algorithm{(name, operator_name)}
+		*/
+		String value = "No_Operator_Name_Found";
+		for(SpecTreeNode n : tree.values()){
+			if( n.toString().startsWith( "OpSpecification")){
+				//ommit the 'OpSpecification{Algorithm{(name,' part
+				value = n.toString().split( ",")[ 1];
+				//ommit the ')}'
+				value = value.split( ",")[ 0];
+				//now only the 'operator_name' part should be with some leading or trailing
+				//whitespaces
+				if( value.equals( "")){
+					//no operator name has been specified
+					value = "No_Operator_Name_Found";
+				}
+				return value.trim();
+			}
+		}
 	}
 
 	public SpecTree copyInputToOpSubTree(String prefix, String inout) {
@@ -275,9 +303,4 @@ public class SpecTree {
 			}
 		}
 	}
-
-
-
-
-
 }
