@@ -11,9 +11,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.*;
 
+import org.apache.log4j.Logger;
+
 public class SpecTree {
 
 	public TreeMap<String,SpecTreeNode> tree;
+	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
 	
 	public SpecTree() {
 		tree= new TreeMap<String,SpecTreeNode>();
@@ -91,18 +94,20 @@ public class SpecTree {
 
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
+		logger.info( "\nChecking match ...\n");
+		logger.info( "SpecTree: " + tree);
+		logger.info( "OpTree: " + optree2);
 		for(SpecTreeNode n : tree.values()){
-
-			
+			logger.info( "SpecTree value: " + n);
 			if(n.getName().equals("*")){
 				return optree2.tree.size()>0;
 			}
 			else{
 				Pattern p = Pattern.compile(n.getName());
 				boolean found =false;
-				for(SpecTreeNode n1 : optree2.tree.values()){
+				for( SpecTreeNode n1 : optree2.tree.values()){
 					Matcher m = p.matcher(n1.getName());
-					//System.out.println("checking: "+n.getName()+" "+n1.getName());
+					System.out.println("checking: "+n.getName()+" "+n1.getName());
 					if(m.matches()){
 						found =true;
 						//System.out.println("found match: "+n.getName()+" "+n1.getName());

@@ -304,11 +304,6 @@ public class OperatorLibrary {
 			br.close();
 		}
 	}
-
-
-
 	/*protected static void writeCSV(String file, ){
-		
-	}*/
-	
+	}*/	
 }
