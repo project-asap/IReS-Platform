@@ -114,7 +114,7 @@ public class SpecTree {
 					//logger.info( "checking: "+n.getName()+" "+n1.getName());
 					if( m.matches()){
 						found =true;
-						logger.info( "found match: "+n.getName()+" "+n1.getName());
+						//logger.info( "found match: "+n.getName()+" "+n1.getName());
 						//check that the properties themselves match
 						if(!n.checkMatch(n1)){
 							return false;
