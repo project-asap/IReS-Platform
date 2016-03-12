@@ -282,7 +282,7 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 
 				}
 				else{
-					//logger.info( "n1 is not null, n1: " + n1);
+					//logger.info( "n1 is null");
 					return false;
 				}
 			}

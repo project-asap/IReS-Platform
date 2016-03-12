@@ -4,7 +4,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=WIND_Filter_cdr_rIDnull
 #ENGINE
-Constraints.Engine=SparkSQL
+Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Distributed.SparkSQL.masterLocation=hdp1
 #INPUT( mandatory)
 Constraints.Input.number=1
