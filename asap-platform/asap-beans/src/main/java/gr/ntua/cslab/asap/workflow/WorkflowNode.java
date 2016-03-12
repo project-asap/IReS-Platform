@@ -201,6 +201,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								logger.info( "Input to be matched:\n" + tempInput);
 								//one input checked, go for the next
 								checkedInputs++;
+								logger.info( "checkedInputs: " + checkedInputs);
+								logger.info( "materializedInputs.size(): " + materializedInputs.size());
 								if( checkedInputs < materializedInputs.size()){
 									//try next input if it exists
 									i++;
