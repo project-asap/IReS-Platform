@@ -543,11 +543,11 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					ret+=abstractOperator.opName;
 				}
 				catch( NullPointerException npe){
-					System.out.println( "ERROR: The operator " + abstractName + " does not exist!"
-										+ "Check at least that there is a file named " + abstractName
+					System.out.println( "ERROR: The operator " + abstractOperator.opName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractOperator.opName
 										+ " into abstractOperators folder");
-					logger.info( "ERROR: The operator " + abstractName + " does not exist!"
-										+ "Check at least that there is a file named " + abstractName
+					logger.info( "ERROR: The operator " + abstractOperator.opName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractOperator.opName
 										+ " into abstractOperators folder");
 					npe.printStackTrace();
 				}
@@ -599,11 +599,11 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					ret+=abstractOperator.opName;
 				}
 				catch( NullPointerException npe){
-					System.out.println( "ERROR: The operator " + abstractName + " does not exist!"
-										+ "Check at least that there is a file named " + abstractName
+					System.out.println( "ERROR: The operator " + abstractOperator.opName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractOperator.opName
 										+ " into abstractOperators folder");
-					logger.info( "ERROR: The operator " + abstractName + " does not exist!"
-										+ "Check at least that there is a file named " + abstractName
+					logger.info( "ERROR: The operator " + abstractOperator.opName + " does not exist!"
+										+ "Check at least that there is a file named " + abstractOperator.opName
 										+ " into abstractOperators folder");
 					npe.printStackTrace();
 				}
