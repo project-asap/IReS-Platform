@@ -223,6 +223,8 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 	public boolean checkMatch(SpecTreeNode o1) {
 		//materialized operator o1
 		logger.info("checking: "+name);
+		Pattern p = null;
+		Matcher m = null;
 		if(children.size()==0){
 			if(o1.children.size()==0){
 				if(value.startsWith("\"")){
@@ -231,8 +233,8 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					else
 						return false;
 				}
-				Pattern p = Pattern.compile(value);
-				Matcher m = p.matcher(o1.value);
+				p = Pattern.compile(value);
+				m = p.matcher(o1.value);
 				if(m.matches()){
 					return true;
 				}
@@ -246,20 +248,20 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 			}
 		}
 		for(SpecTreeNode n : children.values()){
-			//System.out.println("Checking: "+n.getName()+" isRegex: "+n.isRegex);
+			System.out.println("Checking: "+n.getName()+" isRegex: "+n.isRegex);
 			if(n.isRegex){
-				Pattern p = Pattern.compile(n.getName());
+				p = Pattern.compile(n.getName());
 				boolean found =false;
 				for(SpecTreeNode n1 : o1.children.values()){
-					Matcher m = p.matcher(n1.getName());
+					m = p.matcher(n1.getName());
 					if(m.matches()){
 						found =true;
-						//System.out.println("found match: "+n.getName()+" "+n1.getName());
+						System.out.println("found match: "+n.getName()+" "+n1.getName());
 						return true;
 					}
 				}
 				if(!found){
-					//System.out.println("notFound: "+name);
+					System.out.println("notFound: "+name);
 					return false;
 				}
 			}
@@ -273,11 +275,9 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					return false;
 				}
 			}
-		
 		}
 		return true;
 	}
-
 
 	@Override
 	public int compareTo(SpecTreeNode o) {
