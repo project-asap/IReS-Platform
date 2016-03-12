@@ -449,6 +449,8 @@ public class AbstractWorkflow1 {
 
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws Exception {
 		WorkflowDictionary ret = new WorkflowDictionary();
+		System.out.println( "WorkflowNodes: " + workflowNodes);
+		System.out.println( "WorkflowNodes: " + workflowNodes.values());
 		for(WorkflowNode n : workflowNodes.values()){
 			logger.info( "AbstractWorkflow1 WorkflowNode: " + n);
 			System.out.println( "AbstractWorkflow1 WorkflowNode: " + n);

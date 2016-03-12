@@ -2,7 +2,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Join_test_VORONOI
+Constraints.OpSpecification.Algorithm.name=WIND_Join_training_VORONOI
 #INPUT( mandatory)
 Constraints.Input.number=2
 #OUTPUT( mandatory)
