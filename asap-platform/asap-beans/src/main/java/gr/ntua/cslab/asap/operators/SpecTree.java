@@ -148,7 +148,7 @@ public class SpecTree {
 				//keep from 'OpSpecification{Algorithm{(name, operator_name)}' to the end
 				value = n.toString().substring( n.toString().indexOf( "OpSpecification"));
 				//keep just the 'OpSpecification{Algorithm{(name, operator_name' part
-				value = value.substring( 0, value.indexOf( ")}"))
+				value = value.substring( 0, value.indexOf( ")}"));
 				System.out.println( value);
 				//take the operator_name
 				value = value.split( ",")[ 1];
