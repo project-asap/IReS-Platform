@@ -7,7 +7,7 @@ Constraints.OpSpecification.Algorithm.name=WIND_Calc_extractTS_2
 Constraints.Engine=PostgreSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=11
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
 Constraints.Input0.Engine.location=hdp1.itc.unipi.it

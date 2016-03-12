@@ -4,8 +4,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=WIND_Filter_training_rIDnull
 #ENGINE
-Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
+Constraints.Engine=SparkSQL
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL

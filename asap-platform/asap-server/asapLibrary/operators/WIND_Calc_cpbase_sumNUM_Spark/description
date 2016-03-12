@@ -4,7 +4,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=WIND_Calc_cpbase_sumNUM
 #ENGINE
-Constraints.Engine=Spark
+Constraints.Engine=SparkSQL
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.type=SQL

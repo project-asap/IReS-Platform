@@ -4,7 +4,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=WIND_Calc_ratio
 #ENGINE
-Constraints.Engine=PostgreSQL
+Constraints.Engine=SparkSQL
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=hdp1.itc.unipi.it
 #INPUT( mandatory)
 Constraints.Input.number=1
