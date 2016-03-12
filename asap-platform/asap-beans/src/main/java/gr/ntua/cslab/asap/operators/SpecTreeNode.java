@@ -231,29 +231,29 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					if(value.equals(o1.value))
 						return true;
 					else{
-						logger.info( "Value " + value + " in not equal with " + o1.value);
+						//logger.info( "Value " + value + " in not equal with " + o1.value);
 						return false;					
 					}
 				}
 				p = Pattern.compile(value);
 				m = p.matcher(o1.value);
-				logger.info( "value: " + value + " o1.value: " + o1.value);
+				//logger.info( "value: " + value + " o1.value: " + o1.value);
 				if(m.matches()){
 					return true;
 				}
 				else{
-					logger.info("notFound: "+name+" this.value="+value+" o.value="+o1.value);
+					//logger.info("notFound: "+name+" this.value="+value+" o.value="+o1.value);
 					return false;
 				}
 			}
 			else{
-				logger.info( "o1.children.size() " + o1.children.size() + " is not zero.");
+				//logger.info( "o1.children.size() " + o1.children.size() + " is not zero.");
 				return false;
 			}
 		}
 		for(SpecTreeNode n : children.values()){
-			logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
-			logger.info( n);
+			//logger.info("Checking: "+n.getName()+" isRegex: "+n.isRegex);
+			//logger.info( n);
 			if(n.isRegex){
 				p = Pattern.compile(n.getName());
 				boolean found =false;
@@ -266,23 +266,23 @@ public class SpecTreeNode implements Comparable<SpecTreeNode> {
 					}
 				}
 				if(!found){
-					logger.info("notFound: "+name);
+					//logger.info("notFound: "+name);
 					return false;
 				}
 			}
 			else{
 				SpecTreeNode n1 = o1.children.get(n.getName());
 				if(n1!=null){
-					logger.info( "Before recursion: " + n1);
-					logger.info( "Before recursion: " + n);
+					//logger.info( "Before recursion: " + n1);
+					//logger.info( "Before recursion: " + n);
 					if(!n.checkMatch(n1)){
-						logger.info( "No match found for: "+ n1);
+						//logger.info( "No match found for: "+ n1);
 						return false;
 					}
 
 				}
 				else{
-					logger.info( "n1 is null");
+					//logger.info( "n1 is null");
 					return false;
 				}
 			}

@@ -99,7 +99,7 @@ public class SpecTree {
 		//logger.info( optree2.getOpName() + "  " + optree2);
 		Pattern p = null;
 		for(SpecTreeNode n : tree.values()){
-			logger.info( "SPECTREE: " + n.getName() + " " + "VALUE: " + n);
+			//logger.info( "SPECTREE: " + n.getName() + " " + "VALUE: " + n);
 			if(n.getName().equals("*")){
 				return optree2.tree.size()>0;
 			}
@@ -109,7 +109,7 @@ public class SpecTree {
 				p = Pattern.compile( n.getName());
 				boolean found =false;
 				for( SpecTreeNode n1 : optree2.tree.values()){
-					logger.info( "OPTREE: " + n1.getName() + " " + "VALUE: " + n1);
+					//logger.info( "OPTREE: " + n1.getName() + " " + "VALUE: " + n1);
 					Matcher m = p.matcher( n1.getName());
 					logger.info( "checking: "+n.getName()+" "+n1.getName());
 					if( m.matches()){
