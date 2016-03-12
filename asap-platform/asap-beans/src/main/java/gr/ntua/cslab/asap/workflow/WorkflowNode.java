@@ -190,6 +190,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 											+ " as a real error when the materialization seems"
 											+ " to succeed when pushing 'Materialize Workflow'"
 											+ " button but the workflow is not displayed at all.");
+								logger.info( "Input dataset:\n" + in.dataset);
+								logger.info( "Input to be matched:\n" + tempInput);								
 							}
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
