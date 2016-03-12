@@ -230,17 +230,18 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
+										logger.info( "Move node added input:\n" + in);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
 										tempInputNode.addInput(moveNode);
 										HashMap<String, Double> prevMetrics = dpTable.getMetrics(in.dataset);
-										Double prevCost =computePolicyFunction(prevMetrics, materializedWorkflow.function);
-										HashMap<String,Double> nextMetrics =m.getOptimalPolicyCost(prevMetrics, lin, materializedWorkflow.function);
+										Double prevCost = computePolicyFunction(prevMetrics, materializedWorkflow.function);
+										HashMap<String,Double> nextMetrics = m.getOptimalPolicyCost(prevMetrics, lin, materializedWorkflow.function);
 
 										m.generateOptimizationMetrics(tempInput, 0, nextMetrics);
 
-										Double optCost =computePolicyFunction(nextMetrics, materializedWorkflow.function);
+										Double optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
 										moveNode.setOptimalCost(optCost-prevCost);
 										//moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
