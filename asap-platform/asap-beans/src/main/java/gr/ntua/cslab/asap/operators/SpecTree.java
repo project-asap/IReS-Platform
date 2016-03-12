@@ -94,23 +94,25 @@ public class SpecTree {
 
 	public boolean checkMatch(SpecTree optree2) {
 		//materialized operator optree2 
-		logger.info( "\nChecking match ...\n");
+		logger.info( "\n\nChecking match ...\n");
 		logger.info( "SpecTree: " + tree);
 		logger.info( "OpTree: " + optree2);
+		Pattern p = null;
 		for(SpecTreeNode n : tree.values()){
-			logger.info( "SpecTree value: " + n);
+			logger.info( "SpecTree: " + n.getName() + "\n" + "value:\n" + n);
 			if(n.getName().equals("*")){
 				return optree2.tree.size()>0;
 			}
 			else{
-				Pattern p = Pattern.compile(n.getName());
+				p = Pattern.compile( n.getName());
 				boolean found =false;
 				for( SpecTreeNode n1 : optree2.tree.values()){
-					Matcher m = p.matcher(n1.getName());
-					System.out.println("checking: "+n.getName()+" "+n1.getName());
-					if(m.matches()){
+					logger.info( "OpTree: " + n1.getName() + "\n" + "value:\n" + n1);
+					Matcher m = p.matcher( n1.getName());
+					logger.info( "checking: "+n.getName()+" "+n1.getName());
+					if( m.matches()){
 						found =true;
-						//System.out.println("found match: "+n.getName()+" "+n1.getName());
+						logger.info( "found match: "+n.getName()+" "+n1.getName());
 						if(!n.checkMatch(n1)){
 							return false;
 						}
