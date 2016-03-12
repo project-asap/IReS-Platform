@@ -111,7 +111,7 @@ public class SpecTree {
 				for( SpecTreeNode n1 : optree2.tree.values()){
 					//logger.info( "OPTREE: " + n1.getName() + " " + "VALUE:\n" + n1);
 					Matcher m = p.matcher( n1.getName());
-					//logger.info( "checking: "+n.getName()+" "+n1.getName());
+					logger.info( "checking: "+n.getName()+" "+n1.getName());
 					if( m.matches()){
 						found =true;
 						logger.info( "found match: "+n.getName()+" "+n1.getName());
