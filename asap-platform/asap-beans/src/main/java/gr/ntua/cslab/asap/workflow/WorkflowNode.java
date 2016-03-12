@@ -203,6 +203,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								checkedInputs++;
 								if( checkedInputs < materializedInputs.size()){
 									//try next input if it exists
+									i++;
 									continue;
 								}
 							}
