@@ -450,6 +450,7 @@ public class AbstractWorkflow1 {
 	public WorkflowDictionary toWorkflowDictionary(String delimiter) throws Exception {
 		WorkflowDictionary ret = new WorkflowDictionary();
 		for(WorkflowNode n : workflowNodes.values()){
+			logger.info( "AbstractWorkflow1 WorkflowNode: " + n);
 	    	OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
