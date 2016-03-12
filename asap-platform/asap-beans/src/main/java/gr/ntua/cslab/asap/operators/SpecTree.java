@@ -137,7 +137,7 @@ public class SpecTree {
 		return true;
 	}
 	
-	public String getOpName( SpecTree tree){
+	public String getOpName(){
 		/* vpapa: return the name of the corresponding operator which expected to have this
 			form OpSpecification{Algorithm{(name, operator_name)}
 		*/
