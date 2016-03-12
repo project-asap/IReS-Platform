@@ -554,6 +554,7 @@ public class Operator {
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;
+				logger.info( "Operator inputs are: " + inputs);
 				WorkflowNode n = inputs.get(index);
 				//System.out.println("Index: "+index +" "+s[1]);
 
