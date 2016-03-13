@@ -544,13 +544,13 @@ public class Operator {
 			//System.out.println("InVar: "+inVar);
 			String[] s = inVar.split("\\.");
 
-			
+			/*
 			System.out.println("inVar");
 			for (String str : s){
 				System.out.println(str);
 			}
 			System.out.println("Policy: "+policy);
-
+			*/
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;

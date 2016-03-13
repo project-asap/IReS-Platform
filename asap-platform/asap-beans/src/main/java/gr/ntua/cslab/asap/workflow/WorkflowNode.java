@@ -197,8 +197,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 											+ " as a real error when the materialization seems"
 											+ " to succeed when pushing 'Materialize Workflow'"
 											+ " button but the workflow is not displayed at all.");
-								logger.info( "Input dataset:\n" + in.dataset);
-								logger.info( "Input to be matched:\n" + tempInput);
+								logger.info( "Input dataset: " + in.dataset);
+								logger.info( "Input to be matched: " + tempInput);
 								//one input checked, go for the next
 								logger.info( "checkedInputs: " + checkedInputs);
 								logger.info( "materializedInputs.size(): " + materializedInputs.size());
@@ -400,10 +400,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 						//int outputs =Integer.parseInt(op.getParameter("Constraints.Output.number"));
 						int outN=0;
+						WorkflowNode tempOutputNode = null;
+						Dataset tempOutput = null;
 						//System.out.println(fromName);
+						logger.info( "Outputs are: " + outputs);
 						for (WorkflowNode out : outputs) {
-							WorkflowNode tempOutputNode = new WorkflowNode(false, false,"");
-							Dataset tempOutput = new Dataset("t"+materializedWorkflow.count);
+							tempOutputNode = new WorkflowNode(false, false,"");
+							tempOutput = new Dataset("t"+materializedWorkflow.count);
 							materializedWorkflow.count++;
                             logger.info( "Call outputFor() for operator: " + op.opName);
                             logger.info( "with tempOutput: " + tempOutput);
@@ -427,7 +430,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							//tempOutput.outputFor(op, 0, temp.inputs);
 							tempOutputNode.setDataset(tempOutput);
 							tempOutputNode.addInput(temp);
-							//System.out.println(out.getName()+" "+fromName);
+							logger.info( "out.getName(): " + out.getName() + " fromName: " + fromName);
 							if(out.getName().equals(fromName)){
 								ret.add(tempOutputNode);
 								plan.add(tempOutputNode);
