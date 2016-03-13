@@ -36,7 +36,8 @@ Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 #optimization metric function
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.execTime=(In0.size+In1.size)*0.1
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=(In0.size+In1.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
