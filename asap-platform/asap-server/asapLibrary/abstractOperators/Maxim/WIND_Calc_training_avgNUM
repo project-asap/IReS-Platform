@@ -1,0 +1,11 @@
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WIND_Calc_training_avgNUM
+#INPUT( mandatory)
+Constraints.Input.number=1
+#OUTPUT( mandatory)
+Constraints.Output.number=2
+#PREPARED STATEMENT( optional)
+Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"

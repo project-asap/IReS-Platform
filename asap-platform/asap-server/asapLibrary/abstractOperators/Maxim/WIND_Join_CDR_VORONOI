@@ -2,10 +2,10 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=WIND_Join_training_VORONOI
+Constraints.OpSpecification.Algorithm.name=WIND_Join_CDR_VORONOI
 #INPUT( mandatory)
 Constraints.Input.number=2
 #OUTPUT( mandatory)
 Constraints.Output.number=1
 #PREPARED STATEMENT
-Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 USING $3"
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 ON $3"
