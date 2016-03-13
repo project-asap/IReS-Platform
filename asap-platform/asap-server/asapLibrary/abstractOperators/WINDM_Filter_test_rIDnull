@@ -1,0 +1,11 @@
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WINDM_Filter_test_rIDnull
+#INPUT( mandatory)
+Constraints.Input.number=1
+#OUTPUT( mandatory)
+Constraints.Output.number=2
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 WHERE $2"

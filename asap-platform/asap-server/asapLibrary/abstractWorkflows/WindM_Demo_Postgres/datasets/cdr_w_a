@@ -1,0 +1,17 @@
+#################
+# CONFIGURATION #
+#################
+Constraints.type=SQL
+Constraints.Engine.SQL=PostgreSQL
+Constraints.Engine.location=hdp1
+
+############
+# MODELING #
+############
+Optimization.size=4.50E08
+
+#############
+# EXECUTION #
+#############
+Execution.name=CDR
+Execution.schema=(ID int, TS timestamp, user_id int, aID int)

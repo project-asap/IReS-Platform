@@ -1,0 +1,11 @@
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WINDM_Calc_cpbase_sumNUM
+#INPUT( mandatory)
+Constraints.Input.number=1
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+#PREPARED STATEMENT( optional)
+Constraints.OpSpecification.SQL_query="SELECT *, $2 FROM $1"
