@@ -55,3 +55,4 @@ Execution.Argument3=dbname
 #EXECUTION OUTPUT( mandatory)
 Execution.Output0.name=test_data
 Execution.Output0.schema=(*)
+Execution.Output1.schema=(*)
