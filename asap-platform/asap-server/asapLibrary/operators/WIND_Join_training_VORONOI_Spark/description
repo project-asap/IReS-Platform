@@ -22,7 +22,7 @@ Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=SparkSQL
 Constraints.Output0.Engine.location=hdp1
 #PREPARED STATEMENT
-Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 ON $3"
+Constraints.OpSpecification.SQL_query="SELECT * FROM $1 LEFT JOIN $2 USING $3"
 
 ############
 # MODELING #
