@@ -455,7 +455,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								tp.add(tempOutputNode);
 								//System.out.println(nextMetrics);
 								dpTable.addRecord(tempOutput, tp, optCost, bestInputMetrics);
-								dpTable.addRecord(out.dataset, tp, optCost, bestInputMetrics);
+								dpTable.addInputs(out.dataset, tp);
 							}
 
 							outN++;
