@@ -202,7 +202,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								//one input checked, go for the next
 								logger.info( "checkedInputs: " + checkedInputs);
 								logger.info( "materializedInputs.size(): " + materializedInputs.size());
-								if( checkedInputs < materializedInputs.size()){
+								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i)size());								
+								if( checkedInputs < materializedInputs.get( i).size()){
 									checkedInputs++;
 									continue;
 								}
