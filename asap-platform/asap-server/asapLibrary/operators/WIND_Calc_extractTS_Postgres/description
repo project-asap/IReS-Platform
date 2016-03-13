@@ -43,7 +43,7 @@ Optimization.cost=1.0
 Execution.LuaScript=WIND_Calc_extractTS_Postgres.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=4
-Execution.Argument0=CDR
+Execution.Argument0=cdr_w_a
 Execution.Argument1="extract(doy from TS) AS DOY, extract(dow from TS) as DOW, extract(hour from TS) as hour"
 Execution.Argument2=data_raw
 Execution.Argument3=dbname

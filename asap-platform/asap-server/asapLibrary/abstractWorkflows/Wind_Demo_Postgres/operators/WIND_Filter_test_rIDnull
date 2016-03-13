@@ -1,0 +1,11 @@
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WIND_Filter_test_rIDnull
+#INPUT( mandatory)
+Constraints.Input.number=1
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+#PREPARED STATEMENT
+

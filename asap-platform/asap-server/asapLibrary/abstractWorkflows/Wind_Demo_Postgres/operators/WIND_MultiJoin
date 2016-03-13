@@ -1,0 +1,23 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	08/ 03/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#########################################################################
+#
+#Description
+#	This is the abstract version of the wind_calc_test operator.
+#	For an abstract operator a minimum configuration is needed.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.OpSpecification.Algorithm.name=WIND_MultiJoin
+#INPUT( mandatory)
+Constraints.Input.number=4
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+#PREPARED STATEMENT
+Constraints.OpSpecification.SQL_query="SELECT $3 FROM $1 WHERE $2"
