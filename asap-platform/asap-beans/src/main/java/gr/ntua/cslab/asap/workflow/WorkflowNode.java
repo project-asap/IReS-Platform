@@ -205,6 +205,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());								
 								if( checkedInputs < materializedInputs.get( i).size()){
 									checkedInputs++;
+									logger.info( "checkedInputs: " + checkedInputs);
 									continue;
 								}
 								else{
@@ -303,7 +304,17 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						}
 						if(!inputMatches){
 							inputsMatch=false;
-							break;
+							/* vpapa: may be there exist other sets of input like in the
+								case of parallel workflows e.g. Wind_Demo_o_Postgres. Break
+								if all inputs have been checked. Until then continue
+							*/
+							if( i < inputs){
+								logger.info( "Trying next inputs");
+								continue;
+							}
+							else{
+								break;
+							}
 						}
 						//System.out.println(materializedInputs.get(i)+"fb");
 						//tempInputNode.addInputs(materializedInputs.get(i));
