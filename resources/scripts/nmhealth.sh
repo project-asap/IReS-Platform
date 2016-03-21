@@ -122,6 +122,6 @@ to restart Asap server"
 			esac
 		done
 	fi
-done < services
+done < $1
 
 echo -e "$HOSTNAME is healthy i.e. all necessary services are running"
