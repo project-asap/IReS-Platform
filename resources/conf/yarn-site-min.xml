@@ -67,13 +67,19 @@
 	<!-- services per node -->
 	<property>
         <name>yarn.nodemanager.services-running.per-node</name>
-        <value>path:PostgreSQL Spark,slave1:HIVE,slave2:HBASE WEKA</value>
+        <value>
+        	hdp1:PostgreSQL Spark NodeManager
+        	hdp2:NodeManager
+        	hdp3:PostgreSQL NodeManager
+        	hdp4:NodeManager
+        </value>
         <description>
         	On the nodes of a YARN cluster except the daemons of YARN may run also other
         	services like databases. The declaration of these services per node can be done
-        	through this property in the form below, where hosts are separated by ",", host
-        	services are separated by " " and host is separated by its services with ":" e.g.
-        	host1:service1 service2 ...,host2:service3 service4 ...,host3:service5
+        	through this property in the form below, where hosts are separated by a new
+        	line( "\n"), host services are separated by " " and host is separated by its
+        	services with ":" e.g. 
+        	host1:service1 service2 ...\nhost2:service3 service4 ...\nhost3:service5
         </description>
     </property>
     <!-- services' command to test their availability -->
@@ -81,7 +87,9 @@
         <name>yarn.nodemanager.services-running.check-availability</name>
         <value>
         	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
-        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
+        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
+        	NodeManager:jps | grep -w NodeManager | awk '{split( $0, a, " "); print a[ 2]}'
+        	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
         </value>
         <description>
         	The commands to check the availability( running or not) of services declared in
@@ -97,21 +105,30 @@
     <property>
         <name>yarn.nodemanager.services-running.check-status</name>
         <value>
-        	PostgreSQL:online, Mysql:Uptime
+        	PostgreSQL:online, Mysql:Uptime, NodeManager:NodeManager, Spark:Master
         </value>
         <description>
         	The expected output message of the commands declared into
         	yarn.nodemanager.services-running.check-availability property if they are
-        	running. For example, PostgreSQL:online,Mysql:uptime
+        	running. For example, PostgreSQL:online, Mysql:uptime
         </description>
     </property>
     <!-- -->
 
   <!-- Configurations for NodeManager -->
+  <!-- To run Map Reduce applications -->
+  <property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+    <description>
+			A comma separated list of services where service name should only
+			contain a-zA-Z0-9_ and can not start with numbers
+		</description>
+  </property>
   <!-- Path definition of resources folder, a custom property -->
   <property>
     <name>yarn.nodemanager.resources-folder.path</name>
-    <value>/home/hadoop/resources</value>
+    <value>/home/forth/asap4all/IReS-Platform/resources</value>
     <description>
       This folder contains all the custom files or scripts that YARN
       various properties like yarn.nodemanager.health-checker.script.path
@@ -120,6 +137,27 @@
       Change the value of this property to reflect the path of yours
       "resources" folder
     </description>
+  </property>
+  <!-- Run a custom script to check the health of this node -->
+  <property>
+    <name>yarn.nodemanager.health-checker.script.path</name>
+    <value>${yarn.nodemanager.resources-folder.path}/scripts/nmhealth.sh</value>
+    <description>The health check script to run.</description>
+  </property>	
+  <property>
+    <name>yarn.nodemanager.health-checker.script.opts</name>
+    <value>"Health script is running!"</value>
+    <description>The arguments to pass to the health check script.</description>
+  </property>	
+  <property>
+    <name>yarn.nodemanager.health-checker.interval-ms</name>
+    <value>3000</value>
+    <description>Frequency of running node health script..</description>
+  </property>
+  <property>
+    <name>yarn.nodemanager.health-checker.script.timeout-ms</name>
+    <value>5000</value>
+    <description>Script time out period.</description>
   </property>
   <!-- Set NodeManager quotas for containers
   <property>
@@ -153,36 +191,6 @@
     </description>
   </property>
   -->
-  <!-- To run Map Reduce applications -->
-  <property>
-    <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-    <description>
-			A comma separated list of services where service name should only
-			contain a-zA-Z0-9_ and can not start with numbers
-		</description>
-  </property>
-  <!-- Run a custom script to check the health of this node -->
-  <property>
-    <name>yarn.nodemanager.health-checker.script.path</name>
-    <value>${yarn.nodemanager.resources-folder.path}/monitoring/nmhealth.sh</value>
-    <description>The health check script to run.</description>
-  </property>	
-  <property>
-    <name>yarn.nodemanager.health-checker.script.opts</name>
-    <value>"Health script is running!"</value>
-    <description>The arguments to pass to the health check script.</description>
-  </property>	
-  <property>
-    <name>yarn.nodemanager.health-checker.interval-ms</name>
-    <value>3000</value>
-    <description>Frequency of running node health script..</description>
-  </property>
-  <property>
-    <name>yarn.nodemanager.health-checker.script.timeout-ms</name>
-    <value>5000</value>
-    <description>Script time out period.</description>
-  </property>
   
   <!-- Configurations for History Server -->
   <property>
