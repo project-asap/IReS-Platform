@@ -42,6 +42,12 @@
 			 <version>${hadoop.version}</version>
 			 <scope>${scope.value}</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>${scope.value}</scope>
+        </dependency>
 		<dependency>
             <groupId>gr.ntua.ece.cslab</groupId>
             <artifactId>panic-core</artifactId>
@@ -126,14 +132,6 @@
                 <hadoop.version>2.6.0-cdh5.4</hadoop.version>
 				<scope.value>provided</scope.value>
             </properties>
-	        <dependencies>
-                <dependency>
-                    <groupId>org.apache.hadoop</groupId>
-                    <artifactId>hadoop-hdfs</artifactId>
-                    <version>${hadoop.version}</version>
-                    <scope>${scope.value}</scope>
-                </dependency>
-            </dependencies>
         </profile>
     </profiles>
 </project>

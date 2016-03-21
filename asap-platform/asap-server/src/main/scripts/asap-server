@@ -3,16 +3,20 @@
 # to be executed as a service.
 
 #IRES_HOME=path/to/IReS-Platform_project
-IRES_HOME=/home/forth/testing_asap4all/IReS-Platform
+IRES_HOME=/home/forth/asap4all/IReS-Platform
 [ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="$IRES_HOME/asap-platform/asap-server/target"
 
 LIB_DIR=$ASAP_SERVER_HOME/lib
 CONF_DIR=$ASAP_SERVER_HOME/conf
 
-
 CLASSPATH=$CONF_DIR
 CLASSPATH=$CLASSPATH:$(echo $LIB_DIR/*.jar | tr ' ' ':')
 CLASSPATH=$CLASSPATH:$ASAP_SERVER_HOME/asap-server.jar
+#add Hadoop YARN classpath as it is returned from the command
+#YARN_HOME/bin/hadoop classpath
+YARN_CLASSPATH="/home/forth/hadoop-2.7.1/etc/hadoop:/home/forth/hadoop-2.7.1/share/hadoop/common/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/common/*:/home/forth/hadoop-2.7.1/share/hadoop/hdfs:/home/forth/hadoop-2.7.1/share/hadoop/hdfs/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/hdfs/*:/home/forth/hadoop-2.7.1/share/hadoop/yarn/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/yarn/*:/home/forth/hadoop-2.7.1/share/hadoop/mapreduce/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/mapreduce/*:/home/forth/hadoop-2.7.1/lib:/home/forth/hadoop-2.7.1/contrib/capacity-scheduler/*.jar"
+CLASSPATH=$CLASSPATH:$YARN_CLASSPATH
+
 PIDFILE=/tmp/asap-server.pid
 
 start() {
