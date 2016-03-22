@@ -1,6 +1,0 @@
-Constraints.Input.number=2
-Constraints.Input0.type=SQL
-Constraints.Input1.type=SQL
-Constraints.Output.number=1
-Constraints.Output0.type=SQL
-Constraints.opSpecification.Algorithm.name=WIND_Join_training_VORONOI_Postgres
