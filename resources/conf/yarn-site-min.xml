@@ -16,7 +16,7 @@
 	<!-- Configurations for Resource Manager -->
 	<property>
 	  <name>yarn.resourcemanager.hostname</name>
-	  <value></value>
+	  <value>hdp1</value>
 	  <description>The hostname of the RM.</description>
 	</property>
   
