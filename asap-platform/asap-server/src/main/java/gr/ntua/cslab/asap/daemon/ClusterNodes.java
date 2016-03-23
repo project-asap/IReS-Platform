@@ -168,6 +168,8 @@ public class ClusterNodes extends Configured implements Runnable {
 							//for each service check if it is running
 							for( String service : hservices.get( host).split( " ")){
 								//run the command to get service availability
+								System.out.println( "Service to check: " + service);
+								System.out.println( "on host: " + host);
 								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
 								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
 								//compare status returned with the one expected from sstatus HashMap if running
