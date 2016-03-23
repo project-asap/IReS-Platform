@@ -1,4 +1,4 @@
-hdp1 DataNode,NodeManager,NameNode,SecondaryNameNode,ResourceManager,Main,Master
+hdp1 DataNode,NodeManager,NameNode,SecondaryNameNode,ResourceManager
 hdp2 DataNode
 hdp3 DataNode
 hdp4 DataNode
