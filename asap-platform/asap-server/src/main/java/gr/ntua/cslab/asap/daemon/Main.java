@@ -183,7 +183,7 @@ public class Main {
 	
 	private static void checkServicesStatus() throws Exception{
 		ClusterNodes cns = new ClusterNodes( 5000);
-		Thread check = new Tread( cns);
+		Thread check = new Thread( cns);
 		check.start();
 	}
 	
