@@ -163,6 +163,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						nr = yciter.next();
 						host = nr.getNodeId().toString().split( ":")[ 0];
 						yhosts.put( host, nr.getNodeState().toString());
+						System.out.println( "YARN hosts: " + yhosts);
 						if( yhosts.get( host).equals( "RUNNING")){
 							//retrieve current host's services and
 							//for each service check if it is running

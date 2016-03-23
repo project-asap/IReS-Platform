@@ -16,7 +16,7 @@
 	<!-- Configurations for Resource Manager -->
 	<property>
 	  <name>yarn.resourcemanager.hostname</name>
-	  <value>hdp1</value>
+	  <value>hdp1.itc.unipi.it</value>
 	  <description>The hostname of the RM.</description>
 	</property>
   
