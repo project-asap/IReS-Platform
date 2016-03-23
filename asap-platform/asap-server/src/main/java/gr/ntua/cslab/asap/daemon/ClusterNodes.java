@@ -94,8 +94,8 @@ public class ClusterNodes extends Configured implements Runnable {
 	}
 	
 	public void run(){
-    		//interact with the ResourceManager of YARN cluster and find which nodes are active
-    		//and for these nodes check which services are still running on them
+    	//interact with the ResourceManager of YARN cluster and find which nodes are active
+    	//and for these nodes check which services are still running on them
 		//retrieve the needed information to find which services are running on which
 		//hosts
 		runservices = new HashMap< String, String>();
@@ -107,12 +107,9 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
 			logger.info( " in folder with relative path asap-server/target/conf.");
 		}
-		for( int i = 0; i < hosts.length; i++){
-			System.out.println( "host[ " + i + "] = " + hosts[ i]);
-		}
 		hservices = new HashMap< String, String>();
 		for( int i = 0; i < hosts.length; i++){
-			System.out.println( hosts[ i].trim());
+			//System.out.println( hosts[ i].trim());
 			//services[ 0] -> host, services[ 1] -> host services
 			services = hosts[ i].trim().split( ":");
 			hservices.put( services[ 0], services[ 1]);
@@ -127,7 +124,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		}
 		scommands = new HashMap< String, String>();
 		for( int i = 0; i < hosts.length; i++){
-			System.out.println( hosts[ i].trim());
+			//System.out.println( hosts[ i].trim());
 			//services[ 0] -> service, services[ 1] -> service command
 			services = hosts[ i].trim().split( ":");
 			scommands.put( services[ 0], services[ 1]);
@@ -144,7 +141,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		}
 		sstatus = new HashMap< String, String>();
 		for( int i = 0; i < hosts.length; i++){
-			System.out.println( hosts[ i].trim());
+			//System.out.println( hosts[ i].trim());
 			//services[ 0] -> service, services[ 1] -> service running status
 			services = hosts[ i].trim().split( ":");
 			sstatus.put( services[ 0], services[ 1]);
@@ -191,6 +188,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						}
 					}
 				}
+				System.out.println( "Running services: " + runservices);
 				for( String service : runservices.keySet()){
 					if( runservices.get( service).equals( "")){
 						ClusterStatusLibrary.status.put( service, false);
