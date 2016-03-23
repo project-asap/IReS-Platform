@@ -49,12 +49,12 @@ public class AbstractWorkflowLibrary {
 		return new ArrayList<String>(abstractWorkflows.keySet());
 	}
 
-	public static String getMaterializedWorkflow(String workflowName, String policy) throws Exception {
+	public static String getMaterializedWorkflow(String workflowName, String policy, String parameters) throws Exception {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 		Date date = new Date();
 		Long start = System.currentTimeMillis();
-		MaterializedWorkflow1 mw = aw.materialize("execTime", dateFormat.format(date), policy);		
+		MaterializedWorkflow1 mw = aw.materialize(dateFormat.format(date), policy);		
 		Long stop = System.currentTimeMillis();
 		MaterializedWorkflowLibrary.add(mw);
 		return mw.name;

@@ -76,7 +76,7 @@ public class AbstractWorkflow1 {
 		return targets;
 	}
 
-	public MaterializedWorkflow1 materialize(String metric, String nameExtention, String policy) throws Exception {
+	public MaterializedWorkflow1 materialize(String nameExtention, String policy) throws Exception {
 		OperatorLibrary.moveid=0;
 		parsePolicy(policy);
 		String fullName=name+"_"+nameExtention;
@@ -95,7 +95,7 @@ public class AbstractWorkflow1 {
 
 		for(WorkflowNode t : targets){
 			logger.info( "Materializing workflow node: " + t.toStringNorecursive());
-			List<WorkflowNode> l = t.materialize(metric, materializedWorkflow,dpTable,t.getName());
+			List<WorkflowNode> l = t.materialize(materializedWorkflow,dpTable,t.getName());
 			/* vpapa: assert that WorkflowNode.materialize() returned something
 				valid
 			*/
@@ -154,7 +154,7 @@ public class AbstractWorkflow1 {
 	public MaterializedWorkflow1 replan(
 			HashMap<String, WorkflowNode> materilizedDatasets) throws Exception {
 		this.materilizedDatasets=materilizedDatasets;
-		return materialize("execTime", "", policy);
+		return materialize("", policy);
 	}
 
 
@@ -550,7 +550,7 @@ public class AbstractWorkflow1 {
 
 		abstractWorkflow.writeToDir("asapLibrary/abstractWorkflows/DataAnalytics");
 		System.exit(0);
-		MaterializedWorkflow1 mw = abstractWorkflow.materialize("execTime", "t","");
+		MaterializedWorkflow1 mw = abstractWorkflow.materialize("t","");
 		System.out.println(abstractWorkflow);
 		System.out.println(mw);
 		mw.printNodes();
