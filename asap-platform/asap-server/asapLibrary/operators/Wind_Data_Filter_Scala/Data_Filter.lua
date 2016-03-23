@@ -3,6 +3,7 @@ BASE = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m com.cloudera.kitten.appmaster.App
 TIMEOUT = -1
 MEMORY = 1024
 CORES = 1
+EXECUTION_NODE_LOCATION = "hdp1"
 OPERATOR_LIBRARY = "asapLibrary/operators"
 
 -- Specific configuration of operator
@@ -18,6 +19,7 @@ operator = yarn {
   timeout 	= TIMEOUT,
   memory 	= MEMORY,
   cores 	= CORES,
+  nodes 	= EXECUTION_NODE_LOCATION,
   master 	= {
     env = base_env,
     resources = base_resources,
