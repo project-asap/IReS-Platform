@@ -33,9 +33,9 @@ operator = yarn {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
     		command = {
-			base = SHELL_COMMAND
-		},
-    	resources = {
+				base = SHELL_COMMAND
+			},
+	    	resources = {
     			["Wind_Data_Filter_Scala.sh"] = {
 				file = OPERATOR_HOME  .. "/Wind_Data_Filter_Scala.sh",
       				type = "file",               -- other value: 'archive'
@@ -51,6 +51,6 @@ operator = yarn {
 					type = "file",
 					visibility = "application"
 				}
-  		}   		
+  			}   		
  	}
 }

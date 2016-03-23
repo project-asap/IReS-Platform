@@ -33,8 +33,8 @@ operator = yarn {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
     		command = {
-			base = SHELL_COMMAND
-		},
+				base = SHELL_COMMAND
+			},
     		resources = {
     			["Wind_Peak_Detection_Scala.sh"] = {
 				file = OPERATOR_HOME  .. "/Wind_Peak_Detection_Scala.sh",
@@ -51,7 +51,6 @@ operator = yarn {
 					type = "file",
 					visibility = "application"
 				}
-  		}
-    		
+  			}
  	}
 }

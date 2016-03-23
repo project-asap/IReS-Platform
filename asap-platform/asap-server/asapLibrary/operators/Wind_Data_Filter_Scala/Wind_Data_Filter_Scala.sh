@@ -39,5 +39,5 @@ echo -e "Starting submit.sh script for Data_Filter_Scala operator ..."
 REGION="roma"
 TIMEFRAME="june-2015"
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
-$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 data_filter.py hdfs:///dataset_simulated/06/*.csv aree_roma.csv $REGION $TIMEFRAME
+$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 data_filter.py hdfs:///dataset_simulated/06/1.csv aree_roma.csv $REGION $TIMEFRAME
 echo -e "... submit.sh script for Data_Filter_Scala operator ended"
