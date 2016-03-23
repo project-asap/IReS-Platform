@@ -644,6 +644,7 @@ public class WebUI {
     	ret+="<div  class=\"mainpage\"><p><form action=\"/web/abstractWorkflows/materialize\" method=\"get\">"
 			+ "Policy: <p><input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
 			+ "<textarea rows=\"4\" cols=\"80\" name=\"policy\">"+defaultPolicy()+"</textarea></p>"
+			+ "Parameters: <p><textarea rows=\"4\" cols=\"80\" name=\"parameters\"></textarea></p>"
 			+ "<p><input class=\"styled-button\" type=\"submit\" value=\"Materialize Workflow\"></form></p>";
     	
     	ret+="<p><form action=\"/web/abstractWorkflows/addRemove\" method=\"get\">"
@@ -732,9 +733,10 @@ public class WebUI {
     @Path("/abstractWorkflows/materialize/")
     @Produces(MediaType.TEXT_HTML)
     public String materializeAbstractWorkflow(@QueryParam("workflowName") String workflowName,
-    		@QueryParam("policy") String policy) throws Exception{
+    		@QueryParam("policy") String policy,
+    		@QueryParam("parameters") String parameters) throws Exception{
     	AbstractWorkflowLibrary.refresh(workflowName);
-    	String mw = AbstractWorkflowLibrary.getMaterializedWorkflow(workflowName,policy);
+    	String mw = AbstractWorkflowLibrary.getMaterializedWorkflow(workflowName,policy,parameters);
     	String ret = header+"Optimal result for policy function: <br>"+AbstractWorkflow1.getPolicyFromString(policy)+" = "+MaterializedWorkflowLibrary.get(mw).optimalCost;
     	ret+="</div><div  class=\"mainpage\">";
     	

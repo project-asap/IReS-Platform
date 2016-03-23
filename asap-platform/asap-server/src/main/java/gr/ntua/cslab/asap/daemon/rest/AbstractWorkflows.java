@@ -53,9 +53,7 @@ public class AbstractWorkflows {
 	@Path("add/{id}/")
     public void addWorkflow(@PathParam("id") String id,
     		WorkflowDictionary workflow) throws IOException, NumberFormatException, EvaluationException {
-        
 		AbstractWorkflowLibrary.addWorkflow(id, workflow);
-		
     }
 	
 	@GET
@@ -69,7 +67,14 @@ public class AbstractWorkflows {
 	@Produces("application/XML")
 	@Path("materialize/{id}/")
     public String materializeWorkflow(@PathParam("id") String id,@QueryParam("policy") String policy) throws Exception {
-        return AbstractWorkflowLibrary.getMaterializedWorkflow(id, policy);
+        return AbstractWorkflowLibrary.getMaterializedWorkflow(id, policy,"");
+    }
+	
+	@GET
+	@Produces("application/XML")
+	@Path("materializeWithParams/{id}/")
+    public String materializeWorkflow(@PathParam("id") String id,@QueryParam("policy") String policy,@QueryParam("parameters") String parameters) throws Exception {
+        return AbstractWorkflowLibrary.getMaterializedWorkflow(id, policy,parameters);
     }
 
 	@GET

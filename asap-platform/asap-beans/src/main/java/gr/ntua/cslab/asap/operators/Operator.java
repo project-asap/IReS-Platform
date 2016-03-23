@@ -111,14 +111,14 @@ public class Operator {
 						}
 					}
 				} else {
-					modelFile.mkdir();
 					int i = 0;
 
-
+					
                     if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
                         System.out.println("MONGO");
                         this.initializeDatasouce();
                         outPoints = dataSource.getOutputSpacePoints();
+                        System.out.println(outPoints);
                     }
                     else {
                         System.out.println("CSV");
@@ -131,37 +131,40 @@ public class Operator {
                         }
                     }
 
-
-
-
+                    
                     for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if (c.equals(UserFunction.class))
 							continue;
 						Model model = (Model) c.getConstructor().newInstance();
-
-                        for (OutputSpacePoint point : outPoints){
-                            model.feed(point, false);
-                        }
-
-						try {
-							model.train();
-							double error = ML.totalError(model);
-							if (error < minTotalError){
-								bestModel = model;
-								minTotalError = error;
-							}
-							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-							//performanceModels.add(model);
-
-						} catch (Exception e1) {
-							System.out.println("Exception in training: "+e1);
-							continue;
+						if(outPoints==null || outPoints.size()==0){
+							bestModel=null;
 						}
-
+						else{
+	                        for (OutputSpacePoint point : outPoints){
+	                            model.feed(point, false);
+	                        }
+							try {
+								model.train();
+								double error = ML.totalError(model);
+								if (error < minTotalError){
+									bestModel = model;
+									minTotalError = error;
+								}
+								//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+								//performanceModels.add(model);
+	
+							} catch (Exception e1) {
+								System.out.println("Exception in training: "+e1);
+								continue;
+							}
+						}
 						i++;
 					}
-					bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-					performanceModels.add(bestModel);
+                    if(bestModel!=null){
+                    	modelFile.mkdir();
+						bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+						performanceModels.add(bestModel);
+                    }
 				}
 			} else {
 				performanceModels.add((Model) Class.forName(modelClass).getConstructor().newInstance());
@@ -184,7 +187,7 @@ public class Operator {
 
     public void initializeDatasouce(){
 		System.out.println("Initializing datasource...");
-		String collection = optree.getParameter("Optimization.inputSource.collection");
+		String collection = this.opName;//optree.getParameter("Optimization.inputSource.collection");
         String host = optree.getParameter("Optimization.inputSource.host");
         String db = optree.getParameter("Optimization.inputSource.db");
         System.out.printf("Col :%s\nDB: %s\nHost: %s\n", collection, db, host);
@@ -540,6 +543,7 @@ public class Operator {
 		//generate Input space point
 		InputSpacePoint in = new InputSpacePoint();
 		HashMap<String, Double> values = new HashMap<String, Double>();
+		boolean missing =false;
 		for (String inVar : inputSpace.keySet()) {
 			//System.out.println("InVar: "+inVar);
 			String[] s = inVar.split("\\.");
@@ -551,6 +555,7 @@ public class Operator {
 			}
 			System.out.println("Policy: "+policy);
 			*/
+			
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;
@@ -562,6 +567,7 @@ public class Operator {
 				if (!n.isOperator) {
 					val = n.dataset.getParameter("Optimization." + s[1]);
 					if(val==null){
+						missing=true;
 						//System.out.println("Null: "+s[0]);
 						v=null;
 					}
@@ -575,26 +581,80 @@ public class Operator {
 				//System.out.println("Null: "+s[0]);
 				//System.out.println("in value "+ 2.0);
 				//values.put(inVar, 2.0);
+				missing=true;
 				values.put(inVar, null);
 
 			}
 		}
-		//System.out.println(values);
+		
 		in.setValues(values);
-		OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy, optree);
-		retMetrics.putAll(out.getOutputPoints());
+		if(missing){
+			OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy, optree);
+			retMetrics.putAll(out.getOutputPoints());
+		}
+		else{
+			for(String metric : outputSpace.keySet()){
+				Double v= getMettric(metric,inputs);
+				retMetrics.put(metric, v);
+			}
+		}
+		
 		logger.info("Output metrics: " + retMetrics);
 		for (Entry<String, Double> e : inputMetrics.entrySet()) {
 			logger.info(e.getKey() +" "+ e.getValue());
-			retMetrics.put(e.getKey(), e.getValue() + retMetrics.get(e.getKey()));
+			Double v = retMetrics.get(e.getKey());
+			if(v==null)
+				v=new Double(0);
+			retMetrics.put(e.getKey(), e.getValue() + v);
 		}
 		logger.info("Output metrics added with input: " + retMetrics);
 		return retMetrics;
 	}
 
+
+	public Double getMettric(String metric, InputSpacePoint in) throws Exception {
+		logger.info("Getting mettric: " + metric + " from operator: " + opName);
+
+		if(models.get(metric)==null || models.get(metric).size()==0){
+			Random r = new Random();
+			return r.nextDouble() * 100;
+		}
+		Model model = models.get(metric).get(0);
+		if (!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)) {
+			for (Model m : models.get(metric)) {
+
+				if (inputSpace.size() >= 2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)) {
+					model = m;
+					break;
+				}
+				if (inputSpace.size() < 2 && m.getClass().equals(gr.ntua.ece.cslab.panic.core.models.LinearRegression.class)) {
+					model = m;
+					break;
+				}
+			}
+		}
+		logger.info("Model selected: " + model.getClass());
+
+		OutputSpacePoint op = new OutputSpacePoint();
+		HashMap<String, Double> values = new HashMap<String, Double>();
+		for (String k : model.getOutputSpace().keySet()) {
+			values.put(k, null);
+		}
+		op.setValues(values);
+		//System.out.println(in);
+		OutputSpacePoint res = model.getPoint(in, op);
+		//System.out.println(res);
+		//System.out.println("return: " + res.getOutputPoints().get(metric));
+		return res.getOutputPoints().get(metric);
+	}
+	
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception {
 		logger.info("Getting mettric: " + metric + " from operator: " + opName);
 		//System.out.println(metric);
+		if(models.get(metric)==null || models.get(metric).size()==0){
+			Random r = new Random();
+			return r.nextDouble() * 100;
+		}
 		Model model = models.get(metric).get(0);
 		if (!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)) {
 			for (Model m : models.get(metric)) {

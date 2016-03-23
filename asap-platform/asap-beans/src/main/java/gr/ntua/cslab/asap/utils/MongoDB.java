@@ -60,10 +60,14 @@ public class MongoDB implements DataSource{
             projection.append(is, "true");
         for (String os : outputSpace)
             projection.append(os, "true");
-
+        
+        System.out.println(projection);
         FindIterable obj = mc.find().projection(projection);
 
         try {
+        	if(obj==null)
+                return null;
+        		
             for (Object item : obj) {
                 Document doc = (Document) item;
                 isp = new InputSpacePoint();

@@ -368,7 +368,9 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     String asap = conf.get("asap.asap_path");
     List<String> oldcmds = cmds;
     cmds = new ArrayList<String>();
-    //cmds.add(asap +" monitor start");
+    cmds.add("export HOME=/root");
+    cmds.add("export ASAP_HOME=/root/asap; export PATH=\"$PATH:$ASAP_HOME/bin/\"");
+    cmds.add(asap +" monitor start");
     
     String outdir = dir+"/"+this.name;//+"_"+globalContainerId;
 
@@ -398,7 +400,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 	    cmds.add(hdfs+" dfs -moveFromLocal "+f+" "+outdir);
     }
     
-    //cmds.add(asap +" report -cm -e "+this.name);
+    cmds.add(asap +" report -cm -e "+this.name.substring(0, this.name.lastIndexOf("_")));
     
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);

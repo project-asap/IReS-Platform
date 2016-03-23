@@ -94,7 +94,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	}
 
 
-	public List<WorkflowNode> materialize(String metric, MaterializedWorkflow1 materializedWorkflow, Workflow1DPTable dpTable, String fromName) throws Exception {
+	public List<WorkflowNode> materialize(MaterializedWorkflow1 materializedWorkflow, Workflow1DPTable dpTable, String fromName) throws Exception {
 		logger.info("Processing : " + toStringNorecursive()+" from name: "+fromName);
 		//System.out.println("Processing : " + toStringNorecursive()+" from name: "+fromName);
 		List<WorkflowNode> ret = new ArrayList<WorkflowNode>();
@@ -127,7 +127,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 
 		for(WorkflowNode in : inputs){
-			List<WorkflowNode> l = in.materialize(metric, materializedWorkflow,dpTable,getName());
+			List<WorkflowNode> l = in.materialize(materializedWorkflow,dpTable,getName());
 			materializedInputs.add(l);
 		}
 		logger.info( "Materialized inputs: " + materializedInputs);
