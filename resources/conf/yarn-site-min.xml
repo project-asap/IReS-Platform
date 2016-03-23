@@ -68,9 +68,9 @@
 	<property>
         <name>yarn.nodemanager.services-running.per-node</name>
         <value>
-        	hdp1:PostgreSQL Spark NodeManager
-        	hdp2:NodeManager
-        	hdp3:PostgreSQL NodeManager
+        	hdp1:PostgreSQL Spark NodeManager,
+        	hdp2:NodeManager,
+        	hdp3:PostgreSQL NodeManager,
         	hdp4:NodeManager
         </value>
         <description>
