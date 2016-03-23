@@ -88,7 +88,7 @@
         <value>
         	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
         	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
-        	NodeManager:jps | grep -w NodeManager | awk '{split( $0, a, " "); print a[ 2]}'
+        	NodeManager:jps | grep -w NodeManager | awk '{split( $0, a, " "); print a[ 2]}';;
         	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
         </value>
         <description>

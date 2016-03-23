@@ -100,7 +100,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		//hosts
 		runservices = new HashMap< String, String>();
 		try{
-			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( ",");
+			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( "\n");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.per-node property.");
@@ -196,6 +196,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						ClusterStatusLibrary.status.put( service, true);
 					}
 				}
+				System.out.println( "ClusterStatusLibrary: " + ClusterStatusLibrary.status);
 				/*
 				System.out.println( "The yarn cluster has " + yhosts.size() + " hosts.");
 				for( String service : runservices.keySet()){
