@@ -107,6 +107,7 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
 			logger.info( " in folder with relative path asap-server/target/conf.");
 		}
+		System.out.println( "Yarn hosts = " + hosts);
 		hservices = new HashMap< String, String>();
 		for( int i = 0; i < hosts.length; i++){
 			System.out.println( hosts[ i].trim());
