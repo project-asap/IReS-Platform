@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=data_filter
+Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter
 #INPUT( mandatory)
 Constraints.Input.number=1
 #if the input type is specified it should be also specified appropriately into

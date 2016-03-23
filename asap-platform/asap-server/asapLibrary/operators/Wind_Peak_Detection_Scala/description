@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=peak_detection
+Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
@@ -56,8 +56,8 @@ Execution.Argument4=0.1
 Execution.copyToLocal=In0.path
 Execution.copyToLocal=In1.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/events
-Execution.copyFromLocal=output/eventsFilter
+#Execution.copyFromLocal=output/events
+#Execution.copyFromLocal=output/eventsFilter
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/output/events
-Execution.Output1.path=$HDFS_OP_DIR/output/eventsFilter
+Execution.Output0.path=hdfs:///output/events
+Execution.Output1.path=hdfs:///output/eventsFilter

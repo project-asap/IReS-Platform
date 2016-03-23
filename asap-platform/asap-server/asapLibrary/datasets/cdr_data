@@ -31,4 +31,4 @@ Optimization.size=1E9
 #############
 # EXECUTION #
 #############
-Execution.path=hdfs:///data_simulated
+Execution.path=hdfs:///data_simulated/06

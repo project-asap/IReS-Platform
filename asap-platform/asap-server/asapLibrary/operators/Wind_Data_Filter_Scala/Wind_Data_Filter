@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=data_filter
+Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
@@ -57,8 +57,8 @@ Execution.Argument7=/voronoi
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/trainingData
-Execution.copyFromLocal=output/testData
+#Execution.copyFromLocal=output/trainingData
+#Execution.copyFromLocal=output/testData
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/output/trainingData
-Execution.Output1.path=$HDFS_OP_DIR/output/testData
+Execution.Output0.path=hdfs:///output/trainingData
+Execution.Output1.path=hdfs:///output/testData

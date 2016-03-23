@@ -1,21 +1,32 @@
--- The command to execute.
-SHELL_COMMAND = "./Peak_Detection.sh"
+-- General configuration of the operators belonging to Wind_Demo_o_Postgres workflow
+BASE = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m com.cloudera.kitten.appmaster.ApplicationMaster"
+TIMEOUT = -1
+MEMORY = 1024
+CORES = 1
+OPERATOR_LIBRARY = "asapLibrary/operators"
+
+-- Specific configuration of operator
+OPERATOR = "Wind_Peak_Detection_Scala"
+SCRIPT = OPERATOR .. ".sh"
+SHELL_COMMAND = "./" .. SCRIPT
+-- Home directory of operator
+OPERATOR_HOME = OPERATOR_LIBRARY .. "/" .. OPERATOR
+
 -- The actual distributed shell job.
 operator = yarn {
-	name = "Execute Peak_Detection Operator",
-  	timeout = 10000000,
-  	memory = 1024,
-  	cores = 1,
-	nodes = "master",
-  	master = {
-    		env = base_env,
-    		resources = base_resources,
-    		command = {
-      			base = "${JAVA_HOME}/bin/java -Xms64m -Xmx1280m com.cloudera.kitten.appmaster.ApplicationMaster",
-      			args = { "-conf job.xml" },
-    		}
-  	},
-	
+  name 		= "Execute " .. OPERATOR .. " Operator",
+  timeout 	= TIMEOUT,
+  memory 	= MEMORY,
+  cores 	= CORES,
+  master 	= {
+    env = base_env,
+    resources = base_resources,
+    command = {
+      base = BASE,
+      args = { "-conf job.xml" },
+    }
+  },
+
 	container = {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
@@ -23,20 +34,20 @@ operator = yarn {
 			base = SHELL_COMMAND
 		},
     		resources = {
-    			["Peak_Detection.sh"] = {
-				file = PEAK_DETECTION_HOME  .. "/Peak_Detection.sh",
+    			["Wind_Peak_Detection_Scala.sh"] = {
+				file = OPERATOR_HOME  .. "/Wind_Peak_Detection_Scala.sh",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["PeakDetection.scala"] = {
-       				file = PEAK_DETECTION_HOME .. "/PeakDetection.scala",
+    			["peak_detection.py"] = {
+       				file = OPERATOR_HOME .. "/peak_detection.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["Types.scala"] = {
-				file = DATA_FILTER_HOME .. "/Types.scala",
-				type = "file",
-				visibility = "application"
+    			["aree_roma.csv"] = {
+					file = OPERATOR_HOME .. "/aree_roma.csv",
+					type = "file",
+					visibility = "application"
 				}
   		}
     		

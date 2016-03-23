@@ -1,49 +1,54 @@
--- The command to execute.
-SHELL_COMMAND = "./Data_Filter.sh"
+-- General configuration of the operators belonging to Wind_Demo_o_Postgres workflow
+BASE = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m com.cloudera.kitten.appmaster.ApplicationMaster"
+TIMEOUT = -1
+MEMORY = 1024
+CORES = 1
+OPERATOR_LIBRARY = "asapLibrary/operators"
+
+-- Specific configuration of operator
+OPERATOR = "Wind_Data_Filter_Scala"
+SCRIPT = OPERATOR .. ".sh"
+SHELL_COMMAND = "./" .. SCRIPT
+-- Home directory of operator
+OPERATOR_HOME = OPERATOR_LIBRARY .. "/" .. OPERATOR
+
 -- The actual distributed shell job.
 operator = yarn {
-	name = "Execute Data_Filter_Scala Operator",
-  	timeout = 10000000,
-  	memory = 1024,
-  	cores = 1,
-	nodes = "master",
-  	master = {
-    		env = base_env,
-    		resources = base_resources,
-    		command = {
-      			base = "${JAVA_HOME}/bin/java -Xms64m -Xmx1280m com.cloudera.kitten.appmaster.ApplicationMaster",
-      			args = { "-conf job.xml" },
-    		}
-  	},
-	
+  name 		= "Execute " .. OPERATOR .. " Operator",
+  timeout 	= TIMEOUT,
+  memory 	= MEMORY,
+  cores 	= CORES,
+  master 	= {
+    env = base_env,
+    resources = base_resources,
+    command = {
+      base = BASE,
+      args = { "-conf job.xml" },
+    }
+  },
+
 	container = {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
     		command = {
 			base = SHELL_COMMAND
 		},
-    		resources = {
-    			["Data_Filter.sh"] = {
-				file = DATA_FILTER_HOME  .. "/Data_Filter.sh",
+    	resources = {
+    			["Wind_Data_Filter_Scala.sh"] = {
+				file = OPERATOR_HOME  .. "/Wind_Data_Filter_Scala.sh",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["DataFilter.scala"] = {
-       				file = DATA_FILTER_HOME .. "/DataFilter.scala",
+    			["data_filter.py"] = {
+       				file = OPERATOR_HOME .. "/data_filter.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["DataFilterSettings.scala"] = {
-				file = DATA_FILTER_HOME .. "/DataFilterSettings.scala",
-				type = "file",
-				visibility = "application"
-    			},
-    			["Types.scala"] = {
-				file = DATA_FILTER_HOME .. "/Types.scala",
-				type = "file",
-				visibility = "application"
+    			["aree_roma.csv"] = {
+					file = OPERATOR_HOME .. "/aree_roma.csv",
+					type = "file",
+					visibility = "application"
 				}
-  		}
-    		
+  		}   		
  	}
 }

@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=peak_detection
+Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection
 #INPUT( mandatory)
 Constraints.Input.number=2
 #if the input type is specified it should be also specified appropriately into

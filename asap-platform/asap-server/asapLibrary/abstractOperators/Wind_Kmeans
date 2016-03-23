@@ -16,7 +16,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=kmeans
+Constraints.OpSpecification.Algorithm.name=Wind_Kmeans
 #INPUT( mandatory)
 Constraints.Input.number=1
 #OUTPUT( mandatory)

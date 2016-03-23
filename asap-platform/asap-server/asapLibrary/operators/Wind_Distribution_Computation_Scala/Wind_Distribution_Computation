@@ -16,7 +16,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=distribution_computation
+Constraints.OpSpecification.Algorithm.name=Wind_Distribution_Computation
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
@@ -50,6 +50,6 @@ Execution.Argument2=/output
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/cpBase
+#Execution.copyFromLocal=output/cpBase
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/output/cpBase
+Execution.Output0.path=hdfs:///output/cpBase

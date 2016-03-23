@@ -16,7 +16,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=user_profiling
+Constraints.OpSpecification.Algorithm.name=Wind_User_Profiling
 #INPUT( mandatory)
 Constraints.Input.number=1
 #OUTPUT( mandatory)

@@ -16,7 +16,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=distribution_computation
+Constraints.OpSpecification.Algorithm.name=Wind_Distribution_Computation
 #INPUT( mandatory)
 Constraints.Input.number=1
 #if the input type is specified it should be also specified appropriately into
