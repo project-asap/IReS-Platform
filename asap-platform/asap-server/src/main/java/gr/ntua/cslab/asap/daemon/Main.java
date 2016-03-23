@@ -14,6 +14,8 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.Runnable;
+import java.lang.Thread;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -90,8 +92,6 @@ public class Main {
             System.exit(1);
         }
 
-      
-        
         ServletHolder holder = new ServletHolder(ServletContainer.class);
         holder.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", "com.sun.jersey.api.core.PackagesResourceConfig");
         holder.setInitParameter("com.sun.jersey.config.property.packages",
@@ -167,9 +167,7 @@ public class Main {
         File abstractworkflowDir = new File(folder+"/abstractWorkflows");
         if (!abstractworkflowDir.exists()) {
         	abstractworkflowDir.mkdir();
-        }
-        
-        
+        }     
     }
 
 	private static void load() throws Exception {
@@ -183,6 +181,11 @@ public class Main {
 		ClusterStatusLibrary.initialize();
 	}
 	
+	private static void checkServicesStatus() throws Exception{
+		ClusterNodes cns = new ClusterNodes( 5000);
+		Thread check = new Tread( cns);
+		check.start();
+	}
 	
     public static void main(String[] args) throws Exception {
         configureLogger();
@@ -195,6 +198,7 @@ public class Main {
         ServerStaticComponents.server.start();
         Logger.getLogger(Main.class.getName()).info("Server is started");
 
+        checkServicesStatus();
     }
 
 }
