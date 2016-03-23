@@ -60,5 +60,5 @@ Execution.copyToLocal=In0.path
 #Execution.copyFromLocal=output/trainingData
 #Execution.copyFromLocal=output/testData
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=hdfs:///output/trainingData
-Execution.Output1.path=hdfs:///output/testData
+Execution.Output0.path=/output/trainingData
+Execution.Output1.path=/output/testData
