@@ -56,8 +56,8 @@ Execution.Argument4=0.1
 Execution.copyToLocal=In0.path
 Execution.copyToLocal=In1.path
 #copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=output/events
-#Execution.copyFromLocal=output/eventsFilter
+Execution.copyFromLocal=output/events
+Execution.copyFromLocal=output/eventsFilter
 #EXECUTION OUTPUT( mandatory)
 Execution.Output0.path=/output/events
 Execution.Output1.path=/output/eventsFilter
