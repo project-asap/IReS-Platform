@@ -46,7 +46,7 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Kmeans.lua
+Execution.LuaScript=Kmeans_Spark.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=5
 Execution.Argument0=roma
