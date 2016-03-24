@@ -176,13 +176,13 @@ public class ClusterNodes extends Configured implements Runnable {
 								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
 								//read status
 								status = br.readLine();
-								
+								/*
 								System.out.println( "Service to check: " + service);
 								System.out.println( "on host: " + host);
 								System.out.println( "with command: " + scommands.get( service));
 								System.out.println( "and expected status: " + sstatus.get( service));
 								System.out.println( "Actual status: " + status);
-								
+								*/
 								//compare status returned with the one expected from sstatus HashMap if
 								//running status for the current service has been speicified in yarn-site.xml and
 								//the command that has been run at the host returned a valid result
