@@ -147,9 +147,11 @@ public class ClusterNodes extends Configured implements Runnable {
 			services = hosts[ i].trim().split( ":");
 			sstatus.put( services[ 0], services[ 1]);
 		}
+		/*
 		System.out.println( "Yarn nodes services = " + hservices);
 		System.out.println( "Services' commands = " + scommands);
 		System.out.println( "Running services' status= " + sstatus);
+		*/
 		//initialize and start YarnClient
 		yc.init( yconf);
 		yc.start();
@@ -170,15 +172,17 @@ public class ClusterNodes extends Configured implements Runnable {
 							//for each service check if it is running
 							for( String service : hservices.get( host).split( " ")){
 								//run the command to get service availability
-								System.out.println( "Service to check: " + service);
-								System.out.println( "on host: " + host);
-								System.out.println( "with command: " + scommands.get( service));
-								System.out.println( "and expected status: " + sstatus.get( service));
 								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
 								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
 								//read status
 								status = br.readLine();
+								/*
+								System.out.println( "Service to check: " + service);
+								System.out.println( "on host: " + host);
+								System.out.println( "with command: " + scommands.get( service));
+								System.out.println( "and expected status: " + sstatus.get( service));
 								System.out.println( "Actual status: " + status);
+								*/
 								//compare status returned with the one expected from sstatus HashMap if
 								//running status for the current service has been speicified in yarn-site.xml and
 								//the command that has been run at the host returned a valid result
@@ -197,7 +201,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						}
 					}
 				}
-				System.out.println( "Running services: " + runservices);
+//				System.out.println( "Running services: " + runservices);
 				for( String service : runservices.keySet()){
 					if( runservices.get( service).equals( "")){
 						ClusterStatusLibrary.status.put( service, false);
@@ -206,8 +210,8 @@ public class ClusterNodes extends Configured implements Runnable {
 						ClusterStatusLibrary.status.put( service, true);
 					}
 				}
-				System.out.println( "ClusterStatusLibrary: " + ClusterStatusLibrary.status);
 				/*
+				System.out.println( "ClusterStatusLibrary: " + ClusterStatusLibrary.status);
 				System.out.println( "The yarn cluster has " + yhosts.size() + " hosts.");
 				for( String service : runservices.keySet()){
 					System.out.println( "Service: " + service + " runs on: " + runservices.get( service));
