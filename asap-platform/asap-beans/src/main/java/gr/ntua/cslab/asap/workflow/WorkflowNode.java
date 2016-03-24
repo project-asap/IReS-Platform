@@ -7,6 +7,7 @@ import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,6 +39,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	public List<WorkflowNode> inputs, outputs;
 	private static Logger logger = Logger.getLogger(WorkflowNode.class.getName());
 	public boolean copyToLocal=false, copyToHDFS=false;
+	public String inMonitorValues;
 
 
 	public WorkflowNode(boolean isOperator, boolean isAbstract, String abstractName) {
@@ -816,6 +818,44 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 	}
 
+
+	public String getInMetrics() {
+		
+		String ret ="";
+		if(!isOperator)
+			return "";
+		else{
+			for (String inVar : operator.inputSpace.keySet()) {
+				String[] s = inVar.split("\\.");
+				String inVar1= inVar.replace('.', '@');
+				String val = null;
+				if (s[0].startsWith("In")) {
+					int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
+					logger.info( "Operator inputs are: " + inputs);
+					WorkflowNode n = inputs.get(index);
+					if (!n.isOperator) {
+						val = n.dataset.getParameter("Optimization." + s[1]);
+						if(val==null){
+							val = operator.getParameter("SelectedParam." + s[1]);
+							if(val==null){
+								val="0";
+							}
+						}
+					}
+				} else {
+					val = operator.getParameter("SelectedParam." + s[0]);
+					if(val==null){
+						val="0";
+					}
+				}
+				
+				Double v = Double.parseDouble(val);
+				ret+=inVar1+"="+v+" ";
+			}
+		}
+		return ret;
+	}
+	
 	public String getArguments() {
 		if(!isOperator)
 			return "";
@@ -956,4 +996,5 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	private boolean isDataset() {
 		return !isOperator;
 	}
+
 }

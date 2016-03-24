@@ -194,8 +194,13 @@ public class OperatorLibrary {
     	if(profileType.equals("Compare models")){
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
-			append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
 
+			if (dataSource != null) {
+				append("www/test.csv",variable,",", op.inputSpace, dataSource);
+			}
+			else{
+				append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
+			}
     		/*if(csv.exists()){
     			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
     			append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
@@ -207,6 +212,20 @@ public class OperatorLibrary {
     	}
     	else if(profileType.equals("View model")){
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
+    	}
+    	else if(profileType.equals("View samples")){
+    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
+    		File file = new File("www/test.csv");
+    		if(file.exists())
+    			file.delete();
+			if (dataSource != null) {
+				append("www/test.csv",variable,",", op.inputSpace, dataSource);
+			}
+			else{
+				if(csv.exists()){
+					append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
+				}
+			}
     	}
     	else{
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
@@ -233,7 +252,7 @@ public class OperatorLibrary {
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(toCSV, true)));
 
 		if (dataSource != null) {
-			ArrayList<OutputSpacePoint> points = dataSource.getOutputSpacePoints();
+			ArrayList<OutputSpacePoint> points = dataSource.getOutputSpacePoints(fromCSV);
 			Iterator<OutputSpacePoint> iterator = points.iterator();
 
 

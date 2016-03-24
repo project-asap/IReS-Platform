@@ -11,7 +11,10 @@ import java.util.ArrayList;
 public interface DataSource {
    /**
     * --- getOutputSpacePoints ---
+ * @param metric 
     * @return An ArrayList of output space points to be given as input to PANIC models for training
     */
-   ArrayList<OutputSpacePoint> getOutputSpacePoints();
+   ArrayList<OutputSpacePoint> getOutputSpacePoints(String metric);
+
+ArrayList<OutputSpacePoint> getOutputSpacePoints();
 }
