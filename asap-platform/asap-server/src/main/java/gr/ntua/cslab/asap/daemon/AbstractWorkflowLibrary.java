@@ -7,15 +7,20 @@ import gr.ntua.cslab.asap.daemon.rest.TransformWorkflows;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
+import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 import net.sourceforge.jeval.EvaluationException;
 
@@ -50,7 +55,20 @@ public class AbstractWorkflowLibrary {
 	}
 
 	public static String getMaterializedWorkflow(String workflowName, String policy, String parameters) throws Exception {
+		Properties props =parseParameters(parameters);
+		
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
+		for(Entry<Object, Object> e: props.entrySet()){
+			String k = (String) e.getKey();
+			String v = (String) e.getValue();
+			String[] s = k.split("\\.");
+			k=k.substring(k.indexOf('.')+1, k.length());
+			WorkflowNode node = aw.workflowNodes.get(s[0]);
+			if(node!=null){
+				node.dataset.add(k, v);
+			}
+		}
+		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 		Date date = new Date();
 		Long start = System.currentTimeMillis();
@@ -58,6 +76,14 @@ public class AbstractWorkflowLibrary {
 		Long stop = System.currentTimeMillis();
 		MaterializedWorkflowLibrary.add(mw);
 		return mw.name;
+	}
+
+	private static Properties parseParameters(String parameters) throws IOException {
+		InputStream stream = new ByteArrayInputStream(parameters.getBytes());
+		Properties props = new Properties();
+		props.load(stream);
+		stream.close();
+		return props;
 	}
 
 	public static String getGraphDescription(String workflowName) throws IOException {

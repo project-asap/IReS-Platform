@@ -42,6 +42,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     public boolean isInitilized;
     private List<AMRMClient.ContainerRequest> containerRequests;
 	private WorkflowService service;
+	private long startTime;
     
     public ContainerTracker(WorkflowService service, ContainerLaunchParameters parameters) {
     	this.service = service;
@@ -81,6 +82,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	if(!allPreviousFinished())
     		return;
     	service.parameters.workflow.getOperator(params.getName()).setStatus("running");
+    	startTime = System.currentTimeMillis();
       this.nodeManager = NMClientAsync.createNMClientAsync(this);
       nodeManager.init(service.conf);
       nodeManager.start();
@@ -185,6 +187,10 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     public void containerCompleted(ContainerId containerId) {
         isInitilized=false;
       LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
+      long stop = System.currentTimeMillis();
+      double time = (stop-startTime)/1000.0-5;//5sec init container
+  		service.parameters.workflow.getOperator(params.getName()).setCost(time+"");
+      
       containers.remove(containerId);
       completed.incrementAndGet();
       

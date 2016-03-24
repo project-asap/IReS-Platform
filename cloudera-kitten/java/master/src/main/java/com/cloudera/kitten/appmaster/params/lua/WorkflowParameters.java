@@ -101,6 +101,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		
 		for(OperatorDictionary op : workflow.getOperators()){
 			if(op.getIsOperator().equals("true") && op.getStatus().equals("warn")){
+				op.setCost("");
 				operators.put(op.getName(), op.getName()+".lua");
 			}
 		}

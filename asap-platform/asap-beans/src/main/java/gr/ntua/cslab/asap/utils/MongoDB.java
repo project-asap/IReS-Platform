@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 
+import org.apache.log4j.Logger;
 import org.bson.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  * Establish a connection with a MongoDB database.
  */
 public class MongoDB implements DataSource{
+	private static Logger logger = Logger.getLogger(MongoDB.class.getName());
     MongoClient client;
     MongoDatabase mdb;
     String db;
@@ -70,7 +72,7 @@ public class MongoDB implements DataSource{
         String metric1= metric.replace('.', '@');
         projection.append(metric1, "true");
         
-        System.out.println(projection);
+        logger.info(projection);
         FindIterable obj = mc.find().projection(projection);
 
         try {
@@ -138,7 +140,7 @@ public class MongoDB implements DataSource{
             }
         }
         catch(Exception e){
-            System.out.println("MONGO EXCEPTION: ");
+        	logger.info("MONGO EXCEPTION: "+e.getMessage());
         	e.printStackTrace();
         }
 
@@ -168,7 +170,7 @@ public class MongoDB implements DataSource{
             projection.append(os1, "true");
         }
         
-        System.out.println(projection);
+        logger.info(projection);
         FindIterable obj = mc.find().projection(projection);
 
         try {
@@ -221,7 +223,7 @@ public class MongoDB implements DataSource{
             }
         }
         catch(Exception e){
-            System.out.println("MONGO EXCEPTION: ");
+        	logger.info("MONGO EXCEPTION: "+e.getMessage());
         	e.printStackTrace();
         }
 

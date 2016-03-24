@@ -1,5 +1,12 @@
 package gr.ntua.cslab.asap.daemon;
 
+import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
+import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
+import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
+import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
+
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,20 +24,20 @@ public class YarnServiceHandler implements Runnable {
     	while(true){
     		//logger.info("Updating running services");
     		Map<String, YarnClientService> services = RunningWorkflowLibrary.getRunningServices();
-    		for(Entry<String, YarnClientService> e : services.entrySet()){
-    			handle(e);
-    		}
-    		
     		try {
+	    		for(Entry<String, YarnClientService> e : services.entrySet()){
+	    			handle(e);
+	    		}
+    		
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}
     }
 
-	private void handle(Entry<String, YarnClientService> e) {
+	private void handle(Entry<String, YarnClientService> e) throws Exception {
 		YarnClientService service = e.getValue();
 		ApplicationReport report = null;
 		if (service.isRunning()) {
@@ -38,11 +45,16 @@ public class YarnServiceHandler implements Runnable {
 	        
 		}
 		else{
+			
 			report = service.getFinalReport();
 	    	service.stop();
+	    	RunningWorkflowLibrary.removeRunningService(e.getKey());
 		}
 		//logger.info("State: "+report.getYarnApplicationState());
-	    RunningWorkflowLibrary.workflowsReport.put(e.getKey(), report);
+		RunningWorkflowLibrary.workflowsReport.put(e.getKey(), report);
+		
+	    
+	    
 		/*
 	      if (trackingUrl == null) {
 	        Thread.sleep(1000);

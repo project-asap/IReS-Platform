@@ -191,8 +191,8 @@ public class OperatorLibrary {
 			op.initializeDatasouce();
 		}
 		DataSource dataSource = op.getDataSource();
-		System.out.println("Datasource: "+dataSource);
-		System.out.println("Opname: "+opname);
+		logger.info("Datasource: "+dataSource);
+		logger.info("Opname: "+opname);
 
 		File file = new File("www/test.csv");
 		if(file.exists())
@@ -200,7 +200,6 @@ public class OperatorLibrary {
     	if(profileType.equals("Compare models")){
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
-
 			if (dataSource != null) {
 				append("www/test.csv",variable,",", op.inputSpace, dataSource,false);
 			}
@@ -256,7 +255,6 @@ public class OperatorLibrary {
 				}
 				n += fromCSV+ delimiter+"model";
 				out.append(n );
-				System.out.println(n );
 				out.append(System.lineSeparator());
 			}
 
@@ -281,7 +279,6 @@ public class OperatorLibrary {
 				n += value + delimiter;
 
 				out.append(n + "Samples");
-				System.out.println(n + "Samples");
 				out.append(System.lineSeparator());
 
 			}

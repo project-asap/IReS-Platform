@@ -63,6 +63,18 @@ public class RunningWorkflowLibrary {
 	public static Map<String,YarnClientService> getRunningServices(){
 		return runningServices;
 	}
+	public static void removeRunningService(String key) throws Exception {
+		runningServices.remove(key);
+		WorkflowDictionary w = RunningWorkflowLibrary.getWorkflow(key);
+		
+	    //MaterializedWorkflow1 w = MaterializedWorkflowLibrary.get(e.getKey());
+	    for(OperatorDictionary op : w.getOperators()){
+			if(op.getIsOperator().equals("true") && op.getStatus().equals("running")){
+				Operator operator = OperatorLibrary.getOperator(op.getNameNoID());
+				operator.reConfigureModel();
+			}
+	    }
+	}
 	
 	public static WorkflowDictionary getWorkflow(String name) throws Exception{
 		if(toRunWorkflows.containsKey(name)){
@@ -235,4 +247,6 @@ public class RunningWorkflowLibrary {
 		MaterializedWorkflow1 mwNew =aw.replan(materilizedDatasets);
 		toRunWorkflows.put(id, mwNew.toWorkflowDictionary("\n"));
 	}
+
+
 }

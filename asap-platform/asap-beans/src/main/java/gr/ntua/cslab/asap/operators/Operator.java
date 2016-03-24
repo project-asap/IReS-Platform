@@ -69,6 +69,83 @@ public class Operator {
 	/**
 	 * @throws Exception
 	 */
+	public void reConfigureModel() throws Exception {
+		logger.info("reconfiguring model for: " + opName);
+		String modelClass;
+
+		List<Model> performanceModels;
+        List<OutputSpacePoint> outPoints = new ArrayList<>();
+		minTotalError = Double.MAX_VALUE;
+		for (Entry<String, String> e : outputSpace.entrySet()) {
+            if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
+            	performanceModels = new ArrayList<Model>();
+            	modelClass = optree.getParameter("Optimization.model." + e.getKey());
+            	if (modelClass.contains("AbstractWekaModel")) {
+            		String modelDir = directory + "/models";
+            		File modelFile = new File(modelDir);
+            		if (modelFile.exists()) 
+            			modelFile.delete();
+				
+            		int i = 0;
+                   // System.out.println("MONGO");
+                    this.initializeDatasouce();
+                    outPoints = dataSource.getOutputSpacePoints(e.getKey());
+                   // System.out.println(outPoints);
+                
+
+                
+	                for (Class<? extends Model> c : Benchmark.discoverModels()) {
+						if (c.equals(UserFunction.class))
+							continue;
+						Model model = (Model) c.getConstructor().newInstance();
+						if(outPoints==null || outPoints.size()<2){
+							bestModel=null;
+						}
+						else{
+	                        for (OutputSpacePoint point : outPoints){
+	                            model.feed(point, false);
+	                        }
+							try {
+								model.train();
+								double error = ML.totalError(model);
+								if (error < minTotalError){
+									bestModel = model;
+									minTotalError = error;
+								}
+								//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+								//performanceModels.add(model);
+	
+							} catch (Exception e1) {
+								logger.info("Exception in training: "+e1.getMessage());
+								continue;
+							}
+						}
+						i++;
+					}
+	                if(bestModel!=null){
+	                	modelFile.mkdir();
+						bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+
+						bestModel.setInputSpace(inputSpace);
+	    				HashMap<String, String> temp = new HashMap<String, String>();
+	    				temp.put(e.getKey(), e.getValue());
+	    				bestModel.setOutputSpace(temp);
+
+	    				HashMap<String, String> conf = new HashMap<String, String>();
+	    				optree.getNode("Optimization").toKeyValues("", conf);
+	    				bestModel.configureClassifier(conf);
+						performanceModels.add(bestModel);
+		    			models.remove(e.getKey());
+		    			models.put(e.getKey(), performanceModels);
+	                }
+            	}
+            }
+		}
+	}
+	
+	/**
+	 * @throws Exception
+	 */
 	public void configureModel() throws Exception {
 		String modelClass;
 
@@ -116,13 +193,13 @@ public class Operator {
 
 					
                     if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
-                        System.out.println("MONGO");
+                    	logger.info("MONGO");
                         this.initializeDatasouce();
                         outPoints = dataSource.getOutputSpacePoints(e.getKey());
-                        System.out.println(outPoints);
+                        //System.out.println(outPoints);
                     }
                     else {
-                        System.out.println("CSV");
+                    	logger.info("CSV");
                         CSVFileManager file = new CSVFileManager();
                         file.setFilename(directory + "/data/" + e.getKey() + ".csv");
                         int ps=0;
@@ -155,7 +232,7 @@ public class Operator {
 								//performanceModels.add(model);
 	
 							} catch (Exception e1) {
-								System.out.println("Exception in training: "+e1);
+								logger.info("Exception in training: "+e1.getMessage());
 								continue;
 							}
 						}
@@ -187,16 +264,16 @@ public class Operator {
 	}
 
     public void initializeDatasouce(){
-		System.out.println("Initializing datasource...");
+    	logger.info("Initializing datasource...");
 		String collection = this.opName;//optree.getParameter("Optimization.inputSource.collection");
         String host = optree.getParameter("Optimization.inputSource.host");
         String db = optree.getParameter("Optimization.inputSource.db");
-        System.out.printf("Col :%s\nDB: %s\nHost: %s\n", collection, db, host);
+        logger.info("Col: "+collection+"\nDB: "+db+"\nHost: "+host+"\n");
         List<String> is = new ArrayList<String>();
         List<String> os = new ArrayList<String>();
 
 		if (collection == null || host == null || db == null) {
-			System.out.println("NULL");
+			logger.info("NULL");
 			return;
 		}
 

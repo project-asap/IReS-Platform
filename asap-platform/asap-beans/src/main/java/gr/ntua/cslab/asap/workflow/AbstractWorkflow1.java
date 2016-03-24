@@ -34,7 +34,7 @@ import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 public class AbstractWorkflow1 {
 	private List<WorkflowNode> targets;
 	private List<WorkflowNode> abstractInputs;
-	private HashMap<String,WorkflowNode> workflowNodes;
+	public HashMap<String,WorkflowNode> workflowNodes;
 	public String name, directory;
 	private static Logger logger = Logger.getLogger(AbstractWorkflow1.class.getName());
 
