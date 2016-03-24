@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=user_profiling
+Constraints.OpSpecification.Algorithm.name=Wind_User_Profiling
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
@@ -57,7 +57,7 @@ Execution.Argument3=06-2015
 #copy input to operator's local folder to use it
 #Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=profiles/roma-06-2015.p
+Execution.copyFromLocal=profiles/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/profiles/roma-06-2015.p
-Execution.Output0.path=hdfs:///profiles/roma-06-2015.p
+Execution.Output0.path=/profiles/roma-06-2015.p
