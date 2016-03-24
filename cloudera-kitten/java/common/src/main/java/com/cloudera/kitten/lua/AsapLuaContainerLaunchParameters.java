@@ -399,8 +399,9 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     for(String f : stageOutFiles){
 	    cmds.add(hdfs+" dfs -moveFromLocal "+f+" "+outdir);
     }
+    String in = operator.getInMetrics();
     
-    cmds.add(asap +" report -cm -e "+this.name.substring(0, this.name.lastIndexOf("_")));
+    cmds.add(asap +" report -m "+in+"-cm -e "+this.name.substring(0, this.name.lastIndexOf("_")));
     
     //System.out.println("Container commands: "+cmds);
     execScript = writeExecutionScript(cmds);

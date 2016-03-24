@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.optimization;
 
+import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
@@ -22,7 +23,7 @@ import java.util.Map.Entry;
 public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
-			String policy, SpecTree optree) throws Exception {
+			String policy, SpecTree optree, Operator operator) throws Exception {
 
 		List<RealVariable> rvs = new ArrayList<>();
 
@@ -73,32 +74,8 @@ public class OptimizeMissingMetrics {
 		OutputSpacePoint out =  new OutputSpacePoint();
 		out.setInputSpacePoint(in);
 		for(String metric : models.keySet()){
-			Model model = models.get(metric).get(0);
-			if(!model.getClass().equals(
-					gr.ntua.ece.cslab.panic.core.models.UserFunction.class)){
-				for(Model m:models.get(metric)){
-
-					if(m.getInputSpace().size()>=2 && m.getClass()
-                            .equals(gr.ntua.ece.cslab.panic.core.models.MLPerceptron.class)){
-						model =m;
-						break;
-					}
-					if(m.getInputSpace().size()<2 && m.getClass().equals(
-							gr.ntua.ece.cslab.panic.core.models.LinearRegression.class)){
-						model =m;
-						break;
-					}
-				}
-			}
-
-			OutputSpacePoint op =  new OutputSpacePoint();
-			HashMap<String, Double> values = new HashMap<String, Double>();
-			for(String k :  model.getOutputSpace().keySet()){
-				values.put(k, null);
-			}
-			op.setValues(values);
-			OutputSpacePoint res = model.getPoint(in,op);
-			out.addValue(metric, res.getOutputPoints().get(metric));
+			Double m = operator.getMettric(metric, in);
+			out.addValue(metric, m);
 		}
         /* --------- */
 		return out;

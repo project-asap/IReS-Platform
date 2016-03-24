@@ -82,7 +82,8 @@ public class Operator {
 		try{
 			if(optree.getNode("Optimization.inputSpace")!=null)
 				optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
-			optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
+			if(optree.getNode("Optimization.outputSpace")!=null)
+				optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		}
 		catch( NullPointerException npe){
 			System.out.println( "ERROR: From operator " + opName + "'s description file either"
@@ -117,7 +118,7 @@ public class Operator {
                     if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
                         System.out.println("MONGO");
                         this.initializeDatasouce();
-                        outPoints = dataSource.getOutputSpacePoints();
+                        outPoints = dataSource.getOutputSpacePoints(e.getKey());
                         System.out.println(outPoints);
                     }
                     else {
@@ -136,7 +137,7 @@ public class Operator {
 						if (c.equals(UserFunction.class))
 							continue;
 						Model model = (Model) c.getConstructor().newInstance();
-						if(outPoints==null || outPoints.size()==0){
+						if(outPoints==null || outPoints.size()<2){
 							bestModel=null;
 						}
 						else{
@@ -340,6 +341,24 @@ public class Operator {
 		InputStream stream = new ByteArrayInputStream(properties.getBytes());
 		readPropertiesFromStream(stream);
 		stream.close();
+		logger.info( optree.toString());
+		inputSpace = new HashMap<String, String>();
+		outputSpace = new HashMap<String, String>();
+		try{
+			if(optree.getNode("Optimization.inputSpace")!=null)
+				optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
+			if(optree.getNode("Optimization.outputSpace")!=null)
+				optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
+		}
+		catch( NullPointerException npe){
+			System.out.println( "ERROR: From operator " + opName + "'s description file either"
+								+ " Optimization.inputSpace or Optimization.outputSpace"
+								+ " parameter or both are missing. Add them appropriately.");
+			logger.info( "ERROR: From operator " + opName + "'s description file either"
+								+ " Optimization.inputSpace or Optimization.outputSpace"
+								+ " parameter or both are missing. Add them appropriately.");
+			npe.printStackTrace();
+		}
 	}
 
 	public void readPropertiesFromStream(InputStream stream) throws IOException {
@@ -589,7 +608,7 @@ public class Operator {
 		
 		in.setValues(values);
 		if(missing){
-			OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy, optree);
+			OutputSpacePoint out = OptimizeMissingMetrics.findOptimalPointCheckAllSamples(models, in, policy, optree, this);
 			retMetrics.putAll(out.getOutputPoints());
 		}
 		else{
@@ -802,4 +821,6 @@ public class Operator {
 	public String getEngine() {
 		return optree.getParameter("Constraints.Engine");
 	}
+
+
 }

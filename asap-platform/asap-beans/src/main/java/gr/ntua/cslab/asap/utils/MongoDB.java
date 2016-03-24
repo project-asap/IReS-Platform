@@ -4,8 +4,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
+
 import org.bson.*;
 
 import java.util.ArrayList;
@@ -47,8 +49,9 @@ public class MongoDB implements DataSource{
      * --- getOutputSpacePoints ---
      * @return An ArrayList of output space points to be given as input to PANIC models for training
      */
-    public ArrayList<OutputSpacePoint> getOutputSpacePoints(){
+    public ArrayList<OutputSpacePoint> getOutputSpacePoints(String metric){
         InputSpacePoint isp = new InputSpacePoint();
+        InputSpacePoint isp1 = new InputSpacePoint();
         HashMap<String, Double> hm;
         ArrayList<OutputSpacePoint> results = new ArrayList<OutputSpacePoint>();
         MongoCollection mc = mdb.getCollection(collection);
@@ -56,10 +59,16 @@ public class MongoDB implements DataSource{
         OutputSpacePoint osp;
 
         /* Selection/Projection Query Construction */
-        for (String is : inputSpace)
-            projection.append(is, "true");
-        for (String os : outputSpace)
-            projection.append(os, "true");
+        for (String is : inputSpace){
+			String in1= is.replace('.', '@');
+            projection.append(in1, "true");
+        }
+//        for (String os : outputSpace){
+//			String os1= os.replace('.', '@');
+//            projection.append(os1, "true");
+//        }
+        String metric1= metric.replace('.', '@');
+        projection.append(metric1, "true");
         
         System.out.println(projection);
         FindIterable obj = mc.find().projection(projection);
@@ -71,42 +80,154 @@ public class MongoDB implements DataSource{
             for (Object item : obj) {
                 Document doc = (Document) item;
                 isp = new InputSpacePoint();
+                isp1 = new InputSpacePoint();
                 hm = new HashMap<String, Double>();
 
                 for (String is : inputSpace) {
-                    String key = is;
+                    String key = is.replace('.', '@');
                     Object value = doc.get(key);
                     double val;
 
                     if (value != null) {
                         if (value.getClass() == Integer.class)
-                            val = ((Integer) value) * 1.0;
+                        	val = (Integer) value * 1.0;
                         else
                             val = (Double) value;
                         isp.addDimension(key, val);
+                        isp1.addDimension(is, val);
                     }
                 }
 
                 osp = new OutputSpacePoint();
-                for (String os : outputSpace) {
-                    double value = doc.getDouble(os);
-                    osp.setValue(value);
-                    hm.put(os, value);
-                }
+                osp.setInputSpacePoint(isp1);
+                String key = metric.replace('.', '@');
+		          Object value = doc.get(key);
+		          double val=0;
+		
+		          if (value != null) {
+		              if (value.getClass() == Integer.class)
+		                  val = (Integer) value * 1.0;
+		              else
+		                  val = (Double) value;
+		          }
+		          
+		          //double value = doc.getDouble(key);
+		          osp.setValue(val);
+		          hm.put(metric, val);
+		          
+//                for (String os : outputSpace) {
+//                    String key = os.replace('.', '@');
+//                    Object value = doc.get(key);
+//                    double val=0;
+//
+//                    if (value != null) {
+//                        if (value.getClass() == Integer.class)
+//                            val = (Integer) value * 1.0;
+//                        else
+//                            val = (Double) value;
+//                    }
+//                    
+//                    //double value = doc.getDouble(key);
+//                    osp.setValue(val);
+//                    hm.put(os, val);
+//                }
 
-                osp.setInputSpacePoint(isp);
                 osp.setValues(hm);
                 results.add(osp);
 
             }
         }
         catch(Exception e){
-            System.out.println("MONGO EXCEPTION: "+e);
+            System.out.println("MONGO EXCEPTION: ");
+        	e.printStackTrace();
         }
 
         return results;
     }
 
+    /**
+     * --- getOutputSpacePoints ---
+     * @return An ArrayList of output space points to be given as input to PANIC models for training
+     */
+    public ArrayList<OutputSpacePoint> getOutputSpacePoints(){
+        InputSpacePoint isp = new InputSpacePoint();
+        InputSpacePoint isp1 = new InputSpacePoint();
+        HashMap<String, Double> hm;
+        ArrayList<OutputSpacePoint> results = new ArrayList<OutputSpacePoint>();
+        MongoCollection mc = mdb.getCollection(collection);
+        Document projection = new Document();
+        OutputSpacePoint osp;
+
+        /* Selection/Projection Query Construction */
+        for (String is : inputSpace){
+			String in1= is.replace('.', '@');
+            projection.append(in1, "true");
+        }
+        for (String os : outputSpace){
+			String os1= os.replace('.', '@');
+            projection.append(os1, "true");
+        }
+        
+        System.out.println(projection);
+        FindIterable obj = mc.find().projection(projection);
+
+        try {
+        	if(obj==null)
+                return null;
+        		
+            for (Object item : obj) {
+                Document doc = (Document) item;
+                isp = new InputSpacePoint();
+                isp1 = new InputSpacePoint();
+                hm = new HashMap<String, Double>();
+
+                for (String is : inputSpace) {
+                    String key = is.replace('.', '@');
+                    Object value = doc.get(key);
+                    double val;
+
+                    if (value != null) {
+                        if (value.getClass() == Integer.class)
+                        	val = (Integer) value * 1.0;
+                        else
+                            val = (Double) value;
+                        isp.addDimension(key, val);
+                        isp1.addDimension(is, val);
+                    }
+                }
+
+                osp = new OutputSpacePoint();
+                osp.setInputSpacePoint(isp1);
+                for (String os : outputSpace) {
+                    String key = os.replace('.', '@');
+                    Object value = doc.get(key);
+                    double val=0;
+
+                    if (value != null) {
+                        if (value.getClass() == Integer.class)
+                            val = (Integer) value * 1.0;
+                        else
+                            val = (Double) value;
+                    }
+                    
+                    //double value = doc.getDouble(key);
+                    osp.setValue(val);
+                    hm.put(os, val);
+                }
+
+                osp.setValues(hm);
+                results.add(osp);
+
+            }
+        }
+        catch(Exception e){
+            System.out.println("MONGO EXCEPTION: ");
+        	e.printStackTrace();
+        }
+
+        return results;
+    }
+    
     @Override
     public String toString(){
         return "--- MongoDB Connection ---\n"+
@@ -128,7 +249,7 @@ public class MongoDB implements DataSource{
         out.add("time");
         MongoDB mdb = new MongoDB("asapmaster","metrics", "spark2mahout",in, out);
 
-        for (OutputSpacePoint o : mdb.getOutputSpacePoints()){
+        for (OutputSpacePoint o : mdb.getOutputSpacePoints("time")){
             System.out.println(o);
         }
     }
