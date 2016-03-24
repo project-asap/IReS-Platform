@@ -71,6 +71,7 @@ public class ClusterNodes extends Configured implements Runnable {
 	//on a host level i.e. know which hosts are down
 	String host = null;
 	String service = null;
+	String status = null;
 	String[] hosts = null;
 	String[] services = null;
 	HashMap< String, String> yhosts = null;
@@ -172,13 +173,17 @@ public class ClusterNodes extends Configured implements Runnable {
 								System.out.println( "Service to check: " + service);
 								System.out.println( "on host: " + host);
 								System.out.println( "with command: " + scommands.get( service));
+								System.out.println( "and expected status: " + sstatus.get( service));
 								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
 								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
-								//compare status returned with the one expected from sstatus HashMap if running
+								//read status
+								status = br.readLine();
+								System.out.println( "Actual status: " + status);
+								//compare status returned with the one expected from sstatus HashMap if
 								//running status for the current service has been speicified in yarn-site.xml and
 								//the command that has been run at the host returned a valid result
-								if( sstatus.get( service) != null && br.readLine() != null){
-									if( br.readLine().toLowerCase().equals( sstatus.get( service).toLowerCase())){
+								if( sstatus.get( service) != null && status != null){
+									if( status.toLowerCase().equals( sstatus.get( service).toLowerCase())){
 										//the service is running on current host and so append this
 										//host to the hosts on which this service is running
 										runservices.put( service, runservices.get( service) + " " + host);
