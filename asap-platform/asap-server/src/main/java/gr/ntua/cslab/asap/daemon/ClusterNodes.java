@@ -171,6 +171,7 @@ public class ClusterNodes extends Configured implements Runnable {
 								//run the command to get service availability
 								System.out.println( "Service to check: " + service);
 								System.out.println( "on host: " + host);
+								System.out.println( "with command: " + scommands.get( service));
 								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
 								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
 								//compare status returned with the one expected from sstatus HashMap if running
