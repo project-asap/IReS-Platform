@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import static java.nio.file.StandardCopyOption.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -191,15 +194,18 @@ public class OperatorLibrary {
 		System.out.println("Datasource: "+dataSource);
 		System.out.println("Opname: "+opname);
 
+		File file = new File("www/test.csv");
+		if(file.exists())
+			file.delete();
     	if(profileType.equals("Compare models")){
     		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
 
 			if (dataSource != null) {
-				append("www/test.csv",variable,",", op.inputSpace, dataSource);
+				append("www/test.csv",variable,",", op.inputSpace, dataSource,false);
 			}
 			else{
-				append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
+				append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource,false);
 			}
     		/*if(csv.exists()){
     			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",true);
@@ -214,28 +220,15 @@ public class OperatorLibrary {
 			op.writeCSVfileUniformSampleOfModel(variable, 1.0, "www/test.csv", ",",false);
     	}
     	else if(profileType.equals("View samples")){
-    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
-    		File file = new File("www/test.csv");
-    		if(file.exists())
-    			file.delete();
 			if (dataSource != null) {
-				append("www/test.csv",variable,",", op.inputSpace, dataSource);
+				append("www/test.csv",variable,",", op.inputSpace, dataSource,true);
 			}
 			else{
+	    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
 				if(csv.exists()){
-					append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
+					Files.copy(csv.toPath(), file.toPath(), REPLACE_EXISTING);
 				}
 			}
-    	}
-    	else{
-    		File csv  = new File(operatorDirectory+"/"+op.opName+"/data/"+variable+".csv");
-    		if(csv.exists()){
-				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
-				append("www/test.csv",csv.toString(),",", op.inputSpace, dataSource);
-    		}
-    		else{
-				op.writeCSVfileUniformSampleOfModel(variable, 0.0, "www/test.csv", ",",true);
-    		}
     	}
 		//op.writeCSVfileUniformSampleOfModel(1.0, "www/test.csv", ",");
 		return "/test.csv";
@@ -246,7 +239,7 @@ public class OperatorLibrary {
 	}
 
 	private static void append(String toCSV, String fromCSV,String delimiter,
-							   HashMap<String, String> inputSpace, DataSource dataSource)
+							   HashMap<String, String> inputSpace, DataSource dataSource, boolean header)
 			throws Exception {
 
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(toCSV, true)));
@@ -254,7 +247,18 @@ public class OperatorLibrary {
 		if (dataSource != null) {
 			ArrayList<OutputSpacePoint> points = dataSource.getOutputSpacePoints(fromCSV);
 			Iterator<OutputSpacePoint> iterator = points.iterator();
-
+			if(header){
+				String n = "";
+				Iterator inputSpaceIter = inputSpace.keySet().iterator();
+				while (inputSpaceIter.hasNext()) {
+					String key = (String) inputSpaceIter.next();
+					n += key + delimiter;
+				}
+				n += fromCSV+ delimiter+"model";
+				out.append(n );
+				System.out.println(n );
+				out.append(System.lineSeparator());
+			}
 
 			while (iterator.hasNext()) {
 				String n = "";
