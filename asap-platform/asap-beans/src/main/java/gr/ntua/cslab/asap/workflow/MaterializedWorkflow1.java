@@ -28,7 +28,7 @@ public class MaterializedWorkflow1 {
 	private AbstractWorkflow1 abstractWorkflow;
 
 	private List<WorkflowNode> targets;
-	private HashMap<String,List<WorkflowNode>> bestPlans;
+	public HashMap<String,List<WorkflowNode>> bestPlans;
 	public double optimalCost;
 	public int count;
 	public String name;

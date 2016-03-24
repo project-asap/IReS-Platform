@@ -1,0 +1,5 @@
+d1,grep
+sampler,d1
+grep,d2
+hdfs_file,sampler
+d2,$$target

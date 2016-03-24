@@ -17,6 +17,7 @@ public class ML {
             }
             catch(Exception e){ continue; }
         }
+        totalError=totalError/actualPoints.size();
         return totalError;
     }
 }

@@ -108,6 +108,7 @@ public class Operator {
 							try {
 								model.train();
 								double error = ML.totalError(model);
+								System.out.println(model.getClass()+" error: "+error);
 								if (error < minTotalError){
 									bestModel = model;
 									minTotalError = error;
@@ -224,6 +225,7 @@ public class Operator {
 							try {
 								model.train();
 								double error = ML.totalError(model);
+								System.out.println(model.getClass()+" error: "+error);
 								if (error < minTotalError){
 									bestModel = model;
 									minTotalError = error;
@@ -324,6 +326,10 @@ public class Operator {
 				Double step = 10.0;
 				for (double i = min; i <= max; i *= step) {
 					l.add(i);
+					l.add(2*i);
+					l.add(4*i);
+					l.add(6*i);
+					l.add(8*i);
 				}
 			} else {
 				Double step = Double.parseDouble(limits[3]);
@@ -712,6 +718,7 @@ public class Operator {
 		logger.info("Getting mettric: " + metric + " from operator: " + opName);
 
 		if(models.get(metric)==null || models.get(metric).size()==0){
+			
 			Random r = new Random();
 			return r.nextDouble() * 100;
 		}

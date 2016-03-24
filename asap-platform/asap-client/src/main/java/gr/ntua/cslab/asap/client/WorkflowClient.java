@@ -46,6 +46,11 @@ public class WorkflowClient extends RestClient{
 		return issueRequest("GET", "abstractWorkflows/materialize/"+name+"?policy="+URLEncoder.encode(policy,"UTF-8"), null);
 	}
 	
+	public String materializeWorkflowWithParameters(String name, String policy, String parameters) throws Exception {
+		return issueRequest("GET", "abstractWorkflows/materializeWithParams/"+name+"?policy="+URLEncoder.encode(policy,"UTF-8")
+				+"&parameters="+URLEncoder.encode(parameters,"UTF-8"), null);
+	}
+	
 	public WorkflowDictionary getAbstractWorkflowDescription(String name) throws Exception {
 		String ret = issueRequest("GET", "abstractWorkflows/XML/"+name, null);
 		JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );

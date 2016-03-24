@@ -27,13 +27,13 @@ public class TestWorkflows {
 		ClientConfiguration conf = new ClientConfiguration("asap-master", 1323);
 		WorkflowClient cli = new WorkflowClient();
 		cli.setConfiguration(conf);
-		
-		WorkflowDictionary wd = cli.getMaterializedWorkflowDescription("abstractTest1_2016_02_25_12:01:56");
-		for(OperatorDictionary op : wd.getOperators()){
-			if(op.getIsOperator().equals("true"))
-				System.out.println(op.getNameNoID()+" "+op.getCost());
-		}
-		
+//		
+//		WorkflowDictionary wd = cli.getMaterializedWorkflowDescription("abstractTest1_2016_02_25_12:01:56");
+//		for(OperatorDictionary op : wd.getOperators()){
+//			if(op.getIsOperator().equals("true"))
+//				System.out.println(op.getNameNoID()+" "+op.getCost());
+//		}
+//		
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
 		Dataset d1 = new Dataset("crawlDocuments");
 
@@ -58,10 +58,10 @@ public class TestWorkflows {
 		WorkflowNode t3 = new WorkflowNode(false,true,"d3");
 		t3.setDataset(d3);
 		
-		op1.addInput(t1);
-		t2.addInput(op1);
-		op2.addInput(t2);
-		t3.addInput(op2);
+		op1.addInput(0,t1);
+		t2.addInput(0,op1);
+		op2.addInput(0,t2);
+		t3.addInput(0,op2);
 		abstractWorkflow.addTarget(t3);
 		
 		cli.addAbstractWorkflow(abstractWorkflow);

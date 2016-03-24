@@ -1,0 +1,10 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Engine=Spark
+Constraints.Output.number=1
+Constraints.Input.number=1
+Constraints.OpSpecification.Algorithm.name=sampler
+Execution.Arguments.number=3
+Execution.Argument0=In0.path
+Execution.Argument1=$HDFS_OP_DIR/output
+Execution.Output0.path=$HDFS_OP_DIR/output

@@ -65,7 +65,8 @@ public class AbstractWorkflowLibrary {
 			k=k.substring(k.indexOf('.')+1, k.length());
 			WorkflowNode node = aw.workflowNodes.get(s[0]);
 			if(node!=null){
-				node.dataset.add(k, v);
+				if(!node.isOperator)
+					node.dataset.add(k, v);
 			}
 		}
 		
@@ -74,6 +75,31 @@ public class AbstractWorkflowLibrary {
 		Long start = System.currentTimeMillis();
 		MaterializedWorkflow1 mw = aw.materialize(dateFormat.format(date), policy);		
 		Long stop = System.currentTimeMillis();
+		
+
+		for(Entry<Object, Object> e: props.entrySet()){
+			String k = (String) e.getKey();
+			String v = (String) e.getValue();
+			String[] s = k.split("\\.");
+			k=k.substring(k.indexOf('.')+1, k.length());
+			//System.out.println(s[0]+" sdfsd "+mw.bestPlans.size());
+			for(Entry<String, List<WorkflowNode>> e1:mw.bestPlans.entrySet()){
+				for(WorkflowNode node : e1.getValue()){
+					//System.out.println(node.getName());
+					if(node.getName().contains(s[0])){
+						//System.out.println(s[0]);
+						//System.out.println(k+" "+v);
+						if(node.isOperator){
+							//System.out.println(k+" "+v);
+							node.operator.add(k, v);
+						}
+						else{
+							node.dataset.add(k, v);
+						}
+					}
+				}
+			}
+		}
 		MaterializedWorkflowLibrary.add(mw);
 		return mw.name;
 	}
