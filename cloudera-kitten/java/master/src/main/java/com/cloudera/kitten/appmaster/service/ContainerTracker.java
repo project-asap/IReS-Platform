@@ -245,12 +245,12 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       RestClient rc = new RestClient();
       String restclient = null;
       try{
-      	restclient = rc.issueRequest( "GET", "clusterStatus", null);      
+      	//restclient = rc.issueRequest( "GET", "clusterStatus", null);      
       }
       catch( Exception e){
       
       }
-      LOG.info("RestClient response: "+ restclient);
+      //LOG.info("RestClient response: "+ restclient);
       LOG.info("Launching container id = " + c.getId() + " on node = " + c.getNodeId()+" operator: "+params.getName());
       containers.put(c.getId(), c);
       needed.decrementAndGet();
