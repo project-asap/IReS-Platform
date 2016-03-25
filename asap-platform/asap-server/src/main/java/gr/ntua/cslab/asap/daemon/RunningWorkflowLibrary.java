@@ -121,13 +121,13 @@ public class RunningWorkflowLibrary {
 				op.setStatus("warn");
 		}
 		
-		YarnClientService rservice = startYarnClientService(wd, materializedWorkflow);
-		runningServices.put(materializedWorkflow.name, rservice);
+		YarnClientService service = startYarnClientService(wd, materializedWorkflow);
+		runningServices.put(materializedWorkflow.name, service);
 		runningWorkflows.put(materializedWorkflow.name, wd);
 	}
 
 	private static YarnClientService startYarnClientService(WorkflowDictionary d, MaterializedWorkflow1 mw) throws Exception {
-	    YarnClientService yservice = null;
+	    YarnClientService service = null;
 		HashMap<String,String> operators = new HashMap<String, String>();
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		LuaYarnClientParameters params = null;
@@ -184,14 +184,14 @@ public class RunningWorkflowLibrary {
 			logger.info( "ERROR: Check that the .lua file " + luafilename + " exists!");
 			logger.info( "It is possible that it is the cause of this exception.");
 		}
-	    yservice = new YarnClientServiceImpl(params);
+	    service = new YarnClientServiceImpl(params);
 
-	    yservice.startAndWait();
-	    if (!yservice.isRunning()) {
+	    service.startAndWait();
+	    if (!service.isRunning()) {
 	    	logger.error("Service failed to startup, exiting...");
 	    	throw new Exception("Service failed to startup, exiting...");
 	    }
-	    return yservice;
+	    return service;
 	}
 
 	public static String getState(String id) {
