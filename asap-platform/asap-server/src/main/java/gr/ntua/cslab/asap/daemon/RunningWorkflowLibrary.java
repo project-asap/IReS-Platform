@@ -122,7 +122,7 @@ public class RunningWorkflowLibrary {
 		}
 		
 		YarnClientService rservice = startYarnClientService(wd, materializedWorkflow);
-		runningServices.put(materializedWorkflow.name, service);
+		runningServices.put(materializedWorkflow.name, rservice);
 		runningWorkflows.put(materializedWorkflow.name, wd);
 	}
 
