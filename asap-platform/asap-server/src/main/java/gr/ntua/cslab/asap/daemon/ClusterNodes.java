@@ -203,7 +203,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						}
 					}
 				}
-//				System.out.println( "Running services: " + runservices);
+				System.out.println( "Running services: " + runservices);
 				for( String service : runservices.keySet()){
 					//there are some services like Spark that apart from the Master, they
 					//need also a Worker running in order to say that this service is actually
