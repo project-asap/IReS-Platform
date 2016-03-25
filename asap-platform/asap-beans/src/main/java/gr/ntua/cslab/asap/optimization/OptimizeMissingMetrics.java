@@ -2,6 +2,7 @@ package gr.ntua.cslab.asap.optimization;
 
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.operators.SpecTree;
+import gr.ntua.cslab.asap.operators.SpecTreeNode;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Workflow missing metrics multi-objective optimization
@@ -24,6 +26,7 @@ public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree, Operator operator) throws Exception {
+
 
 		List<RealVariable> rvs = new ArrayList<>();
 
@@ -35,7 +38,7 @@ public class OptimizeMissingMetrics {
         * */
         for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
-				//System.out.println("searching "+e.getKey());
+				System.out.println("searching "+e.getKey());
 				String[] miss = optree.getNode("Optimization.inputSpace."+e.getKey()).toString()
 						.replaceAll("\\(", "")
 						.replaceAll("\\)", "")
@@ -55,15 +58,20 @@ public class OptimizeMissingMetrics {
 
                 MultiObjectiveOptimizer.variables = rvs;
                 MultiObjectiveOptimizer.isp = in;
-                
-                /* Set the model to the optimizer according to the optimization policy*/
-		MultiObjectiveOptimizer.model = models.get(policy).get(0);
+
+				/* Set the model to the optimizer according to the optimization policy*/
+				MultiObjectiveOptimizer.model = models.get(policy).get(0);
 
                 Double optimal = findOptimal();
                 if (optimal < 0) continue;
                 in.addDimension(missingVar, optimal);
 				e.setValue(optimal);
 				optree.add("SelectedParam." + missingVar, optimal.toString());
+
+				/* Set the Selected Parameters as execution arguments*/
+				String argument = String.format("Execution.Argument%s",
+						getExecutionArguments(optree));
+				optree.add(argument, optimal.toString());
 			}
 
 		}
@@ -77,6 +85,21 @@ public class OptimizeMissingMetrics {
 		}
         /* --------- */
 		return out;
+	}
+
+	protected static int getExecutionArguments(SpecTree tree){
+		SpecTreeNode args = tree.getNode("Execution");
+
+		if (args == null)
+			return 0;
+		else {
+			int c = 0;
+			for (String n : args.children.keySet()){
+				if (n.matches("Argument\\d"))
+					++c;
+			}
+			return c;
+		}
 	}
 
     /* */
