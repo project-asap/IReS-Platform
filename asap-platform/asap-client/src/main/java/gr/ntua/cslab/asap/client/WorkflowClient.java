@@ -85,7 +85,4 @@ public class WorkflowClient extends RestClient{
 	public void removeMaterializedWorkflow(String name) throws Exception {
 		issueRequest("GET", "workflows/remove/"+URLEncoder.encode(name,"UTF-8"), null);
 	}
-    
-    
-	    
 }

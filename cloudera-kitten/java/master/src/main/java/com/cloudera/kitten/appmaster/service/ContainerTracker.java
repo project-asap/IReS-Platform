@@ -245,7 +245,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       RestClient rc = new RestClient();
       String restclient = null;
       try{
-      	restclient = rc.issueRequest( "GET", "clusterStatus", "UTF-8");      
+      	restclient = rc.issueRequest( "GET", "clusterStatus", null);      
       }
       catch( Exception e){
       
