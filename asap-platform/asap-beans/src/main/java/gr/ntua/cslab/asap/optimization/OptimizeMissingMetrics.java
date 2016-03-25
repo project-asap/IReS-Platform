@@ -55,11 +55,9 @@ public class OptimizeMissingMetrics {
 
                 MultiObjectiveOptimizer.variables = rvs;
                 MultiObjectiveOptimizer.isp = in;
-
-                //TODO: Fix this loop
-				for (Entry<String, List<Model>> m : models.entrySet()) {
-                    MultiObjectiveOptimizer.model = m.getValue().get(0);
-				}
+                
+                /* Set the model to the optimizer according to the optimization policy*/
+		MultiObjectiveOptimizer.model = models.get(policy).get(0);
 
                 Double optimal = findOptimal();
                 if (optimal < 0) continue;
