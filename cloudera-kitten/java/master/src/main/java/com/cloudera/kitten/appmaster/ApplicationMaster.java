@@ -48,12 +48,12 @@ public class ApplicationMaster extends Configured implements Tool {
 	  else{
 		  //workflow
 		  WorkflowParameters params = new WorkflowParameters(getConf());
-		  WorkflowService service = new WorkflowService(params, getConf());
-			service.startAndWait();
+		  WorkflowService wservice = new WorkflowService(params, getConf());
+			wservice.startAndWait();
 			while (service.hasRunningContainers()) {
 			  Thread.sleep(1000);
 			}
-			service.stopAndWait();
+			wservice.stopAndWait();
 	  }
 	  
 	  return 0;
