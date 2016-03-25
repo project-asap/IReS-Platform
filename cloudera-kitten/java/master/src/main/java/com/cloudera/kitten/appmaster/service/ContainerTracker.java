@@ -1,5 +1,7 @@
 package com.cloudera.kitten.appmaster.service;
 
+import gr.ntua.cslab.asap.client.RestClient;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -101,7 +103,8 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       LOG.info("Operator: "+params.getName()+" requesting " + numInstances+" containers");
       LOG.info("Resource cores: "+ resource.getVirtualCores());
       LOG.info("Resource memory: "+ resource.getMemory());
-      String[] nodes =params.getNodes();//= {"slave1"};
+      LOG.info("Has nodes: "+ params.getNodes());
+      String[] nodes = params.getNodes();//= {"slave1"};
       String labels = params.getLabels();
       AMRMClient.ContainerRequest containerRequest=null;
       if(labels==null){
@@ -239,6 +242,15 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
 
     public void launchContainer(Container c) {
+      RestClient rc = new RestClient();
+      String restclient = null;
+      try{
+      	restclient = rc.issueRequest( "GET", "clusterStatus", "UTF-8");      
+      }
+      catch( Exception e){
+      
+      }
+      LOG.info("RestClient response: "+ restclient);
       LOG.info("Launching container id = " + c.getId() + " on node = " + c.getNodeId()+" operator: "+params.getName());
       containers.put(c.getId(), c);
       needed.decrementAndGet();

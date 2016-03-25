@@ -121,7 +121,7 @@ public class RunningWorkflowLibrary {
 				op.setStatus("warn");
 		}
 		
-		YarnClientService service = startYarnClientService(wd, materializedWorkflow);
+		YarnClientService rservice = startYarnClientService(wd, materializedWorkflow);
 		runningServices.put(materializedWorkflow.name, service);
 		runningWorkflows.put(materializedWorkflow.name, wd);
 	}

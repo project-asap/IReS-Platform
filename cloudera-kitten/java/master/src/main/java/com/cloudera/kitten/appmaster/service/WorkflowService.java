@@ -272,6 +272,4 @@ protected ContainerLaunchContextFactory factory;
     this.throwable = throwable;
     stop();
   }
-
-
 }
