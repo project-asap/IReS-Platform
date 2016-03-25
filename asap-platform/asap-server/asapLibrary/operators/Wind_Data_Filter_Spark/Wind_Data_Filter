@@ -15,7 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter_Scala
+Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
@@ -42,7 +42,7 @@ Optimization.execTime=2.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Data_Filter.lua
+Execution.LuaScript=Data_Filter_Spark.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=8
 Execution.Argument0=spark://localhost:7077

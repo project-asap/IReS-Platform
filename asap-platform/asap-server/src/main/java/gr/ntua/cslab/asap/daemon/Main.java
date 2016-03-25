@@ -184,7 +184,14 @@ public class Main {
 	private static void checkServicesStatus() throws Exception{
 		ClusterNodes cns = new ClusterNodes( 5000);
 		Thread check = new Thread( cns);
-		check.start();
+		try{
+			check.start();		
+		}
+		catch( Exception e){
+			check.stop();
+			System.err.println( "Checking for cluster services status has been disable due to an exception!");
+			System.err.println( "Check the logs and the stderr for more info.");
+		}
 	}
 	
     public static void main(String[] args) throws Exception {

@@ -68,10 +68,10 @@
 	<property>
         <name>yarn.nodemanager.services-running.per-node</name>
         <value>
-        	hdp1:PostgreSQL Spark NodeManager,
-        	hdp2:NodeManager,
-        	hdp3:PostgreSQL NodeManager,
-        	hdp4:NodeManager
+        	hdp1:PostgreSQL Spark SparkWorker,
+        	hdp2:SparkWorker,
+        	hdp3:PostgreSQL SparkWorker,
+        	hdp4:SparkWorker
         </value>
         <description>
         	On the nodes of a YARN cluster except the daemons of YARN may run also other
@@ -88,7 +88,7 @@
         <value>
         	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
         	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
-        	NodeManager:jps | grep -w NodeManager | awk '{split( $0, a, " "); print a[ 2]}';;
+        	SparkWorker:jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
         	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
         </value>
         <description>
@@ -105,7 +105,7 @@
     <property>
         <name>yarn.nodemanager.services-running.check-status</name>
         <value>
-        	PostgreSQL:online, Mysql:Uptime, NodeManager:NodeManager, Spark:Master
+        	PostgreSQL:online, Mysql:Uptime, SparkWorker:Worker, Spark:Master
         </value>
         <description>
         	The expected output message of the commands declared into
