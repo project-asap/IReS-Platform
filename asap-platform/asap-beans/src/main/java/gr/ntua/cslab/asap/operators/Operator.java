@@ -108,7 +108,7 @@ public class Operator {
 							try {
 								model.train();
 								double error = ML.totalError(model);
-								System.out.println(model.getClass()+" error: "+error);
+								//System.out.println(model.getClass()+" error: "+error);
 								if (error < minTotalError){
 									bestModel = model;
 									minTotalError = error;
