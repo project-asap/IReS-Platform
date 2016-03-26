@@ -71,6 +71,8 @@ public class OptimizeMissingMetrics {
 				String argument = String.format("Execution.Argument%s",
 						getExecutionArguments(optree));
 				optree.add(argument, optimal.toString());
+				Integer argCount = Integer.parseInt(operator.getParameter("Execution.Arguments.number")) + 1;
+				optree.add("Execution.Arguments.number", argCount.toString());
 			}
 
 		}
