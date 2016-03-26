@@ -227,9 +227,11 @@ protected ContainerLaunchContextFactory factory;
             if (tracker.isInitilized && tracker.needsContainers()) {
 	          if (!assigned.contains(allocated) && tracker.matches(allocated)) {
 	        	  LOG.info("Allocated cores: "+allocated.getResource().getVirtualCores());
-	            tracker.launchContainer(allocated);
-	            assigned.add(allocated);
-	            containerAllocation.put(allocated.getId(), tracker);
+	        	  String response = AbstractClient.issueRequestClusterStatus( conf);
+	        	  LOG.info( "WorkflowService - Response request: " + response);
+	              tracker.launchContainer(allocated);
+	              assigned.add(allocated);
+	              containerAllocation.put(allocated.getId(), tracker);
 	          }
             }
         }

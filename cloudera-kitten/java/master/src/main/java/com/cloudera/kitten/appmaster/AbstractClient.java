@@ -76,4 +76,57 @@ public class AbstractClient {
         return ret;
         
     }
+        /**
+     * Issues a new Request and returns a string with the response - if  any.
+     * @param conf 
+     * @param requestType
+     * @param document
+     * @param input
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException 
+     */
+    public static String issueRequestClusterStatus( YarnConfiguration conf) {
+    	String masterDNS = conf.get("yarn.resourcemanager.address").split(":")[0];
+        String urlString = "http://"+masterDNS+":1323/clusterStatus";
+        String ret="";
+		try {
+	        LOG.info("Issuing urlString: "+urlString);
+			System.out.println("Issuing urlString: "+urlString);
+	        URL url = new URL(urlString);
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	        
+	        con.setRequestMethod("GET");
+
+	        con.setRequestProperty("accept", "application/octet-stream");
+	        con.setRequestProperty("Content-type", "application/octet-stream");
+	        con.setDoInput(true);
+	        /* no need to output anything
+	        con.setDoOutput(true);
+	        OutputStream out = con.getOutputStream();
+	        JAXBContext jaxbContext = JAXBContext.newInstance(WorkflowDictionary.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			jaxbMarshaller.marshal(workflow,out);
+			*/	        
+	        
+	        int responseCode = con.getResponseCode();
+	        StringBuilder builder = new StringBuilder();
+	        
+	    	InputStream in = con.getInputStream();
+	        byte[] buffer = new byte[1024];
+	        int count;
+	        while((count = in.read(buffer))!=-1) {
+	            builder.append(new String(buffer,0,count));
+	        }
+	        ret = builder.toString();
+	        System.out.println( "Request response: " + ret);
+	        LOG.info("Request response: " + ret);
+		} catch (Exception e) {
+			LOG.error( e.getStackTrace());
+			e.printStackTrace();
+		}
+        return ret;       
+    }
 }
