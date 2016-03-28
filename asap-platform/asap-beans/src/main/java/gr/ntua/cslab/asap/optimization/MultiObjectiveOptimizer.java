@@ -32,6 +32,7 @@ public class MultiObjectiveOptimizer extends AbstractProblem {
                 isp.addDimension(missingVars.get(i), x[i]);
             }
             f = model.getPoint(isp).getValue();
+            System.out.printf("%s => %f\n", isp, f);
             solution.setObjective(0, f);
         }
         catch (Exception e){

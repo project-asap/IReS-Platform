@@ -10,6 +10,7 @@ import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class OptimizeMissingMetrics {
 
 
 		List<RealVariable> rvs = new ArrayList<>();
-
         MultiObjectiveOptimizer.missingVars.clear();
+		HashMap<String, RealVariable> missing = new HashMap<>();
 
         /*
         *  Find all missing values from an operator configuration
@@ -44,7 +45,6 @@ public class OptimizeMissingMetrics {
 						.split(",");
 
                 String missingVar = e.getKey();
-                MultiObjectiveOptimizer.missingVars.add(missingVar);
 
                 /*
                 * Create a MOEA RealVariable for each missing value
@@ -53,18 +53,30 @@ public class OptimizeMissingMetrics {
 				Double min = Double.parseDouble(miss[2]);
 				Double max = Double.parseDouble(miss[3]);
                 RealVariable rv = new RealVariable(min, max);
-                rvs.add(rv);
 
-                MultiObjectiveOptimizer.variables = rvs;
-                MultiObjectiveOptimizer.isp = in;
+				missing.put(missingVar, rv);
+				MultiObjectiveOptimizer.missingVars.add(missingVar);
+				rvs.add(rv);
+			}
 
-				/* Set the model to the optimizer according to the optimization policy*/
-				MultiObjectiveOptimizer.model = models.get(policy).get(0);
+		}
 
-                Double optimal = findOptimal();
-                if (optimal < 0) continue;
-                in.addDimension(missingVar, optimal);
-				e.setValue(optimal);
+		if (missing.size() > 0){
+			MultiObjectiveOptimizer.variables = rvs;
+			MultiObjectiveOptimizer.isp = in;
+
+			/* Set the model to the optimizer according to the optimization policy*/
+			MultiObjectiveOptimizer.model = models.get(policy).get(0);
+
+			Solution solution = findOptimal();
+			int numVars = solution.getNumberOfVariables();
+
+			for (int i=0; i<numVars; ++i){
+				String missingVar = MultiObjectiveOptimizer.missingVars.get(i);
+				Double optimal = Math.floor(Double.parseDouble(solution.getVariable(i).toString()));
+				in.addDimension(missingVar, optimal);
+
+				//e.setValue(optimal);
 				optree.add("SelectedParam." + missingVar, optimal.toString());
 
 				/* Set the Selected Parameters as execution arguments*/
@@ -73,7 +85,9 @@ public class OptimizeMissingMetrics {
 				optree.add(argument, optimal.toString());
 				Integer argCount = Integer.parseInt(operator.getParameter("Execution.Arguments.number")) + 1;
 				optree.add("Execution.Arguments.number", argCount.toString());
+
 			}
+
 
 		}
 
@@ -104,7 +118,7 @@ public class OptimizeMissingMetrics {
 	}
 
     /* */
-    protected static Double findOptimal(){
+    protected static Solution findOptimal(){
         NondominatedPopulation result = new Executor()
                 .withProblemClass(MultiObjectiveOptimizer.class)
                 .withAlgorithm("NSGAII")
@@ -112,16 +126,10 @@ public class OptimizeMissingMetrics {
                 .run();
 
         Double bestTime = result.get(0).getObjective(0);
+		Solution solution = result.get(0);
         Double bestParam = Double.parseDouble(result.get(0).getVariable(0).toString());
 
-        /**
-         *  TODO (Fix): PANIC in some cases returns negative values as estimated execution time
-         **/
-        if (bestTime < 0) {
-            return -1.0;
-        }
-
-        return Math.floor(bestParam);
+		return solution;
     }
 
 	protected Double computePolicyFunction(HashMap<String,Double> metrics, String policy) throws NumberFormatException, EvaluationException {
