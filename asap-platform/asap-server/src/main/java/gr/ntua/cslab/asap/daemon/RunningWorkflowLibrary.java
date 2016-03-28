@@ -113,7 +113,7 @@ public class RunningWorkflowLibrary {
 		return new ArrayList<String>(runningWorkflows.keySet());
 	}
 
-	public static void executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
+	public static String executeWorkflow(MaterializedWorkflow1 materializedWorkflow) throws Exception {
 		runningAbstractWorkflows.put(materializedWorkflow.name, materializedWorkflow.getAbstractWorkflow());
 		WorkflowDictionary wd = materializedWorkflow.toWorkflowDictionary("\n");
 		for(OperatorDictionary op : wd.getOperators()){
@@ -124,6 +124,7 @@ public class RunningWorkflowLibrary {
 		YarnClientService service = startYarnClientService(wd, materializedWorkflow);
 		runningServices.put(materializedWorkflow.name, service);
 		runningWorkflows.put(materializedWorkflow.name, wd);
+		return materializedWorkflow.name;
 	}
 
 	private static YarnClientService startYarnClientService(WorkflowDictionary d, MaterializedWorkflow1 mw) throws Exception {

@@ -69,9 +69,15 @@ public class MongoDB implements DataSource{
 //			String os1= os.replace('.', '@');
 //            projection.append(os1, "true");
 //        }
-        String metric1= metric.replace('.', '@');
-        projection.append(metric1, "true");
-        
+
+    	if(metric.equals("execTime")){
+            projection.append("time", "true");
+    	}
+    	else{
+            String metric1= metric.replace('.', '@');
+            projection.append(metric1, "true");
+    	}
+        System.out.println(projection);
         logger.info(projection);
         FindIterable obj = mc.find().projection(projection);
 
@@ -103,6 +109,9 @@ public class MongoDB implements DataSource{
                 osp = new OutputSpacePoint();
                 osp.setInputSpacePoint(isp1);
                 String key = metric.replace('.', '@');
+                if(key.equals("execTime")){
+                	key="time";
+            	}
 		          Object value = doc.get(key);
 		          double val=0;
 		
@@ -143,7 +152,7 @@ public class MongoDB implements DataSource{
         	logger.info("MONGO EXCEPTION: "+e.getMessage());
         	e.printStackTrace();
         }
-
+        System.out.println(results);
         return results;
     }
 
@@ -166,8 +175,13 @@ public class MongoDB implements DataSource{
             projection.append(in1, "true");
         }
         for (String os : outputSpace){
-			String os1= os.replace('.', '@');
-            projection.append(os1, "true");
+        	if(os.equals("execTime")){
+	            projection.append("time", "true");
+        	}
+        	else{
+				String os1= os.replace('.', '@');
+	            projection.append(os1, "true");
+        	}
         }
         
         logger.info(projection);
@@ -202,6 +216,9 @@ public class MongoDB implements DataSource{
                 osp.setInputSpacePoint(isp1);
                 for (String os : outputSpace) {
                     String key = os.replace('.', '@');
+                    if(key.equals("execTime")){
+                    	key="time";
+                	}
                     Object value = doc.get(key);
                     double val=0;
 
