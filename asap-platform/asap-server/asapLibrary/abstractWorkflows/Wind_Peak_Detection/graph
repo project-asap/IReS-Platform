@@ -1,6 +1,7 @@
 cdr_data,Wind_Data_Filter
 Wind_Data_Filter,d1
 d1,Wind_Distribution_Computation
+d1,Wind_Peak_Detection
 Wind_Distribution_Computation,d2
 d2,Wind_Peak_Detection
 Wind_Peak_Detection,d3
