@@ -25,7 +25,7 @@ Constraints.Input0.Engine.FS=HDFS
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=2
+Constraints.Output.number=1
 Constraints.Output0.Engine.FS=HDFS
 Constraints.Output1.Engine.FS=HDFS
 

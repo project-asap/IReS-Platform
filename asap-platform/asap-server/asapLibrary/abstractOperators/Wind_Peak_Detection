@@ -22,4 +22,4 @@ Constraints.Input.number=2
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=2
+Constraints.Output.number=1
