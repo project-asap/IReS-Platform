@@ -1,4 +1,5 @@
-MASTER_JAR_LOCATION = "/home/forth/testing_asap4all/IReS-Platform/cloudera-kitten/java/master/target/kitten-master-0.2.0-jar-with-dependencies.jar"
+IRES_HOME = "/home/forth/asap4all/IReS-Platform"
+MASTER_JAR_LOCATION = IRES_HOME .. "/cloudera-kitten/java/master/target/kitten-master-0.2.0-jar-with-dependencies.jar"
 
 CP = "/home/forth/hadoop-2.7.1/etc/hadoop:/home/forth/hadoop-2.7.1/share/hadoop/common/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/common/*:/home/forth/hadoop-2.7.1/share/hadoop/hdfs:/home/forth/hadoop-2.7.1/share/hadoop/hdfs/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/hdfs/*:/home/forth/hadoop-2.7.1/share/hadoop/yarn/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/yarn/*:/home/forth/hadoop-2.7.1/share/hadoop/mapreduce/lib/*:/home/forth/hadoop-2.7.1/share/hadoop/mapreduce/*:/home/forth/hadoop-2.7.1/lib:/home/forth/hadoop-2.7.1/contrib/capacity-scheduler/*.jar"
 
