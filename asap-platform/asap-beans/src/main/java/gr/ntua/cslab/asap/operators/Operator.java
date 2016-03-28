@@ -718,9 +718,9 @@ public class Operator {
 		logger.info("Getting mettric: " + metric + " from operator: " + opName);
 
 		if(models.get(metric)==null || models.get(metric).size()==0){
-			
-			Random r = new Random();
-			return r.nextDouble() * 100;
+			return new Double(0.0);
+//			Random r = new Random();
+//			return r.nextDouble() * 100;
 		}
 		Model model = models.get(metric).get(0);
 		if (!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)) {
@@ -755,8 +755,9 @@ public class Operator {
 		logger.info("Getting mettric: " + metric + " from operator: " + opName);
 		//System.out.println(metric);
 		if(models.get(metric)==null || models.get(metric).size()==0){
-			Random r = new Random();
-			return r.nextDouble() * 100;
+			return new Double(0.0);
+//			Random r = new Random();
+//			return r.nextDouble() * 100;
 		}
 		Model model = models.get(metric).get(0);
 		if (!model.getClass().equals(gr.ntua.ece.cslab.panic.core.models.UserFunction.class)) {

@@ -79,7 +79,7 @@ public class AbstractWorkflows {
 
 	@GET
 	@Path("execute/{id}")
-    public void execute(@PathParam("id") String id) throws Exception {
-        RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(id));
+    public String execute(@PathParam("id") String id) throws Exception {
+        return RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(id));
     }
 }
