@@ -515,7 +515,7 @@ public class Operator {
 				else{
 					//the output file will be created under operator's "local" folder at HDFS
 					//but at the path specified
-					newPath = opName + "/" + path
+					newPath = opName + "/" + path;
 				}
 			}
 			d.add("Execution.path", newPath);
