@@ -72,8 +72,14 @@ public class OptimizeMissingMetrics {
 				MultiObjectiveOptimizer.model = models.get(policy).get(0);
 			}
 			catch(Exception e){
-				this.logger.info(e.getMessage());
-				this.logger.info("Error while trying to get the policy from the model.");
+				logger.info( e.getMessage());
+				logger.info( "Error while trying to get the policy from the model for");
+				logger.info( "operator " + operator.opName);
+				logger.info( "The policy of the model is null. May this be due to errors");
+				logger.info( "during the training of the models. Deleting and retraining");
+				logger.info( "the model may resolve the problem. Before retraining make");
+				logger.info( "sure that there exist enough samples( profiling data) in the");
+				logger.info( "corresponding asapLibrary/operators/OPERATOR_HOME/data/.csv file.");
 			}
 
 			Solution solution = findOptimal();
