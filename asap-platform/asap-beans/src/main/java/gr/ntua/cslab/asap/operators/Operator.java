@@ -499,13 +499,26 @@ public class Operator {
 	}
 
 	private void copyExecPath(Dataset d, String path) {
+		String newPath = null;
 		if (path != null) {
+			//check which type of path is provided
 			if (path.startsWith("$HDFS_OP_DIR")) {
-				String newPath = path.replace("$HDFS_OP_DIR", "$HDFS_DIR/" + opName);
-				d.add("Execution.path", newPath);
-			} else {
-				d.add("Execution.path", opName + "/" + path);
+				//the output file will be created inside operator's "local" folder at HDFS
+				newPath = path.replace("$HDFS_OP_DIR", "$HDFS_DIR/" + opName);
 			}
+			else {
+				if( path.startsWith( "$AS_IS")){
+					//the output path will be created at the following path
+					//hdfs://NameNode_Host:9000/specified_path
+					newPath = path.replace( "$AS_IS", "");
+				}
+				else{
+					//the output file will be created under operator's "local" folder at HDFS
+					//but at the path specified
+					newPath = opName + "/" + path
+				}
+			}
+			d.add("Execution.path", newPath);
 		}
 	}
 

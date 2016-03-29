@@ -57,6 +57,6 @@ Execution.Argument5=june-2015
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=peaks/hourly_presence-roma-june-2015
+#Execution.copyFromLocal=peaks/hourly_presence-roma-june-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=peaks/hourly_presence-roma-june-2015
+Execution.Output0.path=$AS_ISpeaks/hourly_presence-roma-june-2015

@@ -34,8 +34,7 @@ Constraints.Output0.Engine.FS=HDFS
 ############
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
 #type,min_value,max_value,step
-Optimization.inputSpace.region=Double,1.0,10.0,1.0
-Optimization.inputSpace.timeFrame=Double,62015.0,92015.0,30000.0
+Optimization.inputSpace.In0.size=Double,1E8,1E10,l
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 #optimization metric function
@@ -59,6 +58,6 @@ Execution.Argument4=june-july-2015
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=peaks-roma-june-july-2015-aree_roma.csv.json
+#Execution.copyFromLocal=peaks-roma-june-july-2015-aree_roma.csv.json
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/peaks-roma-june-july-2015-aree_roma.csv.json
+Execution.Output0.path=$AS_ISpeaks-roma-june-july-2015-aree_roma.csv.json

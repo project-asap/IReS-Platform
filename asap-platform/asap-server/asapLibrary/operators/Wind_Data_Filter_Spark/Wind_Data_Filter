@@ -35,8 +35,10 @@ Constraints.Output0.Engine.FS=HDFS
 #OPTIMIZATION METRIC( mandatory inputSpace, outputSpace properties)
 Optimization.inputSpace.In0.size=Double,1E8,1E10,l
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.outputSpace.execTime=Double
 Optimization.execTime=2.0
+Optimization.outputSpace.execTime=Double
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=1.0
 
 #############
 # EXECUTION #
@@ -55,6 +57,6 @@ Execution.Argument5=june-2015
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=peaks/hourly_presence-roma-june-2015
+#Execution.copyFromLocal=peaks/hourly_presence-roma-june-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=/peaks/hourly_presence-roma-june-2015
+Execution.Output0.path=$AS_ISpeaks/hourly_presence-roma-june-2015

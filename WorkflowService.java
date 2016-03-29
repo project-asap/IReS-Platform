@@ -61,6 +61,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
+
 public class WorkflowService extends
     AbstractScheduledService implements ApplicationMasterService,
     AMRMClientAsync.CallbackHandler {
@@ -76,7 +78,7 @@ public class WorkflowService extends
   public AMRMClientAsync<ContainerRequest> resourceManager;
   private boolean hasRunningContainers = false;
   private Throwable throwable;
-  public HashMap services_n_status = null;
+  public HashMap< String, String> services_n_status = null;
 
 protected ContainerLaunchContextFactory factory;
 
@@ -179,22 +181,41 @@ protected ContainerLaunchContextFactory factory;
   protected void runOneIteration() throws Exception {
 
 	AbstractClient.issueRequest(conf, parameters.jobName, parameters.workflow);
-    services_n_status = AbstractClient.issueRequestClusterStatus( conf);
+    String[] response = AbstractClient.issueRequestClusterStatus( conf).split( "\n");
+    services_n_status = new HashMap<String, String>();
+    for( String service: response ){
+        services_n_status.put( service.split( ":")[ 0].trim(), service.split( ":")[ 1].trim());
+    }
+    for( String s : services_n_status.keySet() )
+        System.out.println( "Service " + s + " has status " + services_n_status.get( s));
     //read workflow operators' state until the running are found and if are found
     //check that operators' needed services are up. If these services are not up
     //replan workflow execution
     String service = null;
-    int service_index = 0;
+
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         //we are looking for operators and we are looking for two specific properties
         //of them, Constraints.Inputx.Engine and Constraints.Outputy.Engine for each
         //input x and output y
-        if( opd.getState().toLowerCase().equals( "running") && opd.getIsOperator()){
-            service = opd.getDescription();
-            service_index = service.indexOf( "Constraints.Engine=");
-            service = opd.getDescription().substring( service_index, service.indexOf( "\n", service_index));
+        if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true")){
+            service = opd.getEngine();
+            //System.out.println( "\n\nService is " + service);
+
+            if( service != null){
+                //System.out.println( "Services and their status " + services_n_status.get( service ));
+                if( services_n_status.get( service).toString().equals( "true")){
+                    LOG.info( "Service " + service + " is up for operator " + opd.getName());
+                }
+                else{
+                    LOG.info( "Service " + service + " is not up for operator " + opd.getName());
+                    LOG.info( "Workflow should be replanned.");
+                    //call replan
+                }
+            }
+
         }
     }
+
     if (totalFailures.get() > parameters.getAllowedFailures() ||
         allTrackersFinished()) {
       stop();

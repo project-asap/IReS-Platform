@@ -89,17 +89,16 @@ public class AbstractClient {
      * @throws MalformedURLException
      * @throws IOException
      */
-    public static HashMap issueRequestClusterStatus( YarnConfiguration conf) {
+    public static String issueRequestClusterStatus( YarnConfiguration conf) {
     	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
         String urlString = "http://" + masterDNS + ":1323/clusterStatus";
-        String ret="";
+        String[] services = null;
+        String services_n_status = "";
 		try {
 	        LOG.info("ClusterStatus Issuing urlString: " + urlString);
-			System.out.println("ClusterStatus Issuing urlString: " + urlString);
+			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            String[] services = null;
-            HashMap services_n_status = null;
 
 	        con.setRequestMethod("GET");
 
@@ -125,21 +124,14 @@ public class AbstractClient {
 	        while((count = in.read(buffer))!=-1) {
 	            builder.append(new String(buffer,0,count));
 	        }
-	        ret = builder.toString();
+	        services_n_status = builder.toString();
             //clean html response from its tags and replace them by a "_"
-            ret = ret.replaceAll( "<[^>]+>", "_");
+            services_n_status = services_n_status.replaceAll( "<[^>]+>", "_");
             //due to starting and closing tags, the tokens of the remainder text will be
             //separated by a double "_" i.e. "__" that must be trimmed
-            //remove leading and trailing double "_"
-            ret = ret.replaceAll( "^__", "").replaceAll( "__$", "");
-            //split the remainder upon the intermediate double "_"
-            services = ret.split( "__");
-            services_n_status = new HashMap();
-            for( String service: services ){
-                services_n_status.put( service.split( ":")[ 0].trim(), service.split( ":")[ 1].trim());
-            }
-	        LOG.info("Request response: " + ret);
-	        LOG.info("Request response HashMap: " + services_n_status);
+            //remove leading and trailing double "_" and substitute the intermediate by a newline
+            services_n_status = services_n_status.replaceAll( "^__", "").replaceAll( "__$", "").replaceAll( "__", "\n");
+	        LOG.info("Request response: " + services_n_status);
 		} catch (Exception e) {
 			LOG.error( e.getStackTrace());
 			e.printStackTrace();

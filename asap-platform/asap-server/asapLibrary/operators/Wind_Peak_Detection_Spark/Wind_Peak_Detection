@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	01/ 03/ 2016
-#Previous update	:	09/ 02/ 2016
+#Last update		:	28/ 03/ 2016
+#Previous update	:	01/ 03/ 2016, 09/ 02/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
@@ -8,7 +8,7 @@
 ################################################################################
 #
 #Description
-#	This is the concrete version of the data_filter operator from wind workflow.
+#	This is the concrete version of the peak_detection operator from wind workflow.
 #Description_End
 
 #################
@@ -17,6 +17,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection
 #ENGINE
+Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=2
@@ -26,9 +27,8 @@ Constraints.Input1.Engine.FS=HDFS
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=2
+Constraints.Output.number=1
 Constraints.Output0.Engine.FS=HDFS
-Constraints.Output1.Engine.FS=HDFS
 
 ############
 # MODELING #
@@ -37,8 +37,10 @@ Constraints.Output1.Engine.FS=HDFS
 Optimization.inputSpace.binSize=Double,0.1,1.0,0.1
 #OPTIMIZATION METRIC( mandatory)
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.outputSpace.execTime=Double
 Optimization.execTime=3.0
+Optimization.outputSpace.execTime=Double
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=1.0
 
 #############
 # EXECUTION #
@@ -47,17 +49,15 @@ Optimization.execTime=3.0
 Execution.LuaScript=Peak_Detection.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=5
-Execution.Argument0=spark://localhost:7077
-Execution.Argument1=In0.path
-Execution.Argument2=In1.path
-Execution.Argument3=/output
-Execution.Argument4=0.1
+Execution.Argument0=spark://131.114.136.218:7077
+Execution.Argument1=peak_detection.py
+Execution.Argument2=aree_roma.csv
+Execution.Argument3=roma
+Execution.Argument4=06-2015
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 Execution.copyToLocal=In1.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/events
-Execution.copyFromLocal=output/eventsFilter
+#Execution.copyFromLocal=peaks/hourly_presence-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=/output/events
-Execution.Output1.path=/output/eventsFilter
+Execution.Output0.path=$AS_ISpeaks/hourly_presence-roma-06-2015

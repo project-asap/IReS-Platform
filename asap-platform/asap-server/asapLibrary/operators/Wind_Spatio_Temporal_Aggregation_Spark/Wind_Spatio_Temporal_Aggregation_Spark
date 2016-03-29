@@ -1,14 +1,14 @@
 #Author				:	Papaioannou Vassilis
 #Last update		:	28/ 03/ 2016
-#Previous update	:	01/ 03/ 2016, 09/ 02/ 2016
+#Previous update	:	none
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
-#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/PeakDetection.md
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/Sociometer.md
 ################################################################################
 #
 #Description
-#	This is the concrete version of the distribution_computation operator from
+#	This is the concrete version of the spatio_temporal_aggregation operator from 
 #	wind workflow.
 #Description_End
 
@@ -16,13 +16,15 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=Wind_Distribution_Computation
+Constraints.OpSpecification.Algorithm.name=Wind_Spatio_Temporal_Aggregation
 #ENGINE
 Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1
 Constraints.Input0.Engine.FS=HDFS
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
 Constraints.Output.number=1
@@ -31,11 +33,13 @@ Constraints.Output0.Engine.FS=HDFS
 ############
 # MODELING #
 ############
-#OPTIMIZATION METRIC( mandatory inputSpace, outputSpace properties)
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+#type,min_value,max_value,step
 Optimization.inputSpace.In0.size=Double,1E8,1E10,l
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.execTime=3.0
+#OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
@@ -43,17 +47,19 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Distribution_Computation_Spark.lua
+Execution.LuaScript=Spatio_Temporal_Aggregation_Spark.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=4
+Execution.Arguments.number=6
 Execution.Argument0=spark://131.114.136.218:7077
-Execution.Argument1=typical_distribution_computation.py
-Execution.Argument2=roma
-Execution.Argument3=june-july-2015
+Execution.Argument1=spatio_temporal_aggregation.py
+Execution.Argument2=hdfs:///dataset_simulated/06/1.csv
+Execution.Argument3=aree_roma.csv
+Execution.Argument4=roma
+Execution.Argument5=june-july-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
-Execution.copyToLocal=In0.path
+#Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=/peaks/weekly_presence-roma-june-july-2015
+#Execution.copyFromLocal=/timeseriesroma-june-july-2015-aree_roma.csv
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$AS_ISpeaks/weekly_presence-roma-june-july-2015
+Execution.Output0.path=$AS_IStimeseriesroma-june-july-2015-aree_roma.csv
