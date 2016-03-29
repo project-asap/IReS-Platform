@@ -1,5 +1,8 @@
 package gr.ntua.cslab.asap.rest.beans;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -10,6 +13,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "operator")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OperatorDictionary {
+
+	private static final Log logger = LogFactory.getLog( OperatorDictionary.class);
+
 	private String name, cost, status, isOperator, isAbstract, description, abstractName;
 	private boolean isTarget;
 	private List<String> input;
@@ -105,5 +111,25 @@ public class OperatorDictionary {
 		this.abstractName = abstractName;
 	}
 	
-	
+	/*vpapa: retrieve the engine where the operator will run and for which it is written for
+	*/
+	public String getEngine(){
+		String description = null;
+		String engine = null;
+		int engine_index = 0;
+
+		description = this.getDescription();
+		engine_index = description.indexOf( "Constraints.Engine=");
+		if( engine_index == -1){
+			logger.info( "Operator " + name + "has not any engine specified.");
+			return null;
+		}
+		//engine = Constraints.Engine=OperatorEngine
+		engine = description.substring( engine_index, description.indexOf( "\n", engine_index));
+		//engine=OperatorEngine
+		engine = engine.split( "=")[ 1].trim();
+		logger.info( "Operator " + name + " has " + engine + " as specified engine.");
+		
+		return engine;
+	}
 }

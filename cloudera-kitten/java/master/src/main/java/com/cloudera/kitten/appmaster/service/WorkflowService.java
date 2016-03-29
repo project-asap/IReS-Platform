@@ -78,7 +78,7 @@ public class WorkflowService extends
   public AMRMClientAsync<ContainerRequest> resourceManager;
   private boolean hasRunningContainers = false;
   private Throwable throwable;
-  public HashMap services_n_status = null;
+  public HashMap< String, Boolean> services_n_status = null;
 
 protected ContainerLaunchContextFactory factory;
 
@@ -186,15 +186,20 @@ protected ContainerLaunchContextFactory factory;
     //check that operators' needed services are up. If these services are not up
     //replan workflow execution
     String service = null;
-    int service_index = 0;
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         //we are looking for operators and we are looking for two specific properties
         //of them, Constraints.Inputx.Engine and Constraints.Outputy.Engine for each
         //input x and output y
         if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true")){
-            service = opd.getDescription();
-            service_index = service.indexOf( "Constraints.Engine=");
-            service = opd.getDescription().substring( service_index, service.indexOf( "\n", service_index));
+            service = opd.getEngine();
+            if( services_n_status.get( service)){
+            	LOG.info( "Service " + service + " is up for operator " + opd.getName());
+            }
+            else{
+            	LOG.info( "Service " + service + " is up for operator " + opd.getName());
+            	LOG.info( "Workflow should be replanned.");
+            	//call replan
+            }
         }
     }
     if (totalFailures.get() > parameters.getAllowedFailures() ||
