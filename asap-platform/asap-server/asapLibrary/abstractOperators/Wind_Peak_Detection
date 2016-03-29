@@ -8,7 +8,7 @@
 ################################################################################
 #
 #Description
-#	This is the abstract version of the data_filter operator from wind workflow.
+#	This is the abstract version of the peak_detection operator from wind workflow.
 #Description_End
 
 #################
