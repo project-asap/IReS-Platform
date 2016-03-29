@@ -139,8 +139,12 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				//logger.info( "For abstract operator " + abstractOperator.opName + " the available"
 				//			 + " operator implementations are:\n " + operators);
 				for(Operator op : operators){
-					if(!ClusterStatusLibrary.checkEngineStatus(op))
-						continue;
+					if(!ClusterStatusLibrary.checkEngineStatus(op)){
+						logger.info( "Specified engine for operator " + op.opName + " is " + op.getEngine());
+						logger.info( "an it is not running. For this, this operator will no be materialized");
+						logger.info( "and consequently all the corresponding workflow will not be materialized.");
+						continue;					
+					}
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();
 					//Double operatorInputCost= 0.0;
 					List<WorkflowNode> plan = new ArrayList<WorkflowNode>();
