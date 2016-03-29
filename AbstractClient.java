@@ -93,13 +93,13 @@ public class AbstractClient {
     	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
         String urlString = "http://" + masterDNS + ":1323/clusterStatus";
         String ret="";
-        String[] services = null;
-        HashMap services_n_status = null;
 		try {
 	        LOG.info("ClusterStatus Issuing urlString: " + urlString);
 			System.out.println("ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            String[] services = null;
+            HashMap services_n_status = null;
 
 	        con.setRequestMethod("GET");
 

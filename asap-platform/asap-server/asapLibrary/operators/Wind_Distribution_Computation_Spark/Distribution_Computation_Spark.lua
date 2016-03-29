@@ -7,7 +7,7 @@ EXECUTION_NODE_LOCATION = "hdp1"
 OPERATOR_LIBRARY = "asapLibrary/operators"
 
 -- Specific configuration of operator
-OPERATOR = "Wind_Statistics_Publisher_Spark"
+OPERATOR = "Wind_Distribution_Computation_Spark"
 SCRIPT = OPERATOR .. ".sh"
 SHELL_COMMAND = "./" .. SCRIPT
 -- Home directory of operator
@@ -33,24 +33,20 @@ operator = yarn {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
     		command = {
-				base = SHELL_COMMAND
-			},
+			base = SHELL_COMMAND
+		},
     		resources = {
-    			["Wind_Statistics_Publisher_Spark.sh"] = {
-					file = OPERATOR_HOME .. "/" .. SCRIPT,
+    			["Wind_Distribution_Computation_Spark.sh"] = {
+				file = OPERATOR_HOME  .. "/" .. SCRIPT,
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["stats_publisher.py"] = {
-					file = OPERATOR_HOME .. "/stats_publisher.py",
+    			["typical_distribution_computation.py"] = {
+       				file = OPERATOR_HOME .. "/typical_distribution_computation.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
-    			},
-    			["aree_roma.csv"] = {
-					file = OPERATOR_HOME .. "/aree_roma.csv",
-					type = "file",
-					visibility = "application"
-				}		
-    		}		
+    			}
+  		}
+    		
  	}
 }

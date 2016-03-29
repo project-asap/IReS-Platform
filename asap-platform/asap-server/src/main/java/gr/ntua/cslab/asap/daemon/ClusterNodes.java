@@ -95,172 +95,172 @@ public class ClusterNodes extends Configured implements Runnable {
 	}
 	
 	public void run(){
-//    	//interact with the ResourceManager of YARN cluster and find which nodes are active
-//    	//and for these nodes check which services are still running on them
-//		//retrieve the needed information to find which services are running on which
-//		//hosts
-//		runservices = new HashMap< String, String>();
-//		try{
-//			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( ",");
-//		}
-//		catch( NullPointerException npe){
-//			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.per-node property.");
-//			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-//			logger.info( " in folder with relative path asap-server/target/conf.");
-//		}
-//		hservices = new HashMap< String, String>();
-//		for( int i = 0; i < hosts.length; i++){
-//			//System.out.println( hosts[ i].trim());
-//			//services[ 0] -> host, services[ 1] -> host services
-//			services = hosts[ i].trim().split( ":");
-//			hservices.put( services[ 0], services[ 1]);
-//		}
-//		try{
-//			hosts = yconf.get( "yarn.nodemanager.services-running.check-availability").split( "[;;]{2}");
-//		}
-//		catch( NullPointerException npe){
-//			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-availability property.");
-//			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-//			logger.info( " in folder with relative path asap-server/target/conf.");
-//		}
-//		scommands = new HashMap< String, String>();
-//		for( int i = 0; i < hosts.length; i++){
-//			//System.out.println( hosts[ i].trim());
-//			//services[ 0] -> service, services[ 1] -> service command
-//			services = hosts[ i].trim().split( ":");
-//			scommands.put( services[ 0], services[ 1]);
-//			//add the service into the runservices with an unknown status for the moment
-//			runservices.put( services[ 0], "");
-//		}
-//		try{
-//			hosts = yconf.get( "yarn.nodemanager.services-running.check-status").split( ",");
-//		}
-//		catch( NullPointerException npe){
-//			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-status property.");
-//			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-//			logger.info( " in folder with relative path asap-server/target/conf.");
-//		}
-//		sstatus = new HashMap< String, String>();
-//		for( int i = 0; i < hosts.length; i++){
-//			//System.out.println( hosts[ i].trim());
-//			//services[ 0] -> service, services[ 1] -> service running status
-//			services = hosts[ i].trim().split( ":");
-//			sstatus.put( services[ 0], services[ 1]);
-//		}
-//		/*
-//		System.out.println( "Yarn nodes services = " + hservices);
-//		System.out.println( "Services' commands = " + scommands);
-//		System.out.println( "Running services' status= " + sstatus);
-//		*/
-//		//initialize and start YarnClient
-//		yc.init( yconf);
-//		yc.start();
-//		//System.out.println( "The yarn cluster has " + hosts.size() + " hosts.");
-//		yhosts = new HashMap< String, String>();
-//		try{
-//			while( true){
-//				ycinfo = yc.getNodeReports();
-//				if( ycinfo != null){
-//					yciter = ycinfo.listIterator();
-//					while( yciter.hasNext()){
-//						nr = yciter.next();
-//						host = nr.getNodeId().toString().split( ":")[ 0];
-//						yhosts.put( host, nr.getNodeState().toString());
-//						//System.out.println( "YARN hosts: " + yhosts);
-//						//only hosts where NodeManager is running are checked for the availability
-//						//of their services
-//						if( yhosts.get( host).equals( "RUNNING")){
-//							//retrieve current host's services and
-//							//for each service check if it is running
-//							for( String service : hservices.get( host).split( " ")){
-//								//run the command to get service availability
-//								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
-//								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
-//								//read status
-//								status = br.readLine();
-//								/*
-//								System.out.println( "Service to check: " + service);
-//								System.out.println( "on host: " + host);
-//								System.out.println( "with command: " + scommands.get( service));
-//								System.out.println( "and expected status: " + sstatus.get( service));
-//								System.out.println( "Actual status: " + status);
-//								*/
-//								//compare status returned with the one expected from sstatus HashMap if
-//								//running status for the current service has been speicified in yarn-site.xml and
-//								//the command that has been run at the host returned a valid result
-//								if( sstatus.get( service) != null && status != null){
-//									if( status.toLowerCase().equals( sstatus.get( service).toLowerCase())){
-//										//the service is running on current host and so append this
-//										//host to the hosts on which this service is running
-//										runservices.put( service, runservices.get( service) + " " + host);
-//									}
-//								}
-//								else{
-//									//write in logs that for the current service no running status has been specified
-//								}
-//								p.destroy();
-//							}
-//						}
-//					}
-//				}
-//				//System.out.println( "Running services: " + runservices);
-//				for( String service : runservices.keySet()){
-//					//there are some services like Spark that apart from the Master, they
-//					//need also a Worker running in order to say that this service is actually
-//					//running
-//					if( service.toLowerCase().equals( "Spark".toLowerCase())){
-//						//try to find at least one Spark Worker running
-//						if( !runservices.get( "SparkWorker").equals( "")){
-//							//one Spark Worker has been found and so this service is running
-//							ClusterStatusLibrary.status.put( service, true);
-//						}
-//					}
-//					if( service.toLowerCase().equals( "SparkWorker".toLowerCase())){
-//						//ignore this service because it will be handled during the process
-//						//of Spark service
-//						continue;
-//					}
-//					//for any other service just check that there is at least one node
-//					//hosting it			
-//					if( runservices.get( service).equals( "")){
-//						ClusterStatusLibrary.status.put( service, false);
-//					}
-//					else{
-//						ClusterStatusLibrary.status.put( service, true);
-//					}
-//				}
-//				/*
-//				System.out.println( "ClusterStatusLibrary: " + ClusterStatusLibrary.status);
-//				System.out.println( "The yarn cluster has " + yhosts.size() + " hosts.");
-//				for( String service : runservices.keySet()){
-//					System.out.println( "Service: " + service + " runs on: " + runservices.get( service));
-//				}
-//				for( String host : yhosts.keySet()){
-//					System.out.println( "Host: " + host + " has status: " + yhosts.get( host));
-//				}
-//				*/
-//				//preparation for the next iteration
-//				for( String service : runservices.keySet()){
-//					runservices.put( service, "");
-//				}
-//				Thread.sleep( period);
-//			}//end of while( true)
-//		}
-//		catch( IOException ioe){
-//			logger.warning( "IOException occured and caught!");
-//			ioe.printStackTrace();
-//		}
-//		catch( YarnException ye){
-//			logger.warning( "YarnException occured and caught!");
-//			ye.printStackTrace();
-//		}
-//		catch( NullPointerException npe){
-//			logger.warning( "NullPointerException occured and caught!");
-//			npe.printStackTrace();
-//		}
-//		catch( InterruptedException ie){
-//			logger.warning( "InterruptedException occured and caught!");
-//			ie.printStackTrace();
-//		}
+    	//interact with the ResourceManager of YARN cluster and find which nodes are active
+    	//and for these nodes check which services are still running on them
+		//retrieve the needed information to find which services are running on which
+		//hosts
+		runservices = new HashMap< String, String>();
+		try{
+			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( ",");
+		}
+		catch( NullPointerException npe){
+			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.per-node property.");
+			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( " in folder with relative path asap-server/target/conf.");
+		}
+		hservices = new HashMap< String, String>();
+		for( int i = 0; i < hosts.length; i++){
+			//System.out.println( hosts[ i].trim());
+			//services[ 0] -> host, services[ 1] -> host services
+			services = hosts[ i].trim().split( ":");
+			hservices.put( services[ 0], services[ 1]);
+		}
+		try{
+			hosts = yconf.get( "yarn.nodemanager.services-running.check-availability").split( "[;;]{2}");
+		}
+		catch( NullPointerException npe){
+			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-availability property.");
+			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( " in folder with relative path asap-server/target/conf.");
+		}
+		scommands = new HashMap< String, String>();
+		for( int i = 0; i < hosts.length; i++){
+			//System.out.println( hosts[ i].trim());
+			//services[ 0] -> service, services[ 1] -> service command
+			services = hosts[ i].trim().split( ":");
+			scommands.put( services[ 0], services[ 1]);
+			//add the service into the runservices with an unknown status for the moment
+			runservices.put( services[ 0], "");
+		}
+		try{
+			hosts = yconf.get( "yarn.nodemanager.services-running.check-status").split( ",");
+		}
+		catch( NullPointerException npe){
+			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-status property.");
+			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( " in folder with relative path asap-server/target/conf.");
+		}
+		sstatus = new HashMap< String, String>();
+		for( int i = 0; i < hosts.length; i++){
+			//System.out.println( hosts[ i].trim());
+			//services[ 0] -> service, services[ 1] -> service running status
+			services = hosts[ i].trim().split( ":");
+			sstatus.put( services[ 0], services[ 1]);
+		}
+		/*
+		System.out.println( "Yarn nodes services = " + hservices);
+		System.out.println( "Services' commands = " + scommands);
+		System.out.println( "Running services' status= " + sstatus);
+		*/
+		//initialize and start YarnClient
+		yc.init( yconf);
+		yc.start();
+		//System.out.println( "The yarn cluster has " + hosts.size() + " hosts.");
+		yhosts = new HashMap< String, String>();
+		try{
+			while( true){
+				ycinfo = yc.getNodeReports();
+				if( ycinfo != null){
+					yciter = ycinfo.listIterator();
+					while( yciter.hasNext()){
+						nr = yciter.next();
+						host = nr.getNodeId().toString().split( ":")[ 0];
+						yhosts.put( host, nr.getNodeState().toString());
+						//System.out.println( "YARN hosts: " + yhosts);
+						//only hosts where NodeManager is running are checked for the availability
+						//of their services
+						if( yhosts.get( host).equals( "RUNNING")){
+							//retrieve current host's services and
+							//for each service check if it is running
+							for( String service : hservices.get( host).split( " ")){
+								//run the command to get service availability
+								p = Runtime.getRuntime().exec( "ssh " + host + " " + scommands.get( service));
+								br = new BufferedReader( new InputStreamReader( p.getInputStream()));
+								//read status
+								status = br.readLine();
+								/*
+								System.out.println( "Service to check: " + service);
+								System.out.println( "on host: " + host);
+								System.out.println( "with command: " + scommands.get( service));
+								System.out.println( "and expected status: " + sstatus.get( service));
+								System.out.println( "Actual status: " + status);
+								*/
+								//compare status returned with the one expected from sstatus HashMap if
+								//running status for the current service has been speicified in yarn-site.xml and
+								//the command that has been run at the host returned a valid result
+								if( sstatus.get( service) != null && status != null){
+									if( status.toLowerCase().equals( sstatus.get( service).toLowerCase())){
+										//the service is running on current host and so append this
+										//host to the hosts on which this service is running
+										runservices.put( service, runservices.get( service) + " " + host);
+									}
+								}
+								else{
+									//write in logs that for the current service no running status has been specified
+								}
+								p.destroy();
+							}
+						}
+					}
+				}
+				//System.out.println( "Running services: " + runservices);
+				for( String service : runservices.keySet()){
+					//there are some services like Spark that apart from the Master, they
+					//need also a Worker running in order to say that this service is actually
+					//running
+					if( service.toLowerCase().equals( "Spark".toLowerCase())){
+						//try to find at least one Spark Worker running
+						if( !runservices.get( "SparkWorker").equals( "")){
+							//one Spark Worker has been found and so this service is running
+							ClusterStatusLibrary.status.put( service, true);
+						}
+					}
+					if( service.toLowerCase().equals( "SparkWorker".toLowerCase())){
+						//ignore this service because it will be handled during the process
+						//of Spark service
+						continue;
+					}
+					//for any other service just check that there is at least one node
+					//hosting it			
+					if( runservices.get( service).equals( "")){
+						ClusterStatusLibrary.status.put( service, false);
+					}
+					else{
+						ClusterStatusLibrary.status.put( service, true);
+					}
+				}
+				/*
+				System.out.println( "ClusterStatusLibrary: " + ClusterStatusLibrary.status);
+				System.out.println( "The yarn cluster has " + yhosts.size() + " hosts.");
+				for( String service : runservices.keySet()){
+					System.out.println( "Service: " + service + " runs on: " + runservices.get( service));
+				}
+				for( String host : yhosts.keySet()){
+					System.out.println( "Host: " + host + " has status: " + yhosts.get( host));
+				}
+				*/
+				//preparation for the next iteration
+				for( String service : runservices.keySet()){
+					runservices.put( service, "");
+				}
+				Thread.sleep( period);
+			}//end of while( true)
+		}
+		catch( IOException ioe){
+			logger.warning( "IOException occured and caught!");
+			ioe.printStackTrace();
+		}
+		catch( YarnException ye){
+			logger.warning( "YarnException occured and caught!");
+			ye.printStackTrace();
+		}
+		catch( NullPointerException npe){
+			logger.warning( "NullPointerException occured and caught!");
+			npe.printStackTrace();
+		}
+		catch( InterruptedException ie){
+			logger.warning( "InterruptedException occured and caught!");
+			ie.printStackTrace();
+		}
 	}// end of run() method
 }

@@ -3,6 +3,7 @@ package gr.ntua.cslab.asap.optimization;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ML {
@@ -20,4 +21,19 @@ public class ML {
         totalError=totalError/actualPoints.size();
         return totalError;
     }
+
+	public static double totalError(Model model,
+			ArrayList<OutputSpacePoint> testPoints) {
+        double totalError = 0.0;
+        double predicted;
+        for (OutputSpacePoint point : testPoints){
+            try{
+                predicted = model.getPoint(point.getInputSpacePoint()).getValue();
+                totalError += Math.abs(point.getValue() - predicted);
+            }
+            catch(Exception e){ continue; }
+        }
+        totalError=totalError/testPoints.size();
+        return totalError;
+	}
 }

@@ -61,8 +61,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
-import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
-
 public class WorkflowService extends
     AbstractScheduledService implements ApplicationMasterService,
     AMRMClientAsync.CallbackHandler {
@@ -191,7 +189,7 @@ protected ContainerLaunchContextFactory factory;
         //we are looking for operators and we are looking for two specific properties
         //of them, Constraints.Inputx.Engine and Constraints.Outputy.Engine for each
         //input x and output y
-        if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true")){
+        if( opd.getState().toLowerCase().equals( "running") && opd.getIsOperator()){
             service = opd.getDescription();
             service_index = service.indexOf( "Constraints.Engine=");
             service = opd.getDescription().substring( service_index, service.indexOf( "\n", service_index));

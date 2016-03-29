@@ -31,4 +31,4 @@ Optimization.size=1E9
 #############
 # EXECUTION #
 #############
-Execution.path=hdfs:///dataset_simulated/06
+Execution.path=hdfs:///dataset_simulated/06/1.csv

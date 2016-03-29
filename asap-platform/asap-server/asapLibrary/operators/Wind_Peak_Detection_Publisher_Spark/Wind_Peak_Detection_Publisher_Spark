@@ -8,15 +8,14 @@
 ################################################################################
 #
 #Description
-#	This is the concrete version of the spatio_temporal_aggregation operator from 
-#	wind workflow.
+#	This is the concrete version of the peak_detection_publisher operator from wind workflow.
 #Description_End
 
 #################
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=Wind_Spatio_Temporal_Aggregation
+Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection_Publisher
 #ENGINE
 Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
@@ -35,7 +34,8 @@ Constraints.Output0.Engine.FS=HDFS
 ############
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
 #type,min_value,max_value,step
-Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.inputSpace.region=Double,1.0,10.0,1.0
+Optimization.inputSpace.timeFrame=Double,62015.0,92015.0,30000.0
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 #optimization metric function
@@ -47,19 +47,18 @@ Optimization.cost=1.0
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Spatio_Temporal_Aggregation_Spark.lua
+Execution.LuaScript=Peak_Detection_Publisher_Spark.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=6
+Execution.Arguments.number=5
 Execution.Argument0=spark://131.114.136.218:7077
-Execution.Argument1=spatio_temporal_aggregation.py
-Execution.Argument2=hdfs:///dataset_simulated/06/1.csv
-Execution.Argument3=aree_roma.csv
-Execution.Argument4=roma
-Execution.Argument5=june-july-2015
+Execution.Argument1=peaks_publisher.py
+Execution.Argument2=aree_roma.csv
+Execution.Argument3=roma
+Execution.Argument4=june-july-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
-#Execution.copyToLocal=In0.path
+Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=/timeseriesroma-june-july-2015-aree_roma.csv
+Execution.copyFromLocal=peaks-roma-june-july-2015-aree_roma.csv.json
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=/timeseriesroma-june-july-2015-aree_roma.csv
+Execution.Output0.path=$HDFS_OP_DIR/peaks-roma-june-july-2015-aree_roma.csv.json

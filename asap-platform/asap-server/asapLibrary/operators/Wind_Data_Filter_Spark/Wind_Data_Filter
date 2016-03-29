@@ -1,6 +1,6 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	01/ 03/ 2016
-#Previous update	:	09/ 02/ 2016
+#Last update		:	28/ 03/ 2016
+#Previous update	:	25/ 03/ 2016
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
 #Work package		:	Telecom analytics
@@ -17,6 +17,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter
 #ENGINE
+Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1
@@ -25,9 +26,8 @@ Constraints.Input0.Engine.FS=HDFS
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=2
+Constraints.Output.number=1
 Constraints.Output0.Engine.FS=HDFS
-Constraints.Output1.Engine.FS=HDFS
 
 ############
 # MODELING #
@@ -44,21 +44,17 @@ Optimization.execTime=2.0
 #LUA CONFIGURATION FILE( mandatory)
 Execution.LuaScript=Data_Filter_Spark.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=8
-Execution.Argument0=spark://localhost:7077
-Execution.Argument1=In0.path
-Execution.Argument2=/output
-Execution.Argument3=2015-06-01
-Execution.Argument4=2015-06-02
-Execution.Argument5=2015-06-03
-Execution.Argument6=None
-Execution.Argument7=/voronoi
+Execution.Arguments.number=6
+Execution.Argument0=spark://131.114.136.218:7077
+Execution.Argument1=data_filter.py
+Execution.Argument2=In0.path
+Execution.Argument3=aree_roma.csv
+Execution.Argument4=roma
+Execution.Argument5=june-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/trainingData
-Execution.copyFromLocal=output/testData
+Execution.copyFromLocal=peaks/hourly_presence-roma-june-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=/output/trainingData
-Execution.Output1.path=/output/testData
+Execution.Output0.path=/peaks/hourly_presence-roma-june-2015

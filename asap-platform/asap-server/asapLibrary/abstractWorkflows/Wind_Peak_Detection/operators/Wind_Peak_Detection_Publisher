@@ -1,5 +1,5 @@
 #Author				:	Papaioannou Vassilis
-#Last update		:	09/ 01/ 2016
+#Last update		:	28/ 03/ 2016
 #Previous update	:	none
 #Platform			:	ASAP IReS
 #Github				:	https://github.com/project-asap/IReS-Platform
@@ -8,16 +8,17 @@
 ################################################################################
 #
 #Description
-#	This is the abstract version of the peak_detection operator from wind workflow.
+#	This is the abstract version of the Wind_Peak_Detection_Publisher operator from
+#	wind workflow.
 #Description_End
 
 #################
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection
+Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection_Publisher
 #INPUT( mandatory)
-Constraints.Input.number=2
+Constraints.Input.number=1
 #if the input type is specified it should be also specified appropriately into
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile

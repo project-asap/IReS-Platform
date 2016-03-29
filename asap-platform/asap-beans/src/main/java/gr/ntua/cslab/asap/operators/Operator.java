@@ -90,6 +90,9 @@ public class Operator {
                    // System.out.println("MONGO");
                     this.initializeDatasouce();
                     outPoints = dataSource.getOutputSpacePoints(e.getKey());
+                    
+
+					
                    // System.out.println(outPoints);
                 
 
@@ -101,25 +104,47 @@ public class Operator {
 						if(outPoints==null || outPoints.size()<2){
 							bestModel=null;
 						}
-						else{
-	                        for (OutputSpacePoint point : outPoints){
-	                            model.feed(point, false);
-	                        }
-							try {
-								model.train();
-								double error = ML.totalError(model);
-								//System.out.println(model.getClass()+" error: "+error);
-								if (error < minTotalError){
-									bestModel = model;
-									minTotalError = error;
+						else{ 
+							double error =0;
+							for (int j = 0; j < 5; j++) {
+								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
+								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
+								Random r = new Random();
+								for (OutputSpacePoint point : outPoints){
+									if(r.nextDouble()<=0.8)
+										trainPoints.add(point);
+									else
+										testPoints.add(point);
+		                        }
+		                        for (OutputSpacePoint point : trainPoints){
+		                            model.feed(point, false);
+		                        }
+								try {
+									model.train();
+									double terror = ML.totalError(model, testPoints);
+									error+=terror;
+								} catch (Exception e1) {
+									logger.info("Exception in training: "+e1.getMessage());
+									continue;
 								}
-								//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-								//performanceModels.add(model);
-	
-							} catch (Exception e1) {
-								logger.info("Exception in training: "+e1.getMessage());
-								continue;
 							}
+							System.out.println(model.getClass()+" error: "+error);
+							if (error < minTotalError){
+								for (OutputSpacePoint point : outPoints){
+		                            model.feed(point, false);
+		                        }
+								try {
+									model.train();
+								} catch (Exception e1) {
+									logger.info("Exception in training: "+e1.getMessage());
+									continue;
+								}
+								bestModel = model;
+								minTotalError = error;
+							}
+							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+							//performanceModels.add(model);
+
 						}
 						i++;
 					}
@@ -219,24 +244,45 @@ public class Operator {
 							bestModel=null;
 						}
 						else{
-	                        for (OutputSpacePoint point : outPoints){
-	                            model.feed(point, false);
-	                        }
-							try {
-								model.train();
-								double error = ML.totalError(model);
-								System.out.println(model.getClass()+" error: "+error);
-								if (error < minTotalError){
-									bestModel = model;
-									minTotalError = error;
+							double error =0;
+							for (int j = 0; j < 5; j++) {
+								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
+								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
+								Random r = new Random();
+								for (OutputSpacePoint point : outPoints){
+									if(r.nextDouble()<=0.8)
+										trainPoints.add(point);
+									else
+										testPoints.add(point);
+		                        }
+		                        for (OutputSpacePoint point : trainPoints){
+		                            model.feed(point, false);
+		                        }
+								try {
+									model.train();
+									double terror = ML.totalError(model, testPoints);
+									error+=terror;
+								} catch (Exception e1) {
+									logger.info("Exception in training: "+e1.getMessage());
+									continue;
 								}
-								//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-								//performanceModels.add(model);
-	
-							} catch (Exception e1) {
-								logger.info("Exception in training: "+e1.getMessage());
-								continue;
 							}
+							System.out.println(model.getClass()+" error: "+error);
+							if (error < minTotalError){
+								for (OutputSpacePoint point : outPoints){
+		                            model.feed(point, false);
+		                        }
+								try {
+									model.train();
+								} catch (Exception e1) {
+									logger.info("Exception in training: "+e1.getMessage());
+									continue;
+								}
+								bestModel = model;
+								minTotalError = error;
+							}
+							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+							//performanceModels.add(model);
 						}
 						i++;
 					}

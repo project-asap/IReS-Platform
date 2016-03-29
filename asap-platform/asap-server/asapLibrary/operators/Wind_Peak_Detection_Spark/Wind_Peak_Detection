@@ -15,50 +15,49 @@
 # CONFIGURATION #
 #################
 #OPERATOR
-Constraints.OpSpecification.Algorithm.name=Wind_Data_Filter_Scala
+Constraints.OpSpecification.Algorithm.name=Wind_Peak_Detection
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
 Constraints.Input0.Engine.FS=HDFS
+Constraints.Input1.Engine.FS=HDFS
 #if the input type is specified it should be also specified appropriately into
 #the corresponding dataset description file
 #Constraints.Input0.type=TextFile
 #OUTPUT( mandatory)
-Constraints.Output.number=1
+Constraints.Output.number=2
 Constraints.Output0.Engine.FS=HDFS
 Constraints.Output1.Engine.FS=HDFS
 
 ############
 # MODELING #
 ############
-#OPTIMIZATION METRIC( mandatory inputSpace, outputSpace properties)
-Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+Optimization.inputSpace.binSize=Double,0.1,1.0,0.1
+#OPTIMIZATION METRIC( mandatory)
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.outputSpace.execTime=Double
-Optimization.execTime=2.0
+Optimization.execTime=3.0
 
 #############
 # EXECUTION #
 #############
 #LUA CONFIGURATION FILE( mandatory)
-Execution.LuaScript=Data_Filter.lua
+Execution.LuaScript=Peak_Detection.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=8
+Execution.Arguments.number=5
 Execution.Argument0=spark://localhost:7077
 Execution.Argument1=In0.path
-Execution.Argument2=/output
-Execution.Argument3=2015-06-01
-Execution.Argument4=2015-06-02
-Execution.Argument5=2015-06-03
-Execution.Argument6=None
-Execution.Argument7=/voronoi
-#EXECUTION COPY FILES( optional)
+Execution.Argument2=In1.path
+Execution.Argument3=/output
+Execution.Argument4=0.1
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
+Execution.copyToLocal=In1.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=output/trainingData
-Execution.copyFromLocal=output/testData
+Execution.copyFromLocal=output/events
+Execution.copyFromLocal=output/eventsFilter
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=/output/trainingData
-Execution.Output1.path=/output/testData
+Execution.Output0.path=/output/events
+Execution.Output1.path=/output/eventsFilter

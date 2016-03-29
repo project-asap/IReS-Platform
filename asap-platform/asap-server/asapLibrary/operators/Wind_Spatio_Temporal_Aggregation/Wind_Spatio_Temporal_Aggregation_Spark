@@ -35,7 +35,8 @@ Constraints.Output0.Engine.FS=HDFS
 ############
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
 #type,min_value,max_value,step
-Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.inputSpace.region=Double,1.0,10.0,1.0
+Optimization.inputSpace.timeFrame=Double,62015.0,122015.0,30000.0
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 #optimization metric function
