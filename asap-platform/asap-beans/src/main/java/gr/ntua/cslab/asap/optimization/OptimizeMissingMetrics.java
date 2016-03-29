@@ -24,6 +24,8 @@ import java.util.Set;
  */
 
 public class OptimizeMissingMetrics {
+	private static Logger logger = Logger.getLogger(OptimizeMissingMetrics.class.getName());
+
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree, Operator operator) throws Exception {
@@ -66,7 +68,13 @@ public class OptimizeMissingMetrics {
 			MultiObjectiveOptimizer.isp = in;
 
 			/* Set the model to the optimizer according to the optimization policy*/
-			MultiObjectiveOptimizer.model = models.get(policy).get(0);
+			try {
+				MultiObjectiveOptimizer.model = models.get(policy).get(0);
+			}
+			catch(Exception e){
+				this.logger.info(e.getMessage());
+				this.logger.info("Error while trying to get the policy from the model.");
+			}
 
 			Solution solution = findOptimal();
 			int numVars = solution.getNumberOfVariables();
@@ -80,13 +88,15 @@ public class OptimizeMissingMetrics {
 				optree.add("SelectedParam." + missingVar, optimal.toString());
 
 				/* Set the Selected Parameters as execution arguments*/
-				String argument = String.format("Execution.Argument%s",
+				/*String argument = String.format("Execution.Argument%s",
 						getExecutionArguments(optree));
 				optree.add(argument, optimal.toString());
 				Integer argCount = Integer.parseInt(operator.getParameter("Execution.Arguments.number")) + 1;
-				optree.add("Execution.Arguments.number", argCount.toString());
+				optree.add("Execution.Arguments.number", argCount.toString());*/
 
 			}
+
+			System.out.println("Parameter: "+optree.getParameter("SelectedParam.cores"));
 
 
 		}
