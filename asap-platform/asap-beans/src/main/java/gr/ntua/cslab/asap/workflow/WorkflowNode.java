@@ -142,7 +142,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					if(!ClusterStatusLibrary.checkEngineStatus(op)){
 						logger.info( "Specified engine for operator " + op.opName + " is " + op.getEngine());
 						logger.info( "an it is not running. For this, this operator will no be materialized");
-						logger.info( "and consequently all the corresponding workflow will not be materialized.");
+						logger.info( "and consequently the corresponding workflow will not be materialized.");
 						continue;					
 					}
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();

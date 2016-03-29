@@ -18,6 +18,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_Stereotype_Classification
 #ENGINE
+Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1

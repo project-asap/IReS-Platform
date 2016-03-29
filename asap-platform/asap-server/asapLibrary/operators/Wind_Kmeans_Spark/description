@@ -15,6 +15,7 @@
 # CONFIGURATION #
 #################
 #OPERATOR
+Constraints.Engine=Spark
 Constraints.OpSpecification.Algorithm.name=Wind_Kmeans
 #ENGINE
 Constraints.EngineSpecification.Distributed=Spark

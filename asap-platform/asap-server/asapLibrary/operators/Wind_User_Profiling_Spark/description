@@ -17,6 +17,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_User_Profiling
 #ENGINE
+Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1

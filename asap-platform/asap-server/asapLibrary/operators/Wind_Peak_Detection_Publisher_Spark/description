@@ -60,4 +60,4 @@ Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
 Execution.copyFromLocal=peaks-roma-june-july-2015-aree_roma.csv.json
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$HDFS_OP_DIR/peaks-roma-june-july-2015-aree_roma.csv.json
+Execution.Output0.path=peaks-roma-june-july-2015-aree_roma.csv.json
