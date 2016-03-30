@@ -456,7 +456,7 @@ public class AbstractWorkflow1 {
 			TODO
 		*/
 		for(WorkflowNode n : workflowNodes.values()){
-			OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"",
+			OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"", n.getExecTime()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
 
 			for(WorkflowNode in : n.inputs){

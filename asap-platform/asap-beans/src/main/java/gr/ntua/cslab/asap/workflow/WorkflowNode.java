@@ -31,7 +31,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	private String abstractName;
 
 	private boolean visited;
-	private Double optimalCost;
+	private Double optimalCost,execTime;
 	public boolean isOperator,isAbstract;
 	public Operator operator;
 	public AbstractOperator abstractOperator;
@@ -50,6 +50,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		outputs = new ArrayList<WorkflowNode>(10);
 		visited=false;
 		optimalCost=0.0;
+		execTime=0.0;
 	}
 
 	public String getAbstractName() {
@@ -269,6 +270,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 										Double optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
 										moveNode.setOptimalCost(optCost-prevCost);
+										moveNode.setExecTime(nextMetrics.get("execTime"));
 										//moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
 
@@ -412,7 +414,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							}
 				        }
 						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
+						
 
+						temp.setExecTime(nextMetrics.get("execTime"));
 						temp.setOptimalCost(optCost-prevCost);
 						plan.add(temp);
 
@@ -511,6 +515,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		logger.info( "Processed : " + toStringNorecursive());
 		return ret;
 	}//end of materialize
+
+	public void setExecTime(Double execTime) {
+		this.execTime=execTime;
+	}
 
 	protected Double computePolicyFunction(HashMap<String,Double> metrics, String function) throws NumberFormatException, EvaluationException {
 		//System.out.println("Computing function "+ metrics);
@@ -720,7 +728,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 	public void toWorkflowDictionary(WorkflowDictionary ret, HashMap<String, List<WorkflowNode>> bestPlans, String delimiter, List<WorkflowNode> targets) throws NumberFormatException, EvaluationException {
 		if(!visited){
-			OperatorDictionary op= new OperatorDictionary(getAbstractName(), toStringNorecursive(), String.format( "%.2f", getCost() ),
+			OperatorDictionary op= new OperatorDictionary(getAbstractName(), toStringNorecursive(), String.format( "%.2f", getCost() ),String.format( "%.2f", getExecTime() ),
 					getStatus(bestPlans), isOperator+"", isAbstract+"", toKeyValueString(delimiter), targets.contains(this));
 
 			for(WorkflowNode n : inputs){
@@ -999,6 +1007,15 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 	private boolean isDataset() {
 		return !isOperator;
+	}
+
+	public Double getExecTime() {
+		if(isOperator && !isAbstract){
+    		return execTime;
+		}
+		else{
+    		return 0.0;
+		}
 	}
 
 }

@@ -189,7 +189,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
       long stop = System.currentTimeMillis();
       double time = (stop-startTime)/1000.0-5;//5sec init container
-  		service.parameters.workflow.getOperator(params.getName()).setCost(time+"");
+  		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
       
       containers.remove(containerId);
       completed.incrementAndGet();

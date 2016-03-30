@@ -73,12 +73,12 @@ public class Operator {
 		logger.info("reconfiguring model for: " + opName);
 		String modelClass;
 
-		List<Model> performanceModels;
         List<OutputSpacePoint> outPoints = new ArrayList<>();
 		minTotalError = Double.MAX_VALUE;
+		models=new HashMap<>();
 		for (Entry<String, String> e : outputSpace.entrySet()) {
             if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
-            	performanceModels = new ArrayList<Model>();
+            	List<Model> performanceModels = new ArrayList<Model>();
             	modelClass = optree.getParameter("Optimization.model." + e.getKey());
             	if (modelClass.contains("AbstractWekaModel")) {
             		String modelDir = directory + "/models";
@@ -104,9 +104,27 @@ public class Operator {
 						if(outPoints==null || outPoints.size()<2){
 							bestModel=null;
 						}
+						else if(outPoints.size()<=7){
+							double error =0;
+	                        for (OutputSpacePoint point : outPoints){
+	                            model.feed(point, false);
+	                        }
+							try {
+								model.train();
+								error = ML.totalError(model);
+							} catch (Exception e1) {
+								logger.info("Exception in training: "+e1.getMessage());
+								continue;
+							}
+							System.out.println(model.getClass()+" error: "+error);
+							if (error < minTotalError){
+								bestModel = model;
+								minTotalError = error;
+							}
+						}
 						else{ 
 							double error =0;
-							for (int j = 0; j < 5; j++) {
+							for (int j = 0; j < 10; j++) {
 								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
 								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
 								Random r = new Random();
@@ -243,9 +261,27 @@ public class Operator {
 						if(outPoints==null || outPoints.size()<2){
 							bestModel=null;
 						}
+						else if(outPoints.size()<=7){
+							double error =0;
+	                        for (OutputSpacePoint point : outPoints){
+	                            model.feed(point, false);
+	                        }
+							try {
+								model.train();
+								error = ML.totalError(model);
+							} catch (Exception e1) {
+								logger.info("Exception in training: "+e1.getMessage());
+								continue;
+							}
+							System.out.println(model.getClass()+" error: "+error);
+							if (error < minTotalError){
+								bestModel = model;
+								minTotalError = error;
+							}
+						}
 						else{
 							double error =0;
-							for (int j = 0; j < 5; j++) {
+							for (int j = 0; j < 10; j++) {
 								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
 								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
 								Random r = new Random();
@@ -360,46 +396,39 @@ public class Operator {
 	protected void getUniformSampleOfModel(String variable, Double samplingRate, BufferedWriter writter, String delimiter, boolean addPredicted) throws Exception {
 
 		List<Model> lm = models.get(variable);
-		Model m1 = lm.get(0);
-		HashMap<String, List<Double>> dim = new HashMap<String, List<Double>>();
-		for (Entry<String, String> e : m1.getInputSpace().entrySet()) {
-			writter.append(e.getKey() + delimiter);
-			String[] limits = e.getValue().split(delimiter);
-			List<Double> l = new ArrayList<Double>();
-			Double min = Double.parseDouble(limits[1]);
-			Double max = Double.parseDouble(limits[2]);
-			if (limits[3].startsWith("l")) {
-				Double step = 10.0;
-				for (double i = min; i <= max; i *= step) {
-					l.add(i);
-					l.add(2*i);
-					l.add(4*i);
-					l.add(6*i);
-					l.add(8*i);
-				}
-			} else {
-				Double step = Double.parseDouble(limits[3]);
-				for (double i = min; i <= max; i += step) {
-					l.add(i);
-				}
-			}
-			dim.put(e.getKey(), l);
-		}
-		int i = 0;
-		for (String k : m1.getOutputSpace().keySet()) {
-			writter.append(k);
-			i++;
-			if (i < m1.getOutputSpace().size()) {
-				writter.append(delimiter);
-			}
-		}
-		if (addPredicted) {
-			writter.append(delimiter + "model");
-		}
-		writter.newLine();
+		if(lm==null || lm.size()==0){
 
-		for (Model m : lm) {
-			//System.out.println(dim);
+			HashMap<String, List<Double>> dim = new HashMap<String, List<Double>>();
+			for (Entry<String, String> e : inputSpace.entrySet()) {
+				writter.append(e.getKey() + delimiter);
+				String[] limits = e.getValue().split(delimiter);
+				List<Double> l = new ArrayList<Double>();
+				Double min = Double.parseDouble(limits[1]);
+				Double max = Double.parseDouble(limits[2]);
+				if (limits[3].startsWith("l")) {
+					Double step = 10.0;
+					for (double i = min; i <= max; i *= step) {
+						l.add(i);
+						l.add(2*i);
+						l.add(4*i);
+						l.add(6*i);
+						l.add(8*i);
+					}
+				} else {
+					Double step = Double.parseDouble(limits[3]);
+					for (double i = min; i <= max; i += step) {
+						l.add(i);
+					}
+				}
+				dim.put(e.getKey(), l);
+			}
+			int i = 0;
+			writter.append(variable);
+			if (addPredicted) {
+				writter.append(delimiter + "model");
+			}
+			writter.newLine();
+			
 			Sampler s = (Sampler) new UniformSampler();
 			s.setSamplingRate(samplingRate);
 			s.setDimensionsWithRanges(dim);
@@ -408,21 +437,84 @@ public class Operator {
 				InputSpacePoint nextSample = s.next();
 				OutputSpacePoint op = new OutputSpacePoint();
 				HashMap<String, Double> values = new HashMap<String, Double>();
-				for (String k : m.getOutputSpace().keySet()) {
-					values.put(k, null);
-				}
-				op.setValues(values);
 				//System.out.println(nextSample);
-				OutputSpacePoint res = m.getPoint(nextSample, op);
+				Double res = getMettric(variable, nextSample);
+				values.put(variable, res);
+				op.setInputSpacePoint(nextSample);
+				op.setValues(values);
 				//System.out.println(res);
-				writter.append(res.toCSVString(delimiter));
+				writter.append(op.toCSVString(delimiter));
 				if (addPredicted) {
-					writter.append(delimiter + m.getClass().getSimpleName());
+					writter.append(delimiter + "NoModel");
 				}
 				writter.newLine();
 			}
 		}
-
+		else{
+			Model m1 = lm.get(0);
+			HashMap<String, List<Double>> dim = new HashMap<String, List<Double>>();
+			for (Entry<String, String> e : m1.getInputSpace().entrySet()) {
+				writter.append(e.getKey() + delimiter);
+				String[] limits = e.getValue().split(delimiter);
+				List<Double> l = new ArrayList<Double>();
+				Double min = Double.parseDouble(limits[1]);
+				Double max = Double.parseDouble(limits[2]);
+				if (limits[3].startsWith("l")) {
+					Double step = 10.0;
+					for (double i = min; i <= max; i *= step) {
+						l.add(i);
+						l.add(2*i);
+						l.add(4*i);
+						l.add(6*i);
+						l.add(8*i);
+					}
+				} else {
+					Double step = Double.parseDouble(limits[3]);
+					for (double i = min; i <= max; i += step) {
+						l.add(i);
+					}
+				}
+				dim.put(e.getKey(), l);
+			}
+			int i = 0;
+			for (String k : m1.getOutputSpace().keySet()) {
+				writter.append(k);
+				i++;
+				if (i < m1.getOutputSpace().size()) {
+					writter.append(delimiter);
+				}
+			}
+			if (addPredicted) {
+				writter.append(delimiter + "model");
+			}
+			writter.newLine();
+	
+			//for (Model m : lm) {
+				Model m = lm.get(0);
+				//System.out.println(dim);
+				Sampler s = (Sampler) new UniformSampler();
+				s.setSamplingRate(samplingRate);
+				s.setDimensionsWithRanges(dim);
+				s.configureSampler();
+				while (s.hasMore()) {
+					InputSpacePoint nextSample = s.next();
+					OutputSpacePoint op = new OutputSpacePoint();
+					HashMap<String, Double> values = new HashMap<String, Double>();
+					for (String k : m.getOutputSpace().keySet()) {
+						values.put(k, null);
+					}
+					op.setValues(values);
+					//System.out.println(nextSample);
+					OutputSpacePoint res = m.getPoint(nextSample, op);
+					//System.out.println(res);
+					writter.append(res.toCSVString(delimiter));
+					if (addPredicted) {
+						writter.append(delimiter + m.getClass().getSimpleName());
+					}
+					writter.newLine();
+				}
+			//}
+		}
 	}
 
 	public void add(String key, String value) {
@@ -739,11 +831,20 @@ public class Operator {
 				}
 				values.put(inVar, v);
 			} else {
-				//System.out.println("Null: "+s[0]);
-				//System.out.println("in value "+ 2.0);
-				//values.put(inVar, 2.0);
-				missing=true;
-				values.put(inVar, null);
+				//System.out.println(optree.toString());
+				String val = optree.getParameter("Optimization." +inVar );
+				if(val==null){
+//					System.out.println("Null: "+s[0]);
+//					System.out.println("in value "+ 2.0);
+					//values.put(inVar, 2.0);
+					missing=true;
+					values.put(inVar, null);
+				}
+				else{
+					Double vv = Double.parseDouble(val);
+					values.put(inVar, vv);
+					System.out.println(inVar+" "+vv);
+				}
 
 			}
 		}

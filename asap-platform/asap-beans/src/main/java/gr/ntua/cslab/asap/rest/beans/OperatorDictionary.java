@@ -16,7 +16,7 @@ public class OperatorDictionary {
 
 	private static final Log logger = LogFactory.getLog( OperatorDictionary.class);
 
-	private String name, cost, status, isOperator, isAbstract, description, abstractName;
+	private String name, cost, execTime, status, isOperator, isAbstract, description, abstractName;
 	private boolean isTarget;
 	private List<String> input;
 
@@ -24,16 +24,25 @@ public class OperatorDictionary {
 		input = new ArrayList<String>();
 	}
 
-	public OperatorDictionary(String abstractName, String name, String cost, String status, String isOperator, String isAbstract, String description, boolean isTarget) {
+	public OperatorDictionary(String abstractName, String name, String cost, String execTime, String status, String isOperator, String isAbstract, String description, boolean isTarget) {
 		this.abstractName=abstractName;
 		this.name = name;
 		this.cost = cost;
+		this.execTime = execTime;
 		this.status = status;
 		this.isOperator = isOperator;
 		this.isAbstract = isAbstract;
 		this.description = description;
 		this.isTarget = isTarget;
 		input = new ArrayList<String>();
+	}
+
+	public String getExecTime() {
+		return execTime;
+	}
+
+	public void setExecTime(String execTime) {
+		this.execTime = execTime;
 	}
 
 	public String getStatus() {

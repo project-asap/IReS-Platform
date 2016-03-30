@@ -101,6 +101,18 @@
     content: "x";
   }
 
+  .live.map .counter {
+    margin-top: -4px;
+    height: 10px;
+    font-size: 10px;
+    display: block;
+  }
+    .live.map .counter1 {
+    height: 10px;
+    font-size: 10px;
+    display: block;
+  }
+  
   .live.map .queue {
     display: block;
     float: left;
@@ -210,7 +222,7 @@
       	if(operator.isOperator == "true"){
       		html += "<span class=status></span>";
       		html += "<span class=name><a target=\"_blank\" href=\"/web/operators/"+id+"\">"+id+"</a></span>";
-      		html += "<span class=queue><span class=counter>execTime:"+operator.cost+"</span></span>";
+      		html += "<span class=queue><span class=counter>execTime:"+operator.execTime+"</span><span class=counter1>policy:"+operator.cost+"</span></span>";
       	}
       	else{
       		html += "<span class=status></span>";

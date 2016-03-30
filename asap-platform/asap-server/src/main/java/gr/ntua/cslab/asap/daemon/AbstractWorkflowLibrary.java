@@ -55,14 +55,17 @@ public class AbstractWorkflowLibrary {
 	}
 
 	public static String getMaterializedWorkflow(String workflowName, String policy, String parameters) throws Exception {
-		Properties props =parseParameters(parameters);
+		Properties params =parseParameters(parameters);
 		
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
-		for(Entry<Object, Object> e: props.entrySet()){
+		for(Entry<Object, Object> e: params.entrySet()){
 			String k = (String) e.getKey();
 			String v = (String) e.getValue();
 			String[] s = k.split("\\.");
 			k=k.substring(k.indexOf('.')+1, k.length());
+			Operator op = OperatorLibrary.getOperator(s[0]);
+			if(op!=null)
+				op.add(k, v);
 			WorkflowNode node = aw.workflowNodes.get(s[0]);
 			if(node!=null){
 				if(!node.isOperator)
@@ -73,11 +76,12 @@ public class AbstractWorkflowLibrary {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss");
 		Date date = new Date();
 		Long start = System.currentTimeMillis();
+		
 		MaterializedWorkflow1 mw = aw.materialize(dateFormat.format(date), policy);		
 		Long stop = System.currentTimeMillis();
 		
 
-		for(Entry<Object, Object> e: props.entrySet()){
+		for(Entry<Object, Object> e: params.entrySet()){
 			String k = (String) e.getKey();
 			String v = (String) e.getValue();
 			String[] s = k.split("\\.");
