@@ -750,11 +750,7 @@ public class WebUI {
     	ret += footer;
     	return ret;
     }
-    
-
-
-
-    
+ 
     private static String readFile(String name){
     	InputStream stream = Main.class.getClassLoader().getResourceAsStream(name);
         if (stream == null) {
@@ -781,6 +777,4 @@ public class WebUI {
 		}
         return out.toString();
     }
-
-    
 }

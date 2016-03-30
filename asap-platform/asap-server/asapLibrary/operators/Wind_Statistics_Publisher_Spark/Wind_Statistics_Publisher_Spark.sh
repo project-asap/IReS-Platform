@@ -20,4 +20,10 @@ REGION=$4
 TIMEFRAME=$5
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
 $SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $IN_FILE $REGION $TIMEFRAME
+
+#validate through logs that anything went well
+ls -lah
+echo -e ""
+echo -e ""
+cat timeseriesroma-june-july-2015-aree_roma.csv
 echo -e "... stats_publisher.py script ended"
