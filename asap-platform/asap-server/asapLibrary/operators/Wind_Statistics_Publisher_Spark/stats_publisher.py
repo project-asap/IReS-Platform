@@ -18,7 +18,7 @@ spatial_division = sys.argv[1]
 region = sys.argv[2]
 timeframe = sys.argv[3]
 
-with open('spatial_regions/roma_gsm.csv') as geo:
+with open('roma_gsm.csv') as geo:
     coord = {x.split(";")[0][:5]: (x.split(";")[1:]) for x in geo.readlines()}
 
 suffix = spatial_division.split("/")[-1]
