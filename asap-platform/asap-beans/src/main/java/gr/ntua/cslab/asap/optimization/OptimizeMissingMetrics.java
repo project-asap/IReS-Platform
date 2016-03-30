@@ -97,16 +97,13 @@ public class OptimizeMissingMetrics {
 				optree.add("SelectedParam." + missingVar, optimal.toString());
 
 				/* Set the Selected Parameters as execution arguments*/
-				/*String argument = String.format("Execution.Argument%s",
+				String argument = String.format("Execution.Argument%s",
 						getExecutionArguments(optree));
 				optree.add(argument, optimal.toString());
 				Integer argCount = Integer.parseInt(operator.getParameter("Execution.Arguments.number")) + 1;
-				optree.add("Execution.Arguments.number", argCount.toString());*/
+				optree.add("Execution.Arguments.number", argCount.toString());
 
 			}
-
-			System.out.println("Parameter: "+optree.getParameter("SelectedParam.cores"));
-
 
 		}
 
