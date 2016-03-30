@@ -26,5 +26,5 @@ $SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $DATASET $IN_FILE $R
 ls -lah
 echo -e ""
 echo -e ""
-cat timeseriesroma-june-july-2015-aree_roma
+cat timeseriesroma-june-july-2015-aree_romacsv.csv
 echo -e "... spatio_temporal_aggregation.py script ended"
