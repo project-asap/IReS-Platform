@@ -20,4 +20,4 @@ REGION=$4
 TIMEFRAME=$5
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
 $SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $IN_FILE $REGION $TIMEFRAME
-echo -e "... stats_publisher.py script for Peak_Detection_Scala operator ended"
+echo -e "... stats_publisher.py script ended"
