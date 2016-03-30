@@ -50,7 +50,12 @@ operator = yarn {
 					file = OPERATOR_HOME .. "/aree_roma.csv",
 					type = "file",
 					visibility = "application"
-				}		
+				},
+    			["roma_gsm.csv"] = {
+					file = OPERATOR_HOME .. "/roma_gsm.csv",
+					type = "file",
+					visibility = "application"
+				}
     		}		
  	}
 }

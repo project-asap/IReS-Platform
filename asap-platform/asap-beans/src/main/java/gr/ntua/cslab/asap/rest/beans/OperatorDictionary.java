@@ -120,19 +120,19 @@ public class OperatorDictionary {
 
 		description = this.getDescription();
         description = description.replaceAll( " ", "" );
-        System.out.println( "Description\n\n" + description);
+        //System.out.println( "Description\n\n" + description);
 		engine_index = description.indexOf( "Constraints.Engine=");
-        System.out.println( "Engine index " + engine_index);
+        //System.out.println( "Engine index " + engine_index);
 		if( engine_index == -1){
 			logger.info( "Operator " + name + "has not any engine specified.");
 			return null;
 		}
 		//engine = Constraints.Engine=OperatorEngine
 		engine = description.substring( engine_index, description.indexOf( "\n", engine_index));
-        System.out.println( "Engine " + engine);
+        //System.out.println( "Engine " + engine);
 		//engine=OperatorEngine
 		engine = engine.split( "=")[ 1].trim();
-        System.out.println( "Engine " + engine);
+        //System.out.println( "Engine " + engine);
 		logger.info( "Operator " + name + " has " + engine + " as specified engine.");
 
 		return engine;
