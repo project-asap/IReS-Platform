@@ -492,6 +492,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					}
 					ret.addAll(l);
 				}
+				dpTable.addRecord(dataset, ret, new Double(0), new HashMap<String,Double>());
 			}
 			else{
 				temp = new WorkflowNode(false, false, getName());
@@ -704,7 +705,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 	}
 
 	public String getStatus(HashMap<String, List<WorkflowNode>> bestPlans){
-		logger.info("Check :"+toStringNorecursive());
+		//logger.info("Check :"+toStringNorecursive());
 		boolean found=false;
 		for(List<WorkflowNode> l :bestPlans.values()){
 			for(WorkflowNode n : l){
@@ -717,11 +718,11 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				break;
 		}
 		if(found){
-			logger.info("running");
+			//logger.info("running");
 			return "running";
 		}
 		else{
-			logger.info("stopped");
+			//logger.info("stopped");
 			return "stopped";
 		}
 	}
