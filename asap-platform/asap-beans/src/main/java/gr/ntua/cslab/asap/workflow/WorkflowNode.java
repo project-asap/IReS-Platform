@@ -270,7 +270,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 										Double optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
 										moveNode.setOptimalCost(optCost-prevCost);
-										moveNode.setExecTime(nextMetrics.get("execTime"));
+
+										moveNode.setExecTime(nextMetrics.get("execTime")-prevMetrics.get("execTime"));
 										//moveNode.setOptimalCost(m.getMettric(metric, moveNode.inputs));
 										Double tempCost = dpTable.getCost(in.dataset)+moveNode.getCost();
 
@@ -408,16 +409,20 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						}
 						prevCost 	= computePolicyFunction(bestInputMetrics, materializedWorkflow.function);
 						nextMetrics = op.getOptimalPolicyCost(bestInputMetrics, bestInputs, materializedWorkflow.function);
+						
+						
+						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
+						
+
+						temp.setExecTime(nextMetrics.get("execTime")-bestInputMetrics.get("execTime"));
+						temp.setOptimalCost(optCost-prevCost);
+
 						for(Entry<String, Double> e : nextMetrics.entrySet()){
 							if(bestInputMetrics.containsKey(e.getKey())){
 								bestInputMetrics.put(e.getKey(),e.getValue());
 							}
 				        }
-						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
 						
-
-						temp.setExecTime(nextMetrics.get("execTime"));
-						temp.setOptimalCost(optCost-prevCost);
 						plan.add(temp);
 
 						//int outputs =Integer.parseInt(op.getParameter("Constraints.Output.number"));
@@ -464,7 +469,11 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								ArrayList<WorkflowNode> tp = new ArrayList<>();
 								tp.add(tempOutputNode);
 								//System.out.println(nextMetrics);
-								dpTable.addRecord(tempOutput, tp, optCost, bestInputMetrics);
+								HashMap<String,Double> metrics = new HashMap<String, Double>();
+								for(String m : materializedWorkflow.groupInputs.keySet()){
+									metrics.put(m, 0.0);
+								}
+								dpTable.addRecord(tempOutput, tp, new Double(0), metrics);
 								dpTable.addInputs(out.dataset, tp);
 							}
 
