@@ -21,6 +21,7 @@ public class ClusterStatusLibrary {
 		status.put("Spark", true);
 		status.put("MapReduce", true);
 		status.put( "MLLib", true);
+		status.put( "Python", true);
 	}
 	
 	public static boolean getStatus(String component){

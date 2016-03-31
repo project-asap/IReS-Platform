@@ -149,6 +149,8 @@ public class AbstractWorkflow1 {
 				materializedWorkflow.optimalCost=bestCost;
 			}
 		}
+
+		materializedWorkflow.materilizedDatasets=new HashMap<>();
 		return materializedWorkflow;
 	}// end of AbstractWorkflow1 materialize
 
