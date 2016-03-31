@@ -128,7 +128,7 @@ public class AbstractClient {
     */
    public static void issueRequestReplan( YarnConfiguration conf, String id) {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-       String urlString = "http://" + masterDNS + ":1323/runningWorkflows/replan/";
+       String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/";
        String response = "";
 		try {
 	        LOG.info("Replanning workflow " + id + " Issuing urlString: " + urlString);
