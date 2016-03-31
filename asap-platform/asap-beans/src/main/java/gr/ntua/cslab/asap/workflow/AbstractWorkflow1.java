@@ -150,7 +150,6 @@ public class AbstractWorkflow1 {
 			}
 		}
 
-		materializedWorkflow.materilizedDatasets=new HashMap<>();
 		return materializedWorkflow;
 	}// end of AbstractWorkflow1 materialize
 
@@ -159,7 +158,10 @@ public class AbstractWorkflow1 {
 			HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
 		this.materilizedDatasets=materilizedDatasets;
 		this.count =count;
-		return materialize("", policy);
+		MaterializedWorkflow1 ret = materialize("", policy);
+		this.materilizedDatasets=null;
+		this.count = 0;
+		return ret;
 	}
 
 
