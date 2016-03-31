@@ -43,6 +43,7 @@ public class AbstractWorkflow1 {
 	public String optimizationFunction;
 	public String functionTarget;
 	private String policy;
+	private int count;
 
 	@Override
 	public String toString() {
@@ -81,6 +82,7 @@ public class AbstractWorkflow1 {
 		parsePolicy(policy);
 		String fullName=name+"_"+nameExtention;
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);
+		materializedWorkflow.count = this.count;
 		if(materilizedDatasets!=null)
 			materializedWorkflow.materilizedDatasets=materilizedDatasets;
 		else
@@ -152,8 +154,9 @@ public class AbstractWorkflow1 {
 
 
 	public MaterializedWorkflow1 replan(
-			HashMap<String, WorkflowNode> materilizedDatasets) throws Exception {
+			HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
 		this.materilizedDatasets=materilizedDatasets;
+		this.count =count;
 		return materialize("", policy);
 	}
 
