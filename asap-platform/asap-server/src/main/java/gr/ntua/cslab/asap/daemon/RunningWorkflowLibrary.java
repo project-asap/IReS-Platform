@@ -245,10 +245,7 @@ public class RunningWorkflowLibrary {
 		
 		AbstractWorkflow1 aw = runningAbstractWorkflows.get(id);
 		
-		
 		MaterializedWorkflow1 mwNew =aw.replan(materilizedDatasets, 100);
 		toRunWorkflows.put(id, mwNew.toWorkflowDictionary("\n"));
 	}
-
-
 }

@@ -40,7 +40,7 @@ Optimization.inputSpace.centroids=Double,10.0,100.0,10.0
 Optimization.outputSpace.execTime=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.execTime=100.0
+Optimization.execTime=1.0
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 

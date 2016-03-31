@@ -208,8 +208,9 @@ protected ContainerLaunchContextFactory factory;
                 }
                 else{
                     LOG.info( "Service " + service + " is not up for operator " + opd.getName());
-                    LOG.info( "Workflow should be replanned.");
+                    LOG.info( "Workflow " + parameters.jobName + " should be replanned.");
                     //call replan
+                    AbstractClient.issueRequestReplan( conf, parameters.jobName);
                 }
             }
 
