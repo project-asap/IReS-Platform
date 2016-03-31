@@ -20,6 +20,7 @@ public class ClusterStatusLibrary {
 		status.put("WEKA", true);
 		status.put("Spark", true);
 		status.put("MapReduce", true);
+		status.put( "MLLib", true);
 	}
 	
 	public static boolean getStatus(String component){

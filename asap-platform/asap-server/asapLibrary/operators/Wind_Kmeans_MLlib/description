@@ -17,7 +17,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_Kmeans
 #ENGINE
-Constraints.Engine=Spark
+Constraints.Engine=MLLib
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1
@@ -39,7 +39,8 @@ Optimization.inputSpace.centroids=Double,10.0,100.0,10.0
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 #optimization metric function
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.execTime=100.0
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
