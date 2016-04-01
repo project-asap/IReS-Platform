@@ -79,6 +79,7 @@ public class WorkflowService extends
   private boolean hasRunningContainers = false;
   private Throwable throwable;
   public HashMap< String, String> services_n_status = null;
+  public HashMap< String, String> replanned_operators = null;
 
 protected ContainerLaunchContextFactory factory;
 
@@ -186,12 +187,16 @@ protected ContainerLaunchContextFactory factory;
     for( String service: response ){
         services_n_status.put( service.split( ":")[ 0].trim(), service.split( ":")[ 1].trim());
     }
-    for( String s : services_n_status.keySet() )
+    
+    for( String s : services_n_status.keySet())
         System.out.println( "Service " + s + " has status " + services_n_status.get( s));
-    //read workflow operators' state until the running are found and if are found
-    //check that operators' needed services are up. If these services are not up
-    //replan workflow execution
+    
+    //read workflow operators' state until the running operators are found and if are found
+    //check that operators' needed services are up. If these services are not up replan
+    //workflow execution
     String service = null;
+    String replanned_workflow = null;
+    boolean replan = false;
 
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         //we are looking for operators and we are looking for two specific properties
@@ -209,11 +214,24 @@ protected ContainerLaunchContextFactory factory;
                 else{
                     LOG.info( "Service " + service + " is not up for operator " + opd.getName());
                     LOG.info( "Workflow " + parameters.jobName + " should be replanned.");
-                    //call replan
-                    AbstractClient.issueRequestReplan( conf, parameters.jobName);
+                    //replan for this operator if it hasn't replanned earlier
+                    if( replanned_operators == null){
+                    	replanned_operators = new HashMap< String, String>();
+                    	replan = true;
+                    }
+                    else{
+	                    if( replanned_operators.isEmpty() || replanned_operators.get( opd.getName()) == null){
+	                    	replan = true;
+	                    }
+                    }
+                    if( replan){
+                        replanned_workflow = AbstractClient.issueRequestReplan( conf, parameters.jobName);
+                        replanned_operators.put( opd.getName(), "true");
+                        LOG.info( "Replanned operators are\n\n" + replanned_operators);
+                        LOG.info( "Replanned workflow is\n\n" + replanned_workflow);
+                    }
                 }
             }
-
         }
     }
 

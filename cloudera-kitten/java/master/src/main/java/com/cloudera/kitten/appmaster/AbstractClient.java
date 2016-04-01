@@ -126,7 +126,7 @@ public class AbstractClient {
     * @param conf
     * @param id
     */
-   public static void issueRequestReplan( YarnConfiguration conf, String id) {
+   public static String issueRequestReplan( YarnConfiguration conf, String id) {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
        String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/?id=" + id;
        String response = "";
@@ -162,6 +162,6 @@ public class AbstractClient {
 			LOG.error( e.getStackTrace());
 			e.printStackTrace();
 		}
-       return;
+       return response;
    }    
 }
