@@ -195,7 +195,8 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       containers.remove(containerId);
       completed.incrementAndGet();
       
-      service.parameters.workflow.setOutputsRunning(params.getName());
+      //service.parameters.workflow.setOutputsRunning(params.getName());
+      service.parameters.workflow.setOutputsRunning( params.getName(), "completed");
 
       if(!hasMoreContainers()){
     	  removeContainerRequests();

@@ -37,19 +37,20 @@ public class WorkflowDictionary {
 		return null;
 	}
 
-	public void setOutputsRunning(String name) {
-		
+	public void setOutputsRunning(String name, String status) {
+		if( status == null){
+			status = "running";
+		}
 		for(OperatorDictionary op: operators){
 			if(op.getIsOperator().equals("false") && op.getStatus().equals("warn")){
 				for(String op1 : op.getInput()){
 					if(op1.equals(name) ){
-						op.setStatus("running");
-						setOutputsRunning(op.getName());
+						op.setStatus( status);
+						setOutputsRunning(op.getName(), status);
 					}
 				}
 			}
 		}
-		
 	}
 
 	public void replaceDescription(String target, String replacement) {
