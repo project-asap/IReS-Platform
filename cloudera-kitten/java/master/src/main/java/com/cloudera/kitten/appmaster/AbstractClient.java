@@ -1,23 +1,19 @@
 package com.cloudera.kitten.appmaster;
 
-import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import javax.xml.transform.stream.StreamSource;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -166,9 +162,9 @@ public class AbstractClient {
    */
   public static WorkflowDictionary issueRequestRunningWorkflow( YarnConfiguration conf, String id) throws Exception {
 	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/" + id;
+      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/XML/" + id;
       StringBuilder builder = null;
-      StringBuffer jsonStr = null;
+      StringBuffer xmlStr = null;
       InputStream in = null;
       WorkflowDictionary running_workflow = null;
       JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
@@ -191,13 +187,15 @@ public class AbstractClient {
 	        while((count = in.read(buffer))!=-1) {
 	            builder.append(new String(buffer,0,count));
 	        }
-	        jsonStr = new StringBuffer( builder.toString());
-	        running_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( jsonStr.toString() ) ) );
+	        xmlStr = new StringBuffer( builder.toString());
+	        running_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
 	        LOG.info( "Running workflow: " + running_workflow);
-		} catch (Exception e) {
-			LOG.error( e.getStackTrace());
-			e.printStackTrace();
-		}
-      return running_workflow;
+	} 
+    catch (Exception e)
+    {
+		LOG.error( e.getStackTrace());
+		e.printStackTrace();
+    }
+    return running_workflow;
   }   
 }

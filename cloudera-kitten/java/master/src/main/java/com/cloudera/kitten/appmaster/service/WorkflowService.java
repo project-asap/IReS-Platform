@@ -230,8 +230,7 @@ protected ContainerLaunchContextFactory factory;
                     	WorkflowDictionary before_replanning_workflow = parameters.workflow;
                     	WorkflowDictionary after_replanning_workflow = null;
                     	LOG.info( "CURRENT TRACKERS BEFORE REPLANNING: " + trackers);
-                    	before_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName); 
-                        AbstractClient.issueRequestReplan( conf, parameters.jobName);
+                    	AbstractClient.issueRequestReplan( conf, parameters.jobName);
                     	after_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName); 
                         replanned_operators.put( opd.getName(), "true");
                         LOG.info( "Replanned operators are\n\n" + replanned_operators);
@@ -239,9 +238,10 @@ protected ContainerLaunchContextFactory factory;
                         LOG.info( "Replanned workflow is\n\n" + after_replanning_workflow);
                         LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
                         for( OperatorDictionary opdd : parameters.workflow.getOperators()){
-                        	opdd.setStatus( "stopped");
+                        	if( replanned_operators.get( opdd.getName()) != null){
+                        		opdd.setStatus( "stopped");	
+                        	}
                         }
-                        
                     }
                 }
             }
