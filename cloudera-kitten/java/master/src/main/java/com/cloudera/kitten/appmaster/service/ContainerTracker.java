@@ -186,10 +186,11 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     
     public void containerCompleted(ContainerId containerId) {
         isInitilized=false;
-      LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
-      long stop = System.currentTimeMillis();
-      double time = (stop-startTime)/1000.0-5;//5sec init container
+        LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
+        long stop = System.currentTimeMillis();
+        double time = (stop-startTime)/1000.0-5;//5sec init container
   		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
+  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
       
       containers.remove(containerId);
       completed.incrementAndGet();
@@ -216,6 +217,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       containers.remove(containerId);
       completed.incrementAndGet();
       failed.incrementAndGet();
+      service.parameters.workflow.getOperator(params.getName()).setStatus("failed");
     }
 
     @Override
@@ -227,6 +229,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     public void onStopContainerError(ContainerId containerId, Throwable throwable) {
       LOG.error("Failed to stop container: " + containerId, throwable);
       completed.incrementAndGet();
+      service.parameters.workflow.getOperator(params.getName()).setStatus("failed");
     }
 
     public boolean needsContainers() {
