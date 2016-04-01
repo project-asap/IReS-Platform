@@ -80,7 +80,8 @@ public class WorkflowService extends
   private Throwable throwable;
   public HashMap< String, String> services_n_status = null;
   public HashMap< String, String> replanned_operators = null;
-
+  private HashMap<String,ContainerTracker> replanned_trackers = null;
+  
 protected ContainerLaunchContextFactory factory;
 
   public WorkflowService(WorkflowParameters parameters, Configuration conf) {
@@ -225,10 +226,13 @@ protected ContainerLaunchContextFactory factory;
 	                    }
                     }
                     if( replan){
+                    	LOG.info( "CURRENT TRACKERS BEFORE REPLANNING: " + trackers);
                         replanned_workflow = AbstractClient.issueRequestReplan( conf, parameters.jobName);
                         replanned_operators.put( opd.getName(), "true");
                         LOG.info( "Replanned operators are\n\n" + replanned_operators);
                         LOG.info( "Replanned workflow is\n\n" + replanned_workflow);
+                        LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
+                        
                     }
                 }
             }

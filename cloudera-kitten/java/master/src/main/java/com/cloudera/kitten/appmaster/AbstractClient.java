@@ -88,7 +88,7 @@ public class AbstractClient {
         String urlString = "http://" + masterDNS + ":1323/clusterStatus";
         String services_n_status = "";
 		try {
-	        LOG.info("ClusterStatus Issuing urlString: " + urlString);
+	        LOG.info("ClusterStatus issuing urlString: " + urlString);
 			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -128,18 +128,21 @@ public class AbstractClient {
     */
    public static String issueRequestReplan( YarnConfiguration conf, String id) {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-       String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/?id=" + id;
+       //String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/?id=" + id;
+       String urlString = "http://" + masterDNS + ":1323/runningWorkflows/replan/" + id;       
        String response = "";
 		try {
-	        LOG.info("Replanning workflow " + id + " Issuing urlString: " + urlString);
+	        LOG.info("Replanning workflow " + id + " issuing urlString: " + urlString);
 			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 	        con.setRequestMethod("GET");
 
-	        con.setRequestProperty("accept", "text/html");
-	        con.setRequestProperty("Content-type", "text/html");
+	        //con.setRequestProperty("accept", "text/html");
+	        //con.setRequestProperty("Content-type", "text/html");
+	        con.setRequestProperty("accept", "application/xml");
+	        con.setRequestProperty("Content-type", "application/xml");	        
 	        con.setDoInput(true);
 	        
 	        StringBuilder builder = new StringBuilder();
@@ -152,11 +155,11 @@ public class AbstractClient {
 	        }
 	        response = builder.toString();
             //clean html response from its tags and replace them by a "_"
-	        response = response.replaceAll( "<[^>]+>", "_");
+	        //response = response.replaceAll( "<[^>]+>", "_");
             //due to starting and closing tags, the tokens of the remainder text will be
             //separated by a double "_" i.e. "__" that must be trimmed
             //remove leading and trailing double "_" and substitute the intermediate by a newline
-	        response = response.replaceAll( "^__", "").replaceAll( "__$", "").replaceAll( "__", "\n");
+	        //response = response.replaceAll( "^__", "").replaceAll( "__$", "").replaceAll( "__", "\n");
 	        LOG.info("Request response: " + response);
 		} catch (Exception e) {
 			LOG.error( e.getStackTrace());
