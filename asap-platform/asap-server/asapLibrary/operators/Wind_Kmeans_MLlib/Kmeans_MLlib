@@ -40,7 +40,7 @@ Optimization.inputSpace.centroids=Double,10.0,100.0,10.0
 Optimization.outputSpace.execTime=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.execTime=1.0
+Optimization.execTime=100.0
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
@@ -63,4 +63,4 @@ Execution.Argument4=0.4
 Execution.copyFromLocal=centroids/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/centroids/roma-06-2015.p
-Execution.Output0.path=/centroids/roma-06-2015.p
+Execution.Output0.path=centroids/roma-06-2015.p

@@ -60,4 +60,4 @@ Execution.Argument1=06-2015
 Execution.copyFromLocal=sociometer/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/sociometer/roma-06-2015.p
-Execution.Output0.path=/sociometer/roma-06-2015.p
+Execution.Output0.path=sociometer/roma-06-2015.p

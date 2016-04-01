@@ -77,22 +77,22 @@ public class RunningWorkflowLibrary {
 	}
 	
 	public static WorkflowDictionary getWorkflow(String name) throws Exception{
-		if(toRunWorkflows.containsKey(name)){
-			WorkflowDictionary wd = toRunWorkflows.get(name);
-			wd.replaceDescription("\n","<br>");
-			/*Random r = new Random();
-			for(OperatorDictionary op: wd.getOperators()){
-				if(r.nextBoolean()){
-					op.setStatus("running");
-				}
-				else{
-					op.setStatus("stopped");
-				}
-			}*/
-			//return mw.toWorkflowDictionary("<br>");
-			return wd;
-		}
-		else{
+//		if(toRunWorkflows.containsKey(name)){
+//			WorkflowDictionary wd = toRunWorkflows.get(name);
+//			wd.replaceDescription("\n","<br>");
+//			/*Random r = new Random();
+//			for(OperatorDictionary op: wd.getOperators()){
+//				if(r.nextBoolean()){
+//					op.setStatus("running");
+//				}
+//				else{
+//					op.setStatus("stopped");
+//				}
+//			}*/
+//			//return mw.toWorkflowDictionary("<br>");
+//			return wd;
+//		}
+//		else{
 			WorkflowDictionary wd = runningWorkflows.get(name);
 			wd.replaceDescription("\n","<br>");
 			/*Random r = new Random();
@@ -106,7 +106,7 @@ public class RunningWorkflowLibrary {
 			}*/
 			//return mw.toWorkflowDictionary("<br>");
 			return wd;
-		}
+//		}
 	}
 
 	public static List<String> getWorkflows() {

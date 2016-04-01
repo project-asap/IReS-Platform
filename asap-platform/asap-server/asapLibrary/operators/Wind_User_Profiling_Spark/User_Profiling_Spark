@@ -17,6 +17,7 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=Wind_User_Profiling
 #ENGINE
+Constraints.Engine=Spark
 Constraints.EngineSpecification.Distributed=Spark
 #INPUT( mandatory)
 Constraints.Input.number=1
@@ -60,4 +61,4 @@ Execution.Argument3=06-2015
 Execution.copyFromLocal=profiles/roma-06-2015.p
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/profiles/roma-06-2015.p
-Execution.Output0.path=/profiles/roma-06-2015.p
+Execution.Output0.path=profiles/roma-06-2015.p

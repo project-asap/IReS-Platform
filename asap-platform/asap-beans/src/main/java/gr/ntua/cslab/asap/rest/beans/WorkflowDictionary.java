@@ -57,5 +57,4 @@ public class WorkflowDictionary {
 			op.setDescription(op.getDescription().replace(target, replacement));
 		}
 	}
-	
 }

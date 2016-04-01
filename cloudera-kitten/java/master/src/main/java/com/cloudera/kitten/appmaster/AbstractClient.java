@@ -6,6 +6,7 @@ import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -126,21 +129,17 @@ public class AbstractClient {
     * @param conf
     * @param id
     */
-   public static String issueRequestReplan( YarnConfiguration conf, String id) {
+   public static void issueRequestReplan( YarnConfiguration conf, String id) {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
        //String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/?id=" + id;
        String urlString = "http://" + masterDNS + ":1323/runningWorkflows/replan/" + id;       
-       String response = "";
-		try {
+       try {
 	        LOG.info("Replanning workflow " + id + " issuing urlString: " + urlString);
 			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 	        con.setRequestMethod("GET");
-
-	        //con.setRequestProperty("accept", "text/html");
-	        //con.setRequestProperty("Content-type", "text/html");
 	        con.setRequestProperty("accept", "application/xml");
 	        con.setRequestProperty("Content-type", "application/xml");	        
 	        con.setDoInput(true);
@@ -153,18 +152,52 @@ public class AbstractClient {
 	        while((count = in.read(buffer))!=-1) {
 	            builder.append(new String(buffer,0,count));
 	        }
-	        response = builder.toString();
-            //clean html response from its tags and replace them by a "_"
-	        //response = response.replaceAll( "<[^>]+>", "_");
-            //due to starting and closing tags, the tokens of the remainder text will be
-            //separated by a double "_" i.e. "__" that must be trimmed
-            //remove leading and trailing double "_" and substitute the intermediate by a newline
-	        //response = response.replaceAll( "^__", "").replaceAll( "__$", "").replaceAll( "__", "\n");
-	        LOG.info("Request response: " + response);
+	        LOG.info( "Replan requested");
 		} catch (Exception e) {
 			LOG.error( e.getStackTrace());
 			e.printStackTrace();
 		}
-       return response;
-   }    
+       return;
+   }
+   /**
+   * Issues a new Request and returns a string with the response - if  any.
+   * @param conf
+   * @param id
+   */
+  public static WorkflowDictionary issueRequestRunningWorkflow( YarnConfiguration conf, String id) throws Exception {
+	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
+      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/" + id;
+      StringBuilder builder = null;
+      StringBuffer jsonStr = null;
+      InputStream in = null;
+      WorkflowDictionary running_workflow = null;
+      JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
+      Unmarshaller u = jaxbContext.createUnmarshaller();
+      try {
+	        LOG.info("Running workflow " + id + " issuing urlString: " + urlString);
+			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
+	        URL url = new URL(urlString);
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+	        con.setRequestMethod("GET");
+	        con.setRequestProperty("accept", "application/json");
+	        con.setRequestProperty("Content-type", "application/json");	        
+	        con.setDoInput(true);
+	        
+	        builder = new StringBuilder();
+	    	in = con.getInputStream();
+	        byte[] buffer = new byte[1024];
+	        int count;
+	        while((count = in.read(buffer))!=-1) {
+	            builder.append(new String(buffer,0,count));
+	        }
+	        jsonStr = new StringBuffer( builder.toString());
+	        running_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( jsonStr.toString() ) ) );
+	        LOG.info( "Running workflow: " + running_workflow);
+		} catch (Exception e) {
+			LOG.error( e.getStackTrace());
+			e.printStackTrace();
+		}
+      return running_workflow;
+  }   
 }

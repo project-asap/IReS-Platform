@@ -62,6 +62,7 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
+import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 
 public class WorkflowService extends
     AbstractScheduledService implements ApplicationMasterService,
@@ -226,12 +227,20 @@ protected ContainerLaunchContextFactory factory;
 	                    }
                     }
                     if( replan){
+                    	WorkflowDictionary before_replanning_workflow = parameters.workflow;
+                    	WorkflowDictionary after_replanning_workflow = null;
                     	LOG.info( "CURRENT TRACKERS BEFORE REPLANNING: " + trackers);
-                        replanned_workflow = AbstractClient.issueRequestReplan( conf, parameters.jobName);
+                    	before_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName); 
+                        AbstractClient.issueRequestReplan( conf, parameters.jobName);
+                    	after_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName); 
                         replanned_operators.put( opd.getName(), "true");
                         LOG.info( "Replanned operators are\n\n" + replanned_operators);
-                        LOG.info( "Replanned workflow is\n\n" + replanned_workflow);
+                        LOG.info( "To replan workflow is\n\n" + before_replanning_workflow);
+                        LOG.info( "Replanned workflow is\n\n" + after_replanning_workflow);
                         LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
+                        for( OperatorDictionary opdd : parameters.workflow.getOperators()){
+                        	opdd.setStatus( "stopped");
+                        }
                         
                     }
                 }
