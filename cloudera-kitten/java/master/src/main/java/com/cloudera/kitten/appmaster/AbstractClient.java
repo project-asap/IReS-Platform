@@ -176,8 +176,8 @@ public class AbstractClient {
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 	        con.setRequestMethod("GET");
-	        con.setRequestProperty("accept", "application/json");
-	        con.setRequestProperty("Content-type", "application/json");	        
+	        con.setRequestProperty("accept", "application/XML");
+	        con.setRequestProperty("Content-type", "application/XML");	        
 	        con.setDoInput(true);
 	        
 	        builder = new StringBuilder();
