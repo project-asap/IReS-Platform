@@ -108,7 +108,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		for(OperatorDictionary op : workflow.getOperators()){
 			if(op.getStatus().equals("warn") && op.getInput().isEmpty()){
 				op.setStatus("running");
-				workflow.setOutputsRunning(op.getName());
+				workflow.setOutputsRunning(op.getName(), null);
 			}
 		}
 		LOG.info("Operators: "+operators);
