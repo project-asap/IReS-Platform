@@ -4,6 +4,7 @@ import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.operators.SpecTreeNode;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
+import gr.ntua.ece.cslab.panic.core.containers.beans.MultiPoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
 
@@ -32,7 +33,6 @@ public class OptimizeMissingMetrics {
 	public static OutputSpacePoint findOptimalPointCheckAllSamples(
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree, Operator operator) throws Exception {
-
 
 		List<RealVariable> rvs = new ArrayList<>();
         MultiObjectiveOptimizer.missingVars.clear();
@@ -69,6 +69,8 @@ public class OptimizeMissingMetrics {
 		if (missing.size() > 0){
 			MultiObjectiveOptimizer.variables = rvs;
 			MultiObjectiveOptimizer.isp = in;
+			MultiObjectiveOptimizer.models = models;
+			MultiObjectiveOptimizer.policy = policy;
 
 			/* Set the model to the optimizer according to the optimization policy*/
 			try {
@@ -133,6 +135,7 @@ public class OptimizeMissingMetrics {
 		}
 	}
 
+
     /* */
     protected static Solution findOptimal(){
         NondominatedPopulation result = new Executor()
@@ -148,9 +151,10 @@ public class OptimizeMissingMetrics {
 		return solution;
     }
 
-	protected Double computePolicyFunction(HashMap<String,Double> metrics, String policy) throws NumberFormatException, EvaluationException {
+	protected static Double computePolicyFunction(HashMap<String,Double> metrics, String policy)
+			throws NumberFormatException, EvaluationException {
 		Evaluator evaluator = new Evaluator();
-		Double res=0.0;
+		Double res;
 		String tempFunction = new String(policy);
 		for(String m : metrics.keySet()){
 			tempFunction=tempFunction.replace(m, metrics.get(m)+"");

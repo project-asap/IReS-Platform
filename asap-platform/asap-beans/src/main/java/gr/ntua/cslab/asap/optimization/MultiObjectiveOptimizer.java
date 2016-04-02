@@ -9,7 +9,9 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MultiObjectiveOptimizer extends AbstractProblem {
     protected static Model model;
@@ -17,6 +19,8 @@ public class MultiObjectiveOptimizer extends AbstractProblem {
     protected static List<RealVariable> variables;
     protected static List<String> missingVars = new ArrayList<>();
     private static Logger logger = Logger.getLogger(MultiObjectiveOptimizer.class);
+    protected static HashMap<String, List<Model>> models;
+    protected static String policy;
 
     public MultiObjectiveOptimizer() {
         super(variables.size(), 1);
@@ -25,13 +29,18 @@ public class MultiObjectiveOptimizer extends AbstractProblem {
     @Override
     public void evaluate(Solution solution) {
         try {
-
             double[] x = EncodingUtils.getReal(solution);
             double f; //Objective 1 (exec time)
             for (int i=0; i<solution.getNumberOfVariables(); ++i){
                 isp.addDimension(missingVars.get(i), x[i]);
             }
-            f = model.getPoint(isp).getValue();
+
+            HashMap<String, Double> mValues = new HashMap<>();
+            for (Map.Entry<String, List<Model>> m: models.entrySet()){
+                mValues.put(m.getKey(), m.getValue().get(0).getPoint(isp).getValue());
+            }
+
+            f = OptimizeMissingMetrics.computePolicyFunction(mValues, policy);
             solution.setObjective(0, f);
         }
         catch (Exception e){
