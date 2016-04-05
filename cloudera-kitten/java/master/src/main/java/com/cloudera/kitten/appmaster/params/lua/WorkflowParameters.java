@@ -81,21 +81,19 @@ public class WorkflowParameters implements ApplicationMasterParameters {
     this(script, jobName, conf, ImmutableMap.<String, Object>of());
   }
   
-  public WorkflowParameters(String script, String jobName,
-      Configuration conf, Map<String, Object> extras) throws Exception {
+  public WorkflowParameters(String script, String jobName, Configuration conf, Map<String, Object> extras) throws Exception {
     this(script, jobName, conf, extras, loadLocalToUris());
   }
   
-  public WorkflowParameters(String script, String jobName,
-      Configuration conf,
-      Map<String, Object> extras,
-      Map<String, URI> localToUris) throws Exception {
-	  this.env = new HashMap<String,LuaWrapper>();
+  public WorkflowParameters(String script, String jobName, Configuration conf, Map<String, Object> extras, Map<String, URI> localToUris) throws Exception {
+	  
+	    this.env = new HashMap<String,LuaWrapper>();
 		HashMap<String,String> operators = new HashMap<String, String>();
 
 		workflow = Utils.unmarshall(script);
+		//workflow.setName( jobName);
 		
-		materializedWorkflow = new MaterializedWorkflow1("test", "/tmp");
+		materializedWorkflow = new MaterializedWorkflow1( "test", "/tmp");
 		materializedWorkflow.readFromWorkflowDictionary(workflow);
 		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
 		
