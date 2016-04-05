@@ -53,13 +53,19 @@ public class RunningWorkflows {
         return RunningWorkflowLibrary.getState(id);
     }
 	
-
 	@GET
 	@Produces("application/XML")
 	@Path("XML/{id}/")
     public WorkflowDictionary getDescriptionXML(@PathParam("id") String id) throws Exception {
         return RunningWorkflowLibrary.getWorkflow(id);
     }
+	
+	@GET
+	@Produces("application/XML")
+	@Path("toRunWorkflow/XML/{id}/")
+    public WorkflowDictionary getDescriptionToRunXML(@PathParam("id") String id) throws Exception {
+        return RunningWorkflowLibrary.getWorkflowToRun(id);
+    }	
 	
 	@GET
 	@Produces("application/XML")

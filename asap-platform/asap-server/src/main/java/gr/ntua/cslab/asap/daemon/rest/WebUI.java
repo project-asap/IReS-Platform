@@ -8,6 +8,7 @@ import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
+import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -751,6 +753,32 @@ public class WebUI {
     	return ret;
     }
  
+    @GET
+    @Path("/clusterStatus")
+    @Produces(MediaType.TEXT_HTML)
+    public String listServices() {
+        String action = null;
+        String script = "<script>setTimeout('location.reload(true);', 5000)</script>";
+        String ret = header + script;
+        ret += "<table id='cluster_services' border='1' align='center' style='width:60%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
+    	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
+            if( e.getValue()){
+                action ="<form action='/clusterStatus/dead/" + e.getKey() + "' method='get'>"
+                            + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
+                            + "<p align='center'><input class='styled-button' type='submit' value='stop'></form>";
+            }
+            else{
+                action ="<form action='/clusterStatus/alive/" + e.getKey() + "' method='get'>"
+                            + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
+                            + "<p align='center'><input class='styled-button' type='submit' value='start'></form>";
+            }
+			ret+= "<tr><td>"+e.getKey()+"</td><td>"+e.getValue()+"</td><td>" + action + "</td></tr>";
+    	}
+    	ret+="</table>" + footer;
+        return ret;
+    }
+    
+    
     private static String readFile(String name){
     	InputStream stream = Main.class.getClassLoader().getResourceAsStream(name);
         if (stream == null) {

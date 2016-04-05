@@ -82,7 +82,7 @@ public class WorkflowService extends
   public HashMap< String, String> services_n_status = null;
   public HashMap< String, String> replanned_operators = null;
   private HashMap<String,ContainerTracker> replanned_trackers = null;
-  
+
 protected ContainerLaunchContextFactory factory;
 
   public WorkflowService(WorkflowParameters parameters, Configuration conf) {
@@ -189,18 +189,18 @@ protected ContainerLaunchContextFactory factory;
     for( String service: response ){
         services_n_status.put( service.split( ":")[ 0].trim(), service.split( ":")[ 1].trim());
     }
-    
+
     for( String s : services_n_status.keySet())
         System.out.println( "Service " + s + " has status " + services_n_status.get( s));
-    
+
     //read workflow operators' state until the running operators are found and if are found
     //check that operators' needed services are up. If these services are not up replan
     //workflow execution
     String service = null;
-    WorkflowDictionary replanned_workflow = null;
+    String replanned_workflow = null;
     boolean replan = false;
     HashMap<String, ContainerTracker> newTrackers = null;
-    
+
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         //we are looking for operators and we are looking for two specific properties
         //of them, Constraints.Inputx.Engine and Constraints.Outputy.Engine for each
@@ -231,31 +231,20 @@ protected ContainerLaunchContextFactory factory;
                     	WorkflowDictionary before_replanning_workflow = parameters.workflow;
                     	WorkflowDictionary after_replanning_workflow = null;
                     	LOG.info( "CURRENT TRACKERS BEFORE REPLANNING: " + trackers);
-                        AbstractClient.issueRequestReplan( conf, parameters.jobName);
-                        after_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName);
-                        replanned_workflow = AbstractClient.issueRequestToRunWorkflow( conf, parameters.jobName);
-                        replanned_operators.put( opd.getName(), "true");
-                        LOG.info( "Replanned operators are\n" + replanned_operators + "\n");
-                        LOG.info( "To replan workflow is\n");
-                        for( OperatorDictionary opdd : before_replanning_workflow.getOperators()){
-                        	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
-                        }
-                        LOG.info( "After replan workflow is\n");
-                        for( OperatorDictionary opdd : after_replanning_workflow.getOperators()){
-                        	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
-                        }
-                        LOG.info( "To replan workflow is\n\n" + before_replanning_workflow.getOperators() + "\n");
-                        for( OperatorDictionary opdd : replanned_workflow.getOperators()){
-                        	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
-                        }
+        //            	AbstractClient.issueRequestReplan( conf, parameters.jobName);
+        //            	after_replanning_workflow = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName);
+        //                replanned_operators.put( opd.getName(), "true");
+        //                LOG.info( "Replanned operators are\n\n" + replanned_operators);
+        //                LOG.info( "To replan workflow is\n\n" + before_replanning_workflow.getOperators() + "\n");
+        //                LOG.info( "Replanned workflow is\n\n" + after_replanning_workflow.getOperators() + "\n");
                         LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
                         for( OperatorDictionary opdd : parameters.workflow.getOperators()){
-                        	if( replanned_operators.get( opdd.getName()) != null){
-                        		opdd.setStatus( "failed");
-                           	}
+        //                	if( replanned_operators.get( opdd.getName()) != null){
+        //                		opdd.setStatus( "failed");
+        //                	}
                         }
-                        newTrackers = parameters.createTrackers( this);
-                        LOG.info( "NEW TRACKERS AFTER REPLANNING: " + newTrackers);
+        //                newTrackers = parameters.createTrackers( this);
+        //                LOG.info( "NEW TRACKERS AFTER REPLANNING: " + newTrackers);
                     }
                 }
             }

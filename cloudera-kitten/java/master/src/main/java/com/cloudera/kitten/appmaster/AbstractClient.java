@@ -127,7 +127,6 @@ public class AbstractClient {
     */
    public static void issueRequestReplan( YarnConfiguration conf, String id) {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-       //String urlString = "http://" + masterDNS + ":1323/web/runningWorkflows/replan/?id=" + id;
        String urlString = "http://" + masterDNS + ":1323/runningWorkflows/replan/" + id;       
        try {
 	        LOG.info("Replanning workflow " + id + " issuing urlString: " + urlString);
@@ -198,4 +197,43 @@ public class AbstractClient {
     }
     return running_workflow;
   }   
+
+  public static WorkflowDictionary issueRequestToRunWorkflow( YarnConfiguration conf, String id) throws Exception {
+	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
+      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/toRunWorkflow/XML/" + id;
+      StringBuilder builder = null;
+      StringBuffer xmlStr = null;
+      InputStream in = null;
+      WorkflowDictionary to_run_workflow = null;
+      JAXBContext jaxbContext = JAXBContext.newInstance( WorkflowDictionary.class );
+      Unmarshaller u = jaxbContext.createUnmarshaller();
+      try {
+	        LOG.info("To run workflow workflow " + id + " issuing urlString: " + urlString);
+			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
+	        URL url = new URL(urlString);
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+	        con.setRequestMethod("GET");
+	        con.setRequestProperty("accept", "application/XML");
+	        con.setRequestProperty("Content-type", "application/XML");	        
+	        con.setDoInput(true);
+	        
+	        builder = new StringBuilder();
+	    	in = con.getInputStream();
+	        byte[] buffer = new byte[1024];
+	        int count;
+	        while((count = in.read(buffer))!=-1) {
+	            builder.append(new String(buffer,0,count));
+	        }
+	        xmlStr = new StringBuffer( builder.toString());
+	        to_run_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
+	        LOG.info( "To run workflow: " + to_run_workflow);
+	} 
+    catch (Exception e)
+    {
+		LOG.error( e.getStackTrace());
+		e.printStackTrace();
+    }
+    return to_run_workflow;
+  }
 }

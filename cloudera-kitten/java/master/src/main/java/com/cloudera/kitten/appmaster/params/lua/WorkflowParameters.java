@@ -91,9 +91,9 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		HashMap<String,String> operators = new HashMap<String, String>();
 
 		workflow = Utils.unmarshall(script);
-		//workflow.setName( jobName);
+		workflow.setName( jobName);
 		
-		materializedWorkflow = new MaterializedWorkflow1( "test", "/tmp");
+		materializedWorkflow = new MaterializedWorkflow1( workflow.getName(), "/tmp");
 		materializedWorkflow.readFromWorkflowDictionary(workflow);
 		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
 		
@@ -106,7 +106,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		for(OperatorDictionary op : workflow.getOperators()){
 			if(op.getStatus().equals("warn") && op.getInput().isEmpty()){
 				op.setStatus("running");
-				workflow.setOutputsRunning(op.getName(), null);
+				workflow.setOutputsRunning(op.getName(), "completed");
 			}
 		}
 		LOG.info("Operators: "+operators);
