@@ -764,12 +764,12 @@ public class WebUI {
         ret += "<table id='cluster_services' border='1' align='center' style='width:30%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
             if( e.getValue()){
-                action ="<form action='/clusterStatus/dead/" + e.getKey() + "' method='get'>"
+                action ="<form action='/clusterStatus/services/dead/" + e.getKey() + "' method='get'>"
                             + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
                             + "<p align='center'><input class='styled-button' type='submit' value='stop'></form>";
             }
             else{
-                action ="<form action='/clusterStatus/alive/" + e.getKey() + "' method='get'>"
+                action ="<form action='/clusterStatus/services/alive/" + e.getKey() + "' method='get'>"
                             + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
                             + "<p align='center'><input class='styled-button' type='submit' value='start'></form>";
             }
@@ -785,7 +785,8 @@ public class WebUI {
     	//display available resources
         ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
-			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";    	}
+			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";
+		}
     	ret+="</table>" + footer;
         return ret;
     }

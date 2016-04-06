@@ -30,9 +30,9 @@ public class ClusterStatus {
     @Path( "static/resources")
     @Produces(MediaType.TEXT_HTML)
     public String listClusterStaticResources() {
-    	String ret = "<ul>";
+    	String ret = "Resource min max <ul>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
-			ret+= "<li>"+e.getKey()+" : "+e.getValue()+"</li>";
+			ret+= "<li>" + e.getKey() + " : " + e.getValue().split( "_")[ 0] + e.getValue().split( "_")[ 1] + "</li>";
     		
     	}
     	ret+="</ul>";
@@ -45,7 +45,7 @@ public class ClusterStatus {
     public String listClusterAvailableResources() {
     	String ret = "<ul>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
-			ret+= "<li>"+e.getKey()+" : "+e.getValue()+"</li>";
+			ret+= "<li>"+e.getKey() + " : " + e.getValue()+"</li>";
     		
     	}
     	ret+="</ul>";
@@ -53,14 +53,14 @@ public class ClusterStatus {
     }
     
     @GET
-    @Path("services/alive/{id}")
+    @Path( "services/alive/{id}")
     public void setAlive(@PathParam("id") String id) {
     	ClusterStatusLibrary.setStatus(id, true);
     }
     
 
     @GET
-    @Path("services/dead/{id}")
+    @Path( "services/dead/{id}")
     public void setDead(@PathParam("id") String id) {
     	ClusterStatusLibrary.setStatus(id, false);
     }
