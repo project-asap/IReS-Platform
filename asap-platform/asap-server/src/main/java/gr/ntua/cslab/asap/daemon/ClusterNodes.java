@@ -274,6 +274,8 @@ public class ClusterNodes extends Configured implements Runnable {
 		try{
 			memory = yconf.get( "yarn.scheduler.minimum-allocation-mb") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-mb");
 			ClusterStatusLibrary.cluster_static_resources.put( "Memory", memory);
+			System.out.println( "Memory = " + memory);
+
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.scheduler.minimum-allocation-mb or yarn.scheduler.maximum-allocation-mb property.");
@@ -283,16 +285,18 @@ public class ClusterNodes extends Configured implements Runnable {
 		try{
 			vcores = yconf.get( "yarn.scheduler.minimum-allocation-vcores") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-vcores");
 			ClusterStatusLibrary.cluster_static_resources.put( "VCores", vcores);
+			System.out.println( "Vcores = " + vcores);
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.scheduler.minimum-allocation-vcores or yarn.scheduler.maximum-allocation-vcores property.");
 			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
 			logger.info( " in folder with relative path asap-server/target/conf.");
 		}
-
+		System.out.println( "ClusterStatusLibrary.cluster_static_resources = " + ClusterStatusLibrary.cluster_static_resources);
 		//retrieve the minimum and maximum amount of vcores and memory from YARN rest api that is a dynamic information
 		ClusterStatusLibrary.cluster_available_resources.clear();
-		HashMap< String, String> metrics = null;
+		System.out.println( "ClusterStatusLibrary.cluster_available_resources = " + ClusterStatusLibrary.cluster_available_resources);
+		ConcurrentHashMap< String, String> metrics = null;
 		try{
 			metrics = YarnMetricsClient.issueRequestYarnClusterMetrics( yconf);			
 		}
@@ -302,6 +306,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		for( Entry< String, String> e: metrics.entrySet()){
 			ClusterStatusLibrary.cluster_available_resources.put( e.getKey(), e.getValue());
 			logger.info( "Metric: " + e.getKey() + "\t" + e.getValue());
+			System.out.println( "Metric: " + e.getKey() + "\t" + e.getValue());
 		}
 	
 		

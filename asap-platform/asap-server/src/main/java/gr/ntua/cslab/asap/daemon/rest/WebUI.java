@@ -761,7 +761,7 @@ public class WebUI {
         String script = "<script>setTimeout('location.reload(true);', 5000)</script>";
         String ret = header + script;
         //display cluster services
-        ret += "<table id='cluster_services' border='1' align='center' style='width:60%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
+        ret += "<table id='cluster_services' border='1' align='center' style='width:40%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
             if( e.getValue()){
                 action ="<form action='/clusterStatus/dead/" + e.getKey() + "' method='get'>"
@@ -785,7 +785,7 @@ public class WebUI {
     	//display available resources
         ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
-			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue().split( "_")[ 0] + "</td><td>" + e.getValue().split( "_")[ 1] + "</td></tr>";    	}
+			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";    	}
     	ret+="</table>" + footer;
         return ret;
     }

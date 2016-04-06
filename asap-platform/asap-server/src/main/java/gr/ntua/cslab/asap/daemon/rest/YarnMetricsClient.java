@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -27,13 +28,13 @@ public class YarnMetricsClient {
 
     }
 	
-	public static HashMap< String, String> issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
+	public static ConcurrentHashMap< String, String> issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
 		String masterDNS = conf.get( "yarn.resourcemanager.webapp.address");
 		String urlString = "http://" + masterDNS + "/wl/v1/cluster/metrics";
 		StringBuilder builder = null;
 		StringBuffer xmlStr = null;
 		InputStream in = null;
-		HashMap< String, String> metrics = null;
+		ConcurrentHashMap< String, String> metrics = null;
 		JAXBContext jaxbContext = JAXBContext.newInstance( HashMap.class );
 		Unmarshaller u = jaxbContext.createUnmarshaller();
 		try {
@@ -55,7 +56,7 @@ public class YarnMetricsClient {
 				builder.append(new String(buffer,0,count));
 			}
 			xmlStr = new StringBuffer( builder.toString());
-			metrics = (HashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
+			metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
 			LOG.info( "Retrieved metrics: " + metrics);
 		} 
 		catch (Exception e)
