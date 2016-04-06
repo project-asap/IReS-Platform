@@ -13,7 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 public class ClusterStatusLibrary {
-	public static ConcurrentHashMap<String,Boolean> status ;
+	public static ConcurrentHashMap< String, Boolean> status;
+	public static ConcurrentHashMap< String, String> cluster_static_resources = null;
+	public static ConcurrentHashMap< String, String> cluster_available_resources = null;
 
 	public static void initialize() throws Exception{
 		status = new ConcurrentHashMap<String,Boolean>();
@@ -22,6 +24,8 @@ public class ClusterStatusLibrary {
 		status.put("MapReduce", true);
 		status.put( "MLLib", true);
 		status.put( "Python", true);
+		ClusterStatusLibrary.cluster_static_resources = new ConcurrentHashMap< String, String>();
+		ClusterStatusLibrary.cluster_available_resources = new ConcurrentHashMap< String, String>();
 	}
 	
 	public static boolean getStatus(String component){

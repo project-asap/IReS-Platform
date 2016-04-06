@@ -84,7 +84,7 @@ public class AbstractClient {
      */
     public static String issueRequestClusterStatus( YarnConfiguration conf) {
     	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-        String urlString = "http://" + masterDNS + ":1323/clusterStatus";
+        String urlString = "http://" + masterDNS + ":1323/clusterStatus/services";
         String services_n_status = "";
 		try {
 	        LOG.info("ClusterStatus issuing urlString: " + urlString);

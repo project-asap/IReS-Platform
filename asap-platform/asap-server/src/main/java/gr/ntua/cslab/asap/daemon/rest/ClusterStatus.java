@@ -14,8 +14,9 @@ import javax.ws.rs.core.MediaType;
 public class ClusterStatus {
     
     @GET
+    @Path( "services")
     @Produces(MediaType.TEXT_HTML)
-    public String listOperators() {
+    public String listServices() {
     	String ret = "<ul>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
 			ret+= "<li>"+e.getKey()+" : "+e.getValue()+"</li>";
@@ -25,16 +26,41 @@ public class ClusterStatus {
         return ret;
     }
     
+    @GET
+    @Path( "static/resources")
+    @Produces(MediaType.TEXT_HTML)
+    public String listClusterStaticResources() {
+    	String ret = "<ul>";
+    	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
+			ret+= "<li>"+e.getKey()+" : "+e.getValue()+"</li>";
+    		
+    	}
+    	ret+="</ul>";
+        return ret;
+    }
 
     @GET
-    @Path("alive/{id}")
+    @Path( "available/resources")
+    @Produces(MediaType.TEXT_HTML)
+    public String listClusterAvailableResources() {
+    	String ret = "<ul>";
+    	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
+			ret+= "<li>"+e.getKey()+" : "+e.getValue()+"</li>";
+    		
+    	}
+    	ret+="</ul>";
+        return ret;
+    }
+    
+    @GET
+    @Path("services/alive/{id}")
     public void setAlive(@PathParam("id") String id) {
     	ClusterStatusLibrary.setStatus(id, true);
     }
     
 
     @GET
-    @Path("dead/{id}")
+    @Path("services/dead/{id}")
     public void setDead(@PathParam("id") String id) {
     	ClusterStatusLibrary.setStatus(id, false);
     }

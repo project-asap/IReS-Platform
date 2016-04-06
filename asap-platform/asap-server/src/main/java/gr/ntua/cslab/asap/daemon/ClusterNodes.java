@@ -1,5 +1,6 @@
 package gr.ntua.cslab.asap.daemon;
 
+import gr.ntua.cslab.asap.daemon.rest.YarnMetricsClient;
 import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.charset.Charset;
 
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import java.lang.Process;
 import java.lang.ProcessBuilder;
@@ -34,6 +37,7 @@ import org.apache.hadoop.yarn.api.records.NodeReport;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.exceptions.YarnException;
+import org.mortbay.log.Log;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 
@@ -262,5 +266,44 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.warning( "InterruptedException occured and caught!");
 			ie.printStackTrace();
 		}
+		
+		//retrieve the minimum and maximum amount of vcores and memory from yarn-site.xml that is a static information
+		ClusterStatusLibrary.cluster_static_resources.clear();
+		String memory = "";
+		String vcores = "";
+		try{
+			memory = yconf.get( "yarn.scheduler.minimum-allocation-mb") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-mb");
+			ClusterStatusLibrary.cluster_static_resources.put( "Memory", memory);
+		}
+		catch( NullPointerException npe){
+			logger.info( "ERROR: YarnConfiguration object cannot find yarn.scheduler.minimum-allocation-mb or yarn.scheduler.maximum-allocation-mb property.");
+			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( " in folder with relative path asap-server/target/conf.");
+		}
+		try{
+			vcores = yconf.get( "yarn.scheduler.minimum-allocation-vcores") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-vcores");
+			ClusterStatusLibrary.cluster_static_resources.put( "VCores", vcores);
+		}
+		catch( NullPointerException npe){
+			logger.info( "ERROR: YarnConfiguration object cannot find yarn.scheduler.minimum-allocation-vcores or yarn.scheduler.maximum-allocation-vcores property.");
+			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( " in folder with relative path asap-server/target/conf.");
+		}
+
+		//retrieve the minimum and maximum amount of vcores and memory from YARN rest api that is a dynamic information
+		ClusterStatusLibrary.cluster_available_resources.clear();
+		HashMap< String, String> metrics = null;
+		try{
+			metrics = YarnMetricsClient.issueRequestYarnClusterMetrics( yconf);			
+		}
+		catch( Exception e){
+			logger.info( "Something went wrong while metrics from YARN have been asked.");
+		}
+		for( Entry< String, String> e: metrics.entrySet()){
+			ClusterStatusLibrary.cluster_available_resources.put( e.getKey(), e.getValue());
+			logger.info( "Metric: " + e.getKey() + "\t" + e.getValue());
+		}
+	
+		
 	}// end of run() method
 }

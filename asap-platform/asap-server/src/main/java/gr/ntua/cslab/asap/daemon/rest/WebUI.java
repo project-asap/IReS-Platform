@@ -754,12 +754,13 @@ public class WebUI {
     }
  
     @GET
-    @Path("/clusterStatus")
+    @Path("/clusterStatus/")
     @Produces(MediaType.TEXT_HTML)
-    public String listServices() {
+    public String listServicesAndResources() {
         String action = null;
         String script = "<script>setTimeout('location.reload(true);', 5000)</script>";
         String ret = header + script;
+        //display cluster services
         ret += "<table id='cluster_services' border='1' align='center' style='width:60%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
             if( e.getValue()){
@@ -774,6 +775,17 @@ public class WebUI {
             }
 			ret+= "<tr><td>"+e.getKey()+"</td><td>"+e.getValue()+"</td><td>" + action + "</td></tr>";
     	}
+    	ret+="</table>";
+    	//display static resources
+        ret += "<table id='cluster_static_resources' border='1' align='center' style='width:30%'><tr><th>Resource</th><th>Min</th><th>Max</th></tr>";
+    	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
+			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue().split( "_")[ 0] + "</td><td>" + e.getValue().split( "_")[ 1] + "</td></tr>";
+    	}
+    	ret+="</table>";
+    	//display available resources
+        ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>Resource</th><th>Min</th><th>Max</th></tr>";
+    	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
+			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue().split( "_")[ 0] + "</td><td>" + e.getValue().split( "_")[ 1] + "</td></tr>";    	}
     	ret+="</table>" + footer;
         return ret;
     }
