@@ -116,6 +116,13 @@ public class OperatorDictionary {
 		this.input = input;
 	}
 
+	public List<String> getOutput() {
+		return output;
+	}
+	public void setOutput( List<String> output) {
+		this.output = output;
+	}
+	
 	public String getIsAbstract() {
 		return isAbstract;
 	}

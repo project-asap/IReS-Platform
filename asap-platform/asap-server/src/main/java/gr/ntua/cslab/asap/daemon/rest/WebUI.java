@@ -12,10 +12,6 @@ import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,8 +24,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import net.sourceforge.jeval.EvaluationException;
 
 import org.apache.log4j.Logger;
 
@@ -761,7 +755,7 @@ public class WebUI {
         String script = "<script>setTimeout('location.reload(true);', 5000)</script>";
         String ret = header + script;
         //display cluster services
-        ret += "<table id='cluster_services' border='1' align='center' style='width:30%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
+        ret += "<table id='cluster_services' border='1' align='left' style='width:30%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
             if( e.getValue()){
                 action ="<form action='/clusterStatus/services/dead/" + e.getKey() + "' method='get'>"
@@ -777,13 +771,13 @@ public class WebUI {
     	}
     	ret+="</table>";
     	//display static resources
-        ret += "<table id='cluster_static_resources' border='1' align='center' style='width:30%'><tr><th>Capacity Scheduler Resource</th><th>Min</th><th>Max</th></tr>";
+        ret += "<table id='cluster_static_resources' border='1' align='left' style='width:30%'><tr><th>Capacity Scheduler Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
 			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue().split( "_")[ 0] + "</td><td>" + e.getValue().split( "_")[ 1] + "</td></tr>";
     	}
     	ret+="</table>";
     	//display available resources
-        ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
+        ret += "<table id='cluster_available_resources' border='1' align='left' style='width:30%'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
 			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";
 		}

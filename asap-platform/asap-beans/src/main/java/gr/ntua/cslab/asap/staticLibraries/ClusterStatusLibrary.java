@@ -3,12 +3,10 @@ package gr.ntua.cslab.asap.staticLibraries;
 
 import gr.ntua.cslab.asap.operators.Operator;
 
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 

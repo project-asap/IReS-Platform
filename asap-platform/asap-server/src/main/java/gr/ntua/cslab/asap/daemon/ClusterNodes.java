@@ -3,30 +3,16 @@ package gr.ntua.cslab.asap.daemon;
 import gr.ntua.cslab.asap.daemon.rest.YarnMetricsClient;
 import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import java.nio.file.Files;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.charset.Charset;
-
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import java.lang.Process;
-import java.lang.ProcessBuilder;
 import java.lang.Runtime;
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -37,8 +23,6 @@ import org.apache.hadoop.yarn.api.records.NodeReport;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.exceptions.YarnException;
-import org.mortbay.log.Log;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 
 public class ClusterNodes extends Configured implements Runnable {
@@ -63,9 +47,9 @@ public class ClusterNodes extends Configured implements Runnable {
 	YarnClient yc = YarnClient.createYarnClient();
 
 	//an ArrayList to keep info from YarnClient
-	List ycinfo = null;
+	List< NodeReport> ycinfo = null;
 	//an iterator for the informative ArrayList
-	Iterator<NodeReport> yciter = null;
+	Iterator< NodeReport> yciter = null;
 	//node report
 	NodeReport nr = null;
 	//node state

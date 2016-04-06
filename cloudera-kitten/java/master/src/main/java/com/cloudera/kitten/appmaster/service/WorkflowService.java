@@ -230,6 +230,17 @@ protected ContainerLaunchContextFactory factory;
                     if( replan){
                     	//this operator has been failed so mark it
                     	opd.setStatus( "failed");
+                    	//and also mark its inputs and its outputs
+                    	List< String> input = opd.getInput();
+                    	List< String> output = opd.getOutputs();
+                    	ListIterator< String> lis = input.listIterator();
+                    	while( lis.hasNext()){
+                    		LOG.info( "Input: " + lis.next());
+                    	}
+                    	lis = output.listIterator();
+                    	while( lis.hasNext()){
+                    		LOG.info( "Input: " + lis.next());
+                    	}
                     	//then make the re - plan
                     	WorkflowDictionary before_workflow_replanning = parameters.workflow;
                     	WorkflowDictionary after_workflow_replanning = null;
@@ -255,22 +266,43 @@ protected ContainerLaunchContextFactory factory;
                         //all replanned operators are marked as "failed"
                         //all operators returned from replan and they are have been "completed" should remain at this state
                         //
+                        for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
+                        	if( opawr.getName().equals( opd.getName())){
+                        		opawr.setStatus( "failed");
+                        	}
+                        }
                     	for( OperatorDictionary oprw : replanned_workflow.getOperators()){
                     		for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
-                    			//find the common operators between the two WorkflowDictioanary
-                        		if( oprw.getName().equals( opawr.getName())){
-                        			//we do not want to re execute operators already run and included into the
-                        			//replanned workflow
-                        			if( !opawr.getStatus().equals( "completed")){
-                        				opawr.setStatus( oprw.getStatus());	
-                        			}
-                        			
-                        		}
+                    			//find the common operators between the two WorkflowDictioanary objects
+                    			if( oprw.getIsOperator().equals( "true")){
+                            		if( oprw.getName().equals( opawr.getName())){
+                            			//we do not want to re execute operators already run and included into the
+                            			//replanned workflow
+                            			if( !opawr.getStatus().equals( "completed")){
+                            				opawr.setStatus( oprw.getStatus());
+                            				//remove inputs and outputs of this operator from the WorkflowDictionary
+                            				
+                            				//and update them with the new one
+                            				opawr.setInput( oprw.getInput());
+                            				opawr.setOutput( oprw.getOutput());
+                            			}
+                            			else{
+                            				//take the output of oprw operator output and set it as the new output
+                            				//of opawr output operator
+                            			}
+                            			//in any case we have to compare their inputs and outputs
+                            		}
+                    				
+                    			}
                         	}
                         	//if( replanned_operators.get( opawr.getName()) != null){
                         	//	opawr.setStatus( "failed");
                            	//}
                         }
+                    	 LOG.info( "REBUILT AFTER WORKFLOW REPLAN\n");
+                         for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
+                         	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+                         }
                         newTrackers = parameters.createTrackers( this);
                         LOG.info( "NEW TRACKERS AFTER REPLANNING: " + newTrackers);
                     }
