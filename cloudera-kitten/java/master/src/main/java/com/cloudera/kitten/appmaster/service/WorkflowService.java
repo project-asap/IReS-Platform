@@ -231,15 +231,31 @@ protected ContainerLaunchContextFactory factory;
                     	//this operator has been failed so mark it
                     	opd.setStatus( "failed");
                     	//and also mark its inputs and its outputs
+                    	String inname = "";
+                    	String outname = "";
                     	List< String> input = opd.getInput();
                     	List< String> output = opd.getOutputs();
                     	ListIterator< String> lis = input.listIterator();
                     	while( lis.hasNext()){
-                    		LOG.info( "Input: " + lis.next());
+                    		inname = lis.next();
+                    		LOG.info( "Input: " + inname);
+                    	    for( OperatorDictionary opdd : parameters.workflow.getOperators()){
+                    	    	if( opdd.getName().equals( inname)){
+                    	    		opdd.setStatus( "failed");
+                    	    		break;
+                    	    	}
+                    	    }
                     	}
                     	lis = output.listIterator();
                     	while( lis.hasNext()){
-                    		LOG.info( "Input: " + lis.next());
+                    		outname = lis.next();
+                    		LOG.info( "Output: " + outname);
+                    		for( OperatorDictionary opdd : parameters.workflow.getOperators()){
+                    	    	if( opdd.getName().equals( outname)){
+                    	    		opdd.setStatus( "failed");
+                    	    		break;
+                    	    	}
+                    	    }
                     	}
                     	//then make the re - plan
                     	WorkflowDictionary before_workflow_replanning = parameters.workflow;
@@ -269,6 +285,7 @@ protected ContainerLaunchContextFactory factory;
                         for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
                         	if( opawr.getName().equals( opd.getName())){
                         		opawr.setStatus( "failed");
+                        		
                         	}
                         }
                     	for( OperatorDictionary oprw : replanned_workflow.getOperators()){
@@ -284,7 +301,7 @@ protected ContainerLaunchContextFactory factory;
                             				
                             				//and update them with the new one
                             				opawr.setInput( oprw.getInput());
-                            				opawr.setOutput( oprw.getOutput());
+                            				opawr.setOutputs( oprw.getOutputs());
                             			}
                             			else{
                             				//take the output of oprw operator output and set it as the new output

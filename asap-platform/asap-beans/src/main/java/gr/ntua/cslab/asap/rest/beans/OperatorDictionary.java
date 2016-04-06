@@ -108,19 +108,16 @@ public class OperatorDictionary {
 	public List<String> getOutputs() {
 		return output;
 	}
-	
+
+	public void setOutputs( List<String> output) {
+		this.output = output;
+	}
+
 	public List<String> getInput() {
 		return input;
 	}
 	public void setInput(List<String> input) {
 		this.input = input;
-	}
-
-	public List<String> getOutput() {
-		return output;
-	}
-	public void setOutput( List<String> output) {
-		this.output = output;
 	}
 	
 	public String getIsAbstract() {
