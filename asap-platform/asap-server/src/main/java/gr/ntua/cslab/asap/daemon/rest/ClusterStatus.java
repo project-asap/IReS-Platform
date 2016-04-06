@@ -32,7 +32,7 @@ public class ClusterStatus {
     public String listClusterStaticResources() {
     	String ret = "Resource min max <ul>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
-			ret+= "<li>" + e.getKey() + " : " + e.getValue().split( "_")[ 0] + e.getValue().split( "_")[ 1] + "</li>";
+			ret+= "<li>" + e.getKey() + " : " + e.getValue().split( "_")[ 0] + "\t" + e.getValue().split( "_")[ 1] + "</li>";
     		
     	}
     	ret+="</ul>";
