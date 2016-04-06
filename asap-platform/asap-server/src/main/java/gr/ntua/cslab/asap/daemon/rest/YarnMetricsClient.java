@@ -53,7 +53,7 @@ public class YarnMetricsClient {
 			byte[] buffer = new byte[1024];
 			int count;
 			while((count = in.read(buffer))!=-1) {
-				builder.append(new String(buffer,0,count));
+				builder.append(new String(buffer,0,count) + "\n");
 			}
 			xmlStr = new StringBuffer( builder.toString());
 			//metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));

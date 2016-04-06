@@ -97,7 +97,7 @@ public class ClusterNodes extends Configured implements Runnable {
 	public ClusterNodes( int period){
 		this.period = period;
 	}
-	
+
 	public void run(){
     	//interact with the ResourceManager of YARN cluster and find which nodes are active
     	//and for these nodes check which services are still running on them
@@ -225,7 +225,7 @@ public class ClusterNodes extends Configured implements Runnable {
 						continue;
 					}
 					//for any other service just check that there is at least one node
-					//hosting it			
+					//hosting it
 					if( runservices.get( service).equals( "")){
 						ClusterStatusLibrary.status.put( service, false);
 					}
@@ -272,27 +272,26 @@ public class ClusterNodes extends Configured implements Runnable {
 					logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
 					logger.info( " in folder with relative path asap-server/target/conf.");
 				}
-				System.out.println( "ClusterStatusLibrary.cluster_static_resources = " + ClusterStatusLibrary.cluster_static_resources);
 				//retrieve the minimum and maximum amount of vcores and memory from YARN rest api that is a dynamic information
 				ClusterStatusLibrary.cluster_available_resources.clear();
-				System.out.println( "ClusterStatusLibrary.cluster_available_resources = " + ClusterStatusLibrary.cluster_available_resources);
 				//ConcurrentHashMap< String, String> metrics = null;
 				String metricsXML = null;
 				String[] metrics = null;
 				try{
 					metricsXML = YarnMetricsClient.issueRequestYarnClusterMetrics( yconf);
-					metricsXML = metricsXML.replaceAll( "<clusterMetrics>", "");
-					metricsXML = metricsXML.replaceAll( "<br>", "");
+					metricsXML = metricsXML.replaceAll( "<\\?[^>]+\\?>", "" );
+                    metricsXML = metricsXML.replaceAll( "<clusterMetrics>", "");
 					metricsXML = metricsXML.replaceAll( "</[^>]+>", "\n");
+					metricsXML = metricsXML.replaceAll( "[<]+", "");
+					metricsXML = metricsXML.replaceAll( "[>]+", " ");
 					metrics = metricsXML.split( "\n");
 				}
 				catch( Exception e){
 					logger.info( "Something went wrong while metrics from YARN have been asked.");
 				}
-				for( int i = 0; i < metrics.length; i +=2){
-					ClusterStatusLibrary.cluster_available_resources.put( metrics[ i], metrics[ i + 1]);
-					logger.info( "Metric: " + metrics[ i] + "\t" + metrics[ i + 1]);
-					System.out.println( "Metric: " + metrics[ i] + "\t" + metrics[ i + 1]);
+				for( int i = 0; i < metrics.length; i ++){
+					ClusterStatusLibrary.cluster_available_resources.put( metrics[ i].split( " " )[ 0].trim(), metrics[ i].split( " ")[ 1].trim());
+					//logger.info( "Metric: " + metrics[ i].split( " ")[ 0 ].trim() + "\t" + metrics[ i].split( " " )[ 1 ].trim());
 				}
 
 				Thread.sleep( period);
@@ -314,8 +313,8 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.warning( "InterruptedException occured and caught!");
 			ie.printStackTrace();
 		}
-		
-	
-		
+
+
+
 	}// end of run() method
 }
