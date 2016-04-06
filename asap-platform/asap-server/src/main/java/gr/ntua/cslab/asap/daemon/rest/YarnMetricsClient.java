@@ -30,7 +30,7 @@ public class YarnMetricsClient {
 	
 	public static ConcurrentHashMap< String, String> issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
 		String masterDNS = conf.get( "yarn.resourcemanager.webapp.address");
-		String urlString = "http://" + masterDNS + "/wl/v1/cluster/metrics";
+		String urlString = "http://" + masterDNS + "/ws/v1/cluster/metrics";
 		StringBuilder builder = null;
 		StringBuffer xmlStr = null;
 		InputStream in = null;
