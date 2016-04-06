@@ -783,7 +783,7 @@ public class WebUI {
     	}
     	ret+="</table>";
     	//display available resources
-        ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>Resource</th><th>Min</th><th>Max</th></tr>";
+        ret += "<table id='cluster_available_resources' border='1' align='center' style='width:30%'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
 			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";    	}
     	ret+="</table>" + footer;

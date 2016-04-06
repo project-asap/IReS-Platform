@@ -28,7 +28,7 @@ public class YarnMetricsClient {
 
     }
 	
-	public static ConcurrentHashMap< String, String> issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
+	public static String issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
 		String masterDNS = conf.get( "yarn.resourcemanager.webapp.address");
 		String urlString = "http://" + masterDNS + "/ws/v1/cluster/metrics";
 		StringBuilder builder = null;
@@ -56,7 +56,7 @@ public class YarnMetricsClient {
 				builder.append(new String(buffer,0,count));
 			}
 			xmlStr = new StringBuffer( builder.toString());
-			metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
+			//metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
 			LOG.info( "Retrieved metrics: " + metrics);
 		} 
 		catch (Exception e)
@@ -64,6 +64,6 @@ public class YarnMetricsClient {
 				LOG.error( e.getStackTrace());
 				e.printStackTrace();
 		}
-		    return metrics;
+		    return builder.toString();
 		}
 }

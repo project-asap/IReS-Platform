@@ -276,17 +276,23 @@ public class ClusterNodes extends Configured implements Runnable {
 				//retrieve the minimum and maximum amount of vcores and memory from YARN rest api that is a dynamic information
 				ClusterStatusLibrary.cluster_available_resources.clear();
 				System.out.println( "ClusterStatusLibrary.cluster_available_resources = " + ClusterStatusLibrary.cluster_available_resources);
-				ConcurrentHashMap< String, String> metrics = null;
+				//ConcurrentHashMap< String, String> metrics = null;
+				String metricsXML = null;
+				String[] metrics = null;
 				try{
-					metrics = YarnMetricsClient.issueRequestYarnClusterMetrics( yconf);			
+					metricsXML = YarnMetricsClient.issueRequestYarnClusterMetrics( yconf);
+					metricsXML = metricsXML.replaceAll( "<clusterMetrics>", "");
+					metricsXML = metricsXML.replaceAll( "<br>", "");
+					metricsXML = metricsXML.replaceAll( "</[^>]+>", "\n");
+					metrics = metricsXML.split( "\n");
 				}
 				catch( Exception e){
 					logger.info( "Something went wrong while metrics from YARN have been asked.");
 				}
-				for( Entry< String, String> e: metrics.entrySet()){
-					ClusterStatusLibrary.cluster_available_resources.put( e.getKey(), e.getValue());
-					logger.info( "Metric: " + e.getKey() + "\t" + e.getValue());
-					System.out.println( "Metric: " + e.getKey() + "\t" + e.getValue());
+				for( int i = 0; i < metrics.length; i +=2){
+					ClusterStatusLibrary.cluster_available_resources.put( metrics[ i], metrics[ i + 1]);
+					logger.info( "Metric: " + metrics[ i] + "\t" + metrics[ i + 1]);
+					System.out.println( "Metric: " + metrics[ i] + "\t" + metrics[ i + 1]);
 				}
 
 				Thread.sleep( period);
