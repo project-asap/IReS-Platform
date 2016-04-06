@@ -254,7 +254,7 @@ public class ClusterNodes extends Configured implements Runnable {
 				try{
 					memory = yconf.get( "yarn.scheduler.minimum-allocation-mb") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-mb");
 					ClusterStatusLibrary.cluster_static_resources.put( "Memory", memory);
-					System.out.println( "Memory = " + memory);
+					//System.out.println( "Memory = " + memory);
 
 				}
 				catch( NullPointerException npe){
@@ -265,7 +265,7 @@ public class ClusterNodes extends Configured implements Runnable {
 				try{
 					vcores = yconf.get( "yarn.scheduler.minimum-allocation-vcores") + "_" + yconf.get( "yarn.scheduler.maximum-allocation-vcores");
 					ClusterStatusLibrary.cluster_static_resources.put( "VCores", vcores);
-					System.out.println( "Vcores = " + vcores);
+					//System.out.println( "Vcores = " + vcores);
 				}
 				catch( NullPointerException npe){
 					logger.info( "ERROR: YarnConfiguration object cannot find yarn.scheduler.minimum-allocation-vcores or yarn.scheduler.maximum-allocation-vcores property.");
