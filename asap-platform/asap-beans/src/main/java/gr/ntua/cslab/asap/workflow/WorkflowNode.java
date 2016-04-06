@@ -91,9 +91,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 
 	public void addInputs(List<WorkflowNode> inputs){
 		this.inputs.addAll(inputs);
-		for(WorkflowNode in : inputs){
-			in.outputs.add(this);
-		}
+//		for(WorkflowNode in : inputs){
+//			in.outputs.add(this);
+//		}
 	}
 
 
@@ -744,6 +744,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			for(WorkflowNode n : inputs){
 				op.addInput(n.toStringNorecursive());
 				n.toWorkflowDictionary(ret, bestPlans, delimiter, targets);
+			}
+			for(WorkflowNode n : outputs){
+				op.addOutput(n.toStringNorecursive());
 			}
 	    	ret.addOperator(op);
 			visited=true;

@@ -400,10 +400,24 @@ public class AbstractWorkflow1 {
 			if(e[1].equals("$$target")){
 				this.targets.add(workflowNodes.get(e[0]));
 			}
-			else{
+
+			else if(e.length==2){
 				WorkflowNode src = workflowNodes.get(e[0]);
 				WorkflowNode dest = workflowNodes.get(e[1]);
-				dest.inputs.add(src);
+				dest.addInput(src);
+				src.addOutput(dest);
+			}
+			else if(e.length==3){
+				WorkflowNode src = workflowNodes.get(e[0]);
+				WorkflowNode dest = workflowNodes.get(e[1]);
+				if(dest.isOperator){
+					dest.addInput(Integer.parseInt(e[2]), src);
+					src.addOutput(dest);
+				}
+				else{
+					dest.addInput(src);
+					src.addOutput(Integer.parseInt(e[2]), dest);
+				}
 			}
 		}
 		br.close();

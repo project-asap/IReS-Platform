@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,10 +19,11 @@ public class OperatorDictionary {
 
 	private String name, cost, execTime, status, isOperator, isAbstract, description, abstractName;
 	private boolean isTarget;
-	private List<String> input;
+	private List<String> input, output;
 
 	public OperatorDictionary() {
 		input = new ArrayList<String>();
+		output = new ArrayList<String>();
 	}
 
 	public OperatorDictionary(String abstractName, String name, String cost, String execTime, String status, String isOperator, String isAbstract, String description, boolean isTarget) {
@@ -35,6 +37,7 @@ public class OperatorDictionary {
 		this.description = description;
 		this.isTarget = isTarget;
 		input = new ArrayList<String>();
+		output = new ArrayList<String>();
 	}
 
 	public String getExecTime() {
@@ -77,6 +80,10 @@ public class OperatorDictionary {
 		this.description = description;
 	}
 
+	public void addOutput(String out) {
+		output.add(out);
+	}
+	
 	public void addInput(String in){
 		input.add(in);
 	}
@@ -97,6 +104,11 @@ public class OperatorDictionary {
 	public void setCost(String cost) {
 		this.cost = cost;
 	}
+
+	public List<String> getOutputs() {
+		return output;
+	}
+	
 	public List<String> getInput() {
 		return input;
 	}
@@ -146,4 +158,6 @@ public class OperatorDictionary {
 
 		return engine;
 	}
+
+
 }

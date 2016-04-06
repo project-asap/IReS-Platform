@@ -23,12 +23,24 @@ public class TransformWorkflows {
 			else if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false"))
 				ret.addNode("4", op.getName());
 			
-			for(String in: op.getInput()){
-				graph+=in+","+op.getName()+"\n";
-			}	
+			int i=0;
+			if(op.getIsOperator().equals("true")){
+				for(String in: op.getInput()){
+					graph+=in+","+op.getName()+","+i+"\n";
+					//graph+=in+","+op.getName()+"\n";
+					i++;
+				}	
+				i=0;
+				for(String out: op.getOutputs()){
+					graph+=op.getName()+","+out+","+i+"\n";
+					//graph+=in+","+op.getName()+"\n";
+					i++;
+				}	
+			}
 			if(op.isTarget())
 				targets+=op.getName()+",$$target\n";
 		}
+		//System.out.println(graph);
 		graph+=targets;
 		ret.changeEdges(graph);
 		return ret;

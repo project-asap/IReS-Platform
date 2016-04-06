@@ -34,7 +34,8 @@ public class WorkflowClient extends RestClient{
 		jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
 		jaxbMarshaller.marshal( abstractWorkflow.toWorkflowDictionaryRecursive("<br>"), writer );
         String params=writer.toString();
-
+        System.out.println(params);
+        System.out.println(abstractWorkflow.name);
 		issueRequest("POST", "abstractWorkflows/add/"+abstractWorkflow.name, params);
 	}
 
