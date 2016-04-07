@@ -254,7 +254,7 @@ protected ContainerLaunchContextFactory factory;
                     		LOG.info( "Input: " + inname);
                     	    for( OperatorDictionary opdd : parameters.workflow.getOperators()){
                     	    	if( opdd.getName().equals( inname)){
-                    	    		opdd.setStatus( "failed");
+                    	    		opdd.setStatus( "stopped");
                     	    		break;
                     	    	}
                     	    }
