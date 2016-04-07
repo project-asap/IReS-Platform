@@ -38,7 +38,7 @@ public class YarnMetricsClient {
 		JAXBContext jaxbContext = JAXBContext.newInstance( HashMap.class );
 		Unmarshaller u = jaxbContext.createUnmarshaller();
 		try {
-			LOG.info("Retrieving metrics from YARN, issuing urlString: " + urlString);
+			//LOG.info("Retrieving metrics from YARN, issuing urlString: " + urlString);
 			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 			URL url = new URL(urlString);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -57,7 +57,7 @@ public class YarnMetricsClient {
 			}
 			xmlStr = new StringBuffer( builder.toString());
 			//metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
-			LOG.info( "Retrieved metrics: " + metrics);
+			//LOG.info( "Retrieved metrics: " + metrics);
 		} 
 		catch (Exception e)
 		{
