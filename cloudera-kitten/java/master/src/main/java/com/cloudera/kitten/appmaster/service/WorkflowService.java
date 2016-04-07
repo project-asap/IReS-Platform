@@ -299,7 +299,7 @@ protected ContainerLaunchContextFactory factory;
                         		lis = opawr.getInput().listIterator();
                         		while( lis.hasNext()){
                         			outname = lis.next();
-                        			inname += outname + "_";
+                        			inname += outname + "$";
                         			outputs.put( outname, opawr.getName());
                         		}
                         		inputs.put( opawr.getName(), inname);
@@ -312,7 +312,7 @@ protected ContainerLaunchContextFactory factory;
                         		lis = oprw.getInput().listIterator();
                         		while( lis.hasNext()){
                         			outname = lis.next();
-                        			inname += outname + "_";
+                        			inname += outname + "$";
                         			outputs.put( outname, oprw.getName());
                         		}
                         		inputs.put( oprw.getName(), inname);
@@ -333,7 +333,7 @@ protected ContainerLaunchContextFactory factory;
                         	}
                         	//if an operator has been found that has as input a failed operator, then set this
                         	//operator at the "stopped" state
-                        	if( inputs.get( opawr.getName()).contains( opd.getName())){
+                        	if( inputs.get( opawr.getName()) != null && inputs.get( opawr.getName()).contains( opd.getName())){
                         		opawr.setStatus( "stopped");
                         	}
                         	final_replanned_workflow.put( opawr.getName(), opawr);
