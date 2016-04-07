@@ -265,7 +265,7 @@ protected ContainerLaunchContextFactory factory;
                     		LOG.info( "Output: " + outname);
                     		for( OperatorDictionary opdd : parameters.workflow.getOperators()){
                     	    	if( opdd.getName().equals( outname)){
-                    	    		opdd.setStatus( "failed");
+                    	    		opdd.setStatus( "stopped");
                     	    		break;
                     	    	}
                     	    }
@@ -288,23 +288,11 @@ protected ContainerLaunchContextFactory factory;
                         for( OperatorDictionary opdd : replanned_workflow.getOperators()){
                         	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
                         }
-                        //convert WorkflowDictionary after_workflow_replanning and replanned_workflow to HashMap
-                        final_replanned_workflow = new HashMap< String, OperatorDictionary>( 32);
-                        for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
-                        	if( opawr.getName().equals( opd.getName())){
-                        		opawr.setStatus( "failed");                        		
-                        	}
-                        	final_replanned_workflow.put( opawr.getName(), opawr);
-                        }
-                        assist_workflow_replan = new HashMap< String, OperatorDictionary>( 32);
-                        for( OperatorDictionary oprw : replanned_workflow.getOperators()){
-                        	assist_workflow_replan.put( oprw.getName(), oprw);
-                        }
+
                         //since the output field of operators is empty, extract this information in another way
                         inputs = new HashMap< String, String>();
                         outputs = new HashMap< String, String>();
                         for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
-
                         	//build input output information for operators of after_workflow_replanning
                         	if( !opawr.getInput().isEmpty()){
                         		inname = "";
@@ -336,6 +324,24 @@ protected ContainerLaunchContextFactory factory;
                         for( Entry< String, String> e : outputs.entrySet()){
                         	LOG.info( "Operator " + e.getKey() + "\thas as output\t" + e.getValue());
                         }
+                        //convert WorkflowDictionary after_workflow_replanning and replanned_workflow to HashMap
+                        final_replanned_workflow = new HashMap< String, OperatorDictionary>( 32);
+                        for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
+                        	//if a failed operator has been found update its state accordingly
+                        	if( opawr.getName().equals( opd.getName())){
+                        		opawr.setStatus( "failed");                   		
+                        	}
+                        	//if an operator has been found that has as input a failed operator, then set this
+                        	//operator at the "stopped" state
+                        	if( inputs.get( opawr.getName()).contains( opd.getName())){
+                        		opawr.setStatus( "stopped");
+                        	}
+                        	final_replanned_workflow.put( opawr.getName(), opawr);
+                        }
+                        assist_workflow_replan = new HashMap< String, OperatorDictionary>( 32);
+                        for( OperatorDictionary oprw : replanned_workflow.getOperators()){
+                        	assist_workflow_replan.put( oprw.getName(), oprw);
+                        }
                         for( String operator : assist_workflow_replan.keySet()){
                         	if( assist_workflow_replan.get( operator).getIsOperator().equals( "true")){
                             	if( final_replanned_workflow.get( operator) != null){
@@ -361,9 +367,12 @@ protected ContainerLaunchContextFactory factory;
                         	}
 
                         }
-
                     	LOG.info( "REBUILT AFTER WORKFLOW REPLAN\n");
-                        for( OperatorDictionary opdd : final_replanned_workflow.values()){
+                    	WorkflowDictionary new_replanned_workflow = new WorkflowDictionary();
+                    	for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
+                    		new_replanned_workflow.addOperator( final_replanned_workflow.get( opawr.getName()));
+                    	}
+                        for( OperatorDictionary opdd : new_replanned_workflow.getOperators()){
                          	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
                         }
                         LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
