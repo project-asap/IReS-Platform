@@ -14,6 +14,7 @@ INFO
 
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
 
 echo -e "Starting data_filter.py script for Data_Filter_Spark operator ..."
 SPARK_PORT=$1

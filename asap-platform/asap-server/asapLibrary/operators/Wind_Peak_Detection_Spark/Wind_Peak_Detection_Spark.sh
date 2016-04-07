@@ -12,6 +12,8 @@ INFO
 
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
+
 echo -e "Starting peak_detection.py script ..."
 SPARK_PORT=$1
 OPERATOR=$2

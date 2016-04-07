@@ -12,6 +12,8 @@ INFO
 
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
+
 echo -e "Starting stats_publisher.py script ..."
 SPARK_PORT=$1
 OPERATOR=$2

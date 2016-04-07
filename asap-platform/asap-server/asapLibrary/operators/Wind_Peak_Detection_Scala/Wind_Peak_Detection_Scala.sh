@@ -25,6 +25,8 @@ Output: Upon successful execution the <output>/events & <output>/eventsFilter da
 
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
+
 echo -e "Starting submit.sh script for Peak_Detection_Scala operator ..."
 REGION="roma"
 TIMEFRAME="june-2015"

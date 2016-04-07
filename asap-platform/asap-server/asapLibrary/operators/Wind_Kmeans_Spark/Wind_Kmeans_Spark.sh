@@ -26,6 +26,8 @@ It stores a files “centroids<region>-<timeframe>” containing the association
 between each centroid and the user type. E.g. Centroid1->resident, etc
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
+
 echo -e "Starting clustering.py script ..."
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
 $SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 clustering.py roma 01-06-2015

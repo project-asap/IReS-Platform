@@ -13,6 +13,8 @@ INFO
 <<DESCRIPTION
 DESCRIPTION
 
+source /home/forth/asap-venv/bin/activate
+
 echo -e "Starting typical_distribution_computation.py script for Distribution_Computation_Scala operator ..."
 SPARK_PORT=$1
 OPERATOR=$2
