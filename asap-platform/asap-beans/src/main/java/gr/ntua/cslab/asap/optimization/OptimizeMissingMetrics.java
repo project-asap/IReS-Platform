@@ -4,6 +4,7 @@ import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.operators.SpecTreeNode;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
+import gr.ntua.ece.cslab.panic.core.containers.beans.MultiPoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
 
@@ -33,23 +34,22 @@ public class OptimizeMissingMetrics {
 			HashMap<String, List<Model>> models, InputSpacePoint in,
 			String policy, SpecTree optree, Operator operator) throws Exception {
 
-
 		List<RealVariable> rvs = new ArrayList<>();
-        MultiObjectiveOptimizer.missingVars.clear();
+		MultiObjectiveOptimizer.missingVars.clear();
 		HashMap<String, RealVariable> missing = new HashMap<>();
 
         /*
         *  Find all missing values from an operator configuration
         *  Configuration: Optimization.inputSpace.someVar
         * */
-        for(Entry<String, Double> e : in.getValues().entrySet()){
+		for(Entry<String, Double> e : in.getValues().entrySet()){
 			if(e.getValue()==null){
 				String[] miss = optree.getNode("Optimization.inputSpace."+e.getKey()).toString()
 						.replaceAll("\\(", "")
 						.replaceAll("\\)", "")
 						.split(",");
 
-                String missingVar = e.getKey();
+				String missingVar = e.getKey();
 
                 /*
                 * Create a MOEA RealVariable for each missing value
@@ -57,7 +57,7 @@ public class OptimizeMissingMetrics {
                  */
 				Double min = Double.parseDouble(miss[2]);
 				Double max = Double.parseDouble(miss[3]);
-                RealVariable rv = new RealVariable(min, max);
+				RealVariable rv = new RealVariable(min, max);
 
 				missing.put(missingVar, rv);
 				MultiObjectiveOptimizer.missingVars.add(missingVar);
@@ -69,6 +69,8 @@ public class OptimizeMissingMetrics {
 		if (missing.size() > 0){
 			MultiObjectiveOptimizer.variables = rvs;
 			MultiObjectiveOptimizer.isp = in;
+			MultiObjectiveOptimizer.models = models;
+			MultiObjectiveOptimizer.policy = policy;
 
 			/* Set the model to the optimizer according to the optimization policy*/
 			try {
@@ -133,24 +135,26 @@ public class OptimizeMissingMetrics {
 		}
 	}
 
-    /* */
-    protected static Solution findOptimal(){
-        NondominatedPopulation result = new Executor()
-                .withProblemClass(MultiObjectiveOptimizer.class)
-                .withAlgorithm("NSGAII")
-                .withMaxEvaluations(100)
-                .run();
 
-        Double bestTime = result.get(0).getObjective(0);
+	/* */
+	protected static Solution findOptimal(){
+		NondominatedPopulation result = new Executor()
+				.withProblemClass(MultiObjectiveOptimizer.class)
+				.withAlgorithm("NSGAII")
+				.withMaxEvaluations(100)
+				.run();
+
+		Double bestTime = result.get(0).getObjective(0);
 		Solution solution = result.get(0);
-        Double bestParam = Double.parseDouble(result.get(0).getVariable(0).toString());
+		Double bestParam = Double.parseDouble(result.get(0).getVariable(0).toString());
 
 		return solution;
-    }
+	}
 
-	protected Double computePolicyFunction(HashMap<String,Double> metrics, String policy) throws NumberFormatException, EvaluationException {
+	protected static Double computePolicyFunction(HashMap<String,Double> metrics, String policy)
+			throws NumberFormatException, EvaluationException {
 		Evaluator evaluator = new Evaluator();
-		Double res=0.0;
+		Double res;
 		String tempFunction = new String(policy);
 		for(String m : metrics.keySet()){
 			tempFunction=tempFunction.replace(m, metrics.get(m)+"");
