@@ -43,6 +43,7 @@ import org.apache.hadoop.yarn.api.records.NodeReport;
 import org.apache.hadoop.yarn.api.records.Priority;
 import org.apache.hadoop.yarn.api.records.Resource;
 import org.apache.hadoop.yarn.client.api.AMRMClient;
+import org.apache.hadoop.yarn.client.api.YarnClientApplication;
 import org.apache.hadoop.yarn.client.api.async.AMRMClientAsync;
 import org.apache.hadoop.yarn.client.api.async.NMClientAsync;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
@@ -69,6 +70,8 @@ public class ApplicationMasterServiceImpl1 extends
   private AMRMClientAsync resourceManager;
   private boolean hasRunningContainers = false;
   private Throwable throwable;
+  
+  public static boolean isReplanning = false;
 
 protected ContainerLaunchContextFactory factory;
 
@@ -135,6 +138,11 @@ protected ContainerLaunchContextFactory factory;
       if (tracker.hasRunningContainers()) {
         tracker.kill();
       }
+    }
+    if( isReplanning){
+    	//the containers have been stopped and now new ones are needed for the new trackers
+    	LOG.info("APPLICATION MASTER SERVICE -> REPLANNING");
+    	//start();
     }
     FinalApplicationStatus status;
     String message = null;

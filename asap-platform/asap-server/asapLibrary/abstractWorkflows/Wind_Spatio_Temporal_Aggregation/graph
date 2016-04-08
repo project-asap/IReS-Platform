@@ -2,4 +2,6 @@ cdr_data,Wind_Spatio_Temporal_Aggregation
 Wind_Spatio_Temporal_Aggregation,d1
 d1,Wind_Statistics_Publisher
 Wind_Statistics_Publisher,d2
-d2,$$target
+d2,WebLyzard_Uploader
+WebLyzard_Uploader,d3
+d3,$$target

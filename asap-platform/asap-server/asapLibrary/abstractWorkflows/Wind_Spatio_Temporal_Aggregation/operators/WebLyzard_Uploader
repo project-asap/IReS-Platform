@@ -1,0 +1,3 @@
+Constraints.Input.number = 1
+Constraints.OpSpecification.Algorithm.name = WebLyzard_Uploader
+Constraints.Output.number = 1

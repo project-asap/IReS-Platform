@@ -81,7 +81,6 @@ public class WorkflowService extends
   private Throwable throwable;
   public HashMap< String, String> services_n_status = null;
   public HashMap< String, String> replanned_operators = null;
-  private HashMap<String,ContainerTracker> replanned_trackers = null;
   
 protected ContainerLaunchContextFactory factory;
 
@@ -191,9 +190,7 @@ protected ContainerLaunchContextFactory factory;
 	List< String> loutput = null;
 	ListIterator< String> lis = null;
 	OperatorDictionary opdic = null;
-	HashMap<String, ContainerTracker> newTrackers = null;
 	HashMap< String, String> inputs = null;
-	HashMap< String, String> outputs = null;
 	HashMap< String, OperatorDictionary> final_replanned_workflow = null;
 	HashMap< String, OperatorDictionary> assist_workflow_replan = null;
 	WorkflowDictionary replanned_workflow = null;
@@ -240,6 +237,7 @@ protected ContainerLaunchContextFactory factory;
 	                    }
                     }
                     if( replan){
+                    	ApplicationMasterServiceImpl1.isReplanning = true;
                     	//this operator has been failed so mark it
                     	opd.setStatus( "failed");
                         replanned_operators.put( opd.getName(), "true");
@@ -291,7 +289,6 @@ protected ContainerLaunchContextFactory factory;
 
                         //since the output field of operators is empty, extract this information in another way
                         inputs = new HashMap< String, String>();
-                        outputs = new HashMap< String, String>();
                         for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
                         	//build input output information for operators of after_workflow_replanning
                         	if( !opawr.getInput().isEmpty()){
@@ -300,39 +297,25 @@ protected ContainerLaunchContextFactory factory;
                         		while( lis.hasNext()){
                         			outname = lis.next();
                         			inname += outname + "$";
-                        			outputs.put( outname, opawr.getName());
                         		}
                         		inputs.put( opawr.getName(), inname);
                         	}
                         }
-                        for( OperatorDictionary oprw : replanned_workflow.getOperators()){
-                        	//build input output information for operators replanned_workflow
-                        	if( !oprw.getInput().isEmpty()){
-                        		inname = "";
-                        		lis = oprw.getInput().listIterator();
-                        		while( lis.hasNext()){
-                        			outname = lis.next();
-                        			inname += outname + "$";
-                        			outputs.put( outname, oprw.getName());
-                        		}
-                        		inputs.put( oprw.getName(), inname);
-                        	}
-                        }
                         for( Entry< String, String> e : inputs.entrySet()){
                         	LOG.info( "Inputs of operator " + e.getKey() + "\tare\t" + e.getValue());
-                        }
-                        for( Entry< String, String> e : outputs.entrySet()){
-                        	LOG.info( "Operator " + e.getKey() + "\thas as output\t" + e.getValue());
                         }
                         //convert WorkflowDictionary after_workflow_replanning and replanned_workflow to HashMap
                         final_replanned_workflow = new HashMap< String, OperatorDictionary>( 32);
                         for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
                         	//if a failed operator has been found update its state accordingly
                         	if( opawr.getName().equals( opd.getName())){
-                        		opawr.setStatus( "failed");                   		
+                        		opawr.setStatus( "failed");
                         	}
                         	//if an operator has been found that has as input a failed operator, then set this
                         	//operator at the "stopped" state
+                            if( inputs.get( opawr.getName()) == null){
+                                LOG.info( "1. OPERATOR NAME:" + opawr.getName());
+                            }
                         	if( inputs.get( opawr.getName()) != null && inputs.get( opawr.getName()).contains( opd.getName())){
                         		opawr.setStatus( "stopped");
                         	}
@@ -350,42 +333,100 @@ protected ContainerLaunchContextFactory factory;
                             		if( !opdic.getStatus().equals( "completed")){
                             			//update the status of the operator with the new one from replanning
                             			opdic.setStatus( assist_workflow_replan.get( operator).getStatus());
-                            			//remove the old inputs and outputs of this operator and then add the
-                            			//ones from the replanned workflow
-                            			lis = final_replanned_workflow.get( operator).getInput().listIterator();
-                            			while( lis.hasNext()){
-                            				final_replanned_workflow.remove( lis.next());
-                            			}
-                            			lis = final_replanned_workflow.get( operator).getOutputs().listIterator();
-                            			while( lis.hasNext()){
-                            				final_replanned_workflow.remove( lis.next());
-                            			}
-                            			opdic.setInput( assist_workflow_replan.get( operator).getInput());
-                            			opdic.setOutputs( assist_workflow_replan.get( operator).getOutputs());
+                            			//update old inputs and outputs of this operator
+                                        LOG.info( "1.2 OPERATOR NAME:" + opdic.getName() + "\twith status " + opdic.getStatus());
+                                        if( opdic.getStatus().equals( "running")){
+                                            //in order to issue a container for an operator, operator status should be "warn"
+                                            opdic.setStatus( "warn");
+                                            //update input
+                                            lis = final_replanned_workflow.get( operator).getInput().listIterator();
+                                            while( lis.hasNext()){
+                                                inname = lis.next();
+                                                final_replanned_workflow.get( inname).setStatus( "warn");
+                                            }
+                                            //update output
+                                            for( String out : inputs.keySet()){
+                                                if( inputs.get( out).contains( opdic.getName())){
+                                                    LOG.info( "INPUT: " + out + "\tOPERATOR: " + opdic.getName());
+                                                    final_replanned_workflow.get( out).setStatus( "warn");
+                                                }
+                                            }
+                                            //"upload" the updated operator
+                                            final_replanned_workflow.put( operator, opdic);
+                                        }
                             		}
-                            	}                        		
+                            	}
                         	}
-
                         }
                     	LOG.info( "REBUILT AFTER WORKFLOW REPLAN\n");
                     	WorkflowDictionary new_replanned_workflow = new WorkflowDictionary();
                     	for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
-                    		new_replanned_workflow.addOperator( final_replanned_workflow.get( opawr.getName()));
+                            LOG.info( "AFTER WORKFLOW REPLANNING: " + opawr.getName() + "\twith status " + opawr.getStatus());
+                        }
+                    	for( String s : final_replanned_workflow.keySet()){
+                            LOG.info( "FINAL REPLANNED WORKFLOW: " + final_replanned_workflow.get( s).getName() + "\twith status " + final_replanned_workflow.get( s).getStatus());
+                        }
+                    	for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
+                            if( final_replanned_workflow.get( opawr.getName()) == null){
+                                LOG.info( "2. OPERATOR NAME:" + opawr.getName());
+                            }
+                            if( final_replanned_workflow.get( opawr.getName()) != null){
+                                opdic = final_replanned_workflow.get( opawr.getName());
+                                //make the final updates and produce the final workflow
+                                if( opdic.getStatus().equals( "failed")){
+                                    //update input
+                                    lis = final_replanned_workflow.get( opawr.getName()).getInput().listIterator();
+                                    LOG.info( "FAILED!");
+                                    while( lis.hasNext()){
+                                        inname = lis.next();
+                                        LOG.info( "FAILED INPUT: " + inname + "\twith status " + final_replanned_workflow.get( inname).getStatus());
+                                        final_replanned_workflow.get( inname).setStatus( "stopped");
+                                    }
+                                    //update output
+                                    for( String out : inputs.keySet()){
+                                        if( inputs.get( out).contains( opdic.getName())){
+                                            final_replanned_workflow.get( out).setStatus( "stopped");
+                                        }
+                                    }
+                                    //"upload" the updated operator
+                                    final_replanned_workflow.put( opawr.getName(), opdic);
+                                }
+                    		    new_replanned_workflow.addOperator( final_replanned_workflow.get( opawr.getName()));
+                            }
                     	}
                         for( OperatorDictionary opdd : new_replanned_workflow.getOperators()){
-                         	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+                         	LOG.info( "NEW REPLANNED WORKFLOW: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
                         }
                         LOG.info( "CURRENT TRACKERS AFTER REPLANNING: " + trackers);
-                        newTrackers = parameters.createTrackers( this);
-                        LOG.info( "NEW TRACKERS AFTER REPLANNING: " + newTrackers);
-                    }
-                }
-            }
-        }
-    }
+                        //update workflow to execute
+                        parameters.workflow = new_replanned_workflow;
+                    }//end of if( replan)
+                }//end of if( services_n_status.get( service).toString().equals( "true")) but else part
+            }//end of if( service != null)
+        }//end of if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true"))
+        //since one operator failed and replan has been requested there is no reason to search for other failed
+        //operators since the replan returns a "global" plan
+        break;
+    }//end of for( OperatorDictionary opd : parameters.workflow.getOperators()){
 
-    if (totalFailures.get() > parameters.getAllowedFailures() ||
-        allTrackersFinished()) {
+    if( ApplicationMasterServiceImpl1.isReplanning){
+    	//call stop to stop running containers and build new ones
+    	LOG.info( "BUILDING NEW TRACKERS");
+    	//stop();
+	    for ( Entry<String, ContainerLaunchParameters> e : parameters.getContainerLaunchParameters().entrySet()) {
+	    	ContainerTracker tracker = new ContainerTracker( this, e.getValue());
+	    	trackers.put(e.getKey(),tracker);
+	    }
+	    LOG.info("Trackers: " + trackers);
+	    
+	    for(Entry<String, ContainerTracker> e : trackers.entrySet()){
+	    	for(String in : parameters.workflow.getOperator(e.getKey()).getInput()){
+	    		parameters.addTrackerDependencyRecursive( in, e.getKey(), trackers);
+	    	}
+	    }
+        LOG.info( "NEW TRACKERS AFTER REPLANNING: " + trackers);
+    }
+    if (totalFailures.get() > parameters.getAllowedFailures() || allTrackersFinished()) {
       stop();
     }
   }

@@ -232,7 +232,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		return trackers;
 	}
 	
-	private void addTrackerDependencyRecursive(String in, String out, HashMap<String, ContainerTracker> trackers){
+	public void addTrackerDependencyRecursive(String in, String out, HashMap<String, ContainerTracker> trackers){
 		ContainerTracker outTracker = trackers.get(out);
 		ContainerTracker inTracker = trackers.get(in);
 		OperatorDictionary inOp = workflow.getOperator(in);
