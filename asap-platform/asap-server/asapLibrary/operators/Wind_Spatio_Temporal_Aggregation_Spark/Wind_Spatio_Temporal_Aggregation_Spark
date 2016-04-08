@@ -60,6 +60,6 @@ Execution.Argument5=june-july-2015
 #copy input to operator's local folder to use it
 #Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=/timeseriesroma-june-july-2015-aree_roma.csv
+Execution.copyFromLocal=timeseriesroma-june-july-2015-aree_roma.csv
 #EXECUTION OUTPUT( mandatory)
 Execution.Output0.path=$HDFS_OP_DIR/timeseriesroma-june-july-2015-aree_roma.csv

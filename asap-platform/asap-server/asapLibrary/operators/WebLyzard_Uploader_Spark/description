@@ -52,8 +52,9 @@ Execution.LuaScript=WebLyzard_Uploader_Spark.lua
 #EXECUTION ARGUMENTS( optional)
 Execution.Arguments.number=3
 Execution.Argument0=spark://131.114.136.218:7077
-Execution.Argument1=visualization/upload.py
-Execution.Argument2=the_password
+Execution.Argument1=upload.py
+Execution.Argument2=In0.path
+Execution.Argument3=the_password
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path

@@ -40,7 +40,7 @@ operator = yarn {
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
-    			["visualization/upload.py"] = {
+    			["upload.py"] = {
 					file = OPERATOR_HOME .. "/visualization/upload.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
