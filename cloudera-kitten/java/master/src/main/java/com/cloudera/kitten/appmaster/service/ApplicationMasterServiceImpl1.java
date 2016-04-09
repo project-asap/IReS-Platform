@@ -70,8 +70,7 @@ public class ApplicationMasterServiceImpl1 extends
   private AMRMClientAsync resourceManager;
   private boolean hasRunningContainers = false;
   private Throwable throwable;
-  
-  public static boolean isReplanning = false;
+ 
 
 protected ContainerLaunchContextFactory factory;
 
@@ -139,11 +138,7 @@ protected ContainerLaunchContextFactory factory;
         tracker.kill();
       }
     }
-    if( isReplanning){
-    	//the containers have been stopped and now new ones are needed for the new trackers
-    	LOG.info("APPLICATION MASTER SERVICE -> REPLANNING");
-    	//start();
-    }
+ 
     FinalApplicationStatus status;
     String message = null;
     if (state() == State.FAILED || totalFailures.get() > parameters.getAllowedFailures()) {

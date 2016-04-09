@@ -128,7 +128,49 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		this.jobName = jobName;
   }
   
-  private static Map<String, URI> loadLocalToUris() {
+  public WorkflowParameters( WorkflowDictionary wd, String jobName, Configuration conf, Map<String, Object> extras, Map<String, URI> localToUris) throws Exception {
+	  
+	    this.env = new HashMap<String,LuaWrapper>();
+		HashMap<String,String> operators = new HashMap<String, String>();
+
+		workflow.setName( jobName);
+		
+		materializedWorkflow = new MaterializedWorkflow1( workflow.getName(), "/tmp");
+		materializedWorkflow.readFromWorkflowDictionary(workflow);
+		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
+		
+		for(OperatorDictionary op : workflow.getOperators()){
+			if(op.getIsOperator().equals("true") && op.getStatus().equals("warn")){
+				op.setExecTime("");
+				operators.put(op.getName(), op.getName()+".lua");
+			}
+		}
+		for(OperatorDictionary op : workflow.getOperators()){
+			if(op.getStatus().equals("warn") && op.getInput().isEmpty()){
+				//we are dealing with the first dataset of the workflow which
+				//has not have an input i.e. op.getInput().isEmpty() is true
+				op.setStatus("completed");
+				workflow.setOutputsRunning(op.getName(), "completed");
+			}
+		}
+		LOG.info("Operators: "+operators);
+		
+		int i =0;
+		//LuaWrapper l = new LuaWrapper("BasicLuaConf.lua", loadExtras(extras)).getTable("operator");
+		for(Entry<String, String> e : operators.entrySet()){
+			LuaWrapper l = new LuaWrapper(e.getValue(), loadExtras(extras)).getTable("operator");
+			if(i==0)
+				this.e0=l;
+			i++;
+			this.env.put(e.getKey(),l);
+		}
+		this.conf = conf;
+		this.localToUris = localToUris;
+		this.hostname = NetUtils.getHostname();
+		this.jobName = jobName;
+}
+  
+  public static Map<String, URI> loadLocalToUris() {
     Map<String, String> e = System.getenv();
     if (e.containsKey(LuaFields.KITTEN_LOCAL_FILE_TO_URI)) {
       return LocalDataHelper.deserialize(e.get(LuaFields.KITTEN_LOCAL_FILE_TO_URI));
@@ -191,6 +233,8 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 	  HashMap<String,ContainerLaunchParameters> clp = new HashMap<String, ContainerLaunchParameters>();
 	  int i =0;
 	  for(Entry<String,LuaWrapper> e : this.env.entrySet()){
+		  	LOG.info( "getContainerLP:\tkey " + e.getKey() + "\tvalue " + e.getValue());
+		  	LOG.info( "Cond1: " + e.getValue().isNil(LuaFields.CONTAINERS));
 		    if (!e.getValue().isNil(LuaFields.CONTAINERS)) {
 		      Iterator<LuaPair> iter = e.getValue().getTable(LuaFields.CONTAINERS).arrayIterator();
 		      while (iter.hasNext()) {
@@ -236,6 +280,10 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		ContainerTracker outTracker = trackers.get(out);
 		ContainerTracker inTracker = trackers.get(in);
 		OperatorDictionary inOp = workflow.getOperator(in);
+		LOG.info( "OUTTARCKER: " + outTracker);
+		LOG.info( "INTRACKER: " + inTracker);
+		LOG.info( "IN OPERATOR: " + inOp.getName() + "\twith status " + inOp.getStatus() + "\thas inputs " + inOp.getInput());
+		LOG.info( "OUT OPERATOR: " + out);
 		if(inOp.getStatus().equals("stopped"))
 			return;
 		if(inOp.getIsOperator().equals("true")){
