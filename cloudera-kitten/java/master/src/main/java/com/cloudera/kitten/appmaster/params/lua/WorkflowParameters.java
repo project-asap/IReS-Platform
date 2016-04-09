@@ -81,6 +81,10 @@ public class WorkflowParameters implements ApplicationMasterParameters {
     this(script, jobName, conf, ImmutableMap.<String, Object>of());
   }
   
+  public WorkflowParameters( WorkflowDictionary wd, String jobName, Configuration conf) throws Exception{
+	    this( wd, jobName, conf, ImmutableMap.<String, Object>of(), loadLocalToUris());
+  }
+  
   public WorkflowParameters(String script, String jobName, Configuration conf, Map<String, Object> extras) throws Exception {
     this(script, jobName, conf, extras, loadLocalToUris());
   }
@@ -133,10 +137,11 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 	    this.env = new HashMap<String,LuaWrapper>();
 		HashMap<String,String> operators = new HashMap<String, String>();
 
+		workflow = wd;
 		workflow.setName( jobName);
 		
 		materializedWorkflow = new MaterializedWorkflow1( workflow.getName(), "/tmp");
-		materializedWorkflow.readFromWorkflowDictionary(workflow);
+		materializedWorkflow.readFromWorkflowDictionary( workflow);
 		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
 		
 		for(OperatorDictionary op : workflow.getOperators()){
@@ -170,7 +175,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		this.jobName = jobName;
 }
   
-  public static Map<String, URI> loadLocalToUris() {
+  private static Map<String, URI> loadLocalToUris() {
     Map<String, String> e = System.getenv();
     if (e.containsKey(LuaFields.KITTEN_LOCAL_FILE_TO_URI)) {
       return LocalDataHelper.deserialize(e.get(LuaFields.KITTEN_LOCAL_FILE_TO_URI));

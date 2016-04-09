@@ -54,6 +54,7 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 import com.cloudera.kitten.ContainerLaunchParameters;
 import com.cloudera.kitten.appmaster.AbstractClient;
+import com.cloudera.kitten.appmaster.ApplicationMaster;
 import com.cloudera.kitten.appmaster.ApplicationMasterParameters;
 import com.cloudera.kitten.appmaster.ApplicationMasterService;
 import com.cloudera.kitten.appmaster.params.lua.WorkflowParameters;
@@ -64,7 +65,6 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
-import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 
 public class WorkflowService extends
     AbstractScheduledService implements ApplicationMasterService,
@@ -189,7 +189,7 @@ protected ContainerLaunchContextFactory factory;
   	String service = null;
 	String[] response = null;
 	boolean replan = false;
-	WorkflowDictionary new_replanned_workflow = null;
+	//WorkflowDictionary new_replanned_workflow = null;
 
 	AbstractClient.issueRequest(conf, parameters.jobName, parameters.workflow);
     response = AbstractClient.issueRequestClusterStatus( conf).split( "\n");
@@ -228,20 +228,10 @@ protected ContainerLaunchContextFactory factory;
 	                    }
                     }
                     if( replan){
-                    	isReplanning = true;
-                    	new_replanned_workflow = reBuildPlan( opd);
-                    	LOG.info("Stopping trackers");
-                        this.hasRunningContainers = false;
-
-                        for (ContainerTracker tracker : trackers.values()) {
-                          if (tracker.hasRunningContainers()) {
-                            tracker.kill();
-                          }
-                        }
-                    	//update workflow parameters
-                    	WorkflowParameters new_parameters = new WorkflowParameters( new_replanned_workflow, parameters.jobName, conf, ImmutableMap.<String, Object>of(), WorkflowParameters.loadLocalToUris());
-                        WorkflowService new_service = new WorkflowService(new_parameters, conf);
-                        new_service.startAndWait();
+                    	ApplicationMaster.isReplanning = true;
+                    	ApplicationMaster.new_replanned_workflow = reBuildPlan( opd);
+                    	stop();
+                    	
                     	//since one operator failed and replan has been requested there is no reason to search for other
                         //failed operators since the replan returns a "global" plan
                         break;

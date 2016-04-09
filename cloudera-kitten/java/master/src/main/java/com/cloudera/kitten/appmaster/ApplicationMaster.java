@@ -28,6 +28,9 @@ import com.cloudera.kitten.appmaster.params.lua.WorkflowParameters;
 import com.cloudera.kitten.appmaster.service.ApplicationMasterServiceImpl;
 import com.cloudera.kitten.appmaster.service.WorkflowService;
 import com.cloudera.kitten.lua.LuaFields;
+import com.google.common.collect.ImmutableMap;
+
+import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 
 /**
  * A simple ApplicationMaster to use when there isn't any master logic that is required to run.
@@ -35,6 +38,8 @@ import com.cloudera.kitten.lua.LuaFields;
 public class ApplicationMaster extends Configured implements Tool {
 
   private static final Log logger = LogFactory.getLog( ApplicationMaster.class);
+  public static boolean isReplanning = false;
+  public static WorkflowDictionary new_replanned_workflow = null;
 
   @Override
   public int run(String[] args) throws Exception {
@@ -61,11 +66,21 @@ public class ApplicationMaster extends Configured implements Tool {
           logger.info( "Workflow parameters and service have been set!" );
           System.out.println( "Starting workflow parameters and service ..." );
           logger.info( "Starting workflow parameters and service ..." );
-			service.startAndWait();
-			while (service.hasRunningContainers()) {
-			  Thread.sleep(1000);
-			}
-			service.stopAndWait();
+          service.startAndWait();
+          while (service.hasRunningContainers()) {
+        	  Thread.sleep(1000);
+          }
+          if( isReplanning){
+        	  isReplanning = true;
+        	  //update workflow parameters
+        	  params = new WorkflowParameters( new_replanned_workflow, params.jobName, getConf());
+        	  service = new WorkflowService( params,getConf());
+        	  service.startAndWait();
+          }
+          while (service.hasRunningContainers()) {
+        	  Thread.sleep(1000);
+          }
+          service.stopAndWait();
 	  }
 
 	  return 0;
