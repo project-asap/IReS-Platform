@@ -89,7 +89,7 @@ public class WorkflowService extends
 protected ContainerLaunchContextFactory factory;
 
   public WorkflowService(WorkflowParameters parameters, Configuration conf) {
-	  this.trackers = new HashMap<String, ContainerTracker>();
+	this.trackers = new HashMap<String, ContainerTracker>();
     this.parameters = Preconditions.checkNotNull(parameters);
     this.conf = new YarnConfiguration(conf);
     this.prior=1;
@@ -113,15 +113,28 @@ protected ContainerLaunchContextFactory factory;
     this.resourceManager.start();
 
     RegisterApplicationMasterResponse registration;
-    try {
-      registration = resourceManager.registerApplicationMaster(
-          parameters.getHostname(),
-          parameters.getClientPort(),
-          parameters.getTrackingUrl());
-    } catch (Exception e) {
-      LOG.error("Exception thrown registering application master", e);
-      stop();
-      return;
+    if( !ApplicationMaster.isReplanning){
+        try {
+            registration = resourceManager.registerApplicationMaster(
+                    parameters.getHostname(),
+                    parameters.getClientPort(),
+                    parameters.getTrackingUrl());
+        } catch (Exception e) {
+            LOG.error("Exception thrown registering application master", e);
+            stop();
+            return;
+        }
+        ApplicationMaster.initial_registration = registration;
+    }
+    else{
+        if( ApplicationMaster.initial_registration != null){
+            registration = ApplicationMaster.initial_registration;
+        }
+        else{
+            LOG.info( "There wasn't any valid registration of ApplicationMaster!");
+            stop();
+            return;
+        }
     }
 
     factory = new ContainerLaunchContextFactory(
@@ -146,6 +159,9 @@ protected ContainerLaunchContextFactory factory;
     trackers.get("Move_MySQL_HBase").init(factory);*/
 
     this.hasRunningContainers = true;
+    if( ApplicationMaster.isReplanning){
+        ApplicationMaster.isReplanning = false;
+    }
   }
 
   @Override

@@ -144,7 +144,11 @@ public class OperatorDictionary {
 		int engine_index = 0;
 
 		description = this.getDescription();
+		//to ensure that the property "Constraints.Engine=OperatorEngine" will be
+		//at this format and not any else like "Constraints.Engine = OperatorEngine"
         description = description.replaceAll( " ", "" );
+        //in case description comes in an html format
+        description = description.replaceAll( "<br>", "\n" );
         //System.out.println( "Description\n\n" + description);
 		engine_index = description.indexOf( "Constraints.Engine=");
         //System.out.println( "Engine index " + engine_index);

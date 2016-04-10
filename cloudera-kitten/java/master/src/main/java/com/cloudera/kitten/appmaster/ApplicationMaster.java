@@ -31,6 +31,7 @@ import com.cloudera.kitten.lua.LuaFields;
 import com.google.common.collect.ImmutableMap;
 
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import org.apache.hadoop.yarn.api.protocolrecords.RegisterApplicationMasterResponse;
 
 /**
  * A simple ApplicationMaster to use when there isn't any master logic that is required to run.
@@ -40,6 +41,7 @@ public class ApplicationMaster extends Configured implements Tool {
   private static final Log logger = LogFactory.getLog( ApplicationMaster.class);
   public static boolean isReplanning = false;
   public static WorkflowDictionary new_replanned_workflow = null;
+  public static RegisterApplicationMasterResponse initial_registration = null;
 
   @Override
   public int run(String[] args) throws Exception {
@@ -70,17 +72,17 @@ public class ApplicationMaster extends Configured implements Tool {
           while (service.hasRunningContainers()) {
         	  Thread.sleep(1000);
           }
-          if( isReplanning){
-        	  isReplanning = true;
+          service.stopAndWait();
+          while( isReplanning){
         	  //update workflow parameters
         	  params = new WorkflowParameters( new_replanned_workflow, params.jobName, getConf());
         	  service = new WorkflowService( params,getConf());
         	  service.startAndWait();
+              while (service.hasRunningContainers()) {
+                  Thread.sleep(1000);
+              }
+              service.stopAndWait();
           }
-          while (service.hasRunningContainers()) {
-        	  Thread.sleep(1000);
-          }
-          service.stopAndWait();
 	  }
 
 	  return 0;
