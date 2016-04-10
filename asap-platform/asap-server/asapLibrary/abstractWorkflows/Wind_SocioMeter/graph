@@ -1,9 +1,8 @@
 cdr_data,Wind_User_Profiling
-Wind_User_Profiling,d1,0
-Wind_User_Profiling,d1,1
-d1,Wind_Kmeans
+Wind_User_Profiling,d1
+d1,Wind_Kmeans,0
 Wind_Kmeans,d2
-d1,Wind_Stereotype_Classification
-d2,Wind_Stereotype_Classification
+d1,Wind_Stereotype_Classification,0
+d2,Wind_Stereotype_Classification,1
 Wind_Stereotype_Classification,d3
 d3,$$target
