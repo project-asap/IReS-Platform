@@ -149,11 +149,11 @@ public class OperatorDictionary {
         description = description.replaceAll( " ", "" );
         //in case description comes in an html format
         description = description.replaceAll( "<br>", "\n" );
-        //System.out.println( "Description\n\n" + description);
+        //logger.info( "Description\n\n" + description);
 		engine_index = description.indexOf( "Constraints.Engine=");
-        //System.out.println( "Engine index " + engine_index);
+		logger.info( "Engine index " + engine_index);
 		if( engine_index == -1){
-			logger.info( "Operator " + name + "has not any engine specified.");
+			//logger.info( "Operator " + name + "has not any engine specified.");
 			return null;
 		}
 		//engine = Constraints.Engine=OperatorEngine

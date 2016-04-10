@@ -113,6 +113,7 @@ protected ContainerLaunchContextFactory factory;
     this.resourceManager.start();
 
     RegisterApplicationMasterResponse registration;
+    //has the ApplicationMaster been registered already?
     if( !ApplicationMaster.isReplanning){
         try {
             registration = resourceManager.registerApplicationMaster(
@@ -159,6 +160,9 @@ protected ContainerLaunchContextFactory factory;
     trackers.get("Move_MySQL_HBase").init(factory);*/
 
     this.hasRunningContainers = true;
+    //if this WorkflowService created due to a replanning, at this point the replanning
+    //has been completed and thus the ApplicationMaster should not be at "replanning" state
+    //any longer
     if( ApplicationMaster.isReplanning){
         ApplicationMaster.isReplanning = false;
     }

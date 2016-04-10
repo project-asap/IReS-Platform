@@ -17,7 +17,8 @@ source /home/forth/asap-venv/bin/activate
 echo -e "Starting weblyzard uploader script ..."
 SPARK_PORT=$1
 OPERATOR=$2
-PASSWORD=$3
+JSON=$3
+PASSWORD=$4
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
 $SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $JSON $PASSWORD > response_status
 
