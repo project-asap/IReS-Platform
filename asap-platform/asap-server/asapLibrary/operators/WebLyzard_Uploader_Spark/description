@@ -53,7 +53,7 @@ Execution.LuaScript=WebLyzard_Uploader_Spark.lua
 Execution.Arguments.number=4
 Execution.Argument0=spark://131.114.136.218:7077
 Execution.Argument1=upload.py
-Execution.Argument2=In0.path
+Execution.Argument2=wl_timeseries-roma-june-july-2015-aree_roma-area_presence.json
 Execution.Argument3=the_password
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it

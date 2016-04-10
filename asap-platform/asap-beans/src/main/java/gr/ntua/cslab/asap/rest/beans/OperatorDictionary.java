@@ -149,7 +149,7 @@ public class OperatorDictionary {
         description = description.replaceAll( " ", "" );
         //in case description comes in an html format
         description = description.replaceAll( "<br>", "\n" );
-        //logger.info( "Description\n\n" + description);
+        logger.info( "Description\n\n" + description);
 		engine_index = description.indexOf( "Constraints.Engine=");
 		logger.info( "Engine index " + engine_index);
 		if( engine_index == -1){
