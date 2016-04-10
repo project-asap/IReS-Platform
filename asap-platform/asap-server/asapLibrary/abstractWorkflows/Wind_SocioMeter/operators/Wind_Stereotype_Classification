@@ -18,6 +18,6 @@
 #OPERATOR
 Constraints.OpSpecification.Algorithm.name=stereotype_classification
 #INPUT( mandatory)
-Constraints.Input.number=1
+Constraints.Input.number=2
 #OUTPUT( mandatory)
 Constraints.Output.number=1

@@ -49,17 +49,16 @@ Optimization.cost=1.0
 #LUA CONFIGURATION FILE( mandatory)
 Execution.LuaScript=Kmeans_Spark.lua
 #EXECUTION ARGUMENTS( optional)
-Execution.Arguments.number=5
-Execution.Argument0=roma
-Execution.Argument1=06-2015
-Execution.Argument2=archetipi.csv
-Execution.Argument3=100
-Execution.Argument4=0.4
+Execution.Arguments.number=4
+Execution.Argument0=spark://131.114.136.218:7077
+Execution.Argument1=clustering.py
+Execution.Argument2=roma
+Execution.Argument3=01-06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 #Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=centroids/roma-06-2015.p
+#Execution.copyFromLocal=/centroids-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/centroids/roma-06-2015.p
-Execution.Output0.path=centroids/roma-06-2015.p
+Execution.Output0.path=/centroids-roma-06-2015

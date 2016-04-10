@@ -138,15 +138,15 @@ protected ContainerLaunchContextFactory factory;
         }
     }
 
-    factory = new ContainerLaunchContextFactory(
-        registration.getMaximumResourceCapability());
+    factory = new ContainerLaunchContextFactory( registration.getMaximumResourceCapability());
 
     trackers = parameters.createTrackers(this);
 
     for(ContainerTracker t : trackers.values()){
+    	LOG.info( "Tracker to initialize: " + t);
 	    t.init(factory);
     }
-
+    LOG.info( "All trackers has been initialized: " + trackers);
     /*for ( Entry<String, ContainerLaunchParameters> e : parameters.getContainerLaunchParameters().entrySet()) {
     	ContainerTracker tracker = new ContainerTracker(e.getValue());
     	LOG.info("Operator: " + e.getKey());
@@ -248,6 +248,7 @@ protected ContainerLaunchContextFactory factory;
 	                    }
                     }
                     if( replan){
+                    	LOG.info( "ApplicationMaster got in at 'replanning' state");
                     	ApplicationMaster.isReplanning = true;
                     	ApplicationMaster.new_replanned_workflow = reBuildPlan( opd);
                     	stop();
@@ -361,7 +362,6 @@ protected ContainerLaunchContextFactory factory;
 	String inname = "";
 	String outname = "";
 	List< String> linput = null;
-	List< String> loutput = null;
 	ListIterator< String> lis = null;
 	OperatorDictionary opdic = null;
 	HashMap< String, String> inputs = null;

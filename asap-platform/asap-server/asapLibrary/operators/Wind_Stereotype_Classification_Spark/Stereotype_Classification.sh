@@ -2,8 +2,8 @@
 
 <<INFO
 Author				: Papaioannou Vassilis
-Last update			: 29/ 01/ 2016 
-Previous updates	: none
+Last update			: 10/ 04/ 2016
+Previous updates	: 29/ 01/ 2016
 Host System			: Ubuntu
 Hadoop				: 2.7.1
 INFO
@@ -23,8 +23,11 @@ DESCRIPTION
 
 source /home/forth/asap-venv/bin/activate
 
-echo -e "Starting user_annotation.py script ..."
-
+echo -e "Starting stereo_type_classification.py script ..."
+SPARK_PORT=$1
+OPERATOR=$2
+REGION=$3
+TIMEFRAME=$4
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
-$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 stereo_type_classification.py roma 01-06-2015
-echo -e "... user_annotation.py script ended"
+$SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $REGION $TIMEFRAME
+echo -e "... stereo_type_classification.py script ended"

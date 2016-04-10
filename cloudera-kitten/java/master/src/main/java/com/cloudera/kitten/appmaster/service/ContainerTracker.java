@@ -45,7 +45,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
 	private long startTime;
     
     public ContainerTracker(WorkflowService service, ContainerLaunchParameters parameters) {
-    	this.service = service;
+      this.service = service;
       this.params = parameters;
       this.nextTrackers = new ArrayList<ContainerTracker>();
       this.previousTrackers = new ArrayList<ContainerTracker>();
@@ -70,6 +70,8 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	
     	for(ContainerTracker tracker : previousTrackers){
     		if(tracker.needsContainers()){
+    			LOG.info( "Checking if tracker has finished: " + tracker);
+                LOG.info( "Needs containers: " + tracker.needsContainers());
     			ret=false;
     			break;
     		}
@@ -79,6 +81,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
     
     public void init(ContainerLaunchContextFactory factory) throws IOException {
+    	LOG.info( "Are all previous containers finished: " + allPreviousFinished());
     	if(!allPreviousFinished())
     		return;
     	service.parameters.workflow.getOperator(params.getName()).setStatus("running");
@@ -127,14 +130,16 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	          false, //true for relaxed locality
     	          "");
       }
-      
+      LOG.info( "Container request is: " + containerRequest);
       this.containerRequests = new ArrayList<AMRMClient.ContainerRequest>();
       //restartResourceManager();
       for (int j = 0; j < numInstances; j++) {
     	  service.resourceManager.addContainerRequest(containerRequest);
     	  containerRequests.add(containerRequest);
       }
-
+      LOG.info( "NumInstances is: " + numInstances);
+      LOG.info( "ResourceManager: " + service.resourceManager);
+      
       needed.set(numInstances);
     }
 
@@ -261,7 +266,8 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
 
     public void kill() {
       for (Container c : containers.values()) {
-        nodeManager.stopContainerAsync(c.getId(), c.getNodeId());
+    	  LOG.info( "Killing container: " + c.getId() + "\tat node: " + c.getNodeId());
+    	  nodeManager.stopContainerAsync(c.getId(), c.getNodeId());
       }
     }
 

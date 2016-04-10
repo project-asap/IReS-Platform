@@ -2,8 +2,8 @@
 
 <<INFO
 Author				: Papaioannou Vassilis
-Last update			: 29/ 01/ 2016 
-Previous updates	: none
+Last update			: 10/ 04/ 2016
+Previous updates	: 29/ 01/ 2016
 Host System			: Ubuntu
 Hadoop				: 2.7.1
 INFO
@@ -35,7 +35,12 @@ DESCRIPTION
 source /home/forth/asap-venv/bin/activate
 
 echo -e "Starting user_profiling.py script ..."
-
+SPARK_PORT=$1
+OPERATOR=$2
+DATASET=$3
+IN_FILE=$4
+REGION=$5
+TIMEFRAME=$6
 SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
-$SPARK_HOME/bin/spark-submit --master spark://131.114.136.218:7077 user_profiling.py hdfs:///dataset_simulated/06/1.csv aree_roma.csv roma 01-06-2015
+$SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $DATASET $IN_FILE $REGION $TIMEFRAME
 echo -e "... user_profiling.py script ended"

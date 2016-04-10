@@ -20,8 +20,9 @@ SPARK_PORT=$1
 OPERATOR=$2
 REGION=$3
 TIMEFRAME=$4
-SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
-$SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $REGION $TIMEFRAME
 REGION="roma"
 TIMEFRAME="june-2015"
+SPARK_HOME=/home/forth/asap4all/spark-1.5.2-bin-hadoop2.6
+$SPARK_HOME/bin/spark-submit --master $SPARK_PORT $OPERATOR $REGION $TIMEFRAME
+
 echo -e "... typical_distribution_computation.py script for Distribution_Computation_Scala operator ended"
