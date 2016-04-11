@@ -359,6 +359,7 @@ protected ContainerLaunchContextFactory factory;
   }
   
   public WorkflowDictionary reBuildPlan( OperatorDictionary faiiledengineopd) throws Exception{
+	boolean all_inputs_completed = false;
 	String inname = "";
 	String outname = "";
 	List< String> linput = null;
@@ -436,9 +437,11 @@ protected ContainerLaunchContextFactory factory;
     	}
     	//if an operator has been found that has as input a failed operator, then set this
     	//operator at the "stopped" state
+    	/*
         if( inputs.get( opawr.getName()) == null){
             LOG.info( "1. OPERATOR NAME:" + opawr.getName());
         }
+        */
     	if( inputs.get( opawr.getName()) != null && inputs.get( opawr.getName()).contains( faiiledengineopd.getName())){
     		opawr.setStatus( "stopped");
     	}
@@ -457,7 +460,7 @@ protected ContainerLaunchContextFactory factory;
         			//update the status of the operator with the new one from replanning
         			opdic.setStatus( assist_workflow_replan.get( operator).getStatus());
         			//update old inputs and outputs of this operator
-                    LOG.info( "1.2 OPERATOR NAME:" + opdic.getName() + "\twith status " + opdic.getStatus());
+                    //LOG.info( "1.2 OPERATOR NAME:" + opdic.getName() + "\twith status " + opdic.getStatus());
                     if( opdic.getStatus().equals( "running")){
                         //in order to issue a container for an operator, operator status should be "warn"
                         opdic.setStatus( "warn");
@@ -470,7 +473,7 @@ protected ContainerLaunchContextFactory factory;
                         //update output
                         for( String out : inputs.keySet()){
                             if( inputs.get( out).contains( opdic.getName())){
-                                LOG.info( "INPUT: " + out + "\tOPERATOR: " + opdic.getName());
+                                //LOG.info( "INPUT: " + out + "\tOPERATOR: " + opdic.getName());
                                 final_replanned_workflow.get( out).setStatus( "warn");
                             }
                         }
@@ -491,7 +494,7 @@ protected ContainerLaunchContextFactory factory;
     }
 	for( OperatorDictionary opawr : after_workflow_replanning.getOperators()){
         if( final_replanned_workflow.get( opawr.getName()) == null){
-            LOG.info( "2. OPERATOR NAME:" + opawr.getName());
+            //LOG.info( "2. OPERATOR NAME:" + opawr.getName());
         }
         if( final_replanned_workflow.get( opawr.getName()) != null){
             opdic = final_replanned_workflow.get( opawr.getName());
@@ -499,10 +502,10 @@ protected ContainerLaunchContextFactory factory;
             if( opdic.getStatus().equals( "failed")){
                 //update input
                 lis = final_replanned_workflow.get( opawr.getName()).getInput().listIterator();
-                LOG.info( "FAILED!");
+                //LOG.info( "FAILED!");
                 while( lis.hasNext()){
                     inname = lis.next();
-                    LOG.info( "FAILED INPUT: " + inname + "\twith status " + final_replanned_workflow.get( inname).getStatus());
+                    //LOG.info( "FAILED INPUT: " + inname + "\twith status " + final_replanned_workflow.get( inname).getStatus());
                     final_replanned_workflow.get( inname).setStatus( "stopped");
                 }
                 //update output
@@ -514,6 +517,25 @@ protected ContainerLaunchContextFactory factory;
                 //"upload" the updated operator
                 final_replanned_workflow.put( opawr.getName(), opdic);
             }
+            //we want the first dataset of the new workflow to be at "state" completed
+            //it is assumed that the operators are accessed in the same order they are executed
+            if( opdic.getStatus().equals( "warn") && opdic.getIsOperator().equals( "false") && !all_inputs_completed){
+            	 lis = opdic.getInput().listIterator();
+            	 while( lis.hasNext()){
+            		 inname = lis.next();
+            		 if( final_replanned_workflow.get( inname).getStatus().equals( "completed")){
+            			 all_inputs_completed = true;
+            		 }
+            		 else{
+            			 all_inputs_completed = false;
+            			 break;
+            		 }
+            	 }
+                 if( all_inputs_completed){
+                	 opdic.setStatus( "completed");
+                 }            	
+            }
+
 		    new_replanned_workflow.addOperator( final_replanned_workflow.get( opawr.getName()));
         }
 	}

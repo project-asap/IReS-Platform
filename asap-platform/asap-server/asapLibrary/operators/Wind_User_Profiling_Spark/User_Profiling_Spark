@@ -55,12 +55,12 @@ Execution.Argument1=user_profiling.py
 Execution.Argument2=hdfs:///dataset_simulated/06/1.csv
 Execution.Argument3=aree_roma.csv
 Execution.Argument4=roma
-Execution.Argument5=01-06-2015
+Execution.Argument5=06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 #Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=profiles-roma-01-06-2015
+#Execution.copyFromLocal=profiles-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
-#Execution.Output0.path=$HDFS_OP_DIR/profiles-roma-01-06-2015
-Execution.Output0.path=profiles-roma-01-06-2015
+#Execution.Output0.path=$HDFS_OP_DIR/profiles-roma-06-2015
+Execution.Output0.path=profiles-roma-06-2015

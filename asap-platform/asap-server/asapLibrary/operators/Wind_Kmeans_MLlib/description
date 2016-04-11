@@ -54,12 +54,11 @@ Execution.Arguments.number=4
 Execution.Argument0=spark://131.114.136.218:7077
 Execution.Argument1=clustering_mllib.py
 Execution.Argument2=roma
-Execution.Argument3=01-06-2015
+Execution.Argument3=06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 #Execution.copyToLocal=In0.path
 #copy operator's output to HDFS so as the following operator to access it
 #Execution.copyFromLocal=/centroids-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
-#Execution.Output0.path=$HDFS_OP_DIR/centroids-roma-06-2015
-Execution.Output0.path=/centroids-roma-06-2015
+Execution.Output0.path=$AS_IS/centroids-roma-06-2015
