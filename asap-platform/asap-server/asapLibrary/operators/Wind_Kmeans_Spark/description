@@ -61,4 +61,4 @@ Execution.Argument3=06-2015
 #Execution.copyFromLocal=/centroids-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
 #Execution.Output0.path=$HDFS_OP_DIR/centroids/roma-06-2015.p
-Execution.Output0.path=$AS_IScentroids-roma-06-2015
+Execution.Output0.path=$AS_IShdfs:///centroids-roma-06-2015

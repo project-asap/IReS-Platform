@@ -62,4 +62,4 @@ Execution.Argument5=06-2015
 #copy operator's output to HDFS so as the following operator to access it
 #Execution.copyFromLocal=profiles-roma-06-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=AS_ISprofiles-roma-06-2015
+Execution.Output0.path=$AS_IShdfs:///profiles-roma-06-2015

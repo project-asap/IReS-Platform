@@ -64,4 +64,4 @@ Execution.Argument3=06-2015
 #copy operator's output to HDFS so as the following operator to access it
 #Execution.copyFromLocal=sociometer-roma-01-06-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=AS_ISsociometer-roma-06-2015
+Execution.Output0.path=$AS_IShdfs:///sociometer-roma-06-2015
