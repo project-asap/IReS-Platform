@@ -37,7 +37,7 @@ operator = yarn {
 			},
     		resources = {
     			["Wind_Stereotype_Classification_Spark.sh"] = {
-					file = OPERATOR_HOME .. "/" SCRIPT,
+					file = OPERATOR_HOME .. "/" .. SCRIPT,
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},

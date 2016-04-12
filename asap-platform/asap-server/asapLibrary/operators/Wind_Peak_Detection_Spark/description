@@ -55,6 +55,7 @@ Execution.Argument2=aree_roma.csv
 Execution.Argument3=roma
 Execution.Argument4=06-2015
 #copy input to operator's local folder to use it
+Execution.copyToLocal=In0.path
 Execution.copyToLocal=In1.path
 #copy operator's output to HDFS so as the following operator to access it
 Execution.copyFromLocal=peaks-roma-06-2015-aree_roma.csv

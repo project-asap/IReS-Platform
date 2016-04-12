@@ -43,6 +43,7 @@ public class WebUI {
     private static String scatterPlot=readFile("scatterPlot.html");
     private static String opTreeUp=readFile("opTreeUp.html").trim();
     private static String opTreeLow=readFile("opTreeLow.html");
+    private static String operatorsView=readFile("operatorsView.html");
     
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -60,7 +61,7 @@ public class WebUI {
     public String listAbstractOperators() throws IOException {
     	String ret = header;
     	List<String> l = AbstractOperatorLibrary.getOperators();
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
@@ -213,27 +214,31 @@ public class WebUI {
     @Produces(MediaType.TEXT_HTML)
     @Path("/operators/")
     public String listOperators() throws IOException {
-    	String ret = header;
+    	String ret = header + operatorsView;
     	String sorting_index = "";
+    	String group = "";
     	List<String> l = OperatorLibrary.getOperators();
     	//sort the list
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret+= "<h2>Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
     		if( sorting_index.equals( "")){
-    			ret+= op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+    			//ret+= op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			sorting_index = op.substring( 0, 1).toUpperCase();
+    			group = "<div class=optile>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			continue;
     		}
     		if( !sorting_index.equals( op.substring( 0, 1).toUpperCase())){
-    			ret+= "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+    			//ret+= "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			sorting_index = op.substring( 0, 1).toUpperCase();
+    			ret += group + "</div>";
+    			group = "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			continue;
     		}
-			ret+= "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+			group += "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     	}
-    	ret+="</ul>";
+    	ret+= group + "</div></ul>";
 
     	ret+="<div><h2>Add operator:</h2>"
     		+ "<form action=\"/web/operators/addOperator\" method=\"get\">"
@@ -380,7 +385,7 @@ public class WebUI {
     	String ret = header;
     	ret+= "<h2>Datasets</h2>";
     	List<String> l = DatasetLibrary.getDatasets();
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret += "<ul>";
     	for(String d : l){
 			ret+= "<li><a href=\"/web/datasets/"+d+"\">"+d+"</a></li>";
@@ -507,7 +512,7 @@ public class WebUI {
     	ret += "<ul>";
 
     	List<String> l = RunningWorkflowLibrary.getWorkflows();
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/runningWorkflows/"+w+"\">"+w+"</a></li>";
@@ -612,7 +617,7 @@ public class WebUI {
     	ret += "<ul>";
 
     	List<String> l = MaterializedWorkflowLibrary.getWorkflows();
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/workflows/"+w+"\">"+w+"</a></li>";
@@ -633,7 +638,7 @@ public class WebUI {
 
     	ret+= "<h2>Abstract Workflows</h2>";
     	List<String> l = AbstractWorkflowLibrary.getWorkflows();
-    	Collections.sort( l);
+    	Collections.sort( l, String.CASE_INSENSITIVE_ORDER);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/abstractWorkflows/"+w+"\">"+w+"</a></li>";
