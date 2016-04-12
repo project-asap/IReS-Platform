@@ -904,7 +904,15 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    		}
 		    		else{
 			    		String newArg = n.dataset.getParameter("Execution."+parameter);
-			    		logger.info("newArg: "+newArg);
+			    		logger.info( "newArg: " + newArg);
+			    		if( newArg == null){
+			    			logger.info( "ERROR: For input dataset " + n.dataset.datasetName + " the requested parameter");
+			    			logger.info( "Execution." + parameter + " does not exist! This parameter has been asked");
+			    			logger.info( "from operator " + operator.opName + " as a property of input In" + index + ".");
+			    			logger.info( "To solve this, make sure that the input of this dataset, " + n.dataset.datasetName + ",");
+			    			logger.info( "i.e. the operator that corresponds to input In" + index + " defines a property");
+			    			logger.info( "'Execution.Output" + index + "." + parameter + ".");
+			    		}
 			    		arg=newArg;
 		    		}
 		    		/*boolean dataset = false;

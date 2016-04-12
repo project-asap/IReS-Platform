@@ -53,11 +53,10 @@ Execution.Argument0=spark://131.114.136.218:7077
 Execution.Argument1=peaks_publisher.py
 Execution.Argument2=aree_roma.csv
 Execution.Argument3=roma
-Execution.Argument4=june-july-2015
+Execution.Argument4=06-2015
 #EXECUTION COPY FILES( optional)
 #copy input to operator's local folder to use it
 Execution.copyToLocal=In0.path
-#copy operator's output to HDFS so as the following operator to access it
-#Execution.copyFromLocal=peaks-roma-june-july-2015-aree_roma.csv.json
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=$AS_ISpeaks-roma-june-july-2015-aree_roma.csv.json
+Execution.Output0.path=peaks-roma-06-2015-aree_roma.json
+Execution.Output0.name=peaks-roma-06-2015-aree_roma.json

@@ -81,11 +81,11 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
     
     public void init(ContainerLaunchContextFactory factory) throws IOException {
-    	LOG.info( "Are all previous containers finished: " + allPreviousFinished());
-    	if(!allPreviousFinished())
-    		return;
-    	service.parameters.workflow.getOperator(params.getName()).setStatus("running");
-    	startTime = System.currentTimeMillis();
+      LOG.info( "Are all previous containers finished: " + allPreviousFinished());
+      if(!allPreviousFinished())
+    	  return;
+      service.parameters.workflow.getOperator(params.getName()).setStatus("running");
+      startTime = System.currentTimeMillis();
       this.nodeManager = NMClientAsync.createNMClientAsync(this);
       nodeManager.init(service.conf);
       nodeManager.start();

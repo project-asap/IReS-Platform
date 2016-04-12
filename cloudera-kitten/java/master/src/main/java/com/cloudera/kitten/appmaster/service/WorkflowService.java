@@ -146,7 +146,7 @@ protected ContainerLaunchContextFactory factory;
     	LOG.info( "Tracker to initialize: " + t);
 	    t.init(factory);
     }
-    LOG.info( "All trackers has been initialized: " + trackers);
+    LOG.info( "All trackers have been initialized: " + trackers);
     /*for ( Entry<String, ContainerLaunchParameters> e : parameters.getContainerLaunchParameters().entrySet()) {
     	ContainerTracker tracker = new ContainerTracker(e.getValue());
     	LOG.info("Operator: " + e.getKey());
@@ -179,25 +179,27 @@ protected ContainerLaunchContextFactory factory;
         tracker.kill();
       }
     }
-    
-    FinalApplicationStatus status;
-    String message = null;
-    if (state() == State.FAILED || totalFailures.get() > parameters.getAllowedFailures()) {
-      //TODO: diagnostics
-      status = FinalApplicationStatus.FAILED;
-      if (throwable != null) {
-        message = throwable.getLocalizedMessage();
-      }
-    } else {
-      status = FinalApplicationStatus.SUCCEEDED;
-    }
-    LOG.info("Sending finish request with status = " + status);
-    try {
-      resourceManager.unregisterApplicationMaster(status, message, null);
-    } catch (Exception e) {
-      LOG.error("Error finishing application master", e);
-    }
+    if( !ApplicationMaster.isReplanning){
+        FinalApplicationStatus status;
+        String message = null;
+        if (state() == State.FAILED || totalFailures.get() > parameters.getAllowedFailures()) {
+          //TODO: diagnostics
+          status = FinalApplicationStatus.FAILED;
+          if (throwable != null) {
+            message = throwable.getLocalizedMessage();
+          }
+        } else {
+          status = FinalApplicationStatus.SUCCEEDED;
+        }
+        LOG.info("Sending finish request with status = " + status);
+        try {
+          resourceManager.unregisterApplicationMaster(status, message, null);
+        } catch (Exception e) {
+          LOG.error("Error finishing application master", e);
+        }
+    }    	
   }
+
 
   @Override
   protected Scheduler scheduler() {
@@ -519,8 +521,9 @@ protected ContainerLaunchContextFactory factory;
             }
             //we want the first dataset of the new workflow to be at "state" completed
             //it is assumed that the operators are accessed in the same order they are executed
-            if( opdic.getStatus().equals( "warn") && opdic.getIsOperator().equals( "false") && !all_inputs_completed){
+            if( opdic.getStatus().equals( "warn") && opdic.getIsOperator().equals( "false")){
             	 lis = opdic.getInput().listIterator();
+            	 all_inputs_completed = false;
             	 while( lis.hasNext()){
             		 inname = lis.next();
             		 if( final_replanned_workflow.get( inname).getStatus().equals( "completed")){

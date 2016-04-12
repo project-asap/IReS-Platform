@@ -49,11 +49,6 @@ Execution.Arguments.number=4
 Execution.Argument0=spark://131.114.136.218:7077
 Execution.Argument1=typical_distribution_computation.py
 Execution.Argument2=roma
-Execution.Argument3=june-july-2015
-#EXECUTION COPY FILES( optional)
-#copy input to operator's local folder to use it
-Execution.copyToLocal=In0.path
-#copy operator's output to HDFS so as the following operator to access it
-Execution.copyFromLocal=peaks/weekly_presence-roma-june-july-2015
+Execution.Argument3=june-2015
 #EXECUTION OUTPUT( mandatory)
-Execution.Output0.path=peaks/weekly_presence-roma-june-july-2015
+Execution.Output0.path=$AS_IShdfs:///peaks/weekly_presence-roma-june-2015

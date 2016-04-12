@@ -1,25 +1,34 @@
--- The command to execute.
-SHELL_COMMAND = "./Stereotype_Classification.sh"
+-- General configuration of the operators belonging to Wind_Demo_o_Postgres workflow
+BASE = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m com.cloudera.kitten.appmaster.ApplicationMaster"
+TIMEOUT = 1000000000
+MEMORY = 3072
+CORES = 1
+EXECUTION_NODE_LOCATION = "hdp1"
+OPERATOR_LIBRARY = "asapLibrary/operators"
 
+-- Specific configuration of operator
+OPERATOR = "Wind_Stereotype_Classification_Spark"
+SCRIPT = OPERATOR .. ".sh"
+SHELL_COMMAND = "./" .. SCRIPT
 -- Home directory of operator
-STEREOTYPE_CLASSIFICATION_HOME = "asapLibrary/operators/Wind_Stereotype_Classification_Spark"
+OPERATOR_HOME = OPERATOR_LIBRARY .. "/" .. OPERATOR
 
 -- The actual distributed shell job.
 operator = yarn {
-	name = "Execute Stereotype_Classification_Spark Operator",
-  	timeout = 10000000,
-  	memory = 1024,
-  	cores = 1,
-	nodes = "hdp1",
-  	master = {
-    		env = base_env,
-    		resources = base_resources,
-    		command = {
-      			base = "${JAVA_HOME}/bin/java -Xms64m -Xmx1280m com.cloudera.kitten.appmaster.ApplicationMaster",
-      			args = { "-conf job.xml" },
-    		}
-  	},
-	
+  name 		= "Execute " .. OPERATOR .. " Operator",
+  timeout 	= TIMEOUT,
+  memory 	= MEMORY,
+  cores 	= CORES,
+  nodes 	= EXECUTION_NODE_LOCATION,
+  master 	= {
+    env = base_env,
+    resources = base_resources,
+    command = {
+      base = BASE,
+      args = { "-conf job.xml" },
+    }
+  },
+  	
 	container = {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,
@@ -27,13 +36,13 @@ operator = yarn {
 				base = SHELL_COMMAND
 			},
     		resources = {
-    			["Stereotype_Classification.sh"] = {
-					file = STEREOTYPE_CLASSIFICATION_HOME .. "/Stereotype_Classification.sh",
+    			["Wind_Stereotype_Classification_Spark.sh"] = {
+					file = OPERATOR_HOME .. "/" SCRIPT,
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			},
     			["stereo_type_classification.py"] = {
-					file = STEREOTYPE_CLASSIFICATION_HOME .. "/stereo_type_classification.py",
+					file = OPERATOR_HOME .. "/stereo_type_classification.py",
       				type = "file",               -- other value: 'archive'
       				visibility = "application",  -- other values: 'private', 'public'
     			}    			

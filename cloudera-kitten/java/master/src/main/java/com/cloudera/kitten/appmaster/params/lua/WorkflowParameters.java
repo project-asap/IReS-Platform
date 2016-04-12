@@ -289,7 +289,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		LOG.info( "INTRACKER: " + inTracker);
 		LOG.info( "IN OPERATOR: " + inOp.getName() + "\twith status " + inOp.getStatus() + "\thas inputs " + inOp.getInput());
 		LOG.info( "OUT OPERATOR: " + out);
-		if( inOp.getStatus().equals( "stopped") || inOp.getStatus().equals( "completed"))
+		if( inOp.getStatus().equals( "stopped") || inOp.getStatus().equals( "completed") || inOp.getStatus().equals( "failed"))
 			return;
 		if(inOp.getIsOperator().equals("true")){
 			LOG.info("Adding previous tracker: " +in+" -> "+out);

@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Collections;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -59,6 +60,7 @@ public class WebUI {
     public String listAbstractOperators() throws IOException {
     	String ret = header;
     	List<String> l = AbstractOperatorLibrary.getOperators();
+    	Collections.sort( l);
     	ret+= "<h2>Abstract Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
@@ -212,12 +214,24 @@ public class WebUI {
     @Path("/operators/")
     public String listOperators() throws IOException {
     	String ret = header;
+    	String sorting_index = "";
     	List<String> l = OperatorLibrary.getOperators();
+    	//sort the list
+    	Collections.sort( l);
     	ret+= "<h2>Operators</h2>";
     	ret += "<ul>";
     	for(String op : l){
+    		if( sorting_index.equals( "")){
+    			ret+= op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+    			sorting_index = op.substring( 0, 1).toUpperCase();
+    			continue;
+    		}
+    		if( !sorting_index.equals( op.substring( 0, 1).toUpperCase())){
+    			ret+= "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+    			sorting_index = op.substring( 0, 1).toUpperCase();
+    			continue;
+    		}
 			ret+= "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
-    		
     	}
     	ret+="</ul>";
 
@@ -366,6 +380,7 @@ public class WebUI {
     	String ret = header;
     	ret+= "<h2>Datasets</h2>";
     	List<String> l = DatasetLibrary.getDatasets();
+    	Collections.sort( l);
     	ret += "<ul>";
     	for(String d : l){
 			ret+= "<li><a href=\"/web/datasets/"+d+"\">"+d+"</a></li>";
@@ -492,6 +507,7 @@ public class WebUI {
     	ret += "<ul>";
 
     	List<String> l = RunningWorkflowLibrary.getWorkflows();
+    	Collections.sort( l);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/runningWorkflows/"+w+"\">"+w+"</a></li>";
@@ -596,6 +612,7 @@ public class WebUI {
     	ret += "<ul>";
 
     	List<String> l = MaterializedWorkflowLibrary.getWorkflows();
+    	Collections.sort( l);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/workflows/"+w+"\">"+w+"</a></li>";
@@ -616,6 +633,7 @@ public class WebUI {
 
     	ret+= "<h2>Abstract Workflows</h2>";
     	List<String> l = AbstractWorkflowLibrary.getWorkflows();
+    	Collections.sort( l);
     	ret += "<ul>";
     	for(String w : l){
 			ret+= "<li><a href=\"/web/abstractWorkflows/"+w+"\">"+w+"</a></li>";

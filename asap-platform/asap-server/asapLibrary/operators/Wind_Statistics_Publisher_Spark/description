@@ -8,7 +8,7 @@
 ################################################################################
 #
 #Description
-#	This is the concrete version of the statistics_publishser operator from 
+#	This is the concrete version of the statistics_publisher operator from 
 #	wind workflow.
 #Description_End
 
@@ -63,3 +63,4 @@ Execution.copyToLocal=In0.path
 Execution.copyFromLocal=wl_timeseries-roma-june-july-2015-aree_roma-area_presence.json
 #EXECUTION OUTPUT( mandatory)
 Execution.Output0.path=$HDFS_OP_DIR/wl_timeseries-roma-june-july-2015-aree_roma-area_presence.json
+Execution.Output0.name=wl_timeseries-roma-june-july-2015-aree_roma-area_presence.json

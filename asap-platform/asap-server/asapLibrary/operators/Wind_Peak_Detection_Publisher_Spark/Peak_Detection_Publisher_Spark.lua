@@ -1,7 +1,7 @@
 -- General configuration of the operators belonging to Wind_Demo_o_Postgres workflow
 BASE = "${JAVA_HOME}/bin/java -Xms64m -Xmx128m com.cloudera.kitten.appmaster.ApplicationMaster"
 TIMEOUT = 1000000000
-MEMORY = 1024
+MEMORY = 3072
 CORES = 1
 EXECUTION_NODE_LOCATION = "hdp1"
 OPERATOR_LIBRARY = "asapLibrary/operators"
