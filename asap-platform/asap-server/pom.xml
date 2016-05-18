@@ -90,7 +90,7 @@
           					<outputDirectory>${project.build.directory}/asapLibrary</outputDirectory>
           					<resources>
             					<resource>
-                					<directory>asapLibrary</directory>
+                					<directory>defaultAsapLibrary</directory>
             					</resource>
           					</resources>
         				</configuration>

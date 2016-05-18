@@ -35,19 +35,32 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 
 public class Tests {
+	/**
+	* Define the ASAP_HOME parameter used for starting the asap server
+	*/
+	static String ASAP_HOME="/Users/npapa/Documents/workspaceASAP/IReS-Platform";
 	
 	@BeforeClass
+	/**
+	* Start up the asap-server before executing the unit tests.
+	*/
 	public static void setup() throws InterruptedException, IOException {
-		Runtime.getRuntime().exec("/Users/npapa/Documents/workspaceASAP/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server start");
+		Runtime.getRuntime().exec(ASAP_HOME+"/asap-platform/asap-server/src/main/scripts/asap-server start");
 		Thread.sleep(5000);
 	}
 	
 	@AfterClass
+	/**
+	* Stop the asap-server when the unit tests have finished.
+	*/
 	public static void tearDown() throws IOException {
-		Runtime.getRuntime().exec("/Users/npapa/Documents/workspaceASAP/IReS-Platform/asap-platform/asap-server/src/main/scripts/asap-server stop");
+		Runtime.getRuntime().exec(ASAP_HOME+"/asap-platform/asap-server/src/main/scripts/asap-server stop");
 	}
 	  
 	@Test
+	/**
+	* Create an operator object and test if its parameters are parsed and retrieved correctly
+	*/
 	public void testCreateOperator() throws Exception {
 		Operator op = new Operator("TestOp","");
 		
@@ -73,6 +86,9 @@ public class Tests {
 	}
 	
 	@Test
+	/**
+	* Create an operator object and insert it into the asap library using the rest client
+	*/
 	public void testPutOperator() throws Exception {
 		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
 		OperatorClient cli = new OperatorClient();
@@ -98,6 +114,9 @@ public class Tests {
 	}
 	
 	@Test
+	/**
+	* Remove an operator from the asap library using the rest client
+	*/
 	public void testRemoveOperator() throws Exception {
 		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
 		OperatorClient cli = new OperatorClient();
@@ -126,6 +145,9 @@ public class Tests {
 	
 
 	@Test
+	/**
+	* Insert an abstract operator and check for its matching materialized operators.
+	*/
 	public void testPutAndMatchOperator() throws Exception {
 		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
 		OperatorClient cli = new OperatorClient();
@@ -168,6 +190,9 @@ public class Tests {
 	
 
 	@Test
+	/**
+	* Insert an abstract workflow into the asap library using the rest client
+	*/
 	public void testAddAbstractWorkflow() throws Exception {
 		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
 		WorkflowClient cli = new WorkflowClient();
@@ -176,44 +201,32 @@ public class Tests {
 		cli.removeAbstractWorkflow("abstractTest1");
 		
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
-		Dataset d1 = new Dataset("crawlDocuments");
+		Dataset d1 = new Dataset("hdfs_file");
 
-		WorkflowNode t1 = new WorkflowNode(false,false,"crawlDocuments");
+		WorkflowNode t1 = new WorkflowNode(false,false,"hdfs_file");
 		t1.setDataset(d1);
 
-		AbstractOperator abstractOp = new AbstractOperator("TF_IDF");
-		WorkflowNode op1 = new WorkflowNode(true,true,"TF_IDF");
+		AbstractOperator abstractOp = new AbstractOperator("HelloWorld");
+		WorkflowNode op1 = new WorkflowNode(true,true,"HelloWorld");
 		op1.setAbstractOperator(abstractOp);
-		//abstractOp.writeToPropertiesFile(abstractOp.opName);
-
-		AbstractOperator abstractOp1 = new AbstractOperator("k-Means");
-		WorkflowNode op2 = new WorkflowNode(true,true,"k-Means");
-		op2.setAbstractOperator(abstractOp1);
-		//abstractOp1.writeToPropertiesFile(abstractOp1.opName);
 		
-		Dataset d2 = new Dataset("d2");
-		WorkflowNode t2 = new WorkflowNode(false,true,"d2");
+		Dataset d2 = new Dataset("d1");
+		WorkflowNode t2 = new WorkflowNode(false,true,"d1");
 		t2.setDataset(d2);
-		
-		Dataset d3 = new Dataset("d3");
-		WorkflowNode t3 = new WorkflowNode(false,true,"d3");
-		t3.setDataset(d3);
 		
 		op1.addInput(0,t1);
 		op1.addOutput(0, t2);
 		
 		t2.addInput(0,op1);
-		
-		op2.addInput(0,t2);
-		op2.addOutput(0,t3);
-		
-		t3.addInput(0,op2);
-		abstractWorkflow.addTarget(t3);
+		abstractWorkflow.addTarget(t2);
 		
 		cli.addAbstractWorkflow(abstractWorkflow);
 	}
 	
 	@Test
+	/**
+	* Materialize an abstract workflow according to a user defined policy
+	*/
 	public void testMaterializeAbstractWorkflow() throws Exception {
 		ClientConfiguration conf = new ClientConfiguration("localhost", 1323);
 		WorkflowClient cli = new WorkflowClient();
