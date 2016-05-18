@@ -38,6 +38,7 @@ import net.sourceforge.jeval.Evaluator;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -107,13 +108,7 @@ public class Operator {
                    // System.out.println("MONGO");
                     this.initializeDatasource();
                     outPoints = dataSource.getOutputSpacePoints(e.getKey());
-                    
-
-					
                    // System.out.println(outPoints);
-                
-
-                
 	                for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if (c.equals(UserFunction.class))
 							continue;
@@ -245,7 +240,26 @@ public class Operator {
 					File[] listOfFiles = modelFile.listFiles();
 					for (int i = 0; i < listOfFiles.length; i++) {
 						if (listOfFiles[i].toString().endsWith(".model")) {
-							performanceModels.add(AbstractWekaModel.readFromFile(listOfFiles[i].getAbsolutePath()));
+							try{
+								performanceModels.add(AbstractWekaModel.readFromFile(listOfFiles[i].getAbsolutePath()));	
+							}
+							catch( EOFException eofe){
+								logger.info( "ERROR: There is a problem with the already existing models of");
+								logger.info( opName + " operator. Verify that the existent models are not empty in folder");
+								logger.info( "$ASAP_SERVER_HOME/asapLibrary/operators/" + opName + "/models.");
+								logger.info( "A solution to this problem would be to delete the problematic models");
+								logger.info( "or even delete the whole models folder and let ASAP server to build it");
+								logger.info( "from scratch during its restarting.");
+								eofe.printStackTrace();
+							}
+							catch( Exception exce){
+								logger.info( "ERROR: There is a problem with the already existing models of");
+								logger.info( opName + " operator. Verify that the existent models are correct.");
+								logger.info( "A solution to this problem would be to delete the problematic models");
+								logger.info( "or even delete the whole models folder and let ASAP server to build it");
+								logger.info( "from scratch during its restarting.");
+								exce.printStackTrace();
+							}
 						}
 					}
 				} else {
@@ -262,8 +276,8 @@ public class Operator {
                         file.setFilename(directory + "/data/" + e.getKey() + ".csv");
                         for (InputSpacePoint in : file.getInputSpacePoints()) {
                         	OutputSpacePoint out = file.getActualValue(in);
-                        	logger.info( "InputSpacePoint is: " + in);
-                            logger.info( "OutputSpacePoint is: " + file.getActualValue(in));
+                        	//logger.info( "InputSpacePoint is: " + in);
+                            //logger.info( "OutputSpacePoint is: " + file.getActualValue(in));
                             outPoints.add(out);
                         }
                     }
