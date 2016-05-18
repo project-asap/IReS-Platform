@@ -38,13 +38,14 @@ public class Tests {
 	/**
 	* Define the ASAP_HOME parameter used for starting the asap server
 	*/
-	static String ASAP_HOME="/Users/npapa/Documents/workspaceASAP/IReS-Platform";
+	static String ASAP_HOME=System.getenv().get("ASAP_HOME");//"/Users/npapa/Documents/workspaceASAP/IReS-Platform";
 	
 	@BeforeClass
 	/**
 	* Start up the asap-server before executing the unit tests.
 	*/
 	public static void setup() throws InterruptedException, IOException {
+		System.out.println("ASAP_HOME="+ASAP_HOME);
 		Runtime.getRuntime().exec(ASAP_HOME+"/asap-platform/asap-server/src/main/scripts/asap-server start");
 		Thread.sleep(5000);
 	}
