@@ -36,6 +36,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.service.Service;
 import org.apache.hadoop.yarn.api.protocolrecords.RegisterApplicationMasterResponse;
 import org.apache.hadoop.yarn.api.records.Container;
 import org.apache.hadoop.yarn.api.records.ContainerExitStatus;
@@ -72,7 +73,8 @@ public class WorkflowService extends
 
   private static final Log LOG = LogFactory.getLog(WorkflowService.class);
 
-  public final WorkflowParameters parameters;
+  //public final WorkflowParameters parameters;
+  public WorkflowParameters parameters;
   public final YarnConfiguration conf;
   private final AtomicInteger totalFailures = new AtomicInteger();
   private HashMap<String,ContainerTracker> trackers;
@@ -107,15 +109,15 @@ protected ContainerLaunchContextFactory factory;
 
   @Override
   protected void startUp() throws IOException {
-	this.containerAllocation = new HashMap<ContainerId, ContainerTracker>();
-    this.resourceManager = AMRMClientAsync.createAMRMClientAsync(1000, this);
-    this.resourceManager.init(conf);
-    this.resourceManager.start();
-
     RegisterApplicationMasterResponse registration;
     //has the ApplicationMaster been registered already?
     if( !ApplicationMaster.isReplanning){
-        try {
+    	this.containerAllocation = new HashMap<ContainerId, ContainerTracker>();
+        this.resourceManager = AMRMClientAsync.createAMRMClientAsync(1000, this);
+        this.resourceManager.init(conf);
+        this.resourceManager.start();
+        
+    	try {
             registration = resourceManager.registerApplicationMaster(
                     parameters.getHostname(),
                     parameters.getClientPort(),
@@ -253,7 +255,7 @@ protected ContainerLaunchContextFactory factory;
                     	LOG.info( "ApplicationMaster got in at 'replanning' state");
                     	ApplicationMaster.isReplanning = true;
                     	ApplicationMaster.new_replanned_workflow = reBuildPlan( opd);
-                    	stop();
+                    	enforcePlan( ApplicationMaster.new_replanned_workflow);
                     	
                     	//since one operator failed and replan has been requested there is no reason to search for other
                         //failed operators since the replan returns a "global" plan
@@ -311,7 +313,7 @@ protected ContainerLaunchContextFactory factory;
     Set<Container> assigned = Sets.newHashSet();
     for (ContainerTracker tracker : trackers.values()) {
         for (Container allocated : allocatedContainers) {
-            if (tracker.isInitilized && tracker.needsContainers()) {
+            if (tracker.isInitialized && tracker.needsContainers()) {
 	          if (!assigned.contains(allocated) && tracker.matches(allocated)) {
 	        	  LOG.info("Allocated vcores: "+allocated.getResource().getVirtualCores());
 	              tracker.launchContainer(allocated);
@@ -358,6 +360,12 @@ protected ContainerLaunchContextFactory factory;
   public void onError(Throwable throwable) {
     this.throwable = throwable;
     stop();
+  }
+  
+  public void enforcePlan( WorkflowDictionary wd) throws Exception {
+	  this.parameters = Preconditions.checkNotNull( new WorkflowParameters( wd, parameters.jobName, this.conf));
+	  stop();
+	  start();
   }
   
   public WorkflowDictionary reBuildPlan( OperatorDictionary faiiledengineopd) throws Exception{

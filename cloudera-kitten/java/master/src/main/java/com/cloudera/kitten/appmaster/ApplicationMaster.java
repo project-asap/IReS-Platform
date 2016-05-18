@@ -29,6 +29,7 @@ import com.cloudera.kitten.appmaster.service.ApplicationMasterServiceImpl;
 import com.cloudera.kitten.appmaster.service.WorkflowService;
 import com.cloudera.kitten.lua.LuaFields;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.Service.State;
 
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import org.apache.hadoop.yarn.api.protocolrecords.RegisterApplicationMasterResponse;
@@ -81,7 +82,11 @@ public class ApplicationMaster extends Configured implements Tool {
           service.stopAndWait();
           //it is not known beforehand how many times replanning will be needed but
           //however any replanning must be enforced in the end
+          /*
           while( isReplanning){
+        	  while( service.state() != State.TERMINATED ){
+        		  Thread.sleep(1000);
+        	  }
         	  //the workflow plan has been changed so new params and service are needed
         	  params = new WorkflowParameters( new_replanned_workflow, params.jobName, getConf());
         	  service = new WorkflowService( params,getConf());
@@ -91,6 +96,7 @@ public class ApplicationMaster extends Configured implements Tool {
               }
               service.stopAndWait();
           }
+          */
 	  }
 
 	  return 0;

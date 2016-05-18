@@ -231,7 +231,7 @@ public class WebUI {
     @Produces(MediaType.TEXT_HTML)
     @Path("/operators/")
     public String listOperators() throws IOException {
-    	String ret = header + operatorsView;
+    	String ret = header; // + operatorsView;
     	String sorting_index = "";
     	String group = "";
     	List<String> l = OperatorLibrary.getOperators();
@@ -250,7 +250,7 @@ public class WebUI {
     			//ret+= "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			sorting_index = op.substring( 0, 1).toUpperCase();
     			ret += group + "</div>";
-    			group = "</br></br>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
+    			group = "</br><div class=optile>" + op.substring( 0, 1).toUpperCase() + "</br><li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";
     			continue;
     		}
 			group += "<li><a href=\"/web/operators/"+op+"\">"+op+"</a></li>";

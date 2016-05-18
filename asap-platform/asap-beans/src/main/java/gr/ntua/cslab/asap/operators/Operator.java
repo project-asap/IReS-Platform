@@ -105,7 +105,7 @@ public class Operator {
 				
             		int i = 0;
                    // System.out.println("MONGO");
-                    this.initializeDatasouce();
+                    this.initializeDatasource();
                     outPoints = dataSource.getOutputSpacePoints(e.getKey());
                     
 
@@ -209,7 +209,6 @@ public class Operator {
 	 */
 	public void configureModel() throws Exception {
 		String modelClass;
-
 		List<Model> performanceModels;
         List<OutputSpacePoint> outPoints = new ArrayList<>();
 		inputSpace = new HashMap<String, String>();
@@ -251,11 +250,9 @@ public class Operator {
 					}
 				} else {
 					int i = 0;
-
-					
                     if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
                     	logger.info("MONGO");
-                        this.initializeDatasouce();
+                        this.initializeDatasource();
                         outPoints = dataSource.getOutputSpacePoints(e.getKey());
                         //System.out.println(outPoints);
                     }
@@ -263,13 +260,13 @@ public class Operator {
                     	logger.info("CSV");
                         CSVFileManager file = new CSVFileManager();
                         file.setFilename(directory + "/data/" + e.getKey() + ".csv");
-                        int ps=0;
                         for (InputSpacePoint in : file.getInputSpacePoints()) {
-                            OutputSpacePoint out = file.getActualValue(in);
+                        	OutputSpacePoint out = file.getActualValue(in);
+                        	logger.info( "InputSpacePoint is: " + in);
+                            logger.info( "OutputSpacePoint is: " + file.getActualValue(in));
                             outPoints.add(out);
                         }
                     }
-
                     
                     for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if (c.equals(UserFunction.class))
@@ -364,7 +361,7 @@ public class Operator {
 		}
 	}
 
-    public void initializeDatasouce(){
+    public void initializeDatasource(){
     	logger.info("Initializing datasource...");
 		String collection = this.opName;//optree.getParameter("Optimization.inputSource.collection");
         String host = optree.getParameter("Optimization.inputSource.host");
@@ -562,18 +559,24 @@ public class Operator {
 	public void readFromDir() throws Exception {
 		//System.out.println("operator: "+opName);
 		File f = new File(directory + "/description");
-		InputStream stream = new FileInputStream(f);
-		Properties props = new Properties();
-		props.load(stream);
-		for (Entry<Object, Object> e : props.entrySet()) {
-			add((String) e.getKey(), (String) e.getValue());
+		//logger.info( "Does directory " + f + " exists? " + f.exists());
+		if( !f.exists()){
+			logger.info( "For abstract operator " + opName + " there is not any materialized operator.");
+			logger.info( "Try to create one by creating the corresponding directory with all the required");
+			logger.info( "files and subfolders into the appropriate asapLibrary directory.");
 		}
-		stream.close();
-		configureModel();
-
+		else{
+			InputStream stream = new FileInputStream(f);
+			Properties props = new Properties();
+			props.load(stream);
+			for (Entry<Object, Object> e : props.entrySet()) {
+				add((String) e.getKey(), (String) e.getValue());
+			}
+			stream.close();
+			configureModel();			
+		}
 		//this.performanceModel = AbstractWekaModel.readFromFile(directory+"/model");
 	}
-
 
 	public void readPropertiesFromString(String properties) throws IOException {
 		InputStream stream = new ByteArrayInputStream(properties.getBytes());

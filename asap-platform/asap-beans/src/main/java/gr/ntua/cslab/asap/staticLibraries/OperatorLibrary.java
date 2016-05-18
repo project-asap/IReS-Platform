@@ -205,7 +205,7 @@ public class OperatorLibrary {
 		Operator op = operators.get(opname);
 		op.configureModel();
 		if (op.getInputSource() != null) {
-			op.initializeDatasouce();
+			op.initializeDatasource();
 		}
 		DataSource dataSource = op.getDataSource();
 		logger.info("Datasource: "+dataSource);

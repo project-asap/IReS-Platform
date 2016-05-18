@@ -110,47 +110,62 @@ public class ClusterNodes extends Configured implements Runnable {
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.per-node property.");
-			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-			logger.info( " in folder with relative path asap-server/target/conf.");
+			logger.info( "Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( "in folder with relative path asap-server/target/conf.");
+			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
+			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
+			return;
 		}
 		hservices = new HashMap< String, String>();
-		for( int i = 0; i < hosts.length; i++){
-			//System.out.println( hosts[ i].trim());
-			//services[ 0] -> host, services[ 1] -> host services
-			services = hosts[ i].trim().split( ":");
-			hservices.put( services[ 0], services[ 1]);
+		if( hosts != null){
+			for( int i = 0; i < hosts.length; i++){
+				//System.out.println( hosts[ i].trim());
+				//services[ 0] -> host, services[ 1] -> host services
+				services = hosts[ i].trim().split( ":");
+				hservices.put( services[ 0], services[ 1]);
+			}			
 		}
 		try{
 			hosts = yconf.get( "yarn.nodemanager.services-running.check-availability").split( "[;;]{2}");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-availability property.");
-			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-			logger.info( " in folder with relative path asap-server/target/conf.");
+			logger.info( "Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( "in folder with relative path asap-server/target/conf.");
+			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
+			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
+			return;
 		}
 		scommands = new HashMap< String, String>();
-		for( int i = 0; i < hosts.length; i++){
-			//System.out.println( hosts[ i].trim());
-			//services[ 0] -> service, services[ 1] -> service command
-			services = hosts[ i].trim().split( ":");
-			scommands.put( services[ 0], services[ 1]);
-			//add the service into the runservices with an unknown status for the moment
-			runservices.put( services[ 0], "");
+		if( hosts != null){
+			for( int i = 0; i < hosts.length; i++){
+				//System.out.println( hosts[ i].trim());
+				//services[ 0] -> service, services[ 1] -> service command
+				services = hosts[ i].trim().split( ":");
+				scommands.put( services[ 0], services[ 1]);
+				//add the service into the runservices with an unknown status for the moment
+				runservices.put( services[ 0], "");
+			}			
 		}
 		try{
 			hosts = yconf.get( "yarn.nodemanager.services-running.check-status").split( ",");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-status property.");
-			logger.info( " Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
-			logger.info( " in folder with relative path asap-server/target/conf.");
+			logger.info( "Make sure that this property exists in yarn-site.xml file or that the yarn-site.xml itself exists");
+			logger.info( "in folder with relative path asap-server/target/conf.");
+			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
+			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
+			return;
 		}
 		sstatus = new HashMap< String, String>();
-		for( int i = 0; i < hosts.length; i++){
-			//System.out.println( hosts[ i].trim());
-			//services[ 0] -> service, services[ 1] -> service running status
-			services = hosts[ i].trim().split( ":");
-			sstatus.put( services[ 0], services[ 1]);
+		if( hosts != null){
+			for( int i = 0; i < hosts.length; i++){
+				//System.out.println( hosts[ i].trim());
+				//services[ 0] -> service, services[ 1] -> service running status
+				services = hosts[ i].trim().split( ":");
+				sstatus.put( services[ 0], services[ 1]);
+			}			
 		}
 		/*
 		System.out.println( "Yarn nodes services = " + hservices);
@@ -159,7 +174,9 @@ public class ClusterNodes extends Configured implements Runnable {
 		*/
 		//initialize and start YarnClient
 		yc.init( yconf);
+		logger.info( "YarnClient has been initiated.");
 		yc.start();
+		logger.info( "YarnClient has started.");
 		//System.out.println( "The yarn cluster has " + hosts.size() + " hosts.");
 		yhosts = new HashMap< String, String>();
 		try{
@@ -314,8 +331,5 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.warning( "InterruptedException occured and caught!");
 			ie.printStackTrace();
 		}
-
-
-
 	}// end of run() method
 }

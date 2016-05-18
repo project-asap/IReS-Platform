@@ -22,6 +22,7 @@ import org.apache.hadoop.yarn.client.api.async.NMClientAsync;
 
 import com.cloudera.kitten.ContainerLaunchContextFactory;
 import com.cloudera.kitten.ContainerLaunchParameters;
+import com.cloudera.kitten.appmaster.ApplicationMaster;
 import com.google.common.collect.Maps;
 
 public class ContainerTracker implements NMClientAsync.CallbackHandler {
@@ -39,7 +40,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     private ContainerLaunchContext ctxt;
     private List<ContainerTracker> nextTrackers;
     private List<ContainerTracker> previousTrackers;
-    public boolean isInitilized;
+    public boolean isInitialized;
     private List<AMRMClient.ContainerRequest> containerRequests;
 	private WorkflowService service;
 	private long startTime;
@@ -50,7 +51,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       this.nextTrackers = new ArrayList<ContainerTracker>();
       this.previousTrackers = new ArrayList<ContainerTracker>();
       needed.set(1);
-      isInitilized=false;
+      isInitialized=false;
     }
 
     public void addNextTracker(ContainerTracker tracker){
@@ -81,15 +82,18 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
     
     public void init(ContainerLaunchContextFactory factory) throws IOException {
-      LOG.info( "Are all previous containers finished: " + allPreviousFinished());
-      if(!allPreviousFinished())
+      LOG.info( "Are all previous containers finished?");
+      if(!allPreviousFinished()){
+    	  LOG.info( "They are not all previous containers finished.");
     	  return;
+      }
+      LOG.info( "They are all previous containers finished.");
       service.parameters.workflow.getOperator(params.getName()).setStatus("running");
       startTime = System.currentTimeMillis();
       this.nodeManager = NMClientAsync.createNMClientAsync(this);
       nodeManager.init(service.conf);
       nodeManager.start();
-      isInitilized=true;
+      isInitialized=true;
       
       this.resource = factory.createResource(params);
 
@@ -163,21 +167,19 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     @Override
     public void onContainerStopped(ContainerId containerId) {
       LOG.info("Stopping container id = " + containerId);
-      Container v = containers.remove(containerId);
+      Container v = containers.remove( containerId);
       if(v==null)
     	  return;
       completed.incrementAndGet();
-      /*if(!hasMoreContainers()){
-          LOG.info("Starting next trackers" );
-    	  for(ContainerTracker t : nextTrackers){
-    		  try {
-				t.init(factory);
-    		  } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-    		  }
-    	  }
-      }*/
+      if( ApplicationMaster.isReplanning){
+    	  isInitialized=false;
+    	  long stop = System.currentTimeMillis();
+    	  double time = (stop-startTime)/1000.0-5;//5sec init container
+    	  //for a failed operator the execution time should be infinite or should not? 
+    	  service.parameters.workflow.getOperator( params.getName()).setExecTime( time + "");
+    	  service.parameters.workflow.getOperator( params.getName()).setStatus( "failed");
+    	  removeContainerRequests();
+      }     
     }
 
     public void removeContainerRequests(){
@@ -190,40 +192,40 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
     
     public void containerCompleted(ContainerId containerId) {
-        isInitilized=false;
+    	isInitialized=false;
         LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
         long stop = System.currentTimeMillis();
         double time = (stop-startTime)/1000.0-5;//5sec init container
   		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
   		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
       
-      containers.remove(containerId);
-      completed.incrementAndGet();
+        containers.remove(containerId);
+        completed.incrementAndGet();
       
-      //service.parameters.workflow.setOutputsRunning(params.getName());
-      service.parameters.workflow.setOutputsRunning( params.getName(), "completed");
+        //service.parameters.workflow.setOutputsRunning(params.getName());
+        service.parameters.workflow.setOutputsRunning( params.getName(), "completed");
 
-      if(!hasMoreContainers()){
-    	  removeContainerRequests();
-          LOG.info("Starting next trackers" );
-    	  for(ContainerTracker t : nextTrackers){
-    		  try {
-				t.init(service.factory);
-    		  } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-    		  }
-    	  }
-      }
+        if(!hasMoreContainers()){
+        	removeContainerRequests();
+            LOG.info("Starting next trackers" );
+    	    for(ContainerTracker t : nextTrackers){
+    	    	try {
+    	    		t.init(service.factory);
+    	    	} catch (IOException e) {
+    	    		// TODO Auto-generated catch block
+    	    		e.printStackTrace();
+    		    }
+    	    }
+        }
     }
 
     @Override
     public void onStartContainerError(ContainerId containerId, Throwable throwable) {
-      LOG.warn("Start container error for container id = " + containerId, throwable);
-      containers.remove(containerId);
-      completed.incrementAndGet();
-      failed.incrementAndGet();
-      service.parameters.workflow.getOperator(params.getName()).setStatus("failed");
+    	LOG.warn("Start container error for container id = " + containerId, throwable);
+        containers.remove(containerId);
+        completed.incrementAndGet();
+        failed.incrementAndGet();
+        service.parameters.workflow.getOperator(params.getName()).setStatus("failed");
     }
 
     @Override
