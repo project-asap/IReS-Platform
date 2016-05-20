@@ -36,6 +36,10 @@ public class OperatorDescription {
 		children = new ArrayList<OperatorDescription>();
 	}
 
+	public OperatorDescription() {
+		this( "","");
+	}
+	
 	public String getName() {
 		return name;
 	}
