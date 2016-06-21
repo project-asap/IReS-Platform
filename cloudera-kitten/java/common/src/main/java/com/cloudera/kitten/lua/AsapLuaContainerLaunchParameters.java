@@ -14,6 +14,8 @@
  */
 package com.cloudera.kitten.lua;
 
+import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
@@ -73,7 +75,7 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
 	private WorkflowNode operator;
 	
 	private String opName;
-  
+
   public AsapLuaContainerLaunchParameters(LuaValue lv, String name, Configuration conf, Map<String, URI> localFileUris, MaterializedWorkflow1 workflow, String opName) throws IOException {
     this(new LuaWrapper(lv.checktable()), name, conf, localFileUris, new Extras(),workflow, opName);
   }
@@ -92,7 +94,6 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
     this.workflow = workflow;
     this.opName = opName;
     this.operator = workflow.nodes.get(opName);
-    
     globalContainerId=0;
   }
 
@@ -124,11 +125,30 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }*/
   
   public int getCores() {
-    return lv.getInteger(LuaFields.CORES);
+      String cores;
+      cores = operator.operator.getParameter("Optimization.cores");
+      if (cores == null)
+          cores = operator.operator.getParameter("SelectedParam.cores");
+
+      if (cores != null) {
+          Double c = Double.parseDouble(cores);
+          LOG.info("CORES SET TO "+cores+" FOR OPERATOR "+operator.getName());
+          return c.intValue();
+      }
+      return lv.getInteger(LuaFields.CORES);
   }
 
   public int getMemory() {
-    return lv.getInteger(LuaFields.MEMORY);
+      String memory = operator.operator.getParameter("Optimization.memory");
+      if (memory == null)
+          memory = operator.operator.getParameter("SelectedParam.memory");
+
+      if (memory != null) {
+          Double m = Double.parseDouble(memory);
+          LOG.info("CORES SET TO "+memory+" FOR OPERATOR "+operator.getName());
+          return m.intValue();
+      }
+      return lv.getInteger(LuaFields.MEMORY);
   }
 
   @Override
