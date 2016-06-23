@@ -28,7 +28,9 @@ import gr.ntua.ece.cslab.panic.core.client.Benchmark;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel;
+import gr.ntua.ece.cslab.panic.core.models.LeastSquares;
 import gr.ntua.ece.cslab.panic.core.models.Model;
+import gr.ntua.ece.cslab.panic.core.models.RandomCommittee;
 import gr.ntua.ece.cslab.panic.core.models.UserFunction;
 import gr.ntua.ece.cslab.panic.core.samplers.Sampler;
 import gr.ntua.ece.cslab.panic.core.samplers.UniformSampler;
@@ -111,6 +113,10 @@ public class Operator {
 	                for (Class<? extends Model> c : Benchmark.discoverModels()) {
 						if (c.equals(UserFunction.class))
 							continue;
+						if (c.equals(LeastSquares.class))
+							continue;
+						if (c.equals(RandomCommittee.class))
+							continue;
 						Model model = (Model) c.getConstructor().newInstance();
 						if(outPoints==null || outPoints.size()<2){
 							bestModel=null;
@@ -133,14 +139,17 @@ public class Operator {
 								minTotalError = error;
 							}
 						}
-						else{ 
+						else {
 							double error =0;
-							for (int j = 0; j < 10; j++) {
+							int iterations=1;
+							if(outPoints.size()<=50)
+								iterations=5;
+							for (int j = 0; j < iterations; j++) {
 								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
 								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
 								Random r = new Random();
 								for (OutputSpacePoint point : outPoints){
-									if(r.nextDouble()<=0.75)
+									if(r.nextDouble()<=0.75 && trainPoints.size()<0.75*outPoints.size())
 										trainPoints.add(point);
 									else
 										testPoints.add(point);
@@ -150,7 +159,7 @@ public class Operator {
 		                        }
 								try {
 									model.train();
-									double terror = ML.medianRelError(model, testPoints);
+									double terror = ML.totalSquaredError(model, testPoints);
 									error+=terror;
 								} catch (Exception e1) {
 									logger.info("Exception in training: "+e1.getMessage());
@@ -175,6 +184,7 @@ public class Operator {
 							//performanceModels.add(model);
 
 						}
+						
 						i++;
 					}
 	                if(bestModel!=null){

@@ -56,6 +56,21 @@ public class ML {
         return totalError;
 	}
 	
+    public static double totalSquaredError(Model model,
+			ArrayList<OutputSpacePoint> testPoints) {
+        double totalError = 0.0;
+        double predicted;
+        for (OutputSpacePoint point : testPoints){
+            try{
+                predicted = model.getPoint(point.getInputSpacePoint()).getValue();
+                totalError += Math.abs(point.getValue() - predicted)*Math.abs(point.getValue() - predicted);
+            }
+            catch(Exception e){ continue; }
+        }
+        totalError=totalError/testPoints.size();
+        return totalError;
+	}
+    
 	public static double totalRelError(Model model,
 			ArrayList<OutputSpacePoint> testPoints) {
         double totalError = 0.0;
