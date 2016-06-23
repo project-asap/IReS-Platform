@@ -946,6 +946,16 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    		if(!dataset)
 		    			arg = n.operator.getParameter("Execution.Output0.path");*/
 		    	}
+		    	else if(arg.startsWith("Optimization")){
+		    		String newArg = operator.getParameter(arg);
+		    		logger.info( "newArg: " + newArg);
+		    		if( newArg == null){
+		    			newArg = operator.getParameter("SelectedParams."+arg.substring(arg.indexOf(".")+1));
+		    		}
+		    		logger.info( "newArg: " + newArg);
+		    		arg=newArg;
+		    		
+		    	}
 		    	/* vpapa: an execution argument may be surrounded by double or single quotes
 		    		in which case no double or single quotes should be added and the argument
 		    		should be taken as is. If the argument is not surrounded by double quotes

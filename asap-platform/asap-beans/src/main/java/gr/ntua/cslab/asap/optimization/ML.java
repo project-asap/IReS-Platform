@@ -21,7 +21,9 @@ import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.models.Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 public class ML {
     public static double totalError(Model model){
@@ -38,8 +40,8 @@ public class ML {
         totalError=totalError/actualPoints.size();
         return totalError;
     }
-
-	public static double totalError(Model model,
+	
+    public static double totalAbsError(Model model,
 			ArrayList<OutputSpacePoint> testPoints) {
         double totalError = 0.0;
         double predicted;
@@ -52,5 +54,53 @@ public class ML {
         }
         totalError=totalError/testPoints.size();
         return totalError;
+	}
+	
+	public static double totalRelError(Model model,
+			ArrayList<OutputSpacePoint> testPoints) {
+        double totalError = 0.0;
+        double predicted;
+        for (OutputSpacePoint point : testPoints){
+            try{
+                predicted = model.getPoint(point.getInputSpacePoint()).getValue();
+                totalError += Math.abs(point.getValue() - predicted)/Math.abs(point.getValue());
+            }
+            catch(Exception e){ continue; }
+        }
+        totalError=totalError/testPoints.size();
+        return totalError;
+	}
+	
+
+	public static double medianRelError(Model model,
+			ArrayList<OutputSpacePoint> testPoints) {
+		List<Double> errors = new ArrayList();
+        double totalError = 0.0;
+        double predicted;
+        for (OutputSpacePoint point : testPoints){
+            try{
+                predicted = model.getPoint(point.getInputSpacePoint()).getValue();
+                errors.add(Math.abs(point.getValue() - predicted)/Math.abs(point.getValue()));
+            }
+            catch(Exception e){ continue; }
+        }
+        Collections.sort(errors);
+        return errors.get(errors.size()/2);
+	}
+	
+	public static double medianAbsError(Model model,
+			ArrayList<OutputSpacePoint> testPoints) {
+		List<Double> errors = new ArrayList();
+        double totalError = 0.0;
+        double predicted;
+        for (OutputSpacePoint point : testPoints){
+            try{
+                predicted = model.getPoint(point.getInputSpacePoint()).getValue();
+                errors.add(Math.abs(point.getValue() - predicted));
+            }
+            catch(Exception e){ continue; }
+        }
+        Collections.sort(errors);
+        return errors.get(errors.size()/2);
 	}
 }

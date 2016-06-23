@@ -33,6 +33,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 
@@ -95,7 +96,31 @@ public class WorkflowClient extends RestClient{
 		WorkflowDictionary wd = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
 		return wd;
 	}
+	
+	public String getState(String name) throws Exception {
+		String ret = issueRequest("GET", "runningWorkflows/"+name+"/state", null);
+		return ret;
+	}
+	
 
+	public Boolean waitForCompletion(String name) throws Exception {
+		boolean running=true;
+		while(running){
+			String state = getState(name);
+			if(state.contains("FINISHED SUCCEEDED")){
+				running =false;
+				return true;
+			}
+			if(state.contains("FAILED")){
+				running =false;
+				return false;
+			}
+			System.out.println(state);
+			Thread.sleep(500);
+		}
+		return true;
+	}
+	
 	public String executeWorkflow(String name) throws Exception {
 		return issueRequest("GET", "abstractWorkflows/execute/"+name, null);
 	}

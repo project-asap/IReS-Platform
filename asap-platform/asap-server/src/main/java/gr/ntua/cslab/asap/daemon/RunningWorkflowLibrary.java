@@ -84,9 +84,11 @@ public class RunningWorkflowLibrary {
 		runningServices.remove(key);
 		WorkflowDictionary w = RunningWorkflowLibrary.getWorkflow(key);
 		
+		logger.info("Removing: "+key);
 	    //MaterializedWorkflow1 w = MaterializedWorkflowLibrary.get(e.getKey());
 	    for(OperatorDictionary op : w.getOperators()){
-			if(op.getIsOperator().equals("true") && op.getStatus().equals("running")){
+			logger.info("Checking: "+op.getName());
+			if(op.getIsOperator().equals("true") && op.getStatus().equals("completed")){
 				Operator operator = OperatorLibrary.getOperator(op.getNameNoID());
 				operator.reConfigureModel();
 			}

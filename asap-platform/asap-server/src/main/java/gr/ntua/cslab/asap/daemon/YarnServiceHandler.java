@@ -62,9 +62,12 @@ public class YarnServiceHandler implements Runnable {
 	        
 		}
 		else{
+			logger.info("Finished ");
 			
 			report = service.getFinalReport();
 	    	service.stop();
+			RunningWorkflowLibrary.workflowsReport.put(e.getKey(), report);
+			Thread.sleep(3000);
 	    	RunningWorkflowLibrary.removeRunningService(e.getKey());
 		}
 		//logger.info("State: "+report.getYarnApplicationState());

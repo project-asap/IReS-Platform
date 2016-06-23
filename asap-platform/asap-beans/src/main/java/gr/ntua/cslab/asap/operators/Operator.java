@@ -93,7 +93,6 @@ public class Operator {
 
         List<OutputSpacePoint> outPoints = new ArrayList<>();
 		minTotalError = Double.MAX_VALUE;
-		models=new HashMap<>();
 		for (Entry<String, String> e : outputSpace.entrySet()) {
             if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
             	List<Model> performanceModels = new ArrayList<Model>();
@@ -141,7 +140,7 @@ public class Operator {
 								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
 								Random r = new Random();
 								for (OutputSpacePoint point : outPoints){
-									if(r.nextDouble()<=0.8)
+									if(r.nextDouble()<=0.75)
 										trainPoints.add(point);
 									else
 										testPoints.add(point);
@@ -151,7 +150,7 @@ public class Operator {
 		                        }
 								try {
 									model.train();
-									double terror = ML.totalError(model, testPoints);
+									double terror = ML.medianRelError(model, testPoints);
 									error+=terror;
 								} catch (Exception e1) {
 									logger.info("Exception in training: "+e1.getMessage());
@@ -324,7 +323,7 @@ public class Operator {
 		                        }
 								try {
 									model.train();
-									double terror = ML.totalError(model, testPoints);
+									double terror = ML.totalRelError(model, testPoints);
 									error+=terror;
 								} catch (Exception e1) {
 									logger.info("Exception in training: "+e1.getMessage());

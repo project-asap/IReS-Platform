@@ -45,15 +45,15 @@ public class TestWorkflows {
 		WorkflowClient cli = new WorkflowClient();
 		cli.setConfiguration(conf);
 		
-		cli.removeAbstractWorkflow("abstractTest1");
+		cli.removeAbstractWorkflow("pagerank");
 		
-		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
-		Dataset d1 = new Dataset("crawlDocuments");
+		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("pagerank");
+		Dataset d1 = new Dataset("graph");
 
-		WorkflowNode t1 = new WorkflowNode(false,false,"crawlDocuments");
+		WorkflowNode t1 = new WorkflowNode(false,false,"graph");
 		t1.setDataset(d1);
 
-		AbstractOperator abstractOp = new AbstractOperator("TF_IDF");
+		AbstractOperator abstractOp = new AbstractOperator("PageRank");
 		WorkflowNode op1 = new WorkflowNode(true,true,"TF_IDF");
 		op1.setAbstractOperator(abstractOp);
 		//abstractOp.writeToPropertiesFile(abstractOp.opName);
