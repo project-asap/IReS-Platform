@@ -96,7 +96,6 @@ public class AbstractClient {
 
 	        con.setRequestProperty("accept", "text/html");
 	        con.setRequestProperty("Content-type", "text/html");
-	        con.setDoInput(true);
 	        
 	        StringBuilder builder = new StringBuilder();
 
@@ -129,15 +128,14 @@ public class AbstractClient {
    	String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
        String urlString = "http://" + masterDNS + ":1323/runningWorkflows/replan/" + id;       
        try {
-	        //LOG.info("Replanning workflow " + id + " issuing urlString: " + urlString);
-			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
+	        LOG.info("Replanning workflow " + id + " issuing urlString: " + urlString);
+			//System.out.println( "ClusterStatus Issuing urlString: " + urlString);
 	        URL url = new URL(urlString);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 	        con.setRequestMethod("GET");
 	        con.setRequestProperty("accept", "application/xml");
-	        con.setRequestProperty("Content-type", "application/xml");	        
-	        con.setDoInput(true);
+	        con.setRequestProperty("Content-type", "application/xml");
 	        
 	        StringBuilder builder = new StringBuilder();
 
@@ -176,8 +174,7 @@ public class AbstractClient {
 
 	        con.setRequestMethod("GET");
 	        con.setRequestProperty("accept", "application/XML");
-	        con.setRequestProperty("Content-type", "application/XML");	        
-	        con.setDoInput(true);
+	        con.setRequestProperty("Content-type", "application/XML");
 	        
 	        builder = new StringBuilder();
 	    	in = con.getInputStream();
@@ -215,8 +212,7 @@ public class AbstractClient {
 
 	        con.setRequestMethod("GET");
 	        con.setRequestProperty("accept", "application/XML");
-	        con.setRequestProperty("Content-type", "application/XML");	        
-	        con.setDoInput(true);
+	        con.setRequestProperty("Content-type", "application/XML");
 	        
 	        builder = new StringBuilder();
 	    	in = con.getInputStream();

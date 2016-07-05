@@ -23,7 +23,6 @@ import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Iterator;
@@ -106,7 +105,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		//hosts
 		runservices = new HashMap< String, String>();
 		try{
-			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( ",");
+			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").split( ";;");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.per-node property.");
@@ -114,19 +113,36 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "in folder with relative path asap-server/target/conf.");
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
-			return;
+			logger.info( npe.getMessage());
+			//return;
 		}
 		hservices = new HashMap< String, String>();
 		if( hosts != null){
 			for( int i = 0; i < hosts.length; i++){
 				//System.out.println( hosts[ i].trim());
 				//services[ 0] -> host, services[ 1] -> host services
-				services = hosts[ i].trim().split( ":");
-				hservices.put( services[ 0], services[ 1]);
+				services = hosts[ i].trim().split( "::");
+				try{
+					hservices.put( services[ 0], services[ 1]);	
+				}
+				catch( ArrayIndexOutOfBoundsException aibe)
+				{
+					logger.info( "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.");
+					logger.info( "is empty i.e. there is no pair of cluster node and its services. To fix this, add" );
+					logger.info( "to this property value one cluster node together with its services as it is described");
+					logger.info(  "into the yarn-site.xml file.");
+					/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
+					msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
+					msg += "to this property value one cluster node together with its services as it is described\n";
+					msg += "into the yarn-site.xml file.";
+					logger.log( Level.INFO, "", aibe);
+					*/
+					//return;
+				}				
 			}			
 		}
 		try{
-			hosts = yconf.get( "yarn.nodemanager.services-running.check-availability").split( "[;;]{2}");
+			hosts = yconf.get( "yarn.nodemanager.services-running.check-availability").split( ";;");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-availability property.");
@@ -134,21 +150,33 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "in folder with relative path asap-server/target/conf.");
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
-			return;
+			logger.info( npe.getMessage());
+			//return;
 		}
 		scommands = new HashMap< String, String>();
 		if( hosts != null){
 			for( int i = 0; i < hosts.length; i++){
 				//System.out.println( hosts[ i].trim());
 				//services[ 0] -> service, services[ 1] -> service command
-				services = hosts[ i].trim().split( ":");
-				scommands.put( services[ 0], services[ 1]);
-				//add the service into the runservices with an unknown status for the moment
-				runservices.put( services[ 0], "");
+				services = hosts[ i].trim().split( "::");
+				try{
+					scommands.put( services[ 0], services[ 1]);
+					//add the service into the runservices with an unknown status for the moment
+					runservices.put( services[ 0], "");
+				}
+				catch( ArrayIndexOutOfBoundsException aibe)
+				{
+					logger.info( "ERROR: probably the value of yarn.nodemanager.services-running.check-availability property.");
+					logger.info( "is empty i.e. there is no pair of cluster service and its command with which the status of the");
+					logger.info( "service is determined. To fix this, add to this property value the missing service for the command");
+					logger.info( services[ 0] + " into the yarn-site.xml file. The missing service is declared in property");
+					logger.info( "yarn.nodemanager.services-running.per-node into the same file.");
+					//return;
+				}
 			}			
 		}
 		try{
-			hosts = yconf.get( "yarn.nodemanager.services-running.check-status").split( ",");
+			hosts = yconf.get( "yarn.nodemanager.services-running.check-status").split( ";;");
 		}
 		catch( NullPointerException npe){
 			logger.info( "ERROR: YarnConfiguration object cannot find yarn.nodemanager.services-running.check-status property.");
@@ -156,15 +184,32 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "in folder with relative path asap-server/target/conf.");
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
-			return;
+			logger.info( npe.getMessage());
+			//return;
 		}
 		sstatus = new HashMap< String, String>();
 		if( hosts != null){
 			for( int i = 0; i < hosts.length; i++){
 				//System.out.println( hosts[ i].trim());
 				//services[ 0] -> service, services[ 1] -> service running status
-				services = hosts[ i].trim().split( ":");
-				sstatus.put( services[ 0], services[ 1]);
+				services = hosts[ i].trim().split( "::");
+				try{
+					sstatus.put( services[ 0], services[ 1]);	
+				}
+				catch( ArrayIndexOutOfBoundsException aibe)
+				{
+					logger.info( "ERROR: probably the value of yarn.nodemanager.services-running.check-status property.");
+					logger.info( "is empty i.e. there is no pair of cluster service and its status. To fix this, add" );
+					logger.info( "to this property value the missing status of the service " + services[ 0] + " as it is described");
+					logger.info( "into the yarn-site.xml file.");
+					/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
+					msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
+					msg += "to this property value one cluster node together with its services as it is described\n";
+					msg += "into the yarn-site.xml file.";
+					logger.log( Level.INFO, "", aibe);
+					*/
+					//return;
+				}
 			}			
 		}
 		/*
@@ -173,6 +218,7 @@ public class ClusterNodes extends Configured implements Runnable {
 		System.out.println( "Running services' status= " + sstatus);
 		*/
 		//initialize and start YarnClient
+		//System.out.println( "Yarn Configuration is: " + yconf);
 		yc.init( yconf);
 		logger.info( "YarnClient has been initiated.");
 		yc.start();

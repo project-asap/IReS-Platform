@@ -11,15 +11,8 @@
   limitations under the License. See accompanying LICENSE file.
 -->
 <configuration>
-	<!-- Site specific YARN configuration properties -->
+  <!-- Site specific YARN configuration properties -->
 
-	<!-- Configurations for Resource Manager -->
-	<property>
-	  <name>yarn.resourcemanager.hostname</name>
-	  <value>hdp1.itc.unipi.it</value>
-	  <description>The hostname of the RM.</description>
-	</property>
-  
   <!-- Capacity Scheduler -->
   <!-- https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html -->
   <property>
@@ -68,18 +61,14 @@
 	<property>
         <name>yarn.nodemanager.services-running.per-node</name>
         <value>
-        	hdp1:PostgreSQL Spark SparkWorker,
-        	hdp2:SparkWorker,
-        	hdp3:PostgreSQL SparkWorker,
-        	hdp4:SparkWorker
         </value>
         <description>
         	On the nodes of a YARN cluster except the daemons of YARN may run also other
         	services like databases. The declaration of these services per node can be done
-        	through this property in the form below, where hosts are separated by a new
-        	line( "\n"), host services are separated by " " and host is separated by its
+        	through this property in the form below, where hosts are separated by a double
+        	semicolon( ";;"), host services are separated by " " and host is separated by its
         	services with ":" e.g. 
-        	host1:service1 service2 ...\nhost2:service3 service4 ...\nhost3:service5
+        	host1:service1 service2 ...;;host2:service3 service4 ...;;host3:service5
         </description>
     </property>
     <!-- services' command to test their availability -->
@@ -88,8 +77,7 @@
         <value>
         	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
         	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
-        	SparkWorker:jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
-        	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
+        	Hive:;;
         </value>
         <description>
         	The commands to check the availability( running or not) of services declared in
@@ -98,6 +86,8 @@
         	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}'
         	or for a Mysql database service the command is
         	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
+        	SparkWorker:jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
+        	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
 		NOTE: the commands must be separated by a double semicolon i.e. ";;"
         </description>
     </property>
@@ -105,15 +95,13 @@
     <property>
         <name>yarn.nodemanager.services-running.check-status</name>
         <value>
-        	PostgreSQL:online, Mysql:Uptime, SparkWorker:Worker, Spark:Master
         </value>
         <description>
         	The expected output message of the commands declared into
         	yarn.nodemanager.services-running.check-availability property if they are
         	running. For example, PostgreSQL:online, Mysql:uptime
         </description>
-    </property>
-    <!-- -->
+    </property>    <!-- -->
 
   <!-- Configurations for NodeManager -->
   <!-- To run Map Reduce applications -->
@@ -128,7 +116,7 @@
   <!-- Path definition of resources folder, a custom property -->
   <property>
     <name>yarn.nodemanager.resources-folder.path</name>
-    <value>/home/forth/asap4all/IReS-Platform/resources</value>
+    <value></value>
     <description>
       This folder contains all the custom files or scripts that YARN
       various properties like yarn.nodemanager.health-checker.script.path

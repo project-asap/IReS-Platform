@@ -19,15 +19,18 @@ package gr.ntua.cslab.asap.daemon;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
+import gr.ntua.cslab.asap.rest.beans.AsapServerConfigurations;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
 import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
 import gr.ntua.cslab.asap.staticLibraries.MaterializedWorkflowLibrary;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +64,10 @@ public class Main {
         ServerStaticComponents.properties = new Properties();
         ServerStaticComponents.properties.load(stream);
         
+        //load asap.server_home value to a suitable place in order to
+        //enable the cloudera module to load operators .lua files
+        AsapServerConfigurations.properties = new Properties();
+        AsapServerConfigurations.properties.load( stream);
     }
 
     private static void configureServer() throws Exception {
@@ -111,15 +118,14 @@ public class Main {
 
         ServletHolder holder = new ServletHolder(ServletContainer.class);
         holder.setInitParameter("com.sun.jersey.config.property.resourceConfigClass", "com.sun.jersey.api.core.PackagesResourceConfig");
-        holder.setInitParameter("com.sun.jersey.config.property.packages",
-                "gr.ntua.cslab.asap.daemon.rest;"
-                + "org.codehaus.jackson.jaxrs");//Set the package where the services reside
+        holder.setInitParameter("com.sun.jersey.config.property.packages", "gr.ntua.cslab.asap.daemon.rest; org.codehaus.jackson.jaxrs");
+        //Set the package where the services reside
         holder.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
         holder.setInitParameter("com.sun.jersey.config.feature.Formatted", "true");
-//        
+        
         holder.setInitOrder(1);
-//
-//        ServerStaticComponents.server = new Server();
+
+        //ServerStaticComponents.server = new Server();
         ServletContextHandler context = new ServletContextHandler(ServerStaticComponents.server, "/", ServletContextHandler.SESSIONS);
         context.addServlet(holder, "/*");
         
@@ -136,7 +142,6 @@ public class Main {
         ServerStaticComponents.server.setHandler(handlers);
         
         Logger.getLogger(Main.class.getName()).info("Server configured");
-
     }
 
     private static void configureLogger() {
@@ -198,7 +203,7 @@ public class Main {
 		ClusterStatusLibrary.initialize();
 	}
 	
-	private static void checkServicesStatus() throws Exception{
+	private static void checkServicesStatus() throws Exception {
 		ClusterNodes cns = new ClusterNodes( 5000);
 		Thread check = new Thread( cns);
 		try{
@@ -206,9 +211,22 @@ public class Main {
 		}
 		catch( Exception e){
 			check.stop();
-			System.err.println( "Checking for cluster services status has been disable due to an exception!");
+			System.err.println( "Checking for cluster services status has been disabled due to an exception!");
 			System.err.println( "Check the logs and the stderr for more info.");
 		}
+	}
+	
+	private static void checkYarnConfiguration() throws Exception {
+		//the process that will be returned after running a bash command
+		Process p = null;
+		//a BufferedReader to read command's output
+		BufferedReader br = null;
+		//run the 'diff' command to validate if the files yarn-site.xml and core-site.xml into $YARN_HOME/etc/hadoop
+		//folder are the same with the ones into the folder $IRES_HOME/asap-platform/asap-server/target/conf
+		p = Runtime.getRuntime().exec( "diff ");
+		br = new BufferedReader( new InputStreamReader( p.getInputStream()));
+		//read status
+		String status = br.readLine();
 	}
 	
     public static void main(String[] args) throws Exception {

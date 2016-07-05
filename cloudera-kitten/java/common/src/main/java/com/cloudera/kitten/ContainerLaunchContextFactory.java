@@ -14,35 +14,12 @@
  */
 package com.cloudera.kitten;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.yarn.api.records.ContainerLaunchContext;
-import org.apache.hadoop.yarn.api.records.LocalResource;
-import org.apache.hadoop.yarn.api.records.LocalResourceType;
-import org.apache.hadoop.yarn.api.records.LocalResourceVisibility;
 import org.apache.hadoop.yarn.api.records.Priority;
 import org.apache.hadoop.yarn.api.records.Resource;
-import org.apache.hadoop.yarn.api.records.ResourceRequest;
-import org.apache.hadoop.yarn.util.ConverterUtils;
 import org.apache.hadoop.yarn.util.Records;
-
-import com.cloudera.kitten.lua.LuaContainerLaunchParameters;
-import com.cloudera.kitten.lua.LuaFields;
-import com.cloudera.kitten.lua.LuaPair;
-import com.cloudera.kitten.lua.LuaWrapper;
 
 /**
  * Functions for constructing YARN objects from the parameter values.
@@ -63,8 +40,7 @@ public class ContainerLaunchContextFactory {
     clc.setEnvironment(parameters.getEnvironment());
     clc.setLocalResources(parameters.getLocalResources());
     return clc;
-  }
-  
+  }  
   
   public Resource createResource(ContainerLaunchParameters parameters) {
     return parameters.getContainerResource(clusterMax);
@@ -74,6 +50,5 @@ public class ContainerLaunchContextFactory {
     Priority p = Records.newRecord(Priority.class);
     p.setPriority(priority);
     return p;
-  }
-  
+  }  
 }

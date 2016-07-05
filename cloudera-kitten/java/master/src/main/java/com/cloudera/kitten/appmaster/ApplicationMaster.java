@@ -28,10 +28,7 @@ import com.cloudera.kitten.appmaster.params.lua.WorkflowParameters;
 import com.cloudera.kitten.appmaster.service.ApplicationMasterServiceImpl;
 import com.cloudera.kitten.appmaster.service.WorkflowService;
 import com.cloudera.kitten.lua.LuaFields;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.Service.State;
 
-import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import org.apache.hadoop.yarn.api.protocolrecords.RegisterApplicationMasterResponse;
 
 /**
@@ -42,12 +39,7 @@ public class ApplicationMaster extends Configured implements Tool {
   private static final Log logger = LogFactory.getLog( ApplicationMaster.class);
   //to know if the workflow is at replan state or not
   public static boolean isReplanning = false;
-  //to store the new workflow coming from replanning
-  public static WorkflowDictionary new_replanned_workflow = null;
-  //since the replanned workflow will be executed in the context of the application already running
-  //i.e. the same ApplicationMaster will be used for the replanned workflow, there is no need to
-  //re - register the ApplicationMaster. By the way the ResourceManager will fail if a re - registration
-  //is applied during the start() phase of WorkflowService
+  //the registration of the ApplicationMaster to the ResourceManager
   public static RegisterApplicationMasterResponse initial_registration = null;
 
   @Override
@@ -67,38 +59,17 @@ public class ApplicationMaster extends Configured implements Tool {
 	  }
 	  else{
 		  //workflow
-          System.out.println( "Setting workflow parameters and service!" );
           logger.info( "Setting workflow parameters and service!" );
 		  WorkflowParameters params = new WorkflowParameters(getConf());
 		  WorkflowService service = new WorkflowService(params, getConf());
-          System.out.println( "Workflow parameters and service have been set!" );
           logger.info( "Workflow parameters and service have been set!" );
-          System.out.println( "Starting workflow parameters and service ..." );
           logger.info( "Starting workflow parameters and service ..." );
           service.startAndWait();
           while (service.hasRunningContainers()) {
         	  Thread.sleep(1000);
           }
           service.stopAndWait();
-          //it is not known beforehand how many times replanning will be needed but
-          //however any replanning must be enforced in the end
-          /*
-          while( isReplanning){
-        	  while( service.state() != State.TERMINATED ){
-        		  Thread.sleep(1000);
-        	  }
-        	  //the workflow plan has been changed so new params and service are needed
-        	  params = new WorkflowParameters( new_replanned_workflow, params.jobName, getConf());
-        	  service = new WorkflowService( params,getConf());
-        	  service.startAndWait();
-              while (service.hasRunningContainers()) {
-                  Thread.sleep(1000);
-              }
-              service.stopAndWait();
-          }
-          */
 	  }
-
 	  return 0;
   }
 

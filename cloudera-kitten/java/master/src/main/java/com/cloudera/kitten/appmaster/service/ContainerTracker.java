@@ -25,6 +25,8 @@ import com.cloudera.kitten.ContainerLaunchParameters;
 import com.cloudera.kitten.appmaster.ApplicationMaster;
 import com.google.common.collect.Maps;
 
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
+
 public class ContainerTracker implements NMClientAsync.CallbackHandler {
 	private static final Log LOG = LogFactory.getLog(ContainerTracker.class);
     public final ContainerLaunchParameters params;
@@ -45,7 +47,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
 	private WorkflowService service;
 	private long startTime;
     
-    public ContainerTracker(WorkflowService service, ContainerLaunchParameters parameters) {
+    public ContainerTracker( WorkflowService service, ContainerLaunchParameters parameters) {
       this.service = service;
       this.params = parameters;
       this.nextTrackers = new ArrayList<ContainerTracker>();
@@ -88,7 +90,13 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  return;
       }
       LOG.info( "They are all previous containers finished.");
-      service.parameters.workflow.getOperator(params.getName()).setStatus("running");
+      LOG.info( "CONTAINER TRACKER PARAMETERS: " + params);
+      LOG.info( "CONTAINER TRACKER ASKING FOR OPERATOR: " + params.getName());
+      for( OperatorDictionary opdic : service.parameters.workflow.getOperators()){
+    	  LOG.info( "CONTAINER TRACKER WORKFLOW OPERATOR: " + opdic.getName() + "\twith status " + opdic.getStatus());
+    	  //LOG.info( opdic.getDescription());
+      }
+      service.parameters.workflow.getOperator( params.getName()).setStatus("running");
       startTime = System.currentTimeMillis();
       this.nodeManager = NMClientAsync.createNMClientAsync(this);
       nodeManager.init(service.conf);
@@ -197,7 +205,9 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
         long stop = System.currentTimeMillis();
         double time = (stop-startTime)/1000.0-5;//5sec init container
   		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
-  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
+  		if( !service.parameters.workflow.getOperator(params.getName()).getStatus().equals( "failed")){
+  	  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");  			
+  		}
       
         containers.remove(containerId);
         completed.incrementAndGet();
@@ -271,6 +281,10 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  LOG.info( "Killing container: " + c.getId() + "\tat node: " + c.getNodeId());
     	  nodeManager.stopContainerAsync(c.getId(), c.getNodeId());
       }
+      /*vpapa: also empty the nextTrackers field of the tracker assuming that the next trackers
+       * dependent on it
+       */
+      nextTrackers.clear();
     }
 
     public boolean hasMoreContainers() {

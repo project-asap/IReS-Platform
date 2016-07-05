@@ -27,32 +27,22 @@ import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import net.sourceforge.jeval.EvaluationException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.records.ApplicationReport;
 import org.apache.hadoop.yarn.api.records.YarnApplicationState;
-import org.apache.hadoop.yarn.client.api.YarnClient;
-import org.apache.hadoop.yarn.client.cli.YarnCLI;
 import org.apache.log4j.Logger;
 
 import com.cloudera.kitten.client.YarnClientService;
 import com.cloudera.kitten.client.params.lua.LuaYarnClientParameters;
 import com.cloudera.kitten.client.service.YarnClientServiceImpl;
-import com.cloudera.kitten.util.LocalDataHelper;
 
 public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,WorkflowDictionary> runningWorkflows;
@@ -61,7 +51,7 @@ public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,YarnClientService> runningServices;
 	public static ConcurrentHashMap<String,ApplicationReport> workflowsReport;
 	
-	private static Configuration conf;
+	public static Configuration conf;
 	private static Logger logger = Logger.getLogger(RunningWorkflowLibrary.class.getName());
 
 	public static void initialize() throws Exception{
@@ -72,6 +62,7 @@ public class RunningWorkflowLibrary {
 		toRunWorkflows = new ConcurrentHashMap<String,WorkflowDictionary>();
 	    conf = new Configuration();
 	    for( Entry<Object, Object> p : ServerStaticComponents.properties.entrySet()){
+	    	//logger.info( "Conf, key: " + p.getKey() + "\tvalue: " + p.getValue());
 			conf.set(p.getKey().toString(), p.getValue().toString());
 	    }
         (new Thread(new YarnServiceHandler())).start();
@@ -150,34 +141,15 @@ public class RunningWorkflowLibrary {
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		LuaYarnClientParameters params = null;
 		String luafilename = null;
-		int luafileindex = 0;
 
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
 				/* vpapa: retrieve the .lua file specified for this operator from
-					operator's description
+				operator's description
 				*/
-				luafilename = op.getDescription();
-				//check that this property is specified and it has some value
-				luafileindex = luafilename.indexOf( "Execution.LuaScript");
-				if( luafileindex > -1){
-					//found the property inside the description file
-					luafilename = luafilename.substring( luafileindex, luafilename.indexOf( "\n", luafileindex));
-					luafilename = luafilename.split( "=")[ 1].trim();
-					if( luafilename.equals( "")){
-						luafilename = op.getNameNoID() + ".lua";
-						logger.info( "WARN: The property Execution.LuaScript has not any value. Check if this.");
-						logger.info( "In any case, it is assumed that operator's .lua file has the same name");
-						logger.info( "as the operator.");
-					}
-				}
-				else{
-					logger.info( "WARN: The property Execution.LuaScript is missing from operator's description.");
-					logger.info( "Check if this is valid. In any case, it is assumed that operator's .lua file");
-					logger.info( "has the same name as the operator");
-					luafilename = op.getNameNoID() + ".lua";
-				}
+				luafilename = op.getPropertyValue( "Execution.LuaScript");
 				//System.out.println( "The .lua file is: " + luafilename);
+				logger.info( "OPERATOR DIRECTORY: " + OperatorLibrary.operatorDirectory + " for operator " + op.getName());
 				operators.put( op.getName(), OperatorLibrary.operatorDirectory + "/" + op.getNameNoID() + "/" + luafilename);
 			}
 			else{
@@ -247,9 +219,9 @@ public class RunningWorkflowLibrary {
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(id, "/tmp");
 		materializedWorkflow.readFromWorkflowDictionary(wd);
 		for(OperatorDictionary op : wd.getOperators()){
-			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("running")){
+			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("completed")){
 
-				logger.info(op.getName()+" : "+op.getAbstractName());
+				logger.info( "Operator: "+ op.getName()+ "\tAbstract name: "+op.getAbstractName());
 
 				WorkflowNode n = new WorkflowNode(false, false,op.getAbstractName());
 				Dataset temp = new Dataset(op.getName());
@@ -262,7 +234,7 @@ public class RunningWorkflowLibrary {
 		
 		AbstractWorkflow1 aw = runningAbstractWorkflows.get(id);
 		
-		MaterializedWorkflow1 mwNew =aw.replan(materilizedDatasets, 100);
+		MaterializedWorkflow1 mwNew = aw.replan(materilizedDatasets, 100);
 		toRunWorkflows.put(id, mwNew.toWorkflowDictionary("\n"));
 	}
 }

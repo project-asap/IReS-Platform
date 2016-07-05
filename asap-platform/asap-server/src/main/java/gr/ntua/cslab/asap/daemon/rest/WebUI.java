@@ -678,24 +678,24 @@ public class WebUI {
     	ret+="</div>";
 
     	ret+="<div  class=\"mainpage\"><p><form action=\"/web/abstractWorkflows/materialize\" method=\"get\">"
-			+ "Policy: <p><input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
-			+ "<textarea rows=\"4\" cols=\"80\" name=\"policy\">"+defaultPolicy()+"</textarea></p>"
-			+ "Parameters: <p><textarea rows=\"4\" cols=\"80\" name=\"parameters\"></textarea></p>"
-			+ "<p><input class=\"styled-button\" type=\"submit\" value=\"Materialize Workflow\"></form></p>";
+			+ "<div class='side_by_side'>Policy: <p><input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
+			+ "<textarea rows=\"4\" cols=\"60\" name=\"policy\">"+defaultPolicy()+"</textarea></p></div>"
+			+ "<div class='side_by_side'>Parameters:<p><textarea rows=\"4\" cols=\"60\" name=\"parameters\"></textarea></p></div>"
+			+ "<div><p><input class='styled-button' type=\"submit\" value=\"Materialize Workflow\"></form></p></div>";
     	
-    	ret+="<p><form action=\"/web/abstractWorkflows/addRemove\" method=\"get\">"
+    	ret+="<div><p><form action=\"/web/abstractWorkflows/addRemove\" method=\"get\">"
     			+ "Comma separated list: <textarea rows=\"1\" cols=\"80\" name=\"name\"></textarea><br>"
     			+ "<p><input type=\"radio\" name=\"type\" value=\"1\" checked>Abstract Operator<br>"
     			+ "<input type=\"radio\" name=\"type\" value=\"2\">Materialized Operator<br>"
     			+ "<input type=\"radio\" name=\"type\" value=\"3\">Abstract Dataset<br>"
     			+ "<input type=\"radio\" name=\"type\" value=\"4\">Materialized Dataset<br>"
     			+ "<input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\"></p>"
-    			+ "<p><input class=\"styled-button\" name=\"addRemove\" type=\"submit\" value=\"Add nodes\">"
-    			+ "<input class=\"styled-button\" name=\"addRemove\" type=\"submit\" value=\"Remove nodes\"></form></p>";
+    			+ "<p><input class=\"styled-button breathing\" name=\"addRemove\" type=\"submit\" value=\"Add nodes\">"
+    			+ "<input class=\"styled-button breathing\" name=\"addRemove\" type=\"submit\" value=\"Remove nodes\"></form></p></div>";
     	
     	ret+="<p><form action=\"/web/abstractWorkflows/changeGraph\" method=\"get\">"
     		+ "<input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
-			+ "<textarea rows=\"40\" cols=\"150\" name=\"workflowGraph\">"+AbstractWorkflowLibrary.getGraphDescription(workflowName)+"</textarea>"
+			+ "<textarea rows=\"20\" cols=\"125\" name=\"workflowGraph\">"+AbstractWorkflowLibrary.getGraphDescription(workflowName)+"</textarea>"
 			+ "<br><input class=\"styled-button\" type=\"submit\" value=\"Change graph\"></form></p>";
     	
     	

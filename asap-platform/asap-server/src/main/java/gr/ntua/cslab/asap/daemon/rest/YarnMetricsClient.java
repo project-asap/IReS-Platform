@@ -17,19 +17,13 @@
 
 package gr.ntua.cslab.asap.daemon.rest;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import javax.xml.transform.stream.StreamSource;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
@@ -51,9 +45,7 @@ public class YarnMetricsClient {
 		StringBuilder builder = null;
 		StringBuffer xmlStr = null;
 		InputStream in = null;
-		ConcurrentHashMap< String, String> metrics = null;
-		JAXBContext jaxbContext = JAXBContext.newInstance( HashMap.class );
-		Unmarshaller u = jaxbContext.createUnmarshaller();
+		
 		try {
 			//LOG.info("Retrieving metrics from YARN, issuing urlString: " + urlString);
 			//System.out.println("ClusterStatus Issuing urlString: " + urlString);

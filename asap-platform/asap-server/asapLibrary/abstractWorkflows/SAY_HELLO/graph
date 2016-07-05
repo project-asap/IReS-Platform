@@ -1,0 +1,7 @@
+hdfs_file,HelloWorld
+HelloWorld,d1
+d1,HelloWorld1
+HelloWorld1,d2
+d2,HelloWorld2
+HelloWorld2,d3
+d3,$$target

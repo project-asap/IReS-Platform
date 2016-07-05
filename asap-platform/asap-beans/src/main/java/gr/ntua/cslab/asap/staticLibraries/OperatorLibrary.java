@@ -26,15 +26,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import static java.nio.file.StandardCopyOption.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +40,6 @@ import java.util.List;
 import gr.ntua.cslab.asap.utils.DataSource;
 import gr.ntua.ece.cslab.panic.core.containers.beans.InputSpacePoint;
 import gr.ntua.ece.cslab.panic.core.containers.beans.OutputSpacePoint;
-import net.sourceforge.jeval.function.string.Length;
 
 import org.apache.log4j.Logger;
 

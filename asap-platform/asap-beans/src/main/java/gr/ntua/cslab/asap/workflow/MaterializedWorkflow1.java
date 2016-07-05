@@ -27,23 +27,22 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Random;
 
 import net.sourceforge.jeval.EvaluationException;
 
 import org.apache.log4j.Logger;
 
 public class MaterializedWorkflow1 {
+	
+	private static Logger logger = Logger.getLogger(MaterializedWorkflow1.class.getName());
+	
 	private AbstractWorkflow1 abstractWorkflow;
-
 	private List<WorkflowNode> targets;
 	public HashMap<String,List<WorkflowNode>> bestPlans;
 	public double optimalCost;
@@ -52,10 +51,8 @@ public class MaterializedWorkflow1 {
 	public HashMap<String, String> groupInputs;
 	public String function;
 	public String functionTarget;
-	private static Logger logger = Logger.getLogger(MaterializedWorkflow1.class.getName());
 	public HashMap<String,WorkflowNode> nodes;
 	public String directory;
-
 	public HashMap<String, WorkflowNode> materilizedDatasets;
 	
 	@Override
@@ -246,9 +243,7 @@ public class MaterializedWorkflow1 {
 	
 	public List<WorkflowNode> getTargets() {
 		return targets;
-	}
-	
-	
+	}	
 
 	public static void main(String[] args) throws Exception {
 		/*MaterializedWorkflow1 mw = new MaterializedWorkflow1();
@@ -293,11 +288,5 @@ public class MaterializedWorkflow1 {
 		this.groupInputs = groupInputs;
 		this.function = function;
 		this.functionTarget = functionTarget;
-	}
-
-
-
-
-	
-	
+	}	
 }

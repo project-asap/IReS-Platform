@@ -56,8 +56,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.ObjectUtils.Null;
-
 
 public class Operator {
 	public HashMap<String, List<Model>> models;
@@ -459,7 +457,6 @@ public class Operator {
 				}
 				dim.put(e.getKey(), l);
 			}
-			int i = 0;
 			writter.append(variable);
 			if (addPredicted) {
 				writter.append(delimiter + "model");
@@ -608,6 +605,8 @@ public class Operator {
 		logger.info( optree.toString());
 		inputSpace = new HashMap<String, String>();
 		outputSpace = new HashMap<String, String>();
+		/*vpapa: these properties must appear inside operator's description file
+		 */
 		try{
 			if(optree.getNode("Optimization.inputSpace")!=null)
 				optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
@@ -615,9 +614,6 @@ public class Operator {
 				optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		}
 		catch( NullPointerException npe){
-			System.out.println( "ERROR: From operator " + opName + "'s description file either"
-								+ " Optimization.inputSpace or Optimization.outputSpace"
-								+ " parameter or both are missing. Add them appropriately.");
 			logger.info( "ERROR: From operator " + opName + "'s description file either"
 								+ " Optimization.inputSpace or Optimization.outputSpace"
 								+ " parameter or both are missing. Add them appropriately.");
@@ -1105,10 +1101,7 @@ public class Operator {
 		return this.dataSource;
 	}
 
-
 	public String getEngine() {
 		return optree.getParameter("Constraints.Engine");
 	}
-
-
 }

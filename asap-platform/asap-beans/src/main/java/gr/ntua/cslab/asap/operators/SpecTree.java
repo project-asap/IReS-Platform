@@ -225,9 +225,7 @@ public class SpecTree {
 				return null;
 			}
 		}
-		return ret;
-		
-		
+		return ret;		
 	}
 	
 
@@ -239,7 +237,6 @@ public class SpecTree {
 		}
 		return ret;
 	}
-
 	
 	public SpecTree copyInputSubTree(String prefix) {
 		SpecTree ret =  new SpecTree();
@@ -275,7 +272,6 @@ public class SpecTree {
 		return ret;
 	}
 
-
 	public SpecTreeNode getNode(String key) {
 		if (key.contains(".")){
 			String curname = key.substring(0, key.indexOf("."));
@@ -292,7 +288,6 @@ public class SpecTree {
 		}
 		return tree.get(key); 
 	}
-
 	
 	public String getParameter(String key) {
 		if (key.contains(".")){

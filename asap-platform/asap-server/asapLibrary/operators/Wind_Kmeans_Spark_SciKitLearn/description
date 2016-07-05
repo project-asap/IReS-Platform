@@ -1,0 +1,64 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	26/ 02/ 2016
+#Previous update	:	09/ 02/ 2016
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+#Work package		:	Telecom analytics
+#Github				:	https://github.com/project-asap/telecom-analytics/blob/current/docs/Sociometer.md
+################################################################################
+#
+#Description
+#	This is the concrete version of the k means operator from wind workflow.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#OPERATOR
+Constraints.Engine=Spark
+Constraints.OpSpecification.Algorithm.name=Wind_Kmeans
+#ENGINE
+Constraints.EngineSpecification.Distributed=Spark
+#INPUT( mandatory)
+Constraints.Input.number=1
+Constraints.Input0.Engine.FS=HDFS
+#if the input type is specified it should be also specified appropriately into
+#the corresponding dataset description file
+#Constraints.Input0.type=TextFile
+#OUTPUT( mandatory)
+Constraints.Output.number=1
+Constraints.Output0.Engine.FS=HDFS
+
+############
+# MODELING #
+############
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+#type,min_value,max_value,step
+Optimization.inputSpace.profiles=Double,0.1,0.9,0.1
+Optimization.inputSpace.centroids=Double,10.0,100.0,10.0
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=1.0
+
+#############
+# EXECUTION #
+#############
+#LUA CONFIGURATION FILE( mandatory)
+Execution.LuaScript=Wind_Kmeans_Spark_SciKitLearn.lua
+#EXECUTION ARGUMENTS( optional)
+Execution.Arguments.number=4
+Execution.Argument0=spark://131.114.136.218:7077
+Execution.Argument1=clustering.py
+Execution.Argument2=roma
+Execution.Argument3=06-2015
+#EXECUTION COPY FILES( optional)
+#copy input to operator's local folder to use it
+#Execution.copyToLocal=In0.path
+#copy operator's output to HDFS so as the following operator to access it
+#Execution.copyFromLocal=/centroids-roma-06-2015
+#EXECUTION OUTPUT( mandatory)
+#Execution.Output0.path=$HDFS_OP_DIR/centroids/roma-06-2015.p
+Execution.Output0.path=$AS_IShdfs:///centroids-roma-06-2015

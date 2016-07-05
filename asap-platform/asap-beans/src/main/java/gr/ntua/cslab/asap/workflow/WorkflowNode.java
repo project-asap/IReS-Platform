@@ -159,8 +159,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				for(Operator op : operators){
 					if(!ClusterStatusLibrary.checkEngineStatus(op)){
 						logger.info( "Specified engine for operator " + op.opName + " is " + op.getEngine());
-						logger.info( "an it is not running. For this, this operator will no be materialized");
-						logger.info( "and consequently the corresponding workflow will not be materialized.");
+						logger.info( "and it is not running. For this, this operator will not be materialized");
+						logger.info( "and consequently the corresponding workflow will not be materialized");
+						logger.info( "if there is not alternative operator to this one.");
 						continue;					
 					}
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();
@@ -198,7 +199,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						WorkflowNode bestInput = null;
 						logger.info( "materializedInputs: " + materializedInputs);
 						for(WorkflowNode in : materializedInputs.get(i)){
-							logger.info("CHECKING INPUT DATASET: "+in.dataset.datasetName);
+							logger.info("CHECKING INPUT DATASET: " + in.dataset.datasetName);
 							/* vpapa: in case the property Constraints.Inputx.type
 								is defined into an operator's description file for
 								some input x( or all of them) but the property is not
@@ -211,16 +212,13 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								the logs
 							*/
 							if( !tempInput.checkMatch(in.dataset)){
-								logger.info( "ERROR: For operator " + op.opName + " there "
-											+ " is an input mismatch. Check inside its"
-											+ " description file if all properties Constraints.Input"
-											+ " for some input x match with all the corresponding"
-											+ " properties of the input dataset x, probably a"
-											+ " materialized one, like the very first input( s)"
-											+ " of the workflow. This message should be taken"
-											+ " as a real error when the materialization seems"
-											+ " to succeed when pushing 'Materialize Workflow'"
-											+ " button but the workflow is not displayed at all.");
+								logger.info( "ERROR: For operator " + op.opName + " there is an input mismatch. Check inside its"
+											+ " description file if all properties Constraints.Input for some input x"
+											+ " match with all the corresponding properties of the input dataset " + in.dataset.datasetName
+											+ " which probably is a materialized one, like the very first input( s)"
+											+ " of the workflow. This message should be taken as a real error when the"
+											+ " materialization seems to succeed when pushing 'Materialize Workflow' button but"
+											+ " the workflow is not displayed at all.");
 								logger.info( "Input dataset: " + in.dataset);
 								logger.info( "Input to be matched: " + tempInput);
 								//one input checked, go for the next
@@ -902,8 +900,20 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return "";
 		else{
-			String ret = "";
-		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
+			//logger.info( "WORKFLOWNODE OPERATOR: " + getName());
+			String ret = operator.getParameter( "Execution.Arguments.number");
+			if( ret == null){
+				logger.info( "WARNING: For operator " + getName() + " the amount of execution arguments"
+							+ " is null. That means that the operators has not any execution argument. If this"
+							+ " is the case, ignore this warning. The system will take care of it. Otherwise,"
+							+ " this should be taken as an ERROR that means either operator's description"
+							+ " file cannot be read correctly in general or that the property Execution.Arguments.number"
+							+ " is miswritten. In the second case inspect the description file. In the first case"
+							+ " debug is needed.");
+			}
+			int args_amount = ret != null ? Integer.parseInt( operator.getParameter( "Execution.Arguments.number")) : 0;
+			ret = "";
+		    for (int i = 0; i < args_amount; i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	if(arg.startsWith("In")){
 		    		int index = Integer.parseInt(arg.charAt(2)+"");
