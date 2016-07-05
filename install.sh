@@ -55,6 +55,9 @@ usage()
 		to be installed and set appropriately for the user who runs this script. If command
 		${bold}xeyes${reset} runs successfully then xserver is configured correctly for the
 		user running the script,
+		
+	-r command
+		Start, stop or restart ASAP server. Command can be one of start, restart and stop.
 
 	-s path 	
 		set IReS home folder according to IReS local installation in order for the ASAP server
@@ -153,7 +156,7 @@ connectASAP2YARN()
 	fi
 }
 
-while getopts ":hgs:c:" opt;
+while getopts ":hgr:s:c:" opt;
 	do
 		case $opt in
 		h)
@@ -165,7 +168,19 @@ while getopts ":hgs:c:" opt;
 			INSTALL_MODE="gui"
 			exit
 			;;
-
+			
+		r)  
+			command=($OPTARG)
+			if [ "$command" = "start" -o  "$command" = "stop" -o "$command" = "restart" ]
+			then
+				echo -e "$command-ing ASAP server,"
+				$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server $command			
+			else
+				echo -e "No valid command has been given. Command is $command.\n"
+				usage
+			fi
+			exit
+			;;
 		s)	
 			if [[ ! -z $OPTARG ]]
 			then

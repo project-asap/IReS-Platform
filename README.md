@@ -2,93 +2,78 @@
 Intelligent, Multi-Engine Resource Scheduler for Big
 Data Analytics Workflows
 
-<h4>Links</h4>
+<h2>Links</h2>
 <ul>
-<li>IReS Paper: http://www.cslab.ntua.gr/~dtsouma/index_files/modde764.pdf </li>
-<li>ASAP Project Official Page: http://www.asap-fp7.eu/</li>
+<li><a href="http://www.cslab.ntua.gr/~dtsouma/index_files/modde764.pdf">IReS Paper</a> </li>
+<li><a href="http://www.asap-fp7.eu/">ASAP Project Official Page</a></li>
 </ul>
-<h4>Using IReS-Platform</h4>
-Usage of IRes-Platform requires 3 steps
 
+<h2>Using IReS-Platform</h2>
+
+Before using IReS it should be configured properly. This setting consists of 3 main steps,
 <ol>
-<li><bold>Clone</bold> IReS-Platform to the server. For a quick reference of how to use git, click here <a href="https://rogerdudler.github.io/git-guide/" target="_blank">Git - the simple guide</a>
-<li><bold>Build</bold> IReS-Platform project using maven. A tutorial about maven can be found here <a href="https://maven.apache.org/guides/getting-started/" target="_blank">Maven Getting Started Guide</a>.</li>
-<li><bold>Update</bold> configuration files and folders appropriately.</li>
+<li>**Cloning** IReS-Platform to the server. For a quick reference of how to use git, click here <a href="https://rogerdudler.github.io/git-guide/" target="_blank">Git - the simple guide</a>
+<li>**Running install.sh** that 
+	<ul>
+	<li>builds IReS-Platform using _Maven_. A tutorial about Maven can be found here <a href="https://maven.apache.org/guides/getting-started/" target="_blank">Maven Getting Started Guide</a>.</li>
+	<li>connects IReS to Hadoop YARN.</li>
+	<li>updates configuration files and folders appropriately.</li>
+	</ul>
+<li>**Setting** cluster resources and services monitoring</li>
 </ol>
 
-<h5>Clone</h5>
-Open a terminal (Linux) or a cmd (Windows) and navigate to a desired directory (create it if does not exist) where IReS-Platform files will be cloned e.g. asap.
+For demonstration reasons a Linux operating system like Ubuntu is assumed throughout this text. In Windows or other Linux distributions the equivalents should be done. The local home directory of the IReS-Platform project is depicted as <p><code>$IRES\_HOME</code></p> following bash script variable notation. Similarly, for Hadoop YARN the local home directory is denoted as <p><code>$YARN\_HOME</code>.</p>
 
-In the github page of the IReS-Platform, https://github.com/project-asap/IReS-Platform, at the right sidebar, under the label "HTTPS clone URL" the clone url can be found. Copy this url and from inside the terminal execute the command
+<h3>Hands On</h3>
 
-<code>git clone clone_url</code>
+<ol>
+<li>
+<h3>Clone</h3>
+Open a terminal( Linux) and navigate to a desired directory (create it if does not exist) where IReS-Platform files will be cloned. In <a href="https://github.com/project-asap/IReS-Platform" target="_blank">IReS-Platform</a> github page, under the green drop down list "Clone or download", the clone url can be found. Copy this url and execute in terminal the command, <p><code>git clone clone_url</code></p>
+</li>
+<li>
+<h3>Run install.sh</h3>
 
-<h5>Build</h5>
-For demostration reasons a Linux operating system like Ubuntu it is assumed in this step. In Windows or other Linux distributions the equivalents should be done.
+After successful cloning of IReS-Platform inside the <code>$IRES_HOME</code> various folders and files can be found. Among them there exists <code>install.sh</code>. <p><code>install.sh</code> **is your friend!**</p>
 
-The local home directory of the IReS-Platform project is
+Executing, <p><code>./install.sh</code></p> will start building IReS-Platform. Upon successful building you will be prompted to provide the path where Hadoop YARN is located in your computer. By doing this, IReS gets connected with Hadoop YARN. You can skip this step and the installation will be finished.
 
-<code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
+**NOTE:**
+<ol>
+<li>if you do not provide an existing YARN installation, then IReS will not be able to execute any workflow. Also, resources and cluster services monitoring will not be functioning.</li>
+<li>you can provide YARN installation path afterwards as it will be shown straight ahead.</li>
+</ol>
 
-NOTE: 
+<h4>Connecting IReS to Hadoop YARN</h4>
 
+Executing, <p><code>install.sh -c $YARN\_HOME,$IRES\_HOME</code></p> will make the connection of IReS and YARN, where $YARN\_HOME and $IRES_HOME correspond to the absolute paths of YARN's and IReS's home folder.
+</li>
+<li>
+<h3>Cluster Monitoring</h3>
+
+This step requires the connection of IReS with YARN. Assuming that this connections has been established, then the user should update the file <p><code>$YARN_HOME/etc/hadoop/yarn-site.xml</code></p> and more specifically the values of the following properties,
 <ul>
-<li>the "$USER" part of the IRES_HOME corresponds to the currently logged in user</li>
-<li>it is assumed that the project has been cloned into the directory /home/$USER/asap</li>
-<li>to refer to the value of IRES_HOME the <a href="http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-5.html" target="_blank">bash script variable</a> notation is used i.e. $IRES_HOME
+<li>yarn.nodemanager.services-running.per-node</li>
+<li>yarn.nodemanager.services-running.check-availability</li>
+<li>yarn.nodemanager.services-running.check-status</li>
 </ul>
 
-To build the project use version 3 of maven because the previous version has bugs with jetty and jersey packages. In Ubuntu just execute
+These properties and some others have been added during the connection of IReS and YARN to enable IReS run workflows over YARN and cluster resources and services monitoring. Although details about filling these values are provided into <code>$YARN_HOME/etc/hadoop/yarn-site.xml</code>, roughly speaking, <code>yarn.nodemanager.services-running.per-node</code> property describes the cluster services running per node. The property, <code>yarn.nodemanager.services-running.check-availability</code> provides the commands per service that "tell" if the relative service runs or not. Finally, the property <code>yarn.nodemanager.services-running.check-status</code> has the statuses per service that the corresponding service has when it runs.
+</li>
+</ol>
 
-<code>sudo apt-get install maven</code>
+<h3>Validate installation</h3>
 
-and confirm the maven version by running
+Here are some tips to confirm IReS installation.
+<ol>
+<li>If anything goes wrong during the build process of IReS, error messages will be print out and a log file will be provided.</li>
+<li>Run ASAP server by running the command <p><code>./install.sh -r start</p></code>No exception should be raised. Also, the <code>jps</code> command should print a "Main" process running that corresponds to ASAP server.</li>
+<li>Run ASAP server web user interface at http://your_hostname:1323/web/main. IReS home page should be displayed.</li>
+<li>Run a workflow, for example run "hello_world" from **"Abstrack Workflows"** tab and see what happens not only in IReS web interface but also in YARN and HDFS web interfaces. Make sure that YARN has been started before running any workflow.</li>
+<li>Click on **"Cockpit"** tab to verify that the expected services to run are really running.</li>
+</ol>
 
-<code>mvn -v</code>.
+<h3>Appendix</h3>
+In this section some details about <code>install.sh</code> script are given.
 
-Then update IReS-Platform pom.xml files to point to the currently installed YARN version.
-
-To do so, the pom.xml file of the <code>asap-platform</code> and <code>cloudera-kitten</code> folders should be updated in order for the Maven to take in account the currently YARN version installed during the building phase. To do so, navigate to <code>$IRES_HOME</code> folder and then
-
-<ul>
-  <li>for the <code>asap-platform</code> edit the file <code>$IRES_HOME/asap-platform/pom.xml</code>. In particular, find the line about <code>hadoop.version</code> and between the tags write the version number of the currently installed YARN version e.g. 2.7.1 if the currently installed YARN is hadoop-2.7.1
-  </li>
-  <li>for the <code>cloudera-kitten</code> edit the file <code>$IRES_HOME/cloudera-kitten/pom.xml</code>. Again, find the line about <code>hadoop.version</code> and write the version number of the currently installed YARN version like before.
-  </li>
-</ul>
-
-Then, navigate to the folder <code>$IRES_HOME/panic</code> and build the corresponding project by runninng
-
-<code>sudo mvn clean install -DskipTests</code>
-
-Do the same for the <code>$IRES_HOME/cloudera-kitten</code> folder and ignore the message "BUILD FAILURE" for the moment if that message occur. Now, build similarly the <code>$IRES_HOME/asap-platform</code> folder and ingore again a possible "BUILD FAILURE" message. Repeat the process for the last two folders with the same order i.e. first build <code>$IRES_HOME/cloudera-kitten</code> and afterwards build <code>$IRES_HOME/asap-platform</code>. 
-
-In the end of each build you should see a "BUILD SUCCESS" message. The building order of the directories above should be followed.
-
-Apart from the "BUILD SUCCESS" message, you should also see a newly created folder by the name "target" for each of the directories above i.e. cloudera-kitten, panic and asap-platform if it did not already exist.
-
-<h5>Update</h5>
-To run asap-server successfully and correctly, two things must be done. The first thing is to define the home folder of the ASAP server. The second one is to copy the cluster configuration files to the corresponding folder of the ASAP server.
-
---> As for the ASAP server's home folder, the corresponding file
-
-<code>$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server</code>
-
-should be updated. In this file the variable "ASAP_SERVER_HOME" should be assigned the path of the folder "asap-platform/asap-server/target" and thus under the line
-
-<code>#IRES_HOME=/path/to/IReS-Platform_project</code>
-
-set the
-<code>IRES_HOME=</code>
-
-to your custom IRES_HOME e.g.
-
-<code>IRES_HOME=/home/$USER/asap/IReS-Platform</code>
-
-Notice that the folder "$IRES_HOME/asap-platform/asap-server/target" has been created during the building phase.
-
---> As for the cluster configuration files, it is assumed that a YARN( or Hadoop 2.0) cluster is already set up and that YARN can be found for example in
-
-<code>YARN=/home/$USER/yarn</code>
-
-Copy the <code>$YARN/etc/hadoop/core-site.xml</code> and <code>$YARN/etc/hadoop/yarn-site.xml</code> files into the <code>$IRES_HOME/asap-platform/asap-server/target/conf</code> directory. Finally, the yarn-site.xml must have a minimum set of properties in order for the IReS-Platform to work correctly. This minimum set of properties can be found in resources/conf/yarn-site-min.xml file of this repository. Similarly for the core-site.xml file there is a core-site-min.xml into the same folder.
+To see all available functionalities of <code>install.sh</code> run <p><code>./install.sh -h</code></p> Now assume that for some reason the IRES\_HOME has been changed. For example you would like to rename IReS home folder or move it to another folder. In this case, all configuration files of IReS should be updated with the new value of $IRES\_HOME. To do so, run the command <p><code>./install.sh -s NEW\_IRES\_HOME</code></p>
