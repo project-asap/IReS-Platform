@@ -12,14 +12,14 @@ Data Analytics Workflows
 
 Before using IReS it should be configured properly. This setting consists of 3 main steps,
 <ol>
-<li>**Cloning** IReS-Platform to the server. For a quick reference of how to use git, click here <a href="https://rogerdudler.github.io/git-guide/" target="_blank">Git - the simple guide</a>
-<li>**Running install.sh** that 
+<li><bold>Cloning</bold> IReS-Platform to the server. For a quick reference of how to use git, click here <a href="https://rogerdudler.github.io/git-guide/" target="_blank">Git - the simple guide</a>
+<li><bold>Running install.sh</bold> that 
 	<ul>
-	<li>builds IReS-Platform using _Maven_. A tutorial about Maven can be found here <a href="https://maven.apache.org/guides/getting-started/" target="_blank">Maven Getting Started Guide</a>.</li>
+	<li>builds IReS-Platform using <i>Maven</i>. A tutorial about Maven can be found here <a href="https://maven.apache.org/guides/getting-started/" target="_blank">Maven Getting Started Guide</a>.</li>
 	<li>connects IReS to Hadoop YARN.</li>
 	<li>updates configuration files and folders appropriately.</li>
 	</ul>
-<li>**Setting** cluster resources and services monitoring</li>
+<li><bold>Setting</bold> cluster resources and services monitoring</li>
 </ol>
 
 For demonstration reasons a Linux operating system like Ubuntu is assumed throughout this text. In Windows or other Linux distributions the equivalents should be done. The local home directory of the IReS-Platform project is depicted as <p><code>$IRES\_HOME</code></p> following bash script variable notation. Similarly, for Hadoop YARN the local home directory is denoted as <p><code>$YARN\_HOME</code>.</p>
@@ -34,11 +34,11 @@ Open a terminal( Linux) and navigate to a desired directory (create it if does n
 <li>
 <h3>Run install.sh</h3>
 
-After successful cloning of IReS-Platform inside the <code>$IRES_HOME</code> various folders and files can be found. Among them there exists <code>install.sh</code>. <p><code>install.sh</code> **is your friend!**</p>
+After successful cloning of IReS-Platform inside the <code>$IRES_HOME</code> various folders and files can be found. Among them there exists <code>install.sh</code>. <p><code>install.sh</code> <bold>is your friend!</bold></p>
 
 Executing, <p><code>./install.sh</code></p> will start building IReS-Platform. Upon successful building you will be prompted to provide the path where Hadoop YARN is located in your computer. By doing this, IReS gets connected with Hadoop YARN. You can skip this step and the installation will be finished.
 
-**NOTE:**
+<bold>NOTE:</bold>
 <ol>
 <li>if you do not provide an existing YARN installation, then IReS will not be able to execute any workflow. Also, resources and cluster services monitoring will not be functioning.</li>
 <li>you can provide YARN installation path afterwards as it will be shown straight ahead.</li>
@@ -69,8 +69,8 @@ Here are some tips to confirm IReS installation.
 <li>If anything goes wrong during the build process of IReS, error messages will be print out and a log file will be provided.</li>
 <li>Run ASAP server by running the command <p><code>./install.sh -r start</p></code>No exception should be raised. Also, the <code>jps</code> command should print a "Main" process running that corresponds to ASAP server.</li>
 <li>Run ASAP server web user interface at http://your_hostname:1323/web/main. IReS home page should be displayed.</li>
-<li>Run a workflow, for example run "hello_world" from **"Abstrack Workflows"** tab and see what happens not only in IReS web interface but also in YARN and HDFS web interfaces. Make sure that YARN has been started before running any workflow.</li>
-<li>Click on **"Cockpit"** tab to verify that the expected services to run are really running.</li>
+<li>Run a workflow, for example run "hello_world" from <bold>"Abstrack Workflows"</bold> tab and see what happens not only in IReS web interface but also in YARN and HDFS web interfaces. Make sure that YARN has been started before running any workflow.</li>
+<li>Click on <bold>"Cockpit"</bold> tab to verify that the expected services to run are really running.</li>
 </ol>
 
 <h3>Appendix</h3>
