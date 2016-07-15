@@ -19,13 +19,9 @@ package gr.ntua.cslab.asap.operators;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.*;
 
 import org.apache.log4j.Logger;

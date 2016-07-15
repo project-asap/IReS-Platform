@@ -19,7 +19,6 @@ package gr.ntua.cslab.asap.daemon;
 
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 
-import gr.ntua.cslab.asap.rest.beans.AsapServerConfigurations;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
 import gr.ntua.cslab.asap.staticLibraries.ClusterStatusLibrary;
 import gr.ntua.cslab.asap.staticLibraries.DatasetLibrary;
@@ -62,12 +61,7 @@ public class Main {
             System.exit(1);
         }
         ServerStaticComponents.properties = new Properties();
-        ServerStaticComponents.properties.load(stream);
-        
-        //load asap.server_home value to a suitable place in order to
-        //enable the cloudera module to load operators .lua files
-        AsapServerConfigurations.properties = new Properties();
-        AsapServerConfigurations.properties.load( stream);
+        ServerStaticComponents.properties.load(stream);  
     }
 
     private static void configureServer() throws Exception {
@@ -242,5 +236,4 @@ public class Main {
 
         checkServicesStatus();
     }
-
 }

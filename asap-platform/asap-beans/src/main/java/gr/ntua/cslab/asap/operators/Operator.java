@@ -841,19 +841,22 @@ public class Operator {
 			String[] s = inVar.split("\\.");
 
 			/*
-			System.out.println("inVar");
-			for (String str : s){
-				System.out.println(str);
+			logger.info("inVar");
+			for( int i = 0; i < s.length; i++){
+				logger.info( "s[ " + i + "] = " + s[ i]);
 			}
-			System.out.println("Policy: "+policy);
+			logger.info( "Policy: "+policy);
 			*/
 			
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;
-				logger.info( "Operator inputs are: " + inputs);
+				/*
+				logger.info( "Operator " + opName + " has as inputs: " + inputs);
+				logger.info( "Index: " + index + " " + s[1]);
+				*/
 				WorkflowNode n = inputs.get(index);
-				//System.out.println("Index: "+index +" "+s[1]);
+				
 
 				Double v = null;
 				if (!n.isOperator) {

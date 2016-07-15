@@ -68,26 +68,26 @@
         	through this property in the form below, where hosts are separated by a double
         	semicolon( ";;"), host services are separated by " " and host is separated by its
         	services with ":" e.g. 
-        	host1:service1 service2 ...;;host2:service3 service4 ...;;host3:service5
+        	host1::service1 service2 ...;;host2::service3 service4 ...;;host3:service5
         </description>
     </property>
     <!-- services' command to test their availability -->
     <property>
         <name>yarn.nodemanager.services-running.check-availability</name>
         <value>
-        	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
-        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
-        	Hive:;;
+        	PostgreSQL::/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
+        	Mysql::mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
+        	Hive::;;
         </value>
         <description>
         	The commands to check the availability( running or not) of services declared in
         	yarn.nodemanager.services-running.per-node property. For example, for PostgreSQL
         	database service the command is 
-        	PostgreSQL:/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}'
+        	PostgreSQL::/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}'
         	or for a Mysql database service the command is
-        	Mysql:mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
-        	SparkWorker:jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
-        	Spark:jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
+        	Mysql::mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
+        	SparkWorker::jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
+        	Spark::jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
 		NOTE: the commands must be separated by a double semicolon i.e. ";;"
         </description>
     </property>
@@ -99,7 +99,7 @@
         <description>
         	The expected output message of the commands declared into
         	yarn.nodemanager.services-running.check-availability property if they are
-        	running. For example, PostgreSQL:online, Mysql:uptime
+        	running. For example, PostgreSQL::online, Mysql::uptime
         </description>
     </property>    <!-- -->
 

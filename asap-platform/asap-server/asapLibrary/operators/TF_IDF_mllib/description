@@ -1,10 +1,10 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
+Constraints.Engine=Spark
 Constraints.Output0.Engine.FS=HDFS
 Constraints.Output0.type=SparkSequenceFile
 Constraints.OpSpecification.Algorithm.name=TF_IDF
 Constraints.Input0.Engine.FS=HDFS
-Constraints.Engine=Spark
 Constraints.Output.number=1
 Constraints.Input.number=1
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel

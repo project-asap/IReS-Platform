@@ -3,6 +3,8 @@ MASTER_JAR_LOCATION = IRES_HOME .. "/cloudera-kitten/java/master/target/kitten-m
 
 YARN_CLASSPATH="/home/bill/PhD/projects/yarn/etc/hadoop:/home/bill/PhD/projects/yarn/share/hadoop/common/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/common/*:/home/bill/PhD/projects/yarn/share/hadoop/hdfs:/home/bill/PhD/projects/yarn/share/hadoop/hdfs/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/hdfs/*:/home/bill/PhD/projects/yarn/share/hadoop/yarn/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/yarn/*:/home/bill/PhD/projects/yarn/share/hadoop/mapreduce/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/mapreduce/*:/contrib/capacity-scheduler/*.jar"
 
+OPERATOR_LIBRARY = "asapLibrary/operators"
+
 -- Resource and environment setup.
 base_resources = {
   ["master.jar"] = { file = MASTER_JAR_LOCATION }

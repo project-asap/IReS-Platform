@@ -14,8 +14,6 @@
  */
 package com.cloudera.kitten.appmaster.params.lua;
 
-import gr.ntua.cslab.asap.daemon.ServerStaticComponents;
-import gr.ntua.cslab.asap.rest.beans.AsapServerConfigurations;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 import gr.ntua.cslab.asap.utils.Utils;

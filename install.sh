@@ -173,7 +173,7 @@ while getopts ":hgr:s:c:" opt;
 			command=($OPTARG)
 			if [ "$command" = "start" -o  "$command" = "stop" -o "$command" = "restart" ]
 			then
-				echo -e "$command-ing ASAP server,"
+				echo -e "$command-ing ASAP server"
 				$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server $command			
 			else
 				echo -e "No valid command has been given. Command is $command.\n"

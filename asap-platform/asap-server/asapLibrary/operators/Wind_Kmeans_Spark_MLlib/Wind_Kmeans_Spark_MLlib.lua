@@ -4,7 +4,6 @@ TIMEOUT = 1000000000
 MEMORY = 3072
 CORES = 1
 EXECUTION_NODE_LOCATION = "hdp1"
-OPERATOR_LIBRARY = "asapLibrary/operators"
 
 -- Specific configuration of operator
 OPERATOR = "Wind_Kmeans_Spark_MLlib"

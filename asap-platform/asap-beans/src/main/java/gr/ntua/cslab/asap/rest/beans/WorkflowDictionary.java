@@ -37,6 +37,8 @@ public class WorkflowDictionary {
 	private String name = null;
 	private HashMap< String, Integer> indexes = null;
 	private HashMap< String, ArrayList< String>> graph = null;
+	public List< String> failedops = null;
+	public boolean isUpdated = false;
 	
 	public WorkflowDictionary() {
 		this( "");
@@ -74,7 +76,7 @@ public class WorkflowDictionary {
 			status = "running";
 		}
 		for(OperatorDictionary op: operators){
-			if(op.getIsOperator().equals("false") && ( op.getStatus().equals("warn") || op.getStatus().equals("running"))){
+			if(op.getIsOperator().equals( "false") && ( op.getStatus().equals( "warn") || op.getStatus().equals( "running"))){
 				for(String op1 : op.getInput()){
 					if(op1.equals(name) ){
 						op.setStatus( status);
@@ -257,10 +259,32 @@ public class WorkflowDictionary {
 	public void initiateUpdate( WorkflowDictionary updates) {
 		List< String> newtargets = new ArrayList< String>();
 		List< String> newupdates = new ArrayList< String>();
+		Iterator< String> lis = null;
 		
 		if( updates == null || updates.getOperators().isEmpty()){
 			logger.info( "The workflow " + this.getName() + " did not get updated because no updates were given");
+			isUpdated = false;
 			return;
+		}
+		
+		//update the status of the 'failed' operators due to lack of alternative
+		if( !( updates.failedops == null || updates.failedops.isEmpty())){
+			for( String fop : updates.failedops){
+				logger.info( "FAILED OPERATOR: " + fop);
+				for( OperatorDictionary opdic : getOperators()){
+					logger.info( "OPERATOR ABSTRACT NAME: " + opdic.getAbstractName() + "\tOPERATOR NAME: " + opdic.getName());
+					if( opdic.getAbstractName().equals( fop) && opdic.getStatus().equals( "completed")){
+						opdic.setStatus( "failed");
+						lis = getOutputs( opdic.getName()).listIterator();
+						while( lis.hasNext()){
+							String s = lis.next();
+							logger.info( "OUTPUT OPERATOR ABSTRACT NAME: " + getOperator( s).getAbstractName() + "\tOPERATOR NAME: " + getOperator( s).getName());
+							getOperator( s).setStatus( "failed");
+						}
+						break;
+					}
+				}
+			}
 		}
 		
 		//get a mapping between operators and their position inside the WorkflowDictionary
@@ -268,6 +292,7 @@ public class WorkflowDictionary {
 		newtargets.add( operators.get( operators.size() - 1).getName());
 		newupdates.add( updates.getOperators().get( updates.getOperators().size() - 1).getName());
 		updateNodes( newtargets, newupdates, updates, updates.getOperators().get( 0).getName());
+		isUpdated = true;
 	
 		//the WorfkflowDictionary has been changed, for this its 'indexes' and 'graph' should be updated
 		indexes.clear();

@@ -260,7 +260,7 @@ public class OperatorLibrary {
 			Iterator<OutputSpacePoint> iterator = points.iterator();
 			if(header){
 				String n = "";
-				Iterator inputSpaceIter = inputSpace.keySet().iterator();
+				Iterator< String> inputSpaceIter = inputSpace.keySet().iterator();
 				while (inputSpaceIter.hasNext()) {
 					String key = (String) inputSpaceIter.next();
 					n += key + delimiter;

@@ -1,0 +1,58 @@
+#Author				:	Papaioannou Vassilis
+#Last update		:	12/ 07/ 2016
+#Previous update	:	none
+#Platform			:	ASAP IReS
+#Github				:	https://github.com/project-asap/IReS-Platform
+################################################################################
+#
+#Description
+#	Concrete version of an 'InnerSQL' operator.
+#Description_End
+
+#################
+# CONFIGURATION #
+#################
+#Engine
+Constraints.Engine=Spark
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=path
+#Query
+Constraints.OpSpecification.Algorithm.name=SQL_query
+Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
+#Inputs
+Constraints.Input.number = 1
+#Input0
+Constraints.Input0.type = SQL
+Constraints.Input0.Engine.SQL=Spark
+Constraints.Input0.Engine.location=path
+#Outputs
+Constraints.Output.number = 1
+#Output0
+Constraints.Output0.type = SQL
+Constraints.Output0.Engine.SQL=Spark
+Constraints.Output0.Engine.location=path
+
+#################
+# OPTIMIZATION #
+#################
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Out0.size=Double
+Optimization.outputSpace.cost=Double
+#optimization metric function
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.Out0.size=(In0.size)*0.1
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=25.0
+
+#################
+#   EXECUTION   #
+#################
+Execution.LuaScript=InnerSQL_Spark.lua
+Execution.Arguments.number=2
+Execution.Argument0=tpchQuery17InnerPostgres.sql
+Execution.Argument1=postgres
+Execution.Output0.name=PART_AGG
+Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2))

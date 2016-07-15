@@ -1,30 +1,51 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
+#################
+# CONFIGURATION #
+#################
+#Engine
 Constraints.Engine=HIVE
-Constraints.Output.number=1
+Constraints.EngineSpecification.Distributed.HIVE.masterLocation=path
+Constraints.OpSpecification.Algorithm.name=SQL_query
+#Query
+Constraints.OpSpecification.SQL_query="SELECT NATIONKEY, TOTALPRICE FROM $1 LEFT JOIN $2 ON $1.CUSTKEY=$2.CUSTKEY"
+#Inputs
 Constraints.Input.number=2
-Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=HIVE
-Constraints.Output0.Engine.location=path
+#Input0
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=HIVE
 Constraints.Input0.Engine.location=path
+#Input1
 Constraints.Input1.type=SQL
-Constraints.Input1.Engine.SQL=PostgreSQL
+Constraints.Input1.Engine.SQL=HIVE
 Constraints.Input1.Engine.location=path
-Constraints.EngineSpecification.Distributed.HIVE.masterLocation=path
-Constraints.OpSpecification.Algorithm.name=SQL_query
-Constraints.OpSpecification.SQL_query="SELECT NATIONKEY, TOTALPRICE FROM $1 LEFT JOIN $2 ON $1.CUSTKEY=$2.CUSTKEY"
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
-Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+#Outputs
+Constraints.Output.number=1
+#Output0
+Constraints.Output0.type=SQL
+Constraints.Output0.Engine.SQL=HIVE
+Constraints.Output0.Engine.location=path
+
+#################
+# OPTIMIZATION #
+#################
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
 Optimization.inputSpace.In0.size=Double,1E7,1E10,l
 Optimization.inputSpace.In1.size=Double,1E7,1E10,l
+#OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
+#OPTIMIZATION MODELS
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=(In0.size+In1.size)*0.1
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=15.0
+
+#################
+#   EXECUTION   #
+#################
 Execution.LuaScript=HIVE_Join_Filter.lua
 Execution.Arguments.number=3
 Execution.Argument0=In0.name

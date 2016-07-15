@@ -18,7 +18,6 @@
 package gr.ntua.cslab.asap.operators;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
-import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -28,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 import java.util.Map.Entry;
 
@@ -79,8 +77,6 @@ public class Dataset implements Comparable<Dataset> {
 		//logger.info("Checking match: "+ this.toString()+"  -  "+d );
 		return datasetTree.checkMatch(d.datasetTree);
 	}
-
-
 	
 	public void outputFor(Operator op, int position) {
 		//System.out.println("Generating output for pos: "+ position);
@@ -100,8 +96,7 @@ public class Dataset implements Comparable<Dataset> {
         OutputStream out = new FileOutputStream( f );
         props.store(out,"");
         out.close();
-	}
-	
+	}	
 
 	public void readPropertiesFromFile(String filename) throws IOException{
         File f = new File(filename);
@@ -153,7 +148,6 @@ public class Dataset implements Comparable<Dataset> {
 		datasetTree.toOperatorDescription(ret);
 		return ret;
 	}
-
 	
 	public void copyExecVariables(Dataset dataset, int position) {
 		logger.info( "DATASET TREE: " + datasetTree);
