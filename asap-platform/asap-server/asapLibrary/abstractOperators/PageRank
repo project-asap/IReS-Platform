@@ -1,0 +1,5 @@
+#
+#Thu Jun 16 18:51:24 EEST 2016
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=pagerank
+Constraints.Input.number=1

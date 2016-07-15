@@ -14,6 +14,10 @@ performance against reducers and available cpus
 DESCRIPTION
 
 #import definitions
-. resources/experiments/definitions.sh
+#. resources/experiments/definitions.sh
 
-./experiments.sh -e m,chainjoin -x 2
+#./experiments.sh -p m,chainjoin -e m,chainjoin -x 2
+#./experiments.sh -p m,simplejoin -e m,simplejoin -x 1
+echo -e "Going to execute the experiments.sh script"
+./experiments.sh -p m,simplejoin
+echo -e "Finished executing the experiments.sh script"

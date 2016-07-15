@@ -1,0 +1,6 @@
+#
+#Thu Jun 23 18:39:25 EEST 2016
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=pagerank
+Constraints.Input.number=1
+Constraints.Engine=Java
