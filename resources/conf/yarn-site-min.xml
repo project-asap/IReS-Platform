@@ -11,6 +11,7 @@
   limitations under the License. See accompanying LICENSE file.
 -->
 <configuration>
+  <!-- PROPERTIES ADDED DURING IReS INSTALLATION -->
   <!-- Site specific YARN configuration properties -->
 
   <!-- Capacity Scheduler -->
@@ -67,17 +68,17 @@
         	services like databases. The declaration of these services per node can be done
         	through this property in the form below, where hosts are separated by a double
         	semicolon( ";;"), host services are separated by " " and host is separated by its
-        	services with ":" e.g. 
-        	host1::service1 service2 ...;;host2::service3 service4 ...;;host3:service5
+        	services with ":" e.g.
+		path:Spark SparkWorker PostgreSQL Mysql HIVE;;
+        	master:SparkWorker;;
+        	slave1:SparkWorker;;
+        	slave2:SparkWorker
         </description>
     </property>
     <!-- services' command to test their availability -->
     <property>
         <name>yarn.nodemanager.services-running.check-availability</name>
         <value>
-        	PostgreSQL::/etc/init.d/postgresql status | awk '{split( $0, a, " "); print a[ 4]}';;
-        	Mysql::mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}';;
-        	Hive::;;
         </value>
         <description>
         	The commands to check the availability( running or not) of services declared in
@@ -88,6 +89,7 @@
         	Mysql::mysqladmin -u root -proot status | awk '{split( $0, a, ":"); print a[ 1]}'
         	SparkWorker::jps | grep -w Worker | awk '{split( $0, a, " "); print a[ 2]}';;
         	Spark::jps | grep -w Master | awk '{split( $0, a, " "); print a[ 2]}'
+        	HIVE:locate -r bin/hive$ | awk '{n=split( $0, a, "/"); print a[ n]}'
 		NOTE: the commands must be separated by a double semicolon i.e. ";;"
         </description>
     </property>
@@ -99,9 +101,10 @@
         <description>
         	The expected output message of the commands declared into
         	yarn.nodemanager.services-running.check-availability property if they are
-        	running. For example, PostgreSQL::online, Mysql::uptime
+        	running. For example, PostgreSQL::online, Mysql::uptime, HIVE:hive
         </description>
-    </property>    <!-- -->
+    </property>
+  <!-- -->
 
   <!-- Configurations for NodeManager -->
   <!-- To run Map Reduce applications -->
@@ -207,4 +210,5 @@
       none
     </description>
   </property>
+  <!-- THAT WERE ALL IReS PROPERTIES -->
 </configuration>
