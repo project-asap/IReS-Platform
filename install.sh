@@ -27,7 +27,7 @@ DESCRIPTION
 . resources/textformat/colors.sh
 #define project modules to build
 #declare -a modules=( panic cloudera-kitten asap-platform)
-declare -a modules=( panic asap-platform cloudera-kitten)
+declare -a modules=( panic cloudera-kitten asap-platform cloudera-kitten)
 declare -a conf=()
 #the installation process will be either via terminal or a GUI; installation through terminal
 #i.e. command line is the default one
@@ -230,13 +230,6 @@ do
 	then
 		echo -e $msg
 		echo -e "WELCOME TO ASAP SERVER AND IReS-Platform INSTALLATION!\n"
-		echo -e "ASAP server environmental parameters setting"
-		#update ASAP server configuration about IReS home folder
-		setIresHome
-		#connect ASAP to YARN
-		echo -e "CONNECTING IReS WITH HADOOP YARN"
-		read -p "Give the home folder( absolute path) of Hadoop YARN, if it exists, else press <Enter>: " YARN_HOME
-		connectASAP2YARN
 
 		# build ASAP server
 		percentage=0
@@ -252,13 +245,13 @@ do
 			mvn clean install -DskipTests -q > log.txt
 			# check for errors
 			errors=`cat log.txt | grep ERROR`
-			if [[ ! -z $errors ]]
-			then
-				echo -e "$errors"
-				echo -e "List of errors found!"
-				echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
-				exit
-			fi
+			#if [[ ! -z $errors ]]
+			#then
+			#	echo -e "$errors"
+			#	echo -e "List of errors found!"
+			#	echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
+			#	exit
+			#fi
 			# remove log.txt since everything went well
 			rm log.txt
 			cd ../
@@ -267,6 +260,14 @@ do
 		done
 		# inform about builting success
 		echo -e "ASAP server was built successfully.\n"
+
+		echo -e "ASAP server environmental parameters setting"
+		#update ASAP server configuration about IReS home folder
+		setIresHome
+		#connect ASAP to YARN
+		echo -e "CONNECTING IReS WITH HADOOP YARN"
+		read -p "Give the home folder( absolute path) of Hadoop YARN, if it exists, else press <Enter>: " YARN_HOME
+		connectASAP2YARN
 	
 	else
 		# specify home folder of HADOOP YARN
