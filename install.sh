@@ -112,6 +112,26 @@ connectASAP2YARN()
 		else
 			rm_host_exists=""
 		fi
+		# update YARN_HOME/etc/hadoop/core-site.xml with the properties of resources/conf/core-site-min.xml file
+		# if the property fs.defaultFS exists in YARN_HOME/etc/hadoop/core-site.xml file then this
+		# property should not be inserted again and it is assumed to be correctly set.
+		# update with the appropriate host name
+		rm_host_exists=`sed -n '/<name>fs\.defaultFS<\/name>/=' $YARN_HOME/etc/hadoop/core-site.xml`
+		if [[ -z $rm_host_exists ]]
+		then
+			# specify host name running of HADOOP YARN
+			echo -e "No hostname or ip address for NameNode was found."
+			read -p "Give the full name or the ip of the host where NameNode runs: " HOST_NAME
+			description="The name of the default file system. A URI whose scheme and authority\n \
+				     determine the FileSystem implementation. The uri's scheme determines\n \
+      				     the config property (fs.SCHEME.impl) naming the FileSystem implementation\n
+      				     class. The uri's authority is used to determine the host, port, etc. for\n
+			      	     a filesystem."
+			rm_host_exists="\t<!-- Configurations for NameNode -->\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t"
+			rm_host_exists="$rm_host_exists<value>hdfs://$HOST_NAME:9000</value>\n\t\t<description>$description</description>\n\t</property>\n\n"
+		else
+			rm_host_exists=""
+		fi
 		#extract all the properties that reside inside <configuration></configuration> tags
 		start=`sed -n '/<configuration>/=' resources/conf/yarn-site-min.xml`
 		start=$(( $start + 1))
