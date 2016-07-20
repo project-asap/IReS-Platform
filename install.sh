@@ -116,7 +116,7 @@ connectASAP2YARN()
 		# if the property fs.defaultFS exists in YARN_HOME/etc/hadoop/core-site.xml file then this
 		# property should not be inserted again and it is assumed to be correctly set.
 		# update with the appropriate host name
-		rm_host_exists=`sed -n '/<name>fs\.defaultFS<\/name>/=' $YARN_HOME/etc/hadoop/core-site.xml`
+		nm_host_exists=`sed -n '/<name>fs\.defaultFS<\/name>/=' $YARN_HOME/etc/hadoop/core-site.xml`
 		if [[ -z $rm_host_exists ]]
 		then
 			# specify host name running of HADOOP YARN
@@ -127,10 +127,10 @@ connectASAP2YARN()
       				     the config property (fs.SCHEME.impl) naming the FileSystem implementation\n
       				     class. The uri's authority is used to determine the host, port, etc. for\n
 			      	     a filesystem."
-			rm_host_exists="\t<!-- Configurations for NameNode -->\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t"
-			rm_host_exists="$rm_host_exists<value>hdfs://$HOST_NAME:9000</value>\n\t\t<description>$description</description>\n\t</property>\n\n"
+			nm_host_exists="\t<!-- Configurations for NameNode -->\n\t<property>\n\t\t<name>fs.defaultFS</name>\n\t\t"
+			nm_host_exists="$nm_host_exists<value>hdfs://$HOST_NAME:9000</value>\n\t\t<description>$description</description>\n\t</property>\n\n"
 		else
-			rm_host_exists=""
+			nm_host_exists=""
 		fi
 		#extract all the properties that reside inside <configuration></configuration> tags
 		start=`sed -n '/<configuration>/=' resources/conf/yarn-site-min.xml`
@@ -149,7 +149,7 @@ connectASAP2YARN()
 		properties=`sed -n "$start","$end"p resources/conf/core-site-min.xml`
 		# add minimum set of properties
 		sed -i 's_<\/configuration>__' $YARN_HOME/etc/hadoop/core-site.xml
-		echo -e "$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
+		echo -e "$nm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
 
 		# copy Hadoop YARN configuration files into ASAP server
 		cp $YARN_HOME/etc/hadoop/yarn-site.xml asap-platform/asap-server/target/conf
@@ -262,7 +262,7 @@ do
 			echo "|--> ${blue}$module${reset} module( $module_index/${#modules[@]})"
 			cd $module
 			# build in quiet mode i.e. print only errors
-			mvn clean install -DskipTests -q > log.txt
+			mvn clean install -DskipTests -P asapCluster-q > log.txt
 			# check for errors
 			errors=`cat log.txt | grep ERROR`
 			#if [[ ! -z $errors ]]
