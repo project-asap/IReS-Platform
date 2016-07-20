@@ -5,20 +5,20 @@
 #################
 #Engine - destination
 Constraints.Engine=Spark
-Constraints.EngineSpecification.Distributed.Spark.masterLocation=path
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
 Constraints.OpSpecification.Algorithm.name=move
 #Inputs
 Constraints.Input.number=1
 #Input0 - source
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=HIVE
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=master
 #Outputs
 Constraints.Output.number=1
 #Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=Spark
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=master
 
 #################
 # OPTIMIZATION #

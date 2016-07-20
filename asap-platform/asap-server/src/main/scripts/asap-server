@@ -3,7 +3,7 @@
 # to be executed as a service.
 
 #IRES_HOME=path/to/IReS-Platform_project
-IRES_HOME="/home/bill/PhD/projects/asap/asap4all/IReS-Platform"
+IRES_HOME="/root/vpapa/asap/IReS-Platform"
 [ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="$IRES_HOME/asap-platform/asap-server/target"
 
 LIB_DIR=$ASAP_SERVER_HOME/lib
@@ -14,7 +14,7 @@ CLASSPATH=$CLASSPATH:$(echo $LIB_DIR/*.jar | tr ' ' ':')
 CLASSPATH=$CLASSPATH:$ASAP_SERVER_HOME/asap-server.jar
 #add Hadoop YARN classpath as it is returned from the command
 #YARN_HOME/bin/hadoop classpath
-YARN_CLASSPATH="/home/bill/PhD/projects/yarn/etc/hadoop:/home/bill/PhD/projects/yarn/share/hadoop/common/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/common/*:/home/bill/PhD/projects/yarn/share/hadoop/hdfs:/home/bill/PhD/projects/yarn/share/hadoop/hdfs/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/hdfs/*:/home/bill/PhD/projects/yarn/share/hadoop/yarn/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/yarn/*:/home/bill/PhD/projects/yarn/share/hadoop/mapreduce/lib/*:/home/bill/PhD/projects/yarn/share/hadoop/mapreduce/*:/contrib/capacity-scheduler/*.jar"
+YARN_CLASSPATH="/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/share/hadoop/common/lib/*:/opt/hadoop-2.7.0/share/hadoop/common/*:/opt/hadoop-2.7.0/share/hadoop/hdfs:/opt/hadoop-2.7.0/share/hadoop/hdfs/lib/*:/opt/hadoop-2.7.0/share/hadoop/hdfs/*:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/*:/opt/hadoop-2.7.0/share/hadoop/yarn/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/lib/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/*:/opt/hadoop-2.7.0/contrib/capacity-scheduler/*.jar:/opt/hbase-0.94.5n/lib:/opt/hbase-0.94.5n/conf"
 CLASSPATH=$CLASSPATH:$YARN_CLASSPATH
 
 PIDFILE=/tmp/asap-server.pid

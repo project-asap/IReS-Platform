@@ -5,20 +5,20 @@
 #################
 #Engine - destination
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=path
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
 Constraints.OpSpecification.Algorithm.name=move
 #Inputs
 Constraints.Input.number=1
 #Input0 - source
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=Spark
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=master
 #Outputs
 Constraints.Output.number=1
 #Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=slave-1
 
 #################
 # OPTIMIZATION #
