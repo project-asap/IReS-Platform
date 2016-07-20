@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import java.util.List;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import java.lang.Process;
 import java.lang.Runtime;
@@ -76,6 +77,9 @@ public class ClusterNodes extends Configured implements Runnable {
 	String host = null;
 	String service = null;
 	String status = null;
+	//in case cluster master node is not a slave and thus it
+	//has not have a NodeManager and the relative state report
+	String master = null;
 	String[] hosts = null;
 	String[] services = null;
 	HashMap< String, String> yhosts = null;
@@ -99,11 +103,12 @@ public class ClusterNodes extends Configured implements Runnable {
 	}
 
 	public void run(){
-    	//interact with the ResourceManager of YARN cluster and find which nodes are active
-    	//and for these nodes check which services are still running on them
+    		//interact with the ResourceManager of YARN cluster and find which nodes are active
+    		//and for these nodes check which services are still running on them
 		//retrieve the needed information to find which services are running on which
 		//hosts
 		runservices = new HashMap< String, String>();
+		master = yconf.get( "yarn.resourcemanager.hostname").trim();
 		try{
 			hosts = yconf.get( "yarn.nodemanager.services-running.per-node").trim().split( ";;");
 		}
@@ -231,7 +236,7 @@ public class ClusterNodes extends Configured implements Runnable {
 				logger.info( "is empty. Consequently, no service will be monitored for its status, it they are running or not");
 			}
 		}
-		/*
+		/*	
 		System.out.println( "Yarn nodes services = " + hservices);
 		System.out.println( "Services' commands = " + scommands);
 		System.out.println( "Running services' status= " + sstatus);
@@ -245,6 +250,11 @@ public class ClusterNodes extends Configured implements Runnable {
 		//System.out.println( "The yarn cluster has " + hosts.size() + " hosts.");
 		yhosts = new HashMap< String, String>();
 		try{
+			//ensure that the cluster master node will be checked whether or not
+			//is also a slave node
+			if( yhosts.get( master) == null){
+				yhosts.put( master, "RUNNING");
+			}
 			while( true){
 				ycinfo = yc.getNodeReports();
 				if( ycinfo != null){
@@ -256,6 +266,8 @@ public class ClusterNodes extends Configured implements Runnable {
 						//System.out.println( "YARN hosts: " + yhosts);
 						//only hosts where NodeManager is running are checked for the availability
 						//of their services
+					}
+					for( String host : yhosts.keySet()){
 						if( yhosts.get( host).equals( "RUNNING")){
 							//retrieve current host's services and
 							//for each service check if it is running
@@ -285,7 +297,8 @@ public class ClusterNodes extends Configured implements Runnable {
 										}
 									}
 									else{
-										//write in logs that for the current service no running status has been specified
+										//write in logs that for the current service no running
+										//status has been specified
 									}
 									p.destroy();
 								}
