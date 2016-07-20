@@ -58,6 +58,8 @@ public class LuaWrapper implements Iterable<LuaPair> {
         env.set(e.getKey(), CoerceJavaToLua.coerce(e.getValue()));
       }
       InputStream luaCode = LocalDataHelper.getFileOrResource(script);
+      //if a LuaError occurs then something is written wrong inside the
+      //currently checked .lua file e.g. a defined variable may be nil( empty)
       LoadState.load(luaCode, script, env).call();
     } catch (IOException e) {
       LOG.error("Lua initialization error", e);

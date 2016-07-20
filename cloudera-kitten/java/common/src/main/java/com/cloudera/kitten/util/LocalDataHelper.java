@@ -56,6 +56,7 @@ public class LocalDataHelper {
   
   public static InputStream getFileOrResource(String name) {
     File f = new File(name);
+    //LOG.info( "FILE: " + name + " has length " + f.length() + ". Does it exist?\t" + f.exists());
     if( f.exists()){
     	try{
         	return new FileInputStream(f);

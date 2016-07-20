@@ -97,7 +97,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		workflow = Utils.unmarshall(script);
 		workflow.setName( jobName);
 		
-		materializedWorkflow = new MaterializedWorkflow1( workflow.getName(), "/tmp");
+		materializedWorkflow = new MaterializedWorkflow1( jobName, "/tmp");
 		materializedWorkflow.readFromWorkflowDictionary(workflow);
 		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
 		

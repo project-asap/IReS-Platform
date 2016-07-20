@@ -110,34 +110,21 @@ protected ContainerLaunchContextFactory factory;
   @Override
   protected void startUp() throws IOException {
     RegisterApplicationMasterResponse registration;
-    //has the ApplicationMaster been registered already?
-    if( !ApplicationMaster.isReplanning){
-    	this.containerAllocation = new HashMap<ContainerId, ContainerTracker>();
-        this.resourceManager = AMRMClientAsync.createAMRMClientAsync(1000, this);
-        this.resourceManager.init(conf);
-        this.resourceManager.start();
-        
-    	try {
-            registration = resourceManager.registerApplicationMaster(
-                    parameters.getHostname(),
-                    parameters.getClientPort(),
-                    parameters.getTrackingUrl());
-        } catch (Exception e) {
-            LOG.error("Exception thrown registering application master", e);
-            stop();
-            return;
-        }
-        ApplicationMaster.initial_registration = registration;
-    }
-    else{
-        if( ApplicationMaster.initial_registration != null){
-            registration = ApplicationMaster.initial_registration;
-        }
-        else{
-            LOG.info( "There wasn't any valid registration of ApplicationMaster!");
-            stop();
-            return;
-        }
+
+	this.containerAllocation = new HashMap<ContainerId, ContainerTracker>();
+    this.resourceManager = AMRMClientAsync.createAMRMClientAsync(1000, this);
+    this.resourceManager.init(conf);
+    this.resourceManager.start();
+    
+	try {
+        registration = resourceManager.registerApplicationMaster(
+                parameters.getHostname(),
+                parameters.getClientPort(),
+                parameters.getTrackingUrl());
+    } catch (Exception e) {
+        LOG.error("Exception thrown registering application master", e);
+        stop();
+        return;
     }
 
     factory = new ContainerLaunchContextFactory( registration.getMaximumResourceCapability());
@@ -162,12 +149,6 @@ protected ContainerLaunchContextFactory factory;
     trackers.get("Move_MySQL_HBase").init(factory);*/
 
     this.hasRunningContainers = true;
-    //if this WorkflowService created due to a replanning, at this point the replanning
-    //has been completed and thus the ApplicationMaster should not be at "replanning" state
-    //any longer
-    if( ApplicationMaster.isReplanning){
-        ApplicationMaster.isReplanning = false;
-    }
   }
 
   @Override
@@ -181,24 +162,23 @@ protected ContainerLaunchContextFactory factory;
         tracker.kill();
       }
     }
-    if( !ApplicationMaster.isReplanning){
-        FinalApplicationStatus status;
-        String message = null;
-        if (state() == State.FAILED || totalFailures.get() > parameters.getAllowedFailures()) {
-          //TODO: diagnostics
-          status = FinalApplicationStatus.FAILED;
-          if (throwable != null) {
-            message = throwable.getLocalizedMessage();
-          }
-        } else {
-          status = FinalApplicationStatus.SUCCEEDED;
-        }
-        LOG.info("Sending finish request with status = " + status);
-        try {
-          resourceManager.unregisterApplicationMaster(status, message, null);
-        } catch (Exception e) {
-          LOG.error("Error finishing application master", e);
-        }
+
+    FinalApplicationStatus status;
+    String message = null;
+    if (state() == State.FAILED || totalFailures.get() > parameters.getAllowedFailures()) {
+      //TODO: diagnostics
+      status = FinalApplicationStatus.FAILED;
+      if (throwable != null) {
+        message = throwable.getLocalizedMessage();
+      }
+    } else {
+      status = FinalApplicationStatus.SUCCEEDED;
+    }
+    LOG.info("Sending finish request with status = " + status);
+    try {
+      resourceManager.unregisterApplicationMaster(status, message, null);
+    } catch (Exception e) {
+      LOG.error("Error finishing application master", e);
     }    	
   }
 
@@ -230,7 +210,7 @@ protected ContainerLaunchContextFactory factory;
     //workflow execution
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true")){
-            service = opd.getEngine();
+            service = opd.getPropertyValue( "Constraints.Engine");
             //System.out.println( "\n\nService is " + service);
 
             if( service != null){

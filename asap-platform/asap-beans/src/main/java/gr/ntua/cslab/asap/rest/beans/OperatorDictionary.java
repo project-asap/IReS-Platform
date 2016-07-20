@@ -20,6 +20,7 @@ package gr.ntua.cslab.asap.rest.beans;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,7 +155,7 @@ public class OperatorDictionary {
 	}
 
 	/*vpapa: retrieve the engine where the operator will run and for which it is written for
-	*/
+	
 	public String getEngine(){
 		String description = null;
 		String engine = null;
@@ -183,6 +184,54 @@ public class OperatorDictionary {
 
 		return engine;
 	}
+	*/
+	/**
+	 * Returns the value of the specified property from operator's description
+	 * 
+	 * @author Vassilis Papaioannou
+	 * @param property the property for which the value will returned
+	 */
+	public String getPropertyValue( String property){
+		String description = null;
+		String value = null;
+		int value_index = 0;
+		File f = null;
 
+		description = this.getDescription();
+		//to ensure that the property "property" will have the format "PropertyName=PropertyValue"
+		//and not anything else like "PropertyName = PropertyValue"
+        description = description.replaceAll( " ", "" );
+        //in case description comes in an html format
+        description = description.replaceAll( "<br>", "\n" );
+        //logger.info( "Description\n\n" + description);
+		value_index = description.indexOf( property + "=");
+		//logger.info( "Value index " + value_index);
+		if( value_index == -1){
+			if( property.equalsIgnoreCase( "Execution.LuaScript")){
+				//in case this property is missing then it is assumed that the corresponding .lua file
+				//has the same name as the operator. However, the operator name may have been changed by
+				//IReS during materialization which adds a "_operator_index_number" part.\
+				value = this.getName() + ".lua";
+				f = new File( value);
+				if( !f.exists()){
+					value_index = this.getName().lastIndexOf("_");
+					value = this.getName().substring( 0, value_index) + ".lua";	
+				}
+				return value;
+			}
+			logger.info( "Operator " + name + "has not any property called " + property + ".");
+			logger.info( "If you are sure that this property exists, have you provided it with the correct spelling?");
+			return null;
+		}
+		//value = PropertyName=PropertyValue
+		value = description.substring( value_index, description.indexOf( "\n", value_index));
+        //System.out.println( "Engine " + engine);
+		//engine=OperatorEngine
+		value = value.split( "=")[ 1].trim();
+        //System.out.println( "Property " + property + " has value " + value);
+		logger.info( "Operator " + name + " for property " + property + " has value " + value);
+
+		return value;
+	}
 
 }

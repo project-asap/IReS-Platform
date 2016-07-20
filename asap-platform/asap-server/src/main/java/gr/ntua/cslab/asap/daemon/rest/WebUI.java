@@ -676,12 +676,12 @@ public class WebUI {
 
     	String ret = header+abstractWorkflowUp+"/abstractWorkflows/"+workflowName+workflowLow;
     	ret+="</div>";
-
+    	
     	ret+="<div  class=\"mainpage\"><p><form action=\"/web/abstractWorkflows/materialize\" method=\"get\">"
-			+ "Policy: <p><input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
-			+ "<textarea rows=\"4\" cols=\"80\" name=\"policy\">"+defaultPolicy()+"</textarea></p>"
-			+ "Parameters: <p><textarea rows=\"4\" cols=\"80\" name=\"parameters\"></textarea></p>"
-			+ "<p><input class=\"styled-button\" type=\"submit\" value=\"Materialize Workflow\"></form></p>";
+    			+ "<div class='side_by_side'>Policy: <p><input type=\"hidden\" name=\"workflowName\" value=\""+workflowName+"\">"
+    			+ "<textarea rows=\"4\" cols=\"60\" name=\"policy\">"+defaultPolicy()+"</textarea></p></div>"
+    			+ "<div class='side_by_side'>Parameters:<p><textarea rows=\"4\" cols=\"60\" name=\"parameters\"></textarea></p></div>"
+    			+ "<div><p><input class='styled-button' type=\"submit\" value=\"Materialize Workflow\"></form></p></div>";
     	
     	ret+="<p><form action=\"/web/abstractWorkflows/addRemove\" method=\"get\">"
     			+ "Comma separated list: <textarea rows=\"1\" cols=\"80\" name=\"name\"></textarea><br>"
@@ -773,16 +773,13 @@ public class WebUI {
     		@QueryParam("parameters") String parameters) throws Exception{
     	AbstractWorkflowLibrary.refresh(workflowName);
     	String mw = AbstractWorkflowLibrary.getMaterializedWorkflow(workflowName,policy,parameters);
-    	String ret = header+"Optimal result for policy function: <br>"+AbstractWorkflow1.getPolicyFromString(policy)+" = "+MaterializedWorkflowLibrary.get(mw).optimalCost;
-    	ret+="</div><div  class=\"mainpage\">";
-    	
-    	ret+=workflowUp+"/workflows/"+mw+workflowLow;
-    	
+    	String ret = header+"<div>Optimal result for policy function: <br>"+AbstractWorkflow1.getPolicyFromString(policy)+" = "+MaterializedWorkflowLibrary.get(mw).optimalCost + "</div>";
     	ret+="<form action=\"/web/workflows/execute\" method=\"get\">"
-        		+ "<input type=\"hidden\" name=\"workflowName\" value=\""+mw+"\">"
-    			+ "<p align=\"right\"><input  class=\"styled-button\" type=\"submit\" value=\"Execute Workflow\"></form>";
-        	
+    			+ "<div><p align=\"right\"><input  class=\"styled-button\" type=\"submit\" value=\"Execute Workflow\"></div>"
+        		+ "<input type=\"hidden\" name=\"workflowName\" value=\""+mw+"\"></form>";
     	
+    	ret+="</div><div  class=\"mainpage\">";
+    	ret+=workflowUp+"/workflows/"+mw+workflowLow;    	
     	ret += footer;
     	return ret;
     }

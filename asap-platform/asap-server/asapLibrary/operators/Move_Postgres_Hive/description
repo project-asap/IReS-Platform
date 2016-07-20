@@ -1,29 +1,48 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
+#################
+# CONFIGURATION #
+#################
+#Engine - destination
 Constraints.Engine=HIVE
-Constraints.Output.number=1
+Constraints.EngineSpecification.Distributed.HIVE.masterLocation=path
+Constraints.OpSpecification.Algorithm.name=move
+#Inputs
 Constraints.Input.number=1
+#Input0 - source
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=slave1
+Constraints.Input0.Engine.location=path
+#Outputs
+Constraints.Output.number=1
+#Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=HIVE
-Constraints.Output0.Engine.location=master
-Constraints.EngineSpecification.Distributed.HIVE.masterLocation=master
-Constraints.OpSpecification.Algorithm.name=move
-Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
-Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Constraints.Output0.Engine.location=path
+
+#################
+# OPTIMIZATION #
+#################
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
 Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+#OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
+#OPTIMIZATION MODELS
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=In0.size
 Optimization.execTime=In0.size/1.2E08
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
+
+#################
+#   EXECUTION   #
+#################
 Execution.LuaScript=Move_Postgres_Hive.lua
 Execution.Arguments.number=3
-Execution.Argument0=mydb1
+Execution.Argument0=postgres
 Execution.Argument1=In0.name
 Execution.Argument2=In0.schema
 Execution.Output0.name=In0.name

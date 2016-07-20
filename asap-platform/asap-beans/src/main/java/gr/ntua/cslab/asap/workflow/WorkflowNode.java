@@ -199,34 +199,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						logger.info( "materializedInputs: " + materializedInputs);
 						for(WorkflowNode in : materializedInputs.get(i)){
 							logger.info("CHECKING INPUT DATASET: "+in.dataset.datasetName);
-							/* vpapa: in case the property Constraints.Inputx.type
-								is defined into an operator's description file for
-								some input x( or all of them) but the property is not
-								correspondingly defined into the input( dataset)
-								description file, then an input mismatch will occur
-								and the workflow materialization will fail and will
-								not be displayed at IReS WUI. However IReS platform
-								will still operate without giving any useful message.
-								For this, precautiously, we write this event into
-								the logs
-							*/
-							if( !tempInput.checkMatch(in.dataset)){
-								logger.info( "ERROR: For operator " + op.opName + " there "
-											+ " is an input mismatch. Check inside its"
-											+ " description file if all properties Constraints.Input"
-											+ " for some input x match with all the corresponding"
-											+ " properties of the input dataset x, probably a"
-											+ " materialized one, like the very first input( s)"
-											+ " of the workflow. This message should be taken"
-											+ " as a real error when the materialization seems"
-											+ " to succeed when pushing 'Materialize Workflow'"
-											+ " button but the workflow is not displayed at all.");
-								logger.info( "Input dataset: " + in.dataset);
-								logger.info( "Input to be matched: " + tempInput);
-								//one input checked, go for the next
-								logger.info( "checkedInputs: " + checkedInputs);
-								logger.info( "materializedInputs.size(): " + materializedInputs.size());
-								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());								
+							/*
 								if( checkedInputs < materializedInputs.get( i).size()){
 									checkedInputs++;
 									logger.info( "checkedInputs: " + checkedInputs);
@@ -236,7 +209,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									//try for each input that does not match a move operator
 									//i = 0;
 								}
-							}
+							*/
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
 								inputMatches=true;
@@ -254,6 +227,30 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								}
 							}
 							else{
+								/* vpapa: in case the property Constraints.Inputx.type is defined into
+								 * an operator's description file for some input x( or all of them)
+								 * but the property is not correspondingly defined into the input( dataset)
+								 * description file, then an input mismatch will occur and the workflow
+								 * materialization will fail and will not be displayed at IReS WUI.
+								 * However IReS platform will still operate without giving any useful
+								 * message. For this, precautionary, we write this event into the logs
+								*/
+								logger.info( "ERROR: For operator " + op.opName + " there "
+											+ " is an input mismatch. Check inside its"
+											+ " description file if all properties Constraints.Input"
+											+ " for some input x match with all the corresponding"
+											+ " properties of the input dataset x, probably a"
+											+ " materialized one, like the very first input( s)"
+											+ " of the workflow. This message should be taken"
+											+ " as a real error when the materialization seems"
+											+ " to succeed when pushing 'Materialize Workflow'"
+											+ " button but the workflow is not displayed at all.");
+								logger.info( "Input dataset: " + in.dataset);
+								logger.info( "Input to be matched: " + tempInput);
+								//one input checked, go for the next
+								logger.info( "checkedInputs: " + checkedInputs);
+								logger.info( "materializedInputs.size(): " + materializedInputs.size());
+								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());								
 								//check move
 								//hdfs-local move
 								/*WorkflowNode moveNoOp = new WorkflowNode(false, false);

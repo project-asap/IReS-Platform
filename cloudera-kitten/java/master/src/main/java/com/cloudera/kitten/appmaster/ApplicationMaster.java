@@ -70,6 +70,8 @@ public class ApplicationMaster extends Configured implements Tool {
           System.out.println( "Setting workflow parameters and service!" );
           logger.info( "Setting workflow parameters and service!" );
 		  WorkflowParameters params = new WorkflowParameters(getConf());
+		  System.out.println( "Workflow parameters have been set!" );
+          logger.info( "Workflow parameters have been set!" );
 		  WorkflowService service = new WorkflowService(params, getConf());
           System.out.println( "Workflow parameters and service have been set!" );
           logger.info( "Workflow parameters and service have been set!" );
@@ -80,23 +82,6 @@ public class ApplicationMaster extends Configured implements Tool {
         	  Thread.sleep(1000);
           }
           service.stopAndWait();
-          //it is not known beforehand how many times replanning will be needed but
-          //however any replanning must be enforced in the end
-          /*
-          while( isReplanning){
-        	  while( service.state() != State.TERMINATED ){
-        		  Thread.sleep(1000);
-        	  }
-        	  //the workflow plan has been changed so new params and service are needed
-        	  params = new WorkflowParameters( new_replanned_workflow, params.jobName, getConf());
-        	  service = new WorkflowService( params,getConf());
-        	  service.startAndWait();
-              while (service.hasRunningContainers()) {
-                  Thread.sleep(1000);
-              }
-              service.stopAndWait();
-          }
-          */
 	  }
 
 	  return 0;
