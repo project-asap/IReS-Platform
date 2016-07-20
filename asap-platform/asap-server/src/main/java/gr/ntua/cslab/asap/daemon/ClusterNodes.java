@@ -300,9 +300,11 @@ public class ClusterNodes extends Configured implements Runnable {
 					//running
 					if( service.toLowerCase().equals( "Spark".toLowerCase())){
 						//try to find at least one Spark Worker running
-						if( !runservices.get( "SparkWorker").equals( "")){
-							//one Spark Worker has been found and so this service is running
-							ClusterStatusLibrary.status.put( service, true);
+						if( runservices.get( "SparkWorker") != null ){
+							if( !runservices.get( "SparkWorker").equals( "")){
+								//one Spark Worker has been found and so this service is running
+								ClusterStatusLibrary.status.put( service, true);
+							}	
 						}
 					}
 					if( service.toLowerCase().equals( "SparkWorker".toLowerCase())){
