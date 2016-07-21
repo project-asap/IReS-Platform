@@ -1,18 +1,29 @@
 #!/bin/bash
 
-export HADOOP_HOME='/home/bill/PhD/projects/yarn'
-HIVE_HOME='/home/bill/PhD/projects/hive'
+export HADOOP_HOME=/opt/hadoop-2.7.0
+export HIVE_HOME=/root/vpapa/hive
 
 DATABASE=$1
 TABLE=$2
 SCHEMA=$3
-SQL_QUERY="DROP TABLE $TABLE; CREATE TABLE $TABLE $SCHEMA ROW FORMAT DELIMITED FIELDS TERMINATED BY ','; LOAD DATA LOCAL INPATH '/tmp/intermediate.csv' OVERWRITE INTO TABLE $TABLE"
 
+echo -e "$DATABASE"
+echo -e "$TABLE"
+echo -e "$SCHEMA"
 
+if [ ! -e /mnt/Data/tmp/$TABLE ]
+then
+	mkdir -p /mnt/Data/tmp/$TABLE
+	sudo chmod -R a+wrx /mnt/Data/tmp
+fi
 echo "exporting table from postgres"
-sudo -u postgres psql $DATABASE -c "\copy (SELECT * FROM $TABLE) To '/tmp/intermediate.csv' With CSV"
+#sudo -u postgres psql -d $1 -c "COPY (SELECT * FROM $2) TO '//mnt/Data/tmp/intermediate.csv' WITH CSV (DELIMITER '|')"
+sudo -u postgres psql -d $DATABASE -c "COPY (SELECT * FROM $TABLE) TO '/mnt/Data/tmp/$TABLE/$TABLE.csv' WITH  (DELIMITER '|', FORMAT 'csv')"
 
 echo "loading table to hive"
-$HIVE_HOME/bin/hive -e $SQL_QUERY
+cd $HIVE_HOME
+$HIVE_HOME/bin/hive -e "DROP TABLE IF EXISTS $TABLE; CREATE TABLE $TABLE $SCHEMA ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'; LOAD DATA LOCAL INPATH '/mnt/Data/tmp/$TABLE/$TABLE.csv' OVERWRITE INTO TABLE $TABLE"
 
-rm /tmp/intermediate.csv
+cd -
+
+rm -r /mnt/Data/tmp

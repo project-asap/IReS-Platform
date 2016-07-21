@@ -8,3 +8,9 @@ build
 bin
 *.iml
 .idea
+metastore_db
+asap-server
+asap.properties
+BasicLuaConf.lua
+models
+python

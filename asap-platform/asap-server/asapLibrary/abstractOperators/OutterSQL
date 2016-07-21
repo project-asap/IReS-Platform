@@ -16,13 +16,13 @@
 Constraints.OpSpecification.Algorithm.name=SQL_query
 Constraints.OpSpecification.SQL_query="select sum(l_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
 #Inputs
-Constraints.Input.number = 3
+Constraints.Input.number = 2
 #Input0
 Constraints.Input0.type = SQL
 #Input1
 Constraints.Input1.type = SQL
 #Input2
-Constraints.Input2.type = SQL
+#Constraints.Input2.type = SQL
 #Output
 Constraints.Output.number = 1
 Constraints.Output0.type = SQL

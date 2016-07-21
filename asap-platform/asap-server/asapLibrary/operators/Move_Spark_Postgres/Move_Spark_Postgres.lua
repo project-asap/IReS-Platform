@@ -12,6 +12,7 @@ operator = yarn {
   name = "Execute " .. OPERATOR .. " Operator",
   labels = "postgres",
   nodes = "slave-1",
+  memory = 1024,
   container = {
     instances = 1,
     command = {
@@ -20,6 +21,11 @@ operator = yarn {
     resources = {
 		[ SCRIPT] = {
 			file = OPERATOR_HOME .. "/" .. SCRIPT,
+			type = "file",               -- other value: 'archive'
+			visibility = "application",  -- other values: 'private', 'public'
+		},
+		[ "convertParquet2CSV.py"] = {
+			file = OPERATOR_HOME .. "/convertParquet2CSV.py",
 			type = "file",               -- other value: 'archive'
 			visibility = "application",  -- other values: 'private', 'public'
 		}

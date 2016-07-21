@@ -10,6 +10,9 @@ OPERATOR_HOME = OPERATOR_LIBRARY .. "/" .. OPERATOR
 -- The actual distributed shell job.
 operator = yarn {
 	name = "Execute " .. OPERATOR .. " Operator",
+	labels = "hive",
+	nodes = "slave-1",
+	memory = 1024,
 	container = {
     		instances = CONTAINER_INSTANCES,
     		env = base_env,

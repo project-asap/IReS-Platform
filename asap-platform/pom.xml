@@ -29,7 +29,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <hadoop.version>2.7.1</hadoop.version>
+                <hadoop.version>2.7.0</hadoop.version>
             </properties>
         </profile>
         <profile>

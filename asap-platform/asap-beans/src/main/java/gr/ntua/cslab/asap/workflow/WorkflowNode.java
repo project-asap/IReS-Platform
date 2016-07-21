@@ -128,7 +128,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			}
 		}
 
-
 		//check if intermediate results exist (replan)
 		if( !isOperator){
 			temp = materializedWorkflow.materilizedDatasets.get(getName());
@@ -271,7 +270,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
-										logger.info( "Move node added input:\n" + in);
+										logger.info( "Move node " + moveNode.getName() + " added input:\n" + in);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
@@ -899,28 +898,40 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return "";
 		else{
-			String ret = "";
-		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
-		    	String arg = operator.getParameter("Execution.Argument"+i);
-		    	if(arg.startsWith("In")){
-		    		int index = Integer.parseInt(arg.charAt(2)+"");
-		    		WorkflowNode n = inputs.get(index);
-		    		String parameter =arg.substring(arg.indexOf(".")+1);
-		    		if(parameter.endsWith("local")){
-		    			parameter=parameter.replace(".local", "");
-		    			logger.info("parameter: "+parameter);
+			//logger.info( "WORKFLOWNODE OPERATOR: " + getName());
+			String ret = operator.getParameter( "Execution.Arguments.number");
+			if( ret == null){
+				logger.info( "WARNING: For operator " + getName() + " the amount of execution arguments"
+							+ " is null. That means that the operators has not any execution argument. If this"
+							+ " is the case, ignore this warning. The system will take care of it. Otherwise,"
+							+ " this should be taken as an ERROR that means either operator's description"
+							+ " file cannot be read correctly in general or that the property Execution.Arguments.number"
+							+ " is miswritten. In the second case inspect the description file. In the first case"
+							+ " debug is needed.");
+			}
+			int args_amount = ret != null ? Integer.parseInt( operator.getParameter( "Execution.Arguments.number")) : 0;
+			ret = "";
+			for (int i = 0; i < args_amount; i++) {
+				String arg = operator.getParameter("Execution.Argument"+i);
+				if(arg.startsWith("In")){
+					int index = Integer.parseInt(arg.charAt(2)+"");
+					WorkflowNode n = inputs.get(index);
+					String parameter =arg.substring(arg.indexOf(".")+1);
+					if(parameter.endsWith("local")){
+						parameter=parameter.replace(".local", "");
+						logger.info("parameter: "+parameter);
 
-		    			String newArg = n.dataset.getParameter("Execution."+parameter);
-		    			logger.info("newArg: "+newArg);
-		    			newArg = newArg.substring(newArg.lastIndexOf("/")+1, newArg.length());
-		    			logger.info("local path: "+newArg);
-			    		arg=newArg;
-		    		}
-		    		else{
-			    		String newArg = n.dataset.getParameter("Execution."+parameter);
-			    		logger.info( "newArg: " + newArg);
-			    		if( newArg == null){
-			    			logger.info( "ERROR: For input dataset " + n.dataset.datasetName + " the requested parameter");
+						String newArg = n.dataset.getParameter("Execution."+parameter);
+						logger.info("newArg: "+newArg);
+						newArg = newArg.substring(newArg.lastIndexOf("/")+1, newArg.length());
+						logger.info("local path: "+newArg);
+						arg=newArg;
+					}
+					else{
+						String newArg = n.dataset.getParameter("Execution."+parameter);
+						logger.info( "newArg: " + newArg);
+						if( newArg == null){
+							logger.info( "ERROR: For input dataset " + n.dataset.datasetName + " the requested parameter");
 			    			logger.info( "Execution." + parameter + " does not exist! This parameter has been asked");
 			    			logger.info( "from operator " + operator.opName + " as a property of input In" + index + ".");
 			    			logger.info( "To solve this, make sure that the input of this dataset, " + n.dataset.datasetName + ",");
@@ -928,55 +939,55 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			    			logger.info( "'Execution.Output" + index + "." + parameter + ".");
 			    		}
 			    		arg=newArg;
-		    		}
-		    		/*boolean dataset = false;
-		    		while(!n.isOperator){
-		    			if(n.inputs.isEmpty()){
-		    				arg = n.dataset.datasetName;
-		    				dataset=true;
-		    				break;
-		    			}
-		    			else{
-		    				n=n.inputs.get(0);
-		    			}
-		    		}
-		    		if(!dataset)
-		    			arg = n.operator.getParameter("Execution.Output0.path");*/
-		    	}
-		    	else if(arg.startsWith("Optimization")){
-		    		String newArg = operator.getParameter(arg);
-		    		logger.info( "newArg: " + newArg);
-		    		if( newArg == null){
-		    			newArg = operator.getParameter("SelectedParams."+arg.substring(arg.indexOf(".")+1));
-		    		}
-		    		logger.info( "newArg: " + newArg);
-		    		arg=newArg;
-		    		
-		    	}
-		    	/* vpapa: an execution argument may be surrounded by double or single quotes
-		    		in which case no double or single quotes should be added and the argument
-		    		should be taken as is. If the argument is not surrounded by double quotes
-		    		and it also contains spaces, then it must be contained by double or single
-		    		quotes. This way bash interpreter can understand correctly the execution
-		    		arguments and the operator can be executed if no other error rises.
-		    	*/
-		    	//does argument starts and ends with double or single quotes?
-		    	if( ( arg.startsWith( "\"") && arg.endsWith( "\"")) || ( arg.startsWith( "'") && arg.endsWith( "'"))){
-		    		//return as is
-		    		ret += arg + " ";
-		    	}
-		    	else{
-					//argument is not surrounded by double( single) quotes, does it contain spaces?
-					if(arg.contains(" ")){
-						//surround argument by double quotes
-						ret += "\"" + arg + "\"" + " ";
 					}
-					else{
-						//argument is not surrounded by double( single) quotes and it does
+					/*boolean dataset = false;
+					while(!n.isOperator){
+						if(n.inputs.isEmpty()){
+							arg = n.dataset.datasetName;
+							dataset=true;
+							break;
+						}
+						else{
+							n=n.inputs.get(0);
+						}
+					}
+					if(!dataset)
+						arg = n.operator.getParameter("Execution.Output0.path");*/
+				}
+				else if(arg.startsWith("Optimization")){
+					String newArg = operator.getParameter(arg);
+					logger.info( "newArg: " + newArg);
+					if( newArg == null){
+						newArg = operator.getParameter("SelectedParams."+arg.substring(arg.indexOf(".")+1));
+					}
+					logger.info( "newArg: " + newArg);
+					arg=newArg;
+					
+				}
+				/* vpapa: an execution argument may be surrounded by double or single quotes
+					in which case no double or single quotes should be added and the argument
+					should be taken as is. If the argument is not surrounded by double quotes
+					and it also contains spaces, then it must be contained by double or single
+					quotes. This way bash interpreter can understand correctly the execution
+					arguments and the operator can be executed if no other error rises.
+				*/
+				//does argument starts and ends with double or single quotes?
+				if( ( arg.startsWith( "\"") && arg.endsWith( "\"")) || ( arg.startsWith( "'") && arg.endsWith( "'"))){
+					//return as is
+					ret += arg + " ";
+				}
+				else{
+						//argument is not surrounded by double( single) quotes, does it contain spaces?
+						if(arg.contains(" ")){
+							//surround argument by double quotes
+							ret += "\"" + arg + "\"" + " ";
+						}
+						else{
+							//argument is not surrounded by double( single) quotes and it does
 						//not contain spaces
 						ret += arg + " ";
 					}  	
-		    	}
+				}
 			}
 			return ret;
 		}
