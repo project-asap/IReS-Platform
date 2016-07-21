@@ -241,28 +241,111 @@ public class RunningWorkflowLibrary {
 	}
 
 	public static void replan(String id) throws Exception {
-		HashMap<String,WorkflowNode> materilizedDatasets = new HashMap<String,WorkflowNode>();
+		HashMap<String,WorkflowNode> materializedDatasets = new HashMap<String,WorkflowNode>();
+		WorkflowNode dataset_node = null;
+		Dataset temp = null;
+		AbstractWorkflow1 aw = null;
+		WorkflowDictionary replanned_workflow = null;
+		List< String> sorted_nodes = new ArrayList< String>();
 		
 		WorkflowDictionary wd = runningWorkflows.get(id);
-		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(id, "/tmp");
-		materializedWorkflow.readFromWorkflowDictionary(wd);
+		MaterializedWorkflow1 materialiazedWorkflow = new MaterializedWorkflow1(id, "/tmp");
+		materialiazedWorkflow.readFromWorkflowDictionary(wd);
 		for(OperatorDictionary op : wd.getOperators()){
-			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("running")){
+			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("completed")){
 
-				logger.info(op.getName()+" : "+op.getAbstractName());
-
-				WorkflowNode n = new WorkflowNode(false, false,op.getAbstractName());
-				Dataset temp = new Dataset(op.getName());
+				logger.info( "Operator: "+ op.getName()+ "\tAbstract name: " + op.getAbstractName());
+				
+				sorted_nodes.add( op.getAbstractName());
+				dataset_node = new WorkflowNode(false, false,op.getAbstractName());
+				temp = new Dataset(op.getName());
 				temp.readPropertiesFromString(op.getDescription().replace("<br>", "\n"));
-				n.setDataset(temp);
-				materilizedDatasets.put(op.getAbstractName(), n);
+				dataset_node.setDataset(temp);
+				materializedDatasets.put(op.getAbstractName(), dataset_node);
 			}
 		}
-		logger.info("Datasets: "+materilizedDatasets);
+		for( Entry< String, WorkflowNode> node : materializedDatasets.entrySet()){
+			logger.info( "WorkflowNode: " + node.getKey() + "\t" + node.getValue());
+		}
+		logger.info("Datasets: "+materializedDatasets);
+		logger.info( "KEY Datasets: " + sorted_nodes);
+		//1. remove the last data set from 'materializedDatasets since it corresponds to
+		//the input of the 'failed' operator
+		int i = sorted_nodes.size() - 1;
+		materializedDatasets.remove( sorted_nodes.get( i));
+		sorted_nodes.remove( sorted_nodes.get( i));
+		logger.info("Datasets: " + materializedDatasets);
+		logger.info( "KEY Datasets: " + sorted_nodes);
 		
-		AbstractWorkflow1 aw = runningAbstractWorkflows.get(id);
+		aw = runningAbstractWorkflows.get(id);
+		replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
+		/*vpapa: the returned and replanned workflow may be empty because for example
+		 * no alternatives where found for the failed operator and the current set of
+		 * completed data sets. For this, we should go one executed operator back taking
+		 * in account the related data sets and then ask for a new plan 
+		 */
+		logger.info( "#################");
+		logger.info( "#################");
+		logger.info( "#################");
+		if( replanned_workflow.getOperators() == null || replanned_workflow.getOperators().isEmpty()){
+			logger.info( "Empty or null replanned workflow: " + replanned_workflow.getOperators());
+			replanned_workflow = trimReplannedWorkflow( materializedDatasets, aw, sorted_nodes);
+		}
+		else{
+			for( OperatorDictionary node : replanned_workflow.getOperators()){
+				logger.info( "WorkflowNode: " + node.getName() + "\t" + node.getStatus());
+			}
+		}
+		toRunWorkflows.put(id, replanned_workflow);
+	}
+	
+	/**
+	 * 
+	 * @param materializeddatasets
+	 * @param wd
+	 * @param sn
+	 * @return
+	 */
+	private static WorkflowDictionary trimReplannedWorkflow( HashMap< String, WorkflowNode> materializedDatasets, AbstractWorkflow1 aw, List< String> sn) throws Exception{
+		logger.info( "#################");
+		logger.info( "#################");
+		logger.info( "#################");
+		logger.info( "TRIM Datasets: " + materializedDatasets);
+		logger.info( "TRIM KEY Datasets: " + sn);
+		List< String> failed_operators = new ArrayList< String>();
+
+		//only the very first dataset of the workflow has remained, so there is no alternative workflow
+		if( sn.size() == 1){
+			return new WorkflowDictionary();
+		}
 		
-		MaterializedWorkflow1 mwNew =aw.replan(materilizedDatasets, 100);
-		toRunWorkflows.put(id, mwNew.toWorkflowDictionary("\n"));
+		WorkflowDictionary replanned_workflow = null;
+
+		//it is assumed that the nodes in 'sn' reflect the physical order of workflow operators
+		//remove the next two data sets that is assumed that correspond to the last completed operator input and output
+		//and update the 'sn' also
+		int i = sn.size() -1;
+		materializedDatasets.remove( sn.get( i));
+		logger.info( "Datasets: " + materializedDatasets);
+		materializedDatasets.remove( sn.get( i - 1));
+		logger.info( "Datasets: " + materializedDatasets);
+		failed_operators.add( sn.get( sn.size() - 1));
+		sn.remove( sn.size() - 1);
+		logger.info( "KEY Datasets: " + sn);
+		failed_operators.add( sn.get( sn.size() - 1));
+		sn.remove( sn.size() - 1);
+		logger.info( "KEY Datasets: " + sn);
+		
+		replanned_workflow = aw.replan( materializedDatasets, 100).toWorkflowDictionary( "\n");
+		if( replanned_workflow.getOperators().isEmpty()){
+			logger.info( "Empty or null replanned workflow: " + replanned_workflow.getOperators());
+			replanned_workflow = trimReplannedWorkflow( materializedDatasets, aw, sn);
+		}
+		logger.info( "FAILED OPERATORS: " + failed_operators);
+		if( replanned_workflow.failedops == null){
+			replanned_workflow.failedops = new ArrayList< String>();
+		}
+		replanned_workflow.failedops.addAll( failed_operators);
+		return replanned_workflow;
 	}
 }

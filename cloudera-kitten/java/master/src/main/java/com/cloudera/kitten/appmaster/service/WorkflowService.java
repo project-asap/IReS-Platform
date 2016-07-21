@@ -126,6 +126,7 @@ protected ContainerLaunchContextFactory factory;
         stop();
         return;
     }
+	ApplicationMaster.initial_registration = registration;
 
     factory = new ContainerLaunchContextFactory( registration.getMaximumResourceCapability());
 

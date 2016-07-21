@@ -197,7 +197,9 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
         long stop = System.currentTimeMillis();
         double time = (stop-startTime)/1000.0-5;//5sec init container
   		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
-  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
+  		if( !service.parameters.workflow.getOperator(params.getName()).getStatus().equals( "failed")){
+  	  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
+  		}
       
         containers.remove(containerId);
         completed.incrementAndGet();

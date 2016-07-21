@@ -14,7 +14,7 @@
 #################
 #Engine
 Constraints.Engine=Spark
-Constraints.EngineSpecification.Distributed.Spark.masterLocation=path
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
 Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
@@ -23,13 +23,13 @@ Constraints.Input.number = 1
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=Spark
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=master
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=Spark
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=master
 
 #################
 # OPTIMIZATION #
@@ -52,9 +52,9 @@ Optimization.cost=25.0
 #################
 Execution.LuaScript=InnerSQL_Spark.lua
 Execution.Arguments.number=5
-Execution.Argument0=spark://path:7077
+Execution.Argument0=spark://master:7077
 Execution.Argument1=executeInnerSQL.py
-Execution.Argument2=path
+Execution.Argument2=master
 Execution.Argument4=/home/bill/PhD/projects/yarn
 Execution.Argument4=tpchQuery17InnerSpark.sql
 Execution.Output0.name=part_aggParquet
