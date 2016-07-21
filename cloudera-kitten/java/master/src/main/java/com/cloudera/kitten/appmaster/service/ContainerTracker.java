@@ -271,6 +271,10 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  LOG.info( "Killing container: " + c.getId() + "\tat node: " + c.getNodeId());
     	  nodeManager.stopContainerAsync(c.getId(), c.getNodeId());
       }
+      /*vpapa: also empty the nextTrackers field of the tracker assuming that the next trackers
+       * dependent on it
+       */
+      nextTrackers.clear();
     }
 
     public boolean hasMoreContainers() {

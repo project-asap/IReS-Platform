@@ -899,8 +899,19 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return "";
 		else{
-			String ret = "";
-		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
+			String ret = operator.getParameter( "Execution.Arguments.number");
+			if( ret == null){
+				logger.info( "WARNING: For operator " + getName() + " the amount of execution arguments"
+							+ " is null. That means that the operators has not any execution argument. If this"
+							+ " is the case, ignore this warning. The system will take care of it. Otherwise,"
+							+ " this should be taken as an ERROR that means either operator's description"
+							+ " file cannot be read correctly in general or that the property Execution.Arguments.number"
+							+ " is miswritten. In the second case inspect the description file. In the first case"
+							+ " debug is needed.");
+			}
+			int args_amount = ret != null ? Integer.parseInt( operator.getParameter( "Execution.Arguments.number")) : 0;
+			ret = "";
+		    for (int i = 0; i < args_amount; i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	if(arg.startsWith("In")){
 		    		int index = Integer.parseInt(arg.charAt(2)+"");
