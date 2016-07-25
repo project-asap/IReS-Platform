@@ -340,19 +340,19 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								//move
 								System.out.println("Move!! "+bin.inputs.get(0).dataset.datasetName+" "+tin.getName());
 								bin.operator.copyExecVariables(tin.dataset,0,bin.inputs);
-//								dpTable.addMovedDataset(bin.inputs.get(0).dataset,tin);
-//								
-//								ArrayList<WorkflowNode> tp = new ArrayList<>();
-//								tp.add(bin.inputs.get(0));
-//								tp.add(bin);
-//								tp.add(tin);
-//								
-//								HashMap<String,Double> metrics = new HashMap<String, Double>();
-//								for(String m : materializedWorkflow.groupInputs.keySet()){
-//									System.out.println(m);
-//									metrics.put(m, 0.0);
-//								}
-//								dpTable.addInputs(tin.dataset, tp, 0.0, metrics);
+								dpTable.addMovedDataset(bin.inputs.get(0).dataset,tin);
+								
+								ArrayList<WorkflowNode> tp = new ArrayList<>();
+								tp.add(bin.inputs.get(0));
+								tp.add(bin);
+								tp.add(tin);
+								
+								HashMap<String,Double> metrics = new HashMap<String, Double>();
+								for(String m : materializedWorkflow.groupInputs.keySet()){
+									System.out.println(m);
+									metrics.put(m, 0.0);
+								}
+								dpTable.addInputs(tin.dataset, tp, 0.0, metrics);
 								
 //								tp = new ArrayList<>();
 //								tp.add(bin.inputs.get(0));
