@@ -73,7 +73,8 @@ public class ClusterStatus {
     @Path( "services/alive/{id}")
     public void setAlive(@PathParam("id") String id) {
     	ClusterStatusLibrary.setStatus(id, true);
-    }    
+    }
+    
 
     @GET
     @Path( "services/dead/{id}")
