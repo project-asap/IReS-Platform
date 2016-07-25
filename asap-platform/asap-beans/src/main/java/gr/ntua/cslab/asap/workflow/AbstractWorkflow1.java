@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.logging.Logger;
 
 //import net.sourceforge.jeval.EvaluationException;
@@ -43,6 +44,7 @@ import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.MaterializedOperators;
 import gr.ntua.cslab.asap.operators.NodeName;
+import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
 
@@ -169,11 +171,12 @@ public class AbstractWorkflow1 {
 	}// end of AbstractWorkflow1 materialize
 
 
-	public MaterializedWorkflow1 replan( HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
-		this.materilizedDatasets = materilizedDatasets;
-		this.count = count;
-		MaterializedWorkflow1 ret = materialize( "", policy);
-		this.materilizedDatasets = null;
+	public MaterializedWorkflow1 replan(
+			HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
+		this.materilizedDatasets=materilizedDatasets;
+		this.count =count;
+		MaterializedWorkflow1 ret = materialize("", policy);
+		this.materilizedDatasets=null;
 		this.count = 0;
 		return ret;
 	}

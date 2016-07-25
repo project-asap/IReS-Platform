@@ -128,6 +128,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			}
 		}
 
+
 		//check if intermediate results exist (replan)
 		if( !isOperator){
 			temp = materializedWorkflow.materilizedDatasets.get(getName());
@@ -158,9 +159,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				for(Operator op : operators){
 					if(!ClusterStatusLibrary.checkEngineStatus(op)){
 						logger.info( "Specified engine for operator " + op.opName + " is " + op.getEngine());
-						logger.info( "and it is not running. For this, this operator will not be materialized");
-						logger.info( "and consequently the corresponding workflow will not be materialized");
-						logger.info( "if there is not alternative operator to this one.");
+						logger.info( "an it is not running. For this, this operator will no be materialized");
+						logger.info( "and consequently the corresponding workflow will not be materialized.");
 						continue;					
 					}
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();
@@ -178,6 +178,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						tempInput.inputFor(op,i);
 						WorkflowNode tempInputNode = new WorkflowNode(false, false,"");
 						tempInputNode.setDataset(tempInput);
+						tempInputNode.setAbstractName(this.inputs.get(i).getName());
 						temp.addInput(tempInputNode);
 
 						boolean inputMatches=false;
@@ -198,11 +199,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						WorkflowNode bestInput = null;
 						logger.info( "materializedInputs: " + materializedInputs);
 						for(WorkflowNode in : materializedInputs.get(i)){
-							logger.info("CHECKING INPUT DATASET: " + in.dataset.datasetName);
+							logger.info("CHECKING INPUT DATASET: "+in.dataset.datasetName);
 							if( tempInput.checkMatch(in.dataset)){
 								logger.info("true");
 								inputMatches=true;
-								tempInputNode.setAbstractName(in.getName());
 								tempInputNode.addInput(in);
 								if(materializedWorkflow.functionTarget.contains("min") && dpTable.getCost(in.dataset)<=operatorOneInputCost){
 									operatorOneInputCost=dpTable.getCost(in.dataset);
@@ -215,50 +215,45 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									bestInput = in;
 								}
 							}
-							else{
-								/* vpapa: in case the property Constraints.Inputx.type is defined into an operator's description file for
-								some input x( or all of them) but the property is not correspondingly defined into the input( dataset)
-								description file, then an input mismatch will occur and the workflow materialization will fail and will
-								not be displayed at IReS WUI. However IReS platform will still operate without giving any useful message.
-								For this, precautionary, we write this event into the logs
-								 */
-								logger.info( "ERROR: For operator " + op.opName + " there is an input mismatch. Check inside its"
-										+ " description file if all properties Constraints.Input for some input x"
-										+ " match with all the corresponding properties of the input dataset " + in.dataset.datasetName
-										+ " which probably is a materialized one, like the very first input( s)"
-										+ " of the workflow. This message should be taken as a real error when the"
-										+ " materialization seems to succeed when pushing 'Materialize Workflow' button but"
-										+ " the workflow is not displayed at all.");
-								logger.info( "Input dataset: " + in.dataset);
-								logger.info( "Input to be matched: " + tempInput);
-								//one input checked, go for the next
-								logger.info( "checkedInputs: " + checkedInputs);
-								logger.info( "materializedInputs.size(): " + materializedInputs.size());
-								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());
-								//check move
-								//hdfs-local move
-								/*WorkflowNode moveNoOp = new WorkflowNode(false, false);
-								moveNoOp.inputs.add(in);
-								Dataset temp2 = tempInput.clone();
-								moveNoOp.setDataset(tempInput);
-								String fs = temp2.getParameter("Constraints.Input"+i+".Engine.FS");
-								if(fs.equals("local")){
-								}*/
+						}
+							
+						logger.info("CHECKING for moved dataset: "+this.inputs.get(i));
 
-								//generic move
-								logger.info("Check move ");
-								List<Operator> moveOps = OperatorLibrary.checkMove( in.dataset, tempInput);
-								
-								for( Operator move : moveOps){
-									logger.info( move.opName + "\t" + move.optree + "\n");
+						List<WorkflowNode> movedDatasets = dpTable.getMovedDatasets(this.inputs.get(i).dataset);
+						if(movedDatasets!=null){
+							for(WorkflowNode movedDataset : movedDatasets){
+								if(tempInput.checkMatch(movedDataset.dataset)){
+									logger.info("Found moved!!");
+									inputMatches=true;
+									tempInputNode.addInput(movedDataset);
+									if(materializedWorkflow.functionTarget.contains("min") && dpTable.getCost(movedDataset.dataset)<=operatorOneInputCost){
+										operatorOneInputCost=dpTable.getCost(movedDataset.dataset);
+										oneInputMetrics = dpTable.getMetrics(movedDataset.dataset);
+										bestInput = movedDataset;
+									}
+									if(materializedWorkflow.functionTarget.contains("max") && dpTable.getCost(movedDataset.dataset)>=operatorOneInputCost){
+										operatorOneInputCost=dpTable.getCost(movedDataset.dataset);
+										oneInputMetrics = dpTable.getMetrics(movedDataset.dataset);
+										bestInput = movedDataset;
+									}
 								}
+							}
+						}
+							
+						for(WorkflowNode in : materializedInputs.get(i)){
+							logger.info("CHECKING Move DATASET: "+in.dataset.datasetName);
+							
+							if(! tempInput.checkMatch(in.dataset)){
+								//check move
+								//generic move
+								List<Operator> moveOps = OperatorLibrary.checkMove(in.dataset, tempInput);
+								logger.info( "Move operators: " + moveOps);
 								if(!moveOps.isEmpty()){
-									logger.info("Are there any available move operators? True");
 									inputMatches=true;
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
-										logger.info( "Move node added input:" + in);
+										logger.info( "Move node found:\n" + m.opName);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
@@ -311,20 +306,11 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									}
 								}
 							}
+							
 						}
 						if(!inputMatches){
 							inputsMatch=false;
-							/* vpapa: may be there exist other sets of input like in the
-								case of parallel workflows e.g. Wind_Demo_o_Postgres. Break
-								if all inputs have been checked. Until then continue
-							*/
-							if( i < inputs){
-								logger.info( "Trying next inputs");
-								continue;
-							}
-							else{
-								break;
-							}
+							break;
 						}
 						//System.out.println(materializedInputs.get(i)+"fb");
 						//tempInputNode.addInputs(materializedInputs.get(i));
@@ -352,7 +338,31 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							logger.info("copy path from: "+bin.getName()+" to "+tin.getName());
 							if(bin.isOperator){
 								//move
+								System.out.println("Move!! "+bin.inputs.get(0).dataset.datasetName+" "+tin.getName());
 								bin.operator.copyExecVariables(tin.dataset,0,bin.inputs);
+//								dpTable.addMovedDataset(bin.inputs.get(0).dataset,tin);
+//								
+//								ArrayList<WorkflowNode> tp = new ArrayList<>();
+//								tp.add(bin.inputs.get(0));
+//								tp.add(bin);
+//								tp.add(tin);
+//								
+//								HashMap<String,Double> metrics = new HashMap<String, Double>();
+//								for(String m : materializedWorkflow.groupInputs.keySet()){
+//									System.out.println(m);
+//									metrics.put(m, 0.0);
+//								}
+//								dpTable.addInputs(tin.dataset, tp, 0.0, metrics);
+								
+//								tp = new ArrayList<>();
+//								tp.add(bin.inputs.get(0));
+//								tp.add(bin);
+//								tp.add(tin);
+//								dpTable.addInputs(tin.dataset, tp, 0.0, metrics);
+								//dpTable.addInputs(tin.dataset, tp, 0.0, metrics);
+//								dpTable.addRecord(tin.dataset, tp, 0.0, metrics);
+//								dpTable.addRecord(bin.inputs.get(0).dataset, tp, 0.0, metrics);
+								
 							}
 							else{
 								bin.dataset.copyExecVariables(tin.dataset,0);
@@ -408,6 +418,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							bestInputMetrics.put( "execTime", temp.getCost());
 							bestInputs = new ArrayList< WorkflowNode>();
 						}
+						
+						
 						prevCost 	= computePolicyFunction(bestInputMetrics, materializedWorkflow.function);
 						nextMetrics = op.getOptimalPolicyCost(bestInputMetrics, bestInputs, materializedWorkflow.function);
 						
@@ -475,7 +487,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									metrics.put(m, 0.0);
 								}
 								dpTable.addRecord(tempOutput, tp, new Double(0), metrics);
-								dpTable.addInputs(out.dataset, tp);
+								dpTable.addInputs(out.dataset, tp, new Double(0), metrics);
 							}
 
 							outN++;
@@ -502,7 +514,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					}
 					ret.addAll(l);
 				}
-				dpTable.addRecord(dataset, ret, new Double(0), new HashMap<String,Double>());
+				dpTable.addInputs(dataset, ret, new Double(0), new HashMap<String,Double>());
 			}
 			else{
 				temp = new WorkflowNode(false, false, getName());
@@ -519,7 +531,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					metrics.put(m, 0.0);
 				}
 
-				dpTable.addRecord(dataset, plan, computePolicyFunction(metrics, materializedWorkflow.function),metrics);
+				dpTable.addInputs(dataset, plan, computePolicyFunction(metrics, materializedWorkflow.function),metrics);
 
 			}
 		}//end of else WorkflowNode is dataset
@@ -886,20 +898,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return "";
 		else{
-			//logger.info( "WORKFLOWNODE OPERATOR: " + getName());
-			String ret = operator.getParameter( "Execution.Arguments.number");
-			if( ret == null){
-				logger.info( "WARNING: For operator " + getName() + " the amount of execution arguments"
-							+ " is null. That means that the operators has not any execution argument. If this"
-							+ " is the case, ignore this warning. The system will take care of it. Otherwise,"
-							+ " this should be taken as an ERROR that means either operator's description"
-							+ " file cannot be read correctly in general or that the property Execution.Arguments.number"
-							+ " is miswritten. In the second case inspect the description file. In the first case"
-							+ " debug is needed.");
-			}
-			int args_amount = ret != null ? Integer.parseInt( operator.getParameter( "Execution.Arguments.number")) : 0;
-			ret = "";
-		    for (int i = 0; i < args_amount; i++) {
+			String ret = "";
+		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	if(arg.startsWith("In")){
 		    		int index = Integer.parseInt(arg.charAt(2)+"");

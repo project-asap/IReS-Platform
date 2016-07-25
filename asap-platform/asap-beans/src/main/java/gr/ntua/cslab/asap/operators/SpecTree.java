@@ -19,9 +19,13 @@ package gr.ntua.cslab.asap.operators;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.*;
 
 import org.apache.log4j.Logger;
@@ -221,7 +225,9 @@ public class SpecTree {
 				return null;
 			}
 		}
-		return ret;		
+		return ret;
+		
+		
 	}
 	
 
@@ -233,6 +239,7 @@ public class SpecTree {
 		}
 		return ret;
 	}
+
 	
 	public SpecTree copyInputSubTree(String prefix) {
 		SpecTree ret =  new SpecTree();
@@ -268,6 +275,7 @@ public class SpecTree {
 		return ret;
 	}
 
+
 	public SpecTreeNode getNode(String key) {
 		if (key.contains(".")){
 			String curname = key.substring(0, key.indexOf("."));
@@ -284,6 +292,7 @@ public class SpecTree {
 		}
 		return tree.get(key); 
 	}
+
 	
 	public String getParameter(String key) {
 		if (key.contains(".")){

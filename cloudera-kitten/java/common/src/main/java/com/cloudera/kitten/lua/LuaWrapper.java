@@ -46,11 +46,11 @@ public class LuaWrapper implements Iterable<LuaPair> {
   
   private final LuaTable env;
   
-  public LuaWrapper( String script) {
+  public LuaWrapper(String script) {
     this(script, ImmutableMap.<String, Object>of());
   }
   
-  public LuaWrapper( String script, Map<String, Object> extras) {
+  public LuaWrapper(String script, Map<String, Object> extras) {
     try {
       this.env = JsePlatform.standardGlobals();
       LoadState.load(getClass().getResourceAsStream("/lua/kitten.lua"), "kitten.lua", env).call();

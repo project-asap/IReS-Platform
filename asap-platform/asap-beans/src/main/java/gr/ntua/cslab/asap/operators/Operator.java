@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +56,8 @@ import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang.ObjectUtils.Null;
 
 
 public class Operator {
@@ -89,121 +92,121 @@ public class Operator {
 	 */
 	public void reConfigureModel() throws Exception {
 		logger.info("reconfiguring model for: " + opName);
-		String modelClass;
-
-        List<OutputSpacePoint> outPoints = new ArrayList<>();
-		minTotalError = Double.MAX_VALUE;
-		for (Entry<String, String> e : outputSpace.entrySet()) {
-            if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
-            	List<Model> performanceModels = new ArrayList<Model>();
-            	modelClass = optree.getParameter("Optimization.model." + e.getKey());
-            	if (modelClass.contains("AbstractWekaModel")) {
-            		String modelDir = directory + "/models";
-            		File modelFile = new File(modelDir);
-            		if (modelFile.exists()) 
-            			modelFile.delete();
-				
-            		int i = 0;
-                   // System.out.println("MONGO");
-                    this.initializeDatasource();
-                    outPoints = dataSource.getOutputSpacePoints(e.getKey());
-                   // System.out.println(outPoints);
-	                for (Class<? extends Model> c : Benchmark.discoverModels()) {
-						if (c.equals(UserFunction.class))
-							continue;
-						if (c.equals(LeastSquares.class))
-							continue;
-						if (c.equals(RandomCommittee.class))
-							continue;
-						Model model = (Model) c.getConstructor().newInstance();
-						if(outPoints==null || outPoints.size()<2){
-							bestModel=null;
-						}
-						else if(outPoints.size()<=7){
-							double error =0;
-	                        for (OutputSpacePoint point : outPoints){
-	                            model.feed(point, false);
-	                        }
-							try {
-								model.train();
-								error = ML.totalError(model);
-							} catch (Exception e1) {
-								logger.info("Exception in training: "+e1.getMessage());
-								continue;
-							}
-							System.out.println(model.getClass()+" error: "+error);
-							if (error < minTotalError){
-								bestModel = model;
-								minTotalError = error;
-							}
-						}
-						else {
-							double error =0;
-							int iterations=1;
-							if(outPoints.size()<=50)
-								iterations=5;
-							for (int j = 0; j < iterations; j++) {
-								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
-								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
-								Random r = new Random();
-								for (OutputSpacePoint point : outPoints){
-									if(r.nextDouble()<=0.75 && trainPoints.size()<0.75*outPoints.size())
-										trainPoints.add(point);
-									else
-										testPoints.add(point);
-		                        }
-		                        for (OutputSpacePoint point : trainPoints){
-		                            model.feed(point, false);
-		                        }
-								try {
-									model.train();
-									double terror = ML.totalSquaredError(model, testPoints);
-									error+=terror;
-								} catch (Exception e1) {
-									logger.info("Exception in training: "+e1.getMessage());
-									continue;
-								}
-							}
-							System.out.println(model.getClass()+" error: "+error);
-							if (error < minTotalError){
-								for (OutputSpacePoint point : outPoints){
-		                            model.feed(point, false);
-		                        }
-								try {
-									model.train();
-								} catch (Exception e1) {
-									logger.info("Exception in training: "+e1.getMessage());
-									continue;
-								}
-								bestModel = model;
-								minTotalError = error;
-							}
-							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-							//performanceModels.add(model);
-
-						}
-						
-						i++;
-					}
-	                if(bestModel!=null){
-	                	modelFile.mkdir();
-						bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
-
-						bestModel.setInputSpace(inputSpace);
-	    				HashMap<String, String> temp = new HashMap<String, String>();
-	    				temp.put(e.getKey(), e.getValue());
-	    				bestModel.setOutputSpace(temp);
-
-	    				HashMap<String, String> conf = new HashMap<String, String>();
-	    				optree.getNode("Optimization").toKeyValues("", conf);
-	    				bestModel.configureClassifier(conf);
-						performanceModels.add(bestModel);
-		    			models.remove(e.getKey());
-		    			models.put(e.getKey(), performanceModels);
-	                }
-            	}
-            }
-		}
+//		String modelClass;
+//
+//        List<OutputSpacePoint> outPoints = new ArrayList<>();
+//		minTotalError = Double.MAX_VALUE;
+//		for (Entry<String, String> e : outputSpace.entrySet()) {
+//            if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
+//            	List<Model> performanceModels = new ArrayList<Model>();
+//            	modelClass = optree.getParameter("Optimization.model." + e.getKey());
+//            	if (modelClass.contains("AbstractWekaModel")) {
+//            		String modelDir = directory + "/models";
+//            		File modelFile = new File(modelDir);
+//            		if (modelFile.exists()) 
+//            			modelFile.delete();
+//				
+//            		int i = 0;
+//                   // System.out.println("MONGO");
+//                    this.initializeDatasource();
+//                    outPoints = dataSource.getOutputSpacePoints(e.getKey());
+//                   // System.out.println(outPoints);
+//	                for (Class<? extends Model> c : Benchmark.discoverModels()) {
+//						if (c.equals(UserFunction.class))
+//							continue;
+//						if (c.equals(LeastSquares.class))
+//							continue;
+//						if (c.equals(RandomCommittee.class))
+//							continue;
+//						Model model = (Model) c.getConstructor().newInstance();
+//						if(outPoints==null || outPoints.size()<2){
+//							bestModel=null;
+//						}
+//						else if(outPoints.size()<=7){
+//							double error =0;
+//	                        for (OutputSpacePoint point : outPoints){
+//	                            model.feed(point, false);
+//	                        }
+//							try {
+//								model.train();
+//								error = ML.totalError(model);
+//							} catch (Exception e1) {
+//								logger.info("Exception in training: "+e1.getMessage());
+//								continue;
+//							}
+//							System.out.println(model.getClass()+" error: "+error);
+//							if (error < minTotalError){
+//								bestModel = model;
+//								minTotalError = error;
+//							}
+//						}
+//						else {
+//							double error =0;
+//							int iterations=1;
+//							if(outPoints.size()<=50)
+//								iterations=5;
+//							for (int j = 0; j < iterations; j++) {
+//								ArrayList<OutputSpacePoint> trainPoints = new ArrayList<OutputSpacePoint>();
+//								ArrayList<OutputSpacePoint> testPoints = new ArrayList<OutputSpacePoint>();
+//								Random r = new Random();
+//								for (OutputSpacePoint point : outPoints){
+//									if(r.nextDouble()<=0.75 && trainPoints.size()<0.75*outPoints.size())
+//										trainPoints.add(point);
+//									else
+//										testPoints.add(point);
+//		                        }
+//		                        for (OutputSpacePoint point : trainPoints){
+//		                            model.feed(point, false);
+//		                        }
+//								try {
+//									model.train();
+//									double terror = ML.totalSquaredError(model, testPoints);
+//									error+=terror;
+//								} catch (Exception e1) {
+//									logger.info("Exception in training: "+e1.getMessage());
+//									continue;
+//								}
+//							}
+//							System.out.println(model.getClass()+" error: "+error);
+//							if (error < minTotalError){
+//								for (OutputSpacePoint point : outPoints){
+//		                            model.feed(point, false);
+//		                        }
+//								try {
+//									model.train();
+//								} catch (Exception e1) {
+//									logger.info("Exception in training: "+e1.getMessage());
+//									continue;
+//								}
+//								bestModel = model;
+//								minTotalError = error;
+//							}
+//							//model.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+//							//performanceModels.add(model);
+//
+//						}
+//						
+//						i++;
+//					}
+//	                if(bestModel!=null){
+//	                	modelFile.mkdir();
+//						bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+//
+//						bestModel.setInputSpace(inputSpace);
+//	    				HashMap<String, String> temp = new HashMap<String, String>();
+//	    				temp.put(e.getKey(), e.getValue());
+//	    				bestModel.setOutputSpace(temp);
+//
+//	    				HashMap<String, String> conf = new HashMap<String, String>();
+//	    				optree.getNode("Optimization").toKeyValues("", conf);
+//	    				bestModel.configureClassifier(conf);
+//						performanceModels.add(bestModel);
+//		    			models.remove(e.getKey());
+//		    			models.put(e.getKey(), performanceModels);
+//	                }
+//            	}
+//            }
+//		}
 	}
 	
 	/**
@@ -275,6 +278,14 @@ public class Operator {
                     	logger.info("MONGO");
                         this.initializeDatasource();
                         outPoints = dataSource.getOutputSpacePoints(e.getKey());
+//                        PrintWriter writer = new PrintWriter(this.opName+".csv", "UTF-8");
+////                        for(OutputSpacePoint o: outPoints){
+////                        	o.
+////                        	writer.println();
+////                        }
+//                        writer.println("The first line");
+//                        writer.println("The second line");
+//                        writer.close();
                         //System.out.println(outPoints);
                     }
                     else {
@@ -457,6 +468,7 @@ public class Operator {
 				}
 				dim.put(e.getKey(), l);
 			}
+			int i = 0;
 			writter.append(variable);
 			if (addPredicted) {
 				writter.append(delimiter + "model");
@@ -605,8 +617,6 @@ public class Operator {
 		logger.info( optree.toString());
 		inputSpace = new HashMap<String, String>();
 		outputSpace = new HashMap<String, String>();
-		/*vpapa: these properties must appear inside operator's description file
-		 */
 		try{
 			if(optree.getNode("Optimization.inputSpace")!=null)
 				optree.getNode("Optimization.inputSpace").toKeyValues("", inputSpace);
@@ -614,6 +624,9 @@ public class Operator {
 				optree.getNode("Optimization.outputSpace").toKeyValues("", outputSpace);
 		}
 		catch( NullPointerException npe){
+			System.out.println( "ERROR: From operator " + opName + "'s description file either"
+								+ " Optimization.inputSpace or Optimization.outputSpace"
+								+ " parameter or both are missing. Add them appropriately.");
 			logger.info( "ERROR: From operator " + opName + "'s description file either"
 								+ " Optimization.inputSpace or Optimization.outputSpace"
 								+ " parameter or both are missing. Add them appropriately.");
@@ -841,22 +854,19 @@ public class Operator {
 			String[] s = inVar.split("\\.");
 
 			/*
-			logger.info("inVar");
-			for( int i = 0; i < s.length; i++){
-				logger.info( "s[ " + i + "] = " + s[ i]);
+			System.out.println("inVar");
+			for (String str : s){
+				System.out.println(str);
 			}
-			logger.info( "Policy: "+policy);
+			System.out.println("Policy: "+policy);
 			*/
 			
 			if (s[0].startsWith("In")) {
 				int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
 				String val = null;
-				/*
-				logger.info( "Operator " + opName + " has as inputs: " + inputs);
-				logger.info( "Index: " + index + " " + s[1]);
-				*/
+				logger.info( "Operator inputs are: " + inputs);
 				WorkflowNode n = inputs.get(index);
-				
+				//System.out.println("Index: "+index +" "+s[1]);
 
 				Double v = null;
 				if (!n.isOperator) {
@@ -904,6 +914,8 @@ public class Operator {
 		}
 		
 		logger.info("Output metrics: " + retMetrics);
+		
+		
 		for (Entry<String, Double> e : inputMetrics.entrySet()) {
 			logger.info(e.getKey() +" "+ e.getValue());
 			Double v = retMetrics.get(e.getKey());
@@ -1104,7 +1116,10 @@ public class Operator {
 		return this.dataSource;
 	}
 
+
 	public String getEngine() {
 		return optree.getParameter("Constraints.Engine");
 	}
+
+
 }

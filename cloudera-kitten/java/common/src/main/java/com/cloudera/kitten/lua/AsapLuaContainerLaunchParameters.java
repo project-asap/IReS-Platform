@@ -14,14 +14,18 @@
  */
 package com.cloudera.kitten.lua;
 
+import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.yarn.api.records.LocalResource;
 import org.apache.hadoop.yarn.api.records.LocalResourceType;
 import org.apache.hadoop.yarn.api.records.LocalResourceVisibility;
@@ -80,21 +85,21 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }
   
   public AsapLuaContainerLaunchParameters(LuaWrapper lv, String name, Configuration conf,
-	Map<String, URI> localFileUris, Extras extras, MaterializedWorkflow1 workflow, String opName) throws IOException {
-	this.name=name;
-	this.lv = lv;
-	this.conf = conf;
-	this.localFileUris = localFileUris;
-	this.extras = extras;
-	this.workflow = workflow;
-	this.opName = opName;
-	this.operator = workflow.nodes.get(opName);
-	globalContainerId=0;
+      Map<String, URI> localFileUris, Extras extras, MaterializedWorkflow1 workflow, String opName) throws IOException {
+	  this.name=name;
+    this.lv = lv;
+    this.conf = conf;
+    this.localFileUris = localFileUris;
+    this.extras = extras;
+    this.workflow = workflow;
+    this.opName = opName;
+    this.operator = workflow.nodes.get(opName);
+    globalContainerId=0;
   }
 
 
   public List<String> getStageOutFiles() {
-	  List<String> ret = new ArrayList<String>();
+      List<String> ret = new ArrayList<String>();
 	    if (!lv.isNil(LuaFields.STAGEOUT)) {
 	      LuaWrapper a = lv.getTable(LuaFields.STAGEOUT);
 	      Iterator<LuaPair> restIter = a.arrayIterator();
@@ -104,8 +109,8 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
 	    }
 	    List<String> outputFiles= operator.getOutputFiles();
 	    LOG.info("Output files: "+outputFiles);
-	ret.addAll(outputFiles);
-	return ret;
+	    ret.addAll(outputFiles);
+	    return ret;
   }
   
 
@@ -375,8 +380,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 
     dir = localFileUris.get(LuaFields.KITTEN_JOB_XML_FILE).getPath();
     dir = dir.substring(0, dir.lastIndexOf("/"));
-    LOG.info("ASAP LUA CONTAINER LAUNCH PARAMETERS DIRECTORY: " + dir);
-    LOG.info("OPERATOR: " + operator.getName());
+    //System.out.println("Dir: " +dir);
     //String args = opName+" "+operator.getArguments();
     String args = operator.getArguments();
 
@@ -430,6 +434,8 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     return cmds;
   }
+  
+
 
 private String writeExecutionScript(List<String> cmds) throws IOException {
 	  UUID id = UUID.randomUUID();

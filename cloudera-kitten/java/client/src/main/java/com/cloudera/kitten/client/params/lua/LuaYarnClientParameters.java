@@ -14,6 +14,8 @@
  */
 package com.cloudera.kitten.client.params.lua;
 
+import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.yarn.api.records.ApplicationId;
+import org.apache.log4j.pattern.LogEvent;
 
 import com.cloudera.kitten.ContainerLaunchParameters;
 import com.cloudera.kitten.client.YarnClientParameters;
@@ -59,9 +62,9 @@ private String jobName;
   }
   
   public LuaYarnClientParameters(String script, String jobName, Configuration conf,
-	Map<String, Object> extraLuaValues, Map<String, String> resources) {
-	this.env = new ArrayList<LuaWrapper>();
-	this.masterEnv = new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator");
+      Map<String, Object> extraLuaValues, Map<String, String> resources) {
+	  this.env = new ArrayList<LuaWrapper>();
+	  this.masterEnv = new LuaWrapper("asapLibrary/BasicLuaConf.lua", extraLuaValues).getTable("operator");
     this.env.add(new LuaWrapper(script, extraLuaValues).getTable(jobName));
     this.conf = initConf(env.get(0), conf);
     this.extras = new Extras();
