@@ -24,7 +24,7 @@ Constraints.Output0.Engine.location=slave-1
 # OPTIMIZATION #
 #################
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.inputSpace.In0.size=Double,1,20,5
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
@@ -40,9 +40,10 @@ Optimization.cost=1.0
 #   EXECUTION   #
 #################
 Execution.LuaScript=Move_Spark_Postgres.lua
-Execution.Arguments.number=3
+Execution.Arguments.number=4
 Execution.Argument0=postgres
 Execution.Argument1=In0.name
 Execution.Argument2=In0.schema
+Execution.Argument3=spark://master:7077
 Execution.Output0.name=In0.name
 Execution.Output0.schema=In0.schema

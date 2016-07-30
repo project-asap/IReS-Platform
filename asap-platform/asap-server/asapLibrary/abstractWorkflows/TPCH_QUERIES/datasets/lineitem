@@ -16,7 +16,7 @@
 #ENGINE
 Constraints.type=SQL
 Constraints.Engine.SQL=PostgreSQL
-Constraints.Engine.location=path
+Constraints.Engine.location=slave-1
 
 ############
 # MODELING #
@@ -28,4 +28,4 @@ Optimization.size=1E9
 # EXECUTION #
 #############
 Execution.name=lineitem
-Execution.schema=( l_orderkey bigint, l_partkey bigint, l_suppkey bigint, l_linenumber integer, l_quantity numeric, l_extendedprice numeric, l_discount numeric, l_tax numeric, l_returnflag character( 1),   l_linestatus character( 1), l_shipdate date, l_commitdate date, l_receiptdate date, l_shipinstruct character( 25), l_shipmode character( 10), l_comment character varying( 44))
+Execution.schema=( l_orderkey bigint, l_partkey bigint, l_suppkey bigint, l_linenumber int, l_quantity decimal, l_extendedprice decimal, l_discount decimal, l_tax decimal, l_returnflag char( 1),   l_linestatus char( 1), l_shipdate date, l_commitdate date, l_receiptdate date, l_shipinstruct char( 25), l_shipmode char( 10), l_comment varchar( 44))

@@ -169,7 +169,8 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   				//should be located at OPERATOR_ORIGINAL_NAME relative path. Operator's name now is not the
   				//original one but it is extended by a "_operatorIndexNumberInWorkflow" string e.g. HelloWorld2_1_0
   				//and this extension should be discarded
-  				luafilename = "/home/bill/PhD/projects/asap/asap4all/IReS-Platform/asap-platform/asap-server/target/asapLibrary/operators";
+  				//luafilename = "/home/bill/PhD/projects/asap/asap4all/IReS-Platform/asap-platform/asap-server/target/asapLibrary/operators";
+  				luafilename = "/root/vpapa/asap/IReS-Platform/asap-platform/asap-server/target/asapLibrary/operators";
   				luafilename += "/" + e.getKey().substring( 0, e.getKey().lastIndexOf( "_")) + "/" + e.getValue();
   				LOG.info( "ABSOLUTE PATH: " + luafilename);
   			}

@@ -16,7 +16,7 @@
 #ENGINE
 Constraints.type=SQL
 Constraints.Engine.SQL=PostgreSQL
-Constraints.Engine.location=path
+Constraints.Engine.location=slave-7
 
 ############
 # MODELING #

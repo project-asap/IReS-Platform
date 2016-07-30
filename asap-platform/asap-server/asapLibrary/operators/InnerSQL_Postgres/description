@@ -35,24 +35,27 @@ Constraints.Output0.Engine.location=slave-1
 # OPTIMIZATION #
 #################
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+Optimization.inputSpace.In0.size=Double,1,20,5
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+#Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+#Optimization.execTime=2500.0
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=(In0.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.cost=15.0
+Optimization.cost=2500.0
 
 #################
 #   EXECUTION   #
 #################
 Execution.LuaScript=InnerSQL_Postgres.lua
 Execution.Arguments.number=2
-Execution.Argument0=tpchQuery17InnerPostgres.sql
+Execution.Argument0="DROP TABLE IF EXISTS part_agg; CREATE TABLE part_agg AS SELECT l_partkey AS agg_partkey, 0.2 \* AVG(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
+#Execution.Argument0=tpchQuery17InnerPostgres.sql
 Execution.Argument1=postgres
 Execution.Output0.name=part_agg
 Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2))

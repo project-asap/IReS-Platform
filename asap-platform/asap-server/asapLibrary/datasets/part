@@ -1,31 +1,8 @@
-#Author				:	Papaioannou Vassilis
-#Last update		:	12/ 07/ 2016
-#Previous update	:	none
-#Platform			:	ASAP IReS
-#Github				:	https://github.com/project-asap/IReS-Platform
-################################################################################
 #
-#Description
-#	Concrete version of the 'part' data set from TPC-H benchmark.
-#Description_End
-
-#################
-# CONFIGURATION #
-#################
-#Dataset
-#ENGINE
-Constraints.type=SQL
-Constraints.Engine.SQL=PostgreSQL
-Constraints.Engine.location=slave-1
-
-############
-# MODELING #
-############
-#OPTIMIZATION METRIC( mandatory)
-Optimization.size=1E9
-
-#############
-# EXECUTION #
-#############
+#Wed Jul 27 13:28:11 EEST 2016
 Execution.name=part
 Execution.schema=( p_partkey int, p_name varchar( 55), p_mfgr char( 25), p_brand char( 10), p_type varchar( 25), p_size int, p_container char( 10), p_retailprice decimal( 10, 2), p_comment varchar( 23))
+Constraints.Engine.SQL=PostgreSQL
+Constraints.type=SQL
+Constraints.Engine.location=slave-1
+Optimization.size=1

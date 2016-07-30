@@ -196,6 +196,8 @@ protected ContainerLaunchContextFactory factory;
 	boolean replan = false;
 	//WorkflowDictionary new_replanned_workflow = null;
 
+	LOG.info( "HELLO FROM RUN_ONE_ITERATION");
+
 	AbstractClient.issueRequest(conf, parameters.jobName, parameters.workflow);
     response = AbstractClient.issueRequestClusterStatus( conf).split( "\n");
     services_n_status = new HashMap<String, String>();

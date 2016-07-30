@@ -32,6 +32,10 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
 
     private AtomicInteger needed = new AtomicInteger();
     private AtomicInteger started = new AtomicInteger();
+    /* vpapa: succeded indicates successfull completion of the ContainerTracker
+     * while completed indicates any kind of completion either good or bad
+     */
+    private AtomicInteger succeded = new AtomicInteger();
     public AtomicInteger completed = new AtomicInteger();
     private AtomicInteger failed = new AtomicInteger();
     private NMClientAsync nodeManager;
@@ -70,14 +74,22 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	boolean ret = true;
     	
     	for(ContainerTracker tracker : previousTrackers){
+		/*
     		if(tracker.needsContainers()){
     			LOG.info( "Checking if tracker has finished: " + tracker);
                 LOG.info( "Needs containers: " + tracker.needsContainers());
     			ret=false;
     			break;
     		}
+		*/
+               if(tracker.needsContainers() || tracker.succeded.get() == 1){
+		       LOG.info( "Checking if tracker has finished: " + tracker);
+		       LOG.info( "Needs containers: " + tracker.needsContainers());
+		       LOG.info( "Successfully completed: " + tracker.succeded.get());
+		       ret=false;
+		       break;
+	       }
     	}
-    	
     	return ret;
     }
     
@@ -145,6 +157,12 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       LOG.info( "ResourceManager: " + service.resourceManager);
       
       needed.set(numInstances);
+      /* vpapa: mark ContainerTracker's completion
+       *        * 1 -> not successfully completed yet
+       *               * 0 -> completed successfully
+       *                     */
+      succeded.set( 1);
+      LOG.info( "Succeded field is: " + succeded.get());
     }
 
     @Override
