@@ -1,0 +1,17 @@
+t6,d2
+t9,d2
+kmeans_scikit_3,t6
+t5,kmeans_scikit_3
+t1,t5
+t4,t5
+TF_IDF_mllib_0,t1
+t0,TF_IDF_mllib_0
+evenSmaller3,t0
+TF_IDF_scikit_2,t4
+t3,TF_IDF_scikit_2
+evenSmaller3,t3
+kmeans_mllib_5,t9
+t8,kmeans_mllib_5
+t1,t8
+t4,t8
+d2,$$target

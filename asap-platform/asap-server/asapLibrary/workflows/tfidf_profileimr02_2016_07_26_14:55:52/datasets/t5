@@ -1,0 +1,4 @@
+#
+#Tue Jul 26 14:55:52 EEST 2016
+Execution.path=$HDFS_DIR/kmeans_mllib_3/kmeans.txt
+Constraints.Engine.FS=HDFS

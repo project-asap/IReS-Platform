@@ -9,7 +9,7 @@ parser.add_argument("-mdf", '--min_document_frequency', default=1 )
 args = parser.parse_args()
 
 
-docs_dir = "hdfs://master:9000/user/root/sequence_files1"
+docs_dir = args.input#"hdfs://master:9000/user/root/sequence_files1"
 d_out = "hdfs://master:9000/" + args.output
 min_df = int(args.min_document_frequency)
 
@@ -21,7 +21,7 @@ from pyspark.mllib.feature import IDF
 sc = SparkContext(appName="TF-IDF")
 
 # Load documents (one per line).
-documents = sc.sequenceFile(docs_dir).map(lambda title_text: title_text[1].split(" "))
+documents = sc.textFile(docs_dir).map(lambda title_text: title_text[1].split(" "))
 
 
 hashingTF = HashingTF()

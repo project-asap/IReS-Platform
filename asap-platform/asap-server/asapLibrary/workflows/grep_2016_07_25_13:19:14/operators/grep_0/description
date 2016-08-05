@@ -1,0 +1,22 @@
+#
+#Mon Jul 25 13:19:14 EEST 2016
+Execution.Output0.name=$HDFS_OP_DIR/output
+Execution.copyFromLocal=output
+Execution.Argument2=9.465857675E9
+Execution.Argument1=output
+Execution.Argument0=In0.path
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+SelectedParam.In0.size=9.465857675E9
+Optimization.outputSpace.time=Double
+Constraints.OpSpecification.Algorithm.name=grep
+Optimization.inputSource.type=mongodb
+Optimization.inputSource.db=metrics
+Constraints.Output.number=1
+Constraints.Engine=Spark
+Execution.Arguments.number=3
+Constraints.Input.number=1
+Optimization.inputSpace.In0.size=Double,1,1E10,l
+Optimization.cost=1.0
+Optimization.model.time=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.outputSpace.cost=Double
+Optimization.inputSource.host=master

@@ -1,0 +1,5 @@
+#
+#Mon Jul 25 13:26:50 EEST 2016
+Constraints.type=lr_model
+Execution.path=$HDFS_DIR/lr_train_python_8/lr_model.model
+Constraints.Engine.FS=HDFS

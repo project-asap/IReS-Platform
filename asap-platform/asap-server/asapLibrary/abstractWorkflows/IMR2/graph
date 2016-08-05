@@ -1,0 +1,6 @@
+IMR_docs,w2v_train
+w2v_train,d1
+IMR_docs,w2v_vectorize,0
+d1,w2v_vectorize,1
+w2v_vectorize,d2
+d2,$$target

@@ -1,0 +1,6 @@
+#
+#Mon Jul 25 13:26:50 EEST 2016
+Optimization.points=2000.0
+Constraints.type=vectors
+Execution.path=$HDFS_DIR/w2v_vectorize_spark_2/vectors
+Constraints.Engine.FS=HDFS

@@ -1,0 +1,17 @@
+t7,d2
+OutterSQL_Spark_4,t7
+t5,OutterSQL_Spark_4
+t6,OutterSQL_Spark_4
+t1,t5
+Move_Postgres_Spark_5,t5
+InnerSQL_Spark_0,t1
+t0,InnerSQL_Spark_0
+Move_Postgres_Spark_3,t0
+lineitem,Move_Postgres_Spark_3
+t4,Move_Postgres_Spark_5
+InnerSQL_Postgres_2,t4
+t3,InnerSQL_Postgres_2
+lineitem,t3
+Move_Postgres_Spark_6,t6
+part,Move_Postgres_Spark_6
+d2,$$target

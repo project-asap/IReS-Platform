@@ -1,0 +1,5 @@
+#
+#Tue Jul 26 14:10:48 EEST 2016
+Optimization.documents=15786885
+Execution.path=hdfs\://master\:9000/user/root/IMR/imr_training_suffled.csv
+Constraints.Engine.FS=HDFS

@@ -1,0 +1,23 @@
+#
+#Mon Jul 25 18:10:38 EEST 2016
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.Argument1=$HDFS_OP_DIR/lr_model
+Execution.Argument0=In0.path
+Execution.LuaScript=lr_train_spark.lua
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Output0.Engine.FS=HDFS
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Constraints.Output0.type=lr_model
+Constraints.OpSpecification.Algorithm.name=lr_train
+Optimization.inputSpace.In0.points=Double,10000.0,160000.0,10000.0
+Constraints.Output.number=1
+Constraints.Engine=Spark
+Execution.Output0.path=$HDFS_OP_DIR/lr_model
+Optimization.outputSpace.execTime=Double
+Execution.Arguments.number=2
+Optimization.execTime=120/(log(15)+log(1024))
+Constraints.Input.number=1
+Execution.Output1.path=$HDFS_OP_DIR/docs
+Optimization.cost=15.0
+Optimization.outputSpace.cost=Double
+Constraints.Input0.type=vectors

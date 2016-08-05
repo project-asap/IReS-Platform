@@ -1,0 +1,5 @@
+#
+#Tue Jul 26 15:15:12 EEST 2016
+Optimization.documents=63291
+Execution.path=hdfs\://master\:9000/user/root/IMR/small/small0.02
+Constraints.Engine.FS=HDFS

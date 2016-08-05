@@ -1,0 +1,4 @@
+#
+#Mon Jul 25 13:29:27 EEST 2016
+Execution.path=lr_classify_python_11/$HDFS_OPT_DIR/python_classified
+Constraints.Engine.FS=HDFS

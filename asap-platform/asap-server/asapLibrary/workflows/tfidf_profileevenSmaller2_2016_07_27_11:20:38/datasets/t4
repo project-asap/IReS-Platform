@@ -1,0 +1,7 @@
+#
+#Wed Jul 27 11:20:39 EEST 2016
+Optimization.documents=12503.0
+Constraints.type=tfidf
+Execution.inType=python
+Execution.path=$HDFS_DIR/TF_IDF_scikit_2/tfidf
+Constraints.Engine.FS=HDFS

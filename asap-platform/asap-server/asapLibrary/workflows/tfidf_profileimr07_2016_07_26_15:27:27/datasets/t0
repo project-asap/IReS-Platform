@@ -1,0 +1,6 @@
+#
+#Tue Jul 26 15:27:28 EEST 2016
+Optimization.documents=11051999
+Optimization.size=2600
+Execution.path=hdfs\://master\:9000/user/root/IMR/imr0.7.csv
+Constraints.Engine.FS=HDFS

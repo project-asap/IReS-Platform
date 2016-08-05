@@ -1,0 +1,33 @@
+#
+#Sat Jul 30 21:11:18 EEST 2016
+Execution.Output0.name=part_aggParquet
+Execution.Argument3=/opt/hadoop-2.7.0
+Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
+Execution.Argument2=master
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.Argument1=executeInnerSQL.py
+Execution.Argument0=spark\://master\:7077
+Optimization.Out0.size=(In0.size)*0.1
+Execution.LuaScript=InnerSQL_Spark.lua
+Constraints.Output0.Engine.SQL=Spark
+Optimization.outputSpace.Out0.size=Double
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Constraints.Output0.type=SQL
+Constraints.Output0.Engine.location=master
+Constraints.Input0.Engine.SQL=Spark
+Constraints.OpSpecification.Algorithm.name=SQL_query
+Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2), agg_extendedprice decimal( 10,2))
+Constraints.Output.number=1
+Constraints.Engine=Spark
+Optimization.outputSpace.execTime=Double
+Execution.Arguments.number=5
+Optimization.execTime=2500.0
+Constraints.Input.number=1
+Optimization.inputSpace.In0.size=Double,1,20,5
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=25.0
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
+Optimization.outputSpace.cost=Double
+Constraints.Input0.type=SQL
+Constraints.Input0.Engine.location=master
+Execution.Argument4=tpchQuery17InnerSpark.sql

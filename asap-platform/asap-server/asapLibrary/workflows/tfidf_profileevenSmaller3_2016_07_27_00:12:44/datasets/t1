@@ -1,0 +1,6 @@
+#
+#Wed Jul 27 00:12:44 EEST 2016
+Optimization.documents=18803.0
+Constraints.type=tfidf
+Execution.path=$HDFS_DIR/TF_IDF_mllib_0/tfidf
+Constraints.Engine.FS=HDFS

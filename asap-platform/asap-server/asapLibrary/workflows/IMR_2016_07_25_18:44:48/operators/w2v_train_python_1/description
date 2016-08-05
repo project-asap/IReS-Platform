@@ -1,0 +1,24 @@
+#
+#Mon Jul 25 18:44:48 EEST 2016
+Execution.copyFromLocal=w2v_model
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.Argument1=w2v_model
+Execution.Argument0=In0.path.local
+Execution.LuaScript=w2v_train_python.lua
+Execution.copyToLocal=In0.path
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Output0.Engine.FS=HDFS
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.documents=Double,10000.0,160000.0,10000.0
+Constraints.Output0.type=w2v_model
+Constraints.OpSpecification.Algorithm.name=w2v_train
+Constraints.Output.number=1
+Constraints.Engine=Python
+Execution.Output0.path=$HDFS_OP_DIR/w2v_model
+Optimization.outputSpace.execTime=Double
+Execution.Arguments.number=2
+Optimization.execTime=In0.documents*(0.05/log(1024))
+Constraints.Input.number=1
+Optimization.cost=log(1024)
+Optimization.outputSpace.cost=Double
+Constraints.Input0.type=csv

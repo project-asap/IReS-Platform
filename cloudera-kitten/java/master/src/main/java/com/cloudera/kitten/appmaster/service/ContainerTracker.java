@@ -32,6 +32,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
 
     private AtomicInteger needed = new AtomicInteger();
     private AtomicInteger started = new AtomicInteger();
+    private AtomicInteger succeded = new AtomicInteger();
     public AtomicInteger completed = new AtomicInteger();
     private AtomicInteger failed = new AtomicInteger();
     private NMClientAsync nodeManager;
@@ -70,18 +71,20 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	boolean ret = true;
     	
     	for(ContainerTracker tracker : previousTrackers){
-    		if(tracker.needsContainers()){
+    		if(tracker.needsContainers() || tracker.succeded.get() == 1){
     			LOG.info( "Checking if tracker has finished: " + tracker);
                 LOG.info( "Needs containers: " + tracker.needsContainers());
     			ret=false;
     			break;
     		}
     	}
-    	
     	return ret;
     }
     
     public void init(ContainerLaunchContextFactory factory) throws IOException {
+	if( ! service.parameters.workflow.getOperator( params.getName()).getStatus().equals( "warn")){
+		return;
+	}
       LOG.info( "Are all previous containers finished?");
       if(!allPreviousFinished()){
     	  LOG.info( "They are not all previous containers finished.");
@@ -145,6 +148,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       LOG.info( "ResourceManager: " + service.resourceManager);
       
       needed.set(numInstances);
+      succeded.set( 1);
     }
 
     @Override
@@ -196,17 +200,18 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
         LOG.info("Completed container id = " + containerId+" operator: "+params.getName());
         long stop = System.currentTimeMillis();
         double time = (stop-startTime)/1000.0-5;//5sec init container
-  		service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
-  		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
+	service.parameters.workflow.getOperator(params.getName()).setExecTime(time+"");
+	if( !service.parameters.workflow.getOperator(params.getName()).getStatus().equals( "failed")){
+		service.parameters.workflow.getOperator(params.getName()).setStatus("completed");
+		service.parameters.workflow.setOutputsRunning( params.getName(), "completed");
+	}
       
         containers.remove(containerId);
         completed.incrementAndGet();
-      
-        //service.parameters.workflow.setOutputsRunning(params.getName());
-        service.parameters.workflow.setOutputsRunning( params.getName(), "completed");
+	succeded.set( 0);
 
         if(!hasMoreContainers()){
-        	removeContainerRequests();
+		removeContainerRequests();
             LOG.info("Starting next trackers" );
     	    for(ContainerTracker t : nextTrackers){
     	    	try {
@@ -271,6 +276,10 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  LOG.info( "Killing container: " + c.getId() + "\tat node: " + c.getNodeId());
     	  nodeManager.stopContainerAsync(c.getId(), c.getNodeId());
       }
+     /*vpapa: also empty the nextTrackers field of the tracker assuming that the next trackers
+       * depend on it
+       */
+      nextTrackers.clear();
     }
 
     public boolean hasMoreContainers() {

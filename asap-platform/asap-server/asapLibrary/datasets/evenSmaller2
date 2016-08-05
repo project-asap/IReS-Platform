@@ -1,0 +1,4 @@
+Optimization.documents=12503
+Constraints.type=csv
+Execution.path=hdfs\://master\:9000/user/root/IMR/small/evenSmaller/2
+Constraints.Engine.FS=HDFS

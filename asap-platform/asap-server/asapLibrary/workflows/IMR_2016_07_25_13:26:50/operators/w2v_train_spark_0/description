@@ -1,0 +1,31 @@
+#
+#Mon Jul 25 13:26:50 EEST 2016
+Execution.Argument3=1010.0
+Execution.Argument2=15.0
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.Argument1=$HDFS_OP_DIR/w2vmodel
+Execution.Argument0=In0.path
+Execution.LuaScript=w2v_train_spark.lua
+SelectedParam.cores=15.0
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Output0.Engine.FS=HDFS
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.inputSpace.In0.documents=Double,10000.0,160000.0,10000.0
+Constraints.Output0.type=w2v_model
+Optimization.inputSpace.memory=Double,512,1024,256
+SelectedParam.memory=1010.0
+Constraints.OpSpecification.Algorithm.name=w2v_train
+Optimization.inputSource.db=metrics
+Constraints.Output.number=1
+Constraints.Engine=Spark
+Execution.Output0.path=$HDFS_OP_DIR/w2vmodel
+Optimization.outputSpace.execTime=Double
+Execution.Arguments.number=4
+Optimizatidon.inputSource.type=mongodb
+Optimization.execTime=30+120/(log(cores) + log(memory))
+Constraints.Input.number=1
+Optimization.inputSpace.cores=Double,8,16,4
+Optimization.cost=log(cores) + log(memory)
+Optimization.outputSpace.cost=Double
+Constraints.Input0.type=csv
+Optimization.inputSource.host=master
