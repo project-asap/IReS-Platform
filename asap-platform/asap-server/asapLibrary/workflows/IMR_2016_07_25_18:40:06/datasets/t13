@@ -1,5 +1,0 @@
-#
-#Mon Jul 25 18:40:07 EEST 2016
-Constraints.type=lr_model
-Execution.path=$HDFS_DIR/lr_train_spark_5/lr_model
-Constraints.Engine.FS=HDFS

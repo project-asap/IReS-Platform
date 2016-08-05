@@ -1,5 +1,0 @@
-#
-#Wed Jul 27 00:01:16 EEST 2016
-Constraints.type=w2v_model
-Execution.path=$HDFS_DIR/w2v_train_spark_0/w2vmodel
-Constraints.Engine.FS=HDFS

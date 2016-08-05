@@ -1,8 +1,0 @@
-t3,d2
-grep_1,t3
-t2,grep_1
-t1,t2
-sampler_0,t1
-t0,sampler_0
-hdfs_file,t0
-d2,$$target

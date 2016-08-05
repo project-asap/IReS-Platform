@@ -1,8 +1,0 @@
-#
-#Mon Aug 01 01:19:58 EEST 2016
-Execution.name=finalParquet
-Execution.schema=( avg_yearly decimal( 10, 2))
-Constraints.Engine.SQL=Spark
-Constraints.type=SQL
-Constraints.Engine.location=master
-Optimization.size=0.010000000000000002

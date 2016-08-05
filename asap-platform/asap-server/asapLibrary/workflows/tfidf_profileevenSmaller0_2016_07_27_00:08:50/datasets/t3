@@ -1,6 +1,0 @@
-#
-#Wed Jul 27 00:08:50 EEST 2016
-Optimization.points=3103.0
-Constraints.type=tfidf
-Execution.path=$HDFS_DIR/kmeans_scikit_1/kmeans
-Constraints.Engine.FS=HDFS

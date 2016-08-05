@@ -1,8 +1,0 @@
-t5,d2
-kmeans_mllib_3,t5
-t4,kmeans_mllib_3
-t1,t4
-TF_IDF_mllib_0,t1
-t0,TF_IDF_mllib_0
-imrSmall0.05,t0
-d2,$$target

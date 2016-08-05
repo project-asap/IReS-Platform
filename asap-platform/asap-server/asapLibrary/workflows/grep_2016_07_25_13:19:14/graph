@@ -1,5 +1,0 @@
-t1,d1
-grep_0,t1
-t0,grep_0
-hdfs_file,t0
-d1,$$target

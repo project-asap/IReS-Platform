@@ -1,4 +1,0 @@
-#
-#Mon Jul 25 13:29:27 EEST 2016
-Execution.path=$HDFS_DIR/lr_classify_spark_10/classified
-Constraints.Engine.FS=HDFS

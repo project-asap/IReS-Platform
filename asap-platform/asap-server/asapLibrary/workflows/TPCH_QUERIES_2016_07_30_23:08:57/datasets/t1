@@ -1,8 +1,0 @@
-#
-#Sat Jul 30 23:08:57 EEST 2016
-Execution.name=PART_AGG
-Execution.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2))
-Constraints.Engine.SQL=HIVE
-Constraints.type=SQL
-Constraints.Engine.location=slave-1
-Optimization.size=0.1

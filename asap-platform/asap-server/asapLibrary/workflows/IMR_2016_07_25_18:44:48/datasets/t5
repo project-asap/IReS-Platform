@@ -1,5 +1,0 @@
-#
-#Mon Jul 25 18:44:48 EEST 2016
-Constraints.type=w2v_model
-Execution.path=$HDFS_DIR/w2v_train_python_1/w2v_model
-Constraints.Engine.FS=HDFS

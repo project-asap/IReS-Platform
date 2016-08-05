@@ -1,5 +1,0 @@
-#
-#Sat Jul 30 19:57:45 EEST 2016
-Optimization.documents=25071
-Execution.path=hdfs\://master\:9000/user/root/IMR/small/evenSmaller/4
-Constraints.Engine.FS=HDFS

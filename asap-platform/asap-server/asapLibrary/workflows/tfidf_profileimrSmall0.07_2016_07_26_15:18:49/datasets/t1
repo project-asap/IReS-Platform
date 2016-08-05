@@ -1,6 +1,0 @@
-#
-#Tue Jul 26 15:18:49 EEST 2016
-Optimization.documents=221899.0
-Constraints.type=tfidf_spark
-Execution.path=$HDFS_DIR/TF_IDF_mllib_0/tfidf
-Constraints.Engine.FS=HDFS

@@ -1,8 +1,0 @@
-t1,d1
-t2,d1
-InnerSQL_Spark_2,t1
-t0,InnerSQL_Spark_2
-Move_Postgres_Spark_3,t0
-lineitem,Move_Postgres_Spark_3
-InnerSQL_Spark_2,t2
-d1,$$target

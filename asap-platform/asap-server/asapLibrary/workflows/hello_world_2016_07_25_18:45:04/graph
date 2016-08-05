@@ -1,5 +1,0 @@
-t1,d1
-HelloWorld_0,t1
-t0,HelloWorld_0
-crawlDocuments,t0
-d1,$$target
