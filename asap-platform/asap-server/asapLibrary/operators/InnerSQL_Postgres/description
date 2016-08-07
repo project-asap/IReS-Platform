@@ -14,22 +14,22 @@
 #################
 #Engine
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave5
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
-Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
+Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity, l_extendedprice AS agg_extendedprice FROM lineitem GROUP BY l_partkey, l_extendedprice"
 #Inputs
 Constraints.Input.number = 1
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=slave-1
+Constraints.Input0.Engine.location=slave5
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=slave-1
+Constraints.Output0.Engine.location=slave5
 
 #################
 # OPTIMIZATION #
@@ -58,4 +58,4 @@ Execution.Argument0="DROP TABLE IF EXISTS part_agg; CREATE TABLE part_agg AS SEL
 #Execution.Argument0=tpchQuery17InnerPostgres.sql
 Execution.Argument1=postgres
 Execution.Output0.name=part_agg
-Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2))
+Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2), agg_extendedprice decimal( 10, 2))

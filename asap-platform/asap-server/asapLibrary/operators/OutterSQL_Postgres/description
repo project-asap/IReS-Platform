@@ -14,30 +14,30 @@
 #################
 #Engine
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave5
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
-Constraints.OpSpecification.SQL_query="select sum(l_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
+Constraints.OpSpecification.SQL_query="select sum(agg_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
 #Inputs
 Constraints.Input.number = 3
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=slave-1
+Constraints.Input0.Engine.location=slave5
 #Input1
 Constraints.Input1.type = SQL
 Constraints.Input1.Engine.SQL=PostgreSQL
-Constraints.Input1.Engine.location=slave-1
+Constraints.Input1.Engine.location=slave5
 #Input2
 Constraints.Input2.type = SQL
 Constraints.Input2.Engine.SQL=PostgreSQL
-Constraints.Input2.Engine.location=slave-1
+Constraints.Input2.Engine.location=slave5
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=slave-1
+Constraints.Output0.Engine.location=slave5
 
 #################
 # OPTIMIZATION #
@@ -65,5 +65,5 @@ Execution.Arguments.number=2
 Execution.Argument0="DROP TABLE IF EXISTS FINAL_RESULTS; CREATE TABLE FINAL_RESULTS AS SELECT SUM(l_extendedprice) / 7.0 AS avg_yearly 	FROM lineitem, 	part, part_agg 	WHERE p_partkey = l_partkey AND agg_partkey = l_partkey AND p_brand = 'Brand#33' AND p_container = 'MED BAG' AND l_quantity < avg_quantity LIMIT 1"
 #Execution.Argument0=tpchQuery17OutterPostgres.sql
 Execution.Argument1=postgres
-Execution.Output0.name=FINAL_RESULTS
+Execution.Output0.name=final_results
 Execution.Output0.schema=( avg_yearly numeric)

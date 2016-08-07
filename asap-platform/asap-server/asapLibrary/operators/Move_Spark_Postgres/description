@@ -5,7 +5,7 @@
 #################
 #Engine - destination
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave5
 Constraints.OpSpecification.Algorithm.name=move
 #Inputs
 Constraints.Input.number=1
@@ -18,7 +18,7 @@ Constraints.Output.number=1
 #Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=slave-1
+Constraints.Output0.Engine.location=slave5
 
 #################
 # OPTIMIZATION #

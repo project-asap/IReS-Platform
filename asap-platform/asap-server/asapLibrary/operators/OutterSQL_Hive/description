@@ -17,27 +17,27 @@ Constraints.Engine=HIVE
 Constraints.EngineSpecification.Distributed.HIVE.masterLocation=master
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
-Constraints.OpSpecification.SQL_query="select sum(l_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
+Constraints.OpSpecification.SQL_query="select sum(agg_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
 #Inputs
 Constraints.Input.number = 3
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=HIVE
-Constraints.Input0.Engine.location=slave-1
+Constraints.Input0.Engine.location=slave5
 #Input1
 Constraints.Input1.type = SQL
 Constraints.Input1.Engine.SQL=HIVE
-Constraints.Input1.Engine.location=slave-1
+Constraints.Input1.Engine.location=slave5
 #Input2
 Constraints.Input2.type = SQL
 Constraints.Input2.Engine.SQL=HIVE
-Constraints.Input2.Engine.location=slave-1
+Constraints.Input2.Engine.location=slave5
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=HIVE
-Constraints.Output0.Engine.location=slave-1
+Constraints.Output0.Engine.location=slave5
 
 #################
 # OPTIMIZATION #
