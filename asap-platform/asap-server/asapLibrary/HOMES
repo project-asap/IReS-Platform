@@ -1,0 +1,7 @@
+#!/bin/bash
+
+HOME=/home/hadoop
+HADOOP_HOME=$HOME/yarn
+HIVE_HOME=$HOME/hive
+SPARK_HOME=$HOME/spark
+SPARK_PORT=spark://master:7077

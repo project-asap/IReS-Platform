@@ -1,0 +1,5 @@
+#
+#Thu Jun 16 11:57:58 EEST 2016
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.Input.number=1

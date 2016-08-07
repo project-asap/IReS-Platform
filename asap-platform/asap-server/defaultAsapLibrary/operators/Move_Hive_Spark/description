@@ -1,0 +1,48 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+#################
+# CONFIGURATION #
+#################
+#Engine - destination
+Constraints.Engine=Spark
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
+Constraints.OpSpecification.Algorithm.name=move
+#Inputs
+Constraints.Input.number=1
+#Input0 - source
+Constraints.Input0.type=SQL
+Constraints.Input0.Engine.SQL=HIVE
+Constraints.Input0.Engine.location=slave-1
+#Outputs
+Constraints.Output.number=1
+#Output0 - destination
+Constraints.Output0.type=SQL
+Constraints.Output0.Engine.SQL=Spark
+Constraints.Output0.Engine.location=master
+
+#################
+# OPTIMIZATION #
+#################
+#OPTIMIZATION DIMENSIONS( mandatory, at least one)
+Optimization.inputSpace.In0.size=Double,1,20,5
+#OPTIMIZATION METRIC( mandatory)
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Out0.size=Double
+Optimization.outputSpace.cost=Double
+#OPTIMIZATION MODELS
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.Out0.size=In0.size
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.cost=1.0
+
+#################
+#   EXECUTION   #
+#################
+Execution.LuaScript=Move_Hive_Spark.lua
+Execution.Arguments.number=3
+Execution.Argument0=In0.name
+Execution.Argument1=In0.schema
+Execution.Argument2=spark://master:7077
+Execution.Output0.name=In0.name
+Execution.Output0.schema=In0.schema

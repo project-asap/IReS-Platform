@@ -14,7 +14,11 @@
 #################
 #Engine
 Constraints.Engine=PostgreSQL
+<<<<<<< HEAD
 Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
+=======
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave5
+>>>>>>> temp
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
 Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
@@ -23,13 +27,21 @@ Constraints.Input.number = 1
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
+<<<<<<< HEAD
 Constraints.Input0.Engine.location=slave-1
+=======
+Constraints.Input0.Engine.location=slave5
+>>>>>>> temp
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
+<<<<<<< HEAD
 Constraints.Output0.Engine.location=slave-1
+=======
+Constraints.Output0.Engine.location=slave5
+>>>>>>> temp
 
 #################
 # OPTIMIZATION #

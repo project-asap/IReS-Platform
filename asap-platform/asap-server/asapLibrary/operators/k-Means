@@ -1,0 +1,6 @@
+#
+#Tue Jul 19 18:38:50 EEST 2016
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.Input.number=1
+Constraints.Engine=Python

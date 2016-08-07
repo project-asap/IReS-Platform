@@ -65,7 +65,11 @@ Execution.Arguments.number=5
 Execution.Argument0=spark://master:7077
 Execution.Argument1=executeOutterSQL.py
 Execution.Argument2=master
+<<<<<<< HEAD
 Execution.Argument3=/opt/hadoop-2.7.0
+=======
+Execution.Argument3=/home/hadoop/yarn
+>>>>>>> temp
 Execution.Argument4=tpchQuery17OutterSpark.sql
 Execution.Output0.name=finalParquet
 Execution.Output0.schema=( avg_yearly decimal( 10, 2))

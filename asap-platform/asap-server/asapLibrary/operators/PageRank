@@ -1,0 +1,6 @@
+#
+#Tue Jul 19 11:44:10 EEST 2016
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=pagerank
+Constraints.Input.number=1
+Constraints.Engine=Hama

@@ -1,0 +1,6 @@
+lineitem,InnerSQL
+InnerSQL,d1
+d1,OutterSQL
+part,OutterSQL
+OutterSQL,d2
+d2,$$target

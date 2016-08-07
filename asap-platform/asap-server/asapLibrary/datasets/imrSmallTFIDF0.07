@@ -1,0 +1,6 @@
+#Size in MB
+#Tue Apr 05 15:36:35 EEST 2016
+Optimization.documents=221899
+Constraints.type=csv
+Execution.path=hdfs\://master\:9000/user/root/IMR/small/tfidf/0.07
+Constraints.Engine.FS=HDFS

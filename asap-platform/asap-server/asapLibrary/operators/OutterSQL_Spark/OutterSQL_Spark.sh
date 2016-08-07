@@ -10,8 +10,15 @@ SQL_QUERY=$5
 HDFS=/user/hive/warehouse
 TABLE=part
 
+<<<<<<< HEAD
 SPARK_HOME=/opt/spark
 HADOOP_HOME=/opt/hadoop-2.7.0
+=======
+#SPARK_HOME=/opt/spark
+#HADOOP_HOME=/opt/hadoop-2.7.0
+SPARK_HOME=/home/hadoop/spark
+HADOOP_HOME=/home/hadoop/yarn
+>>>>>>> temp
  
 echo -e "$SPARK_PORT"
 echo -e "$OPERATOR"

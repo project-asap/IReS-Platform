@@ -2,8 +2,15 @@
 
 echo -e "Move_Postgres_Spark\n"
 
+<<<<<<< HEAD
 export HADOOP_HOME=/opt/hadoop-2.7.0
 export SPARK_HOME=/opt/spark
+=======
+#export HADOOP_HOME=/opt/hadoop-2.7.0
+#export SPARK_HOME=/opt/spark
+export HADOOP_HOME=/home/hadoop/yarn
+export SPARK_HOME=/home/hadoop/spark
+>>>>>>> temp
 
 DATABASE=$1
 TABLE=$2

@@ -1,6 +1,6 @@
 operator = yarn {
   name = "Execute Hello world",
-  timeout = 100000000,
+  timeout = 10000,
   memory = 1024,
   cores = 1,
   container = {

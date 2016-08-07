@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Jul 05 12:27:19 EEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.1 - (1458268): instance a816c00e-0155-ba62-1987-0001401e0ee0 
+on database directory /opt/asap-server/asapLibrary/operators/TF_IDF_mllib/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@552bbfa8 
+Loaded from file:/opt/spark/lib/spark-assembly-1.6.0-hadoop2.6.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_80-b15
+user.dir=/opt/asap-server/asapLibrary/operators/TF_IDF_mllib
+os.name=Linux
+os.arch=amd64
+os.version=3.13.0-65-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
