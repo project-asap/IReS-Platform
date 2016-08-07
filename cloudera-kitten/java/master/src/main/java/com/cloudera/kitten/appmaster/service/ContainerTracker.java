@@ -82,9 +82,6 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     }
     
     public void init(ContainerLaunchContextFactory factory) throws IOException {
-	if( ! service.parameters.workflow.getOperator( params.getName()).getStatus().equals( "warn")){
-		return;
-	}
       LOG.info( "Are all previous containers finished?");
       if(!allPreviousFinished()){
     	  LOG.info( "They are not all previous containers finished.");

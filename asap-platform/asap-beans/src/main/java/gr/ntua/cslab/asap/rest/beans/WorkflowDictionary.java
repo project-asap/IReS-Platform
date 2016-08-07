@@ -174,23 +174,16 @@ public class WorkflowDictionary {
 	 * updateswd that contains the new content for each node that will be updated. 
 	 * 
 	 * @author Vassilis Papaioannou
-	 * @param targets 	the names of the nodes that will be updated
 	 * @param updates 	the names of the nodes that will substitute the targets nodes
 	 * @param updateswd the WorkflowDictionary according to which the update will take place
 	 * @param starting	the common node between the original WorkflowDictionary and the updateswd.
 	 * @return updated	a list of operators that have been updated
 	 */
-	private void updateNodes( List< String> targets, List< String> updates, WorkflowDictionary updateswd, String starting){
+	private void updateNodes( List< String> updates, WorkflowDictionary updateswd, List< String> startings){
 		String description = null;
-		List< String> newtargets = new ArrayList< String>();
 		List< String> newupdates = new ArrayList< String>();
 		List< String> filterout = new ArrayList< String>();
 		
-		/*
-		for( String s : targets){
-			logger.info( "TARGETS: " + s);
-		}
-		*/
 		for( String s : updates){
 			logger.info( "UPDATES: " + s);
 		}
@@ -199,19 +192,9 @@ public class WorkflowDictionary {
 			logger.info( "UPDATES is either null or empty!");
 			return;
 		}
-		/*
-		for( int i = 0; i < targets.size(); i++){
-			//prepare to update next nodes that are the input of the current nodes
-			//by checking against null new entries to the graph from previous recursions are handled appropriately
-			if( indexes.get( targets.get( i)) != null){
-				newtargets.addAll(( operators.get( indexes.get( targets.get( i))).getInput()));
-			}
-		}
-		*/
 		for( int i = 0; i < updates.size(); i++){
 			//update current nodes
 			//prepare to update next nodes that are the input of the current nodes
-			filterout.clear();
 			if( updateswd.getOperator( updates.get( i)).getStatus().equals( "running")){
 				for( String s : updateswd.getOperator( updates.get( i)).getInput()){
 					if( updateswd.getOperator( s).getStatus().equals( "running")){
@@ -233,48 +216,16 @@ public class WorkflowDictionary {
 				//with the already executed part of the workflow and since this node already exists
 				//by checking against null new entries to the graph from previous recursions are handled appropriately
 				//if( !updates.get( i).equals( starting) && indexes.get( targets.get( i)) != null){
-				if( !updates.get( i).equals( starting)){
+				if( ! startings.contains( updates.get( i))){
 					operators.add( updateswd.getOperator( updates.get( i)));
 				}
 				else {
 					//set the output dataset of the starting node in status 'completed'
-					this.setOutputsRunning( starting, "completed");
+					this.setOutputsRunning( updates.get( i), "completed");
 				}
 			}
 		}
-		/*
-		//filter out operators from the 'newtargets' list that 
-		//1. have status 'failed'
-		for( String s : newtargets){
-			//by checking against null new entries to the graph from previous recursions are handled appropriately
-			if( indexes.get( s) != null && operators.get( indexes.get( s)).getStatus().equals( "failed")){
-				//'filterout' list is used instead of 'newtargets.remove()' command to avoid
-				//java.util.ConcurrentModificationException
-				filterout.add( s);
-			}
-		}
-		newtargets.removeAll( filterout);
-		//2. coexist with starting node of the updateswd WorkflowDictionary
-		if( newtargets.contains( starting)){
-			newtargets.clear();
-			newtargets.add( starting);
-		}
-		//filter out 'starting' operator from the 'newupdates' list because it is
-		//already placed inside the updated workflow
-		while( newupdates.indexOf( starting) != newupdates.lastIndexOf( starting)){
-			newupdates.remove( starting);
-		}
-		//3. already checked nodes
-		filterout.clear();
-		for( String s : newupdates){
-			//logger.info( "EXISTS " + s + "?");
-			if( updateswd.getOperator( s).getStatus().equals( "warn")){
-				filterout.add( s);
-			}
-		}
-		newupdates.removeAll( filterout);
-		*/
-		updateNodes( newtargets, newupdates, updateswd, starting);
+		updateNodes( newupdates, updateswd, startings);
 		return;
 	}
 
@@ -287,9 +238,9 @@ public class WorkflowDictionary {
 	 * @return updated	a list of operators that have been updated
 	 */
 	public void initiateUpdate( WorkflowDictionary updates) {
-		List< String> newtargets = new ArrayList< String>();
 		List< String> newupdates = new ArrayList< String>();
 		List< String> startings  = new ArrayList< String>();
+		List< OperatorDictionary> filterout  = new ArrayList< OperatorDictionary>();
 		Iterator< String> lis = null;
 		
 		if( updates == null || updates.getOperators().isEmpty()){
@@ -320,7 +271,6 @@ public class WorkflowDictionary {
 		
 		//get a mapping between operators and their position inside the WorkflowDictionary
 		getIndexes();
-		newtargets.add( operators.get( operators.size() - 1).getName());
 		newupdates.add( updates.getOperators().get( updates.getOperators().size() - 1).getName());
 		//
 		for( OperatorDictionary opdic : updates.getOperators()){
@@ -329,7 +279,31 @@ public class WorkflowDictionary {
 			}
 		}
 		logger.info( "STARTINGS: " + startings);
-		updateNodes( newtargets, newupdates, updates, startings.get( 0));
+		updateNodes( newupdates, updates, startings);
+		//finaly the updated workflow may have duplicate operators
+		//keep the ones that are in "warn" state
+		for( int i = 0; i < operators.size(); i++){
+			if( operators.get( i).getIsOperator().equals( "true")){
+				for( int j = i + 1; j < operators.size(); j++){
+					if( operators.get( j).getIsOperator().equals( "true")){
+						if( operators.get( j).getName().equals( operators.get( i).getName())){
+							//logger.info( "DUPLICATE OPERATOR " + operators.get( j).getName());
+							logger.info( j + " " + operators.get( j).getStatus().equals( "warn") + "\t" + i + " " +  operators.get( i).getStatus().equals( "warn"));
+							if( operators.get( j).getStatus().equals( "warn") && ( ! operators.get( i).getStatus().equals( "warn"))){
+								filterout.add( operators.get( i));
+							}
+							if( operators.get( i).getStatus().equals( "warn") && ( ! operators.get( j).getStatus().equals( "warn"))){
+								filterout.add( operators.get( j));
+							}
+						}
+					}
+				}
+			}
+		}
+		for( OperatorDictionary opdic : filterout){
+			logger.info( "REMOVING " + opdic.getName() + "\twith status: " + opdic.getStatus());
+			operators.remove( opdic);
+		}
 		isUpdated = true;
 	
 		//the WorfkflowDictionary has been changed, for this its 'indexes' and 'graph' should be updated

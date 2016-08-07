@@ -128,7 +128,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			}
 		}
 
-
 		//check if intermediate results exist (replan)
 		if( !isOperator){
 			temp = materializedWorkflow.materilizedDatasets.get(getName());
@@ -271,7 +270,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
-										logger.info( "Move node added input:\n" + in);
+										logger.info( "Move node " + moveNode.getName() + " added input:\n" + in);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);

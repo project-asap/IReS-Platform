@@ -109,9 +109,8 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 	
 	for(OperatorDictionary op : workflow.getOperators()){
 		if(op.getIsOperator().equals("true") && op.getStatus().equals("warn")){
-		//if(op.getIsOperator().equals("true")){
 			op.setExecTime("");
-			LOG.info( "OPERATOR NAME: " + op.getName());
+			//LOG.info( "OPERATOR NAME: " + op.getName());
 			operators.put(op.getName(), op.getName() + ".lua");
 			//operators.put(op.getName(), op.getPropertyValue( "Execution.LuaScript"));
 		}
@@ -126,7 +125,6 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		}
 	LOG.info("Operators: "+operators);
 	int i =0;
-	//LuaWrapper l = new LuaWrapper("BasicLuaConf.lua", loadExtras(extras)).getTable("operator");
 	for(Entry<String, String> e : operators.entrySet()){
 		LuaWrapper l = new LuaWrapper(e.getValue(), loadExtras(extras)).getTable("operator");
 		if(i==0)
@@ -289,6 +287,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 	    
 	    for(Entry<String, ContainerTracker> e : trackers.entrySet()){
 		LOG.info( "CREATING TRACKER: " + e.getKey());
+		LOG.info( "INPUTS: " + workflow.getOperator(e.getKey()).getInput());
 	    	for(String in : workflow.getOperator(e.getKey()).getInput()){
 	    		addTrackerDependencyRecursive(in, e.getKey(), trackers);
 	    	}

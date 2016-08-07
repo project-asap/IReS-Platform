@@ -382,7 +382,6 @@ protected ContainerLaunchContextFactory factory;
 	  else{
 		  parameters.resetWorkflowParameters();
 		  LOG.info( "WORKFLOW PARAMETERS HAVE BEEN UPDATED");
-		  //start();
 		  LOG.info( "CREATING TRACKERS");
 		    
 		  factory = new ContainerLaunchContextFactory( ApplicationMaster.initial_registration.getMaximumResourceCapability());
@@ -395,7 +394,9 @@ protected ContainerLaunchContextFactory factory;
 			  t.init(factory);
 		  }
 		  LOG.info( "All newly trackers have been initialized: " + trackers);
-		  LOG.info( "REPLANNED WORKFLOW HAS STARTED");  
+		  LOG.info( "REPLANNED WORKFLOW HAS STARTED");
+
+		 //this.hasRunningContainers = true;
 	  }
   }
 
@@ -468,7 +469,7 @@ protected ContainerLaunchContextFactory factory;
     
     LOG.info( "AFTER WORKFLOW REPLAN - UPDATED\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
-    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
     
 	return after_workflow_replanning;
