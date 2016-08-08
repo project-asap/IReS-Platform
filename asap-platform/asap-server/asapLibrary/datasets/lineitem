@@ -5,8 +5,12 @@ Execution.schema=( l_orderkey bigint, l_partkey bigint, l_suppkey bigint, l_line
 Constraints.Engine.SQL=PostgreSQL
 Constraints.type=SQL
 <<<<<<< HEAD
+<<<<<<< HEAD
 Constraints.Engine.location=slave-1
 =======
 Constraints.Engine.location=slave5
 >>>>>>> temp
+=======
+Constraints.Engine.location=slave-1
+>>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 Optimization.size=1

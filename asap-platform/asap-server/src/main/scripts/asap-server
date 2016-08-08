@@ -1,0 +1,61 @@
+# This is the init script for the ASAP Server daemon.
+# When deployed, it should be placed under /etc/init.d/
+# to be executed as a service.
+
+#IRES_HOME=path/to/IReS-Platform_project
+IRES_HOME="/home/hadoop/projects/asap/IReS-Platform"
+[ -z "$ASAP_SERVER_HOME" ] && ASAP_SERVER_HOME="$IRES_HOME/asap-platform/asap-server/target"
+
+LIB_DIR=$ASAP_SERVER_HOME/lib
+CONF_DIR=$ASAP_SERVER_HOME/conf
+
+CLASSPATH=$CONF_DIR
+CLASSPATH=$CLASSPATH:$(echo $LIB_DIR/*.jar | tr ' ' ':')
+CLASSPATH=$CLASSPATH:$ASAP_SERVER_HOME/asap-server.jar
+#add Hadoop YARN classpath as it is returned from the command
+#YARN_HOME/bin/hadoop classpath
+YARN_CLASSPATH="/home/hadoop/yarn/etc/hadoop:/home/hadoop/yarn/share/hadoop/common/lib/*:/home/hadoop/yarn/share/hadoop/common/*:/home/hadoop/yarn/share/hadoop/hdfs:/home/hadoop/yarn/share/hadoop/hdfs/lib/*:/home/hadoop/yarn/share/hadoop/hdfs/*:/home/hadoop/yarn/share/hadoop/yarn/lib/*:/home/hadoop/yarn/share/hadoop/yarn/*:/home/hadoop/yarn/share/hadoop/mapreduce/lib/*:/home/hadoop/yarn/share/hadoop/mapreduce/*:/contrib/capacity-scheduler/*.jar"
+CLASSPATH=$CLASSPATH:$YARN_CLASSPATH
+
+PIDFILE=/tmp/asap-server.pid
+
+start() {
+    [ -f $PIDFILE ] && echo "ASAP Server already running ($(cat $PIDFILE))" && exit 0
+    cd $ASAP_SERVER_HOME
+    java -Duser.dir=$ASAP_SERVER_HOME -Dname=asap-server -cp $CLASSPATH  gr.ntua.cslab.asap.daemon.Main &
+    echo $! > $PIDFILE;
+}
+
+stop() {
+    PID=$(cat $PIDFILE 2>/dev/null)
+    [ "$PID" == "" ] && echo "ASAP Server not running" && exit 0
+    kill -TERM $PID
+    rm -f $PIDFILE 
+}
+
+status() {
+    if [ -f $PIDFILE ]; then
+        PID=$(cat $PIDFILE)
+        echo "ASAP Server running ($PID)"
+    else
+        echo "ASAP Server not running"
+    fi
+}
+
+case $1 in
+    start)
+        start;
+    ;;
+    stop)   
+        stop;
+    ;;
+    restart)    
+        stop && start;
+    ;;
+    status)   
+        status;
+    ;;
+    *)      
+        echo "$0 {start|stop|status|restart}"
+    ;;
+esac

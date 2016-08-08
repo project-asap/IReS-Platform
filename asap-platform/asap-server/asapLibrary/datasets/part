@@ -5,8 +5,12 @@ Execution.schema=( p_partkey int, p_name varchar( 55), p_mfgr char( 25), p_brand
 Constraints.Engine.SQL=PostgreSQL
 Constraints.type=SQL
 <<<<<<< HEAD
+<<<<<<< HEAD
 Constraints.Engine.location=slave-1
 =======
 Constraints.Engine.location=slave5
 >>>>>>> temp
+=======
+Constraints.Engine.location=slave-1
+>>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 Optimization.size=1

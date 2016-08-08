@@ -268,23 +268,6 @@ public class RunningWorkflowLibrary {
 			logger.info( "WorkflowNode: " + node.getKey() + "\t" + node.getValue());
 		}
 		logger.info("Datasets: "+materializedDatasets);
-<<<<<<< HEAD
-=======
-		/*
->>>>>>> temp
-		logger.info( "KEY Datasets: " + sorted_nodes);
-		//1. remove the last data set from 'materializedDatasets since it corresponds to
-		//the input of the 'failed' operator
-		int i = sorted_nodes.size() - 1;
-		materializedDatasets.remove( sorted_nodes.get( i));
-		sorted_nodes.remove( sorted_nodes.get( i));
-		logger.info("Datasets: " + materializedDatasets);
-		logger.info( "KEY Datasets: " + sorted_nodes);
-<<<<<<< HEAD
-		
-=======
-		*/
->>>>>>> temp
 		aw = runningAbstractWorkflows.get(id);
 		replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
 		/*vpapa: the returned and replanned workflow may be empty because for example
@@ -306,11 +289,6 @@ public class RunningWorkflowLibrary {
 		}
 		toRunWorkflows.put(id, replanned_workflow);
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> temp
 	/**
 	 * 
 	 * @param materializeddatasets
