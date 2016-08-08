@@ -5,7 +5,7 @@
 #################
 #Engine - destination
 Constraints.Engine=HIVE
-Constraints.EngineSpecification.Distributed.HIVE.masterLocation=slave5
+Constraints.EngineSpecification.Distributed.HIVE.masterLocation=slave-1
 Constraints.OpSpecification.Algorithm.name=move
 #Inputs
 Constraints.Input.number=1
@@ -18,7 +18,7 @@ Constraints.Output.number=1
 #Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=HIVE
-Constraints.Output0.Engine.location=slave5
+Constraints.Output0.Engine.location=slave-1
 
 #################
 # OPTIMIZATION #

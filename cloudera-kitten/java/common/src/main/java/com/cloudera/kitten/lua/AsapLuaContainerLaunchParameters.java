@@ -382,6 +382,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     dir = dir.substring(0, dir.lastIndexOf("/"));
     //System.out.println("Dir: " +dir);
     //String args = opName+" "+operator.getArguments();
+    LOG.info( "WORKFLOW NODE IS: " + opName);
     String args = operator.getArguments();
 
     String hdfs = conf.get("asap.hdfs_path");

@@ -37,7 +37,7 @@ operator = yarn {
     env = base_env,
     resources = {
     ["kmeans_mahout.sh"] = {
-       file = "asapLibrary/operators/kmeans_mahout/kmeans_mahout.sh",
+       file = "/opt/asap-server/asapLibrary/operators/kmeans_mahout/kmeans_mahout.sh",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	}

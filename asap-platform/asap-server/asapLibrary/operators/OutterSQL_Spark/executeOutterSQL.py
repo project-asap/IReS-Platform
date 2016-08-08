@@ -4,7 +4,6 @@ from pyspark.sql.types import *
 
 import os
 import sys
-import subprocess
 
 def main():
 	conf = SparkConf().setAppName( "OutterSQL_Spark")
@@ -86,8 +85,6 @@ def main():
 
         #lineitemParquet = sqlContext.read.format( 'parquet').options( header='false', inferschema='true').load( warehouse + '/lineitem.parquet', schema=fileSchemas[ "lineitem"])
         #lineitemParquet.registerTempTable( "lineitem")
-        #fnames = subprocess.check_output( "/opt/hadoop-2.7.0/bin/hdfs dfs -ls " + output, shell = True)
-        #fnames = [ x for x in fnames.split() if x.startswith( warehouse) and not x.endswith( "_SUCCESS")]
         partParquet = sqlContext.read.format( 'parquet').options( header='false', inferschema='true').load( warehouse + '/part.parquet', schema=fileSchemas[ "part"])
         partParquet.registerTempTable( "part")
         part_aggParquet = sqlContext.read.format( 'parquet').options( header='false', inferschema='true').load( warehouse + '/part_agg.parquet',schema=fileSchemas[ "part_agg"])

@@ -222,7 +222,7 @@ public class Main {
         ServerStaticComponents.server.start();
         Logger.getLogger(Main.class.getName()).info("Server is started");
 
-        //checkServicesStatus();
+        checkServicesStatus();
     }
 
 }

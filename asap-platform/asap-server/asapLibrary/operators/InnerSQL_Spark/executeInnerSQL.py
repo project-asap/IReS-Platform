@@ -80,7 +80,28 @@ def main():
         sql_query = "".join( x for x in open( sys.argv[ 3]).readlines())
         namenode = "hdfs://" + host + ":9000"
         warehouse = "/user/hive/warehouse"
-        output = warehouse + "/" + sys.argv[ 4] + ".parquet"
+#	print( sql_query)
+#	print( host, yarn_home)
+        #file = sys.argv[ 4]
+        #filename = file[ file.rfind( "/") + 1: -4]
+        #print( filename)
+        #fileSchema = fileSchemas[ file.split( "/")[ -1].split( ".")[ 0]]
+        #print( "FILESCHEMA IS ", fileSchema)
+        #print( "FILE IS ", file)
+        #df = sqlContext.read.format( "com.databricks.spark.csv").options( header="false", delimiter=",", inferSchema="true").load( namenode + warehouse + "/" + file, schema=fileSchema)
+        #df.printSchema()
+#		for row in df.collect():
+#			print( row)
+        #output = filename + ".parquet"
+        #if os.path.exists( namenode + warehouse + "/" + output):
+        #    try:
+        #        os.system( "/opt/hadoop-2.7.0/bin/hdfs dfs -rm -r " + warehouse + "/" + output)
+        #    except OSError:
+        #        raise
+                #exit( 1)
+        #df.write.format( "parquet").save( namenode + warehouse + "/" + output)
+
+        output = warehouse + "/part_agg.parquet"
 
         lineitemParquet = sqlContext.read.format( 'parquet').options( header='false', inferschema='true').load( namenode + warehouse + '/lineitem.parquet', schema=fileSchemas[ "lineitem"])
         lineitemParquet.registerTempTable( "lineitem")

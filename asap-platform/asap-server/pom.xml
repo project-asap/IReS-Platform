@@ -212,7 +212,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <hadoop.version>2.7.0</hadoop.version>
+                <hadoop.version>2.7.1</hadoop.version>
 				<jersey-servlet.version>1.18.1</jersey-servlet.version>
 				<scope.value>compile</scope.value>
 				<exclusion.groupId></exclusion.groupId>

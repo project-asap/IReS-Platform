@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export HIVE_HOME=/mnt/Data/tmp/hive
+export HIVE_HOME=/root/vpapa/hive
 
 SQL_QUERY=`cat $1`
 SQL_QUERY="DROP TABLE IF EXISTS FINAL_RESULTS; $SQL_QUERY"
@@ -14,3 +14,4 @@ $HIVE_HOME/bin/hive -e "$SQL_QUERY"
 #$HIVE_HOME/bin/hive -e "select count(*) from FINAL_RESULTS"
 
 cd -
+

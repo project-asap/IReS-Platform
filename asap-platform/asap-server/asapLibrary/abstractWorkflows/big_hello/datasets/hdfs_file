@@ -1,3 +1,0 @@
-Constraints.Engine.FS=HDFS
-Execution.path=hdfs:///user/root/amazon_data
-Optimization.size=932E06

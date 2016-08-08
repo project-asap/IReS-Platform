@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "Move_Spark_Postgres\n"
+echo -e "Move_Spark_Postgres\n"_
 
 export HADOOP_HOME=/opt/hadoop-2.7.0
 export SPARK_HOME=/opt/spark
@@ -14,7 +14,7 @@ SQL_QUERY="DROP TABLE $TABLE; CREATE TABLE $TABLE $SCHEMA; COPY $TABLE FROM '/mn
 echo "Exporting table from Spark"
 if [ ! -e /mnt/Data/tmp/$TABLE ]
 then
-	mkdir -p /mnt/Data/tmp/$TABLE
+	mkdir /mnt/Data/tmp/$TABLE
 	sudo chmod -R a+wrx /mnt/Data/tmp
 else
 	rm -r /mnt/Data/tmp/$TABLE/*
@@ -46,9 +46,6 @@ ls -ltr /mnt/Data/tmp/$TABLE
 
 echo "Loading table to POSTGRES"
 sudo -u postgres psql -d $DATABASE -c "$SQL_QUERY"
-#sudo -u postgres psql -d $DATABASE -c "DROP TABLE $TABLE"
-#sudo -u postgres psql -d $DATABASE -c "CREATE TABLE $TABLE $SCHEMA"
-#sudo -u postgres psql -d $DATABASE -c "COPY $TABLE FROM '/mnt/Data/tmp/$TABLE/$TABLE.csv' WITH DELIMITER AS '|'"
 #clean
-rm -r /mnt/Data/tmp/$TABLE
+rm -r /mnt/Data/tmp
 $HADOOP_HOME/bin/hdfs dfs -rm -r $HDFS/$TABLE.csv

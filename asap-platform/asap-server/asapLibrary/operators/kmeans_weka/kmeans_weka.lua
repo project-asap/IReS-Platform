@@ -7,8 +7,7 @@ CONTAINER_INSTANCES = 1
 MASTER_JAR_LOCATION = "kitten-master-0.2.0-jar-with-dependencies.jar"
 
 -- CLASSPATH setup.
-CP = "/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/share/hadoop/common/lib/*:/opt/hadoop-2.7.0/share/hadoop/common/*:/opt/hadoop-2.7.0/share/hadoop/hdfs:/opt/hadoop-2.7.0/share/hadoop/hdfs/lib/*:/opt/hadoop-2.7.0/share/hadoop/hdfs/*:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/*:/opt/hadoop-2.7.0/share/hadoop/yarn/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/lib/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/*:/contrib/capacity-scheduler/*.jar:/opt/hadoop-2.7.0/share/hadoop/yarn/*:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/*"
-
+CP = "/opt/hadoop-2.7.0/etc/hadoop:/opt/hadoop-2.7.0/share/hadoop/common/lib/*:/opt/hadoop-2.7.0/share/hadoop/common/*:/opt/hadoop-2.7.0/share    /hadoop/hdfs:/opt/hadoop-2.7.0/share/hadoop/hdfs/lib/*:/opt/hadoop-2.7.0/share/hadoop/hdfs/*:/opt/hadoop-2.7.0/share/hadoop/yarn/lib/*:/opt/ha    doop-2.7.0/share/hadoop/yarn/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/lib/*:/opt/hadoop-2.7.0/share/hadoop/mapreduce/*:/opt/hadoop-2.7.0/con    trib/capacity-scheduler/*.jar:/opt/hbase-0.94.5n/lib:/opt/hbase-0.94.5n/conf"
 -- Resource and environment setup.
 base_resources = {
   ["master.jar"] = { file = MASTER_JAR_LOCATION }
@@ -37,7 +36,7 @@ operator = yarn {
     env = base_env,
     resources = {
     ["kmeans_weka.sh"] = {
-       file = "/opt/asap-server/asapLibrary/operators/kmeans_weka/kmeans_weka.sh",
+       file = "asapLibrary/operators/kmeans_weka/kmeans_weka.sh",
       type = "file",               -- other value: 'archive'
       visibility = "application",  -- other values: 'private', 'public'
 	}

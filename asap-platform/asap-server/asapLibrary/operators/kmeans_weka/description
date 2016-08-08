@@ -1,7 +1,7 @@
 #
 #Wed Jan 28 16:52:09 EET 2015
 Constraints.Output0.Engine.FS=HDFS
-Constraints.OpSpecification.Algorithm.name=k-means
+Constraints.OpSpecification.Algorithm.name=k-meansOld
 Constraints.Input0.Engine.FS=HDFS
 Constraints.Input0.type=arff
 Constraints.Engine=WEKA

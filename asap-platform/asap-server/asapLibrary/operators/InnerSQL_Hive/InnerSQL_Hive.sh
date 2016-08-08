@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export HIVE_HOME=/mnt/Data/tmp/hive
+export HIVE_HOME=/root/vpapa/hive
 
 SQL_QUERY=`cat $1`
 #SQL_QUERY="set mapreduce.job.reducers=5; DROP TABLE IF EXISTS PART_AGG; $SQL_QUERY"
