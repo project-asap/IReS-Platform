@@ -12,11 +12,7 @@ Constraints.Input.number=1
 #Input0 - source
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=HIVE
-<<<<<<< HEAD
 Constraints.Input0.Engine.location=slave-1
-=======
-Constraints.Input0.Engine.location=slave5
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 #Outputs
 Constraints.Output.number=1
 #Output0 - destination

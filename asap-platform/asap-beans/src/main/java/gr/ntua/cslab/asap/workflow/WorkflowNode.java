@@ -158,8 +158,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				for(Operator op : operators){
 					if(!ClusterStatusLibrary.checkEngineStatus(op)){
 						logger.info( "Specified engine for operator " + op.opName + " is " + op.getEngine());
-						logger.info( "an it is not running. For this, this operator will no be materialized");
-						logger.info( "and consequently the corresponding workflow will not be materialized.");
+						logger.info( "and it is not running. For this, this operator will not be materialized");
+						logger.info( "and consequently the corresponding workflow will not be materialized");
+						logger.info( "if alternatives do not exist for the relative abstract operator.");
 						continue;					
 					}
 					List<HashMap<String,Double>> minCostsForInput = new ArrayList<HashMap<String,Double>>();
@@ -226,24 +227,22 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								}
 							}
 							else{
-								/* vpapa: in case the property Constraints.Inputx.type is defined into
-								 * an operator's description file for some input x( or all of them)
-								 * but the property is not correspondingly defined into the input( dataset)
-								 * description file, then an input mismatch will occur and the workflow
-								 * materialization will fail and will not be displayed at IReS WUI.
-								 * However IReS platform will still operate without giving any useful
-								 * message. For this, precautionary, we write this event into the logs
+								/* vpapa: workflow materialization may fail due to properties Constraints.Inputx
+								 * i.e an operator's description file for some input x( or all of them)
+								 * doesn't match with the description file of Inputx. IReS either will find
+								 * a move operator to bridge the gap or it will not display any materialized
+								 * workflow. For this, precautionary, we write this event into the logs
 								*/
 								logger.info( "ERROR: For operator " + op.opName + " there "
-											+ " is an input mismatch. Check inside its"
-											+ " description file if all properties Constraints.Input"
-											+ " for some input x match with all the corresponding"
-											+ " properties of the input dataset x, probably a"
-											+ " materialized one, like the very first input( s)"
-											+ " of the workflow. This message should be taken"
-											+ " as a real error when the materialization seems"
-											+ " to succeed when pushing 'Materialize Workflow'"
-											+ " button but the workflow is not displayed at all.");
+										+ " is an input mismatch. Check inside its"
+										+ " description file if all properties Constraints.Input"
+										+ " for some input x match with all the corresponding"
+										+ " properties of the input dataset x, probably a"
+										+ " materialized one, like the very first input( s)"
+										+ " of the workflow. This message should be taken"
+										+ " as a real error when the materialization seems"
+										+ " to succeed when pushing 'Materialize Workflow'"
+										+ " button but the workflow is not displayed at all.");
 								logger.info( "Input dataset: " + in.dataset);
 								logger.info( "Input to be matched: " + tempInput);
 								//one input checked, go for the next
@@ -270,7 +269,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									for(Operator m : moveOps){
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
-										logger.info( "Move node " + moveNode.getName() + " added input:\n" + in);
+										logger.info( "Move node " + moveNode.getName() + " added input:\t" + in);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
@@ -915,6 +914,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 				String arg = operator.getParameter("Execution.Argument"+i);
 				if(arg.startsWith("In")){
 					int index = Integer.parseInt(arg.charAt(2)+"");
+					logger.info( "Operator:\t" + getName() + "\tInputs:\t" + inputs);
 					WorkflowNode n = inputs.get(index);
 					String parameter =arg.substring(arg.indexOf(".")+1);
 					if(parameter.endsWith("local")){

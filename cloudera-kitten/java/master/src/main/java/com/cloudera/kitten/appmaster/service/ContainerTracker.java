@@ -53,6 +53,9 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       this.previousTrackers = new ArrayList<ContainerTracker>();
       needed.set(1);
       isInitialized=false;
+      LOG.info( "TRACKER OPERATOR: " + params.getName());
+      //LOG.info( "TRACKER ASAP OPERATOR: " + params.getOperator().operator.opName);
+      //LOG.info( "TRACKER ASAP OPERATOR: " + params.getOperator().operator.optree);
     }
 
     public void addNextTracker(ContainerTracker tracker){
@@ -88,6 +91,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  return;
       }
       LOG.info( "They are all previous containers finished.");
+      LOG.info( service.parameters.workflow.getOperator(params.getName()));
       service.parameters.workflow.getOperator(params.getName()).setStatus("running");
       startTime = System.currentTimeMillis();
       this.nodeManager = NMClientAsync.createNMClientAsync(this);

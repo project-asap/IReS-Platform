@@ -327,11 +327,13 @@ public class ClusterNodes extends Configured implements Runnable {
 					}
 					//for any other service just check that there is at least one node
 					//hosting it
-					if( runservices.get( service).equals( "")){
-						ClusterStatusLibrary.status.put( service, false);
-					}
-					else{
-						ClusterStatusLibrary.status.put( service, true);
+					if( ! service.equals( "")){
+						if( runservices.get( service).equals( "")){
+							ClusterStatusLibrary.status.put( service, false);
+						}
+						else{
+							ClusterStatusLibrary.status.put( service, true);
+						}
 					}
 				}
 				/*

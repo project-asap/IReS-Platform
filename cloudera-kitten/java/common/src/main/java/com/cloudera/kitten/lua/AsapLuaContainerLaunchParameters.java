@@ -94,6 +94,9 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
     this.workflow = workflow;
     this.opName = opName;
     this.operator = workflow.nodes.get(opName);
+    LOG.info( "ASAP OPERATOR: " + operator);
+    LOG.info( "ASAP OPERATOR: " + operator.operator.opName);
+    LOG.info( "ASAP OPERATOR: " + operator.operator.optree);
     globalContainerId=0;
   }
 
@@ -125,8 +128,7 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }*/
   
   public int getCores() {
-      String cores;
-      cores = operator.operator.getParameter("Optimization.cores");
+      String cores = operator.operator == null ? null: operator.operator.getParameter("Optimization.cores");
       if (cores == null)
           cores = operator.operator.getParameter("SelectedParam.cores");
 
@@ -139,13 +141,17 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }
 
   public int getMemory() {
-      String memory = operator.operator.getParameter("Optimization.memory");
+	  LOG.info( "WorkflowNode Operator: " + operator);
+	  LOG.info( "WorkflowNode Operator: " + operator.operator.opName);
+	  LOG.info( "WorkflowNode Operator: " + operator.operator);
+	  LOG.info( "WorkflowNode Operator Optree: " + operator.operator.optree);
+      String memory = operator.operator == null ? null: operator.operator.getParameter("Optimization.memory");
       if (memory == null)
           memory = operator.operator.getParameter("SelectedParam.memory");
 
       if (memory != null) {
           Double m = Double.parseDouble(memory);
-          LOG.info("CORES SET TO "+memory+" FOR OPERATOR "+operator.getName());
+          LOG.info("MEMORY SET TO "+memory+" FOR OPERATOR "+operator.getName());
           return m.intValue();
       }
       return lv.getInteger(LuaFields.MEMORY);

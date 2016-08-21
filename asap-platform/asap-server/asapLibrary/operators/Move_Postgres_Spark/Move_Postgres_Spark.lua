@@ -11,14 +11,7 @@ OPERATOR_HOME = OPERATOR_LIBRARY .. "/" .. OPERATOR
 operator = yarn {
   name = "Execute " .. OPERATOR .. " Operator",
   labels = "postgres",
-<<<<<<< HEAD
-  nodes = "slave-1",
-<<<<<<< HEAD
-=======
   nodes = "slave5",
->>>>>>> temp
-=======
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
   memory = 1024,
   cores = 1,
   container = {

@@ -38,6 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.service.Service;
 import org.apache.hadoop.yarn.api.protocolrecords.RegisterApplicationMasterResponse;
+import org.apache.hadoop.yarn.api.records.ApplicationId;
 import org.apache.hadoop.yarn.api.records.Container;
 import org.apache.hadoop.yarn.api.records.ContainerExitStatus;
 import org.apache.hadoop.yarn.api.records.ContainerId;
@@ -66,6 +67,8 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import gr.ntua.cslab.asap.workflow.MaterializedWorkflow1;
+import gr.ntua.cslab.asap.workflow.WorkflowNode;
 
 public class WorkflowService extends
     AbstractScheduledService implements ApplicationMasterService,
@@ -380,15 +383,22 @@ protected ContainerLaunchContextFactory factory;
 		  }
 	  }
 	  else{
-		  parameters.resetWorkflowParameters();
+		  int applicationId = AbstractClient.issueRequestReport( conf, parameters.jobName);
+		  parameters.resetWorkflowParameters( applicationId);
 		  LOG.info( "WORKFLOW PARAMETERS HAVE BEEN UPDATED");
 		  LOG.info( "CREATING TRACKERS");
-		    
+		  //resetting priority
+		  prior = 1;
 		  factory = new ContainerLaunchContextFactory( ApplicationMaster.initial_registration.getMaximumResourceCapability());
 
 		  trackers = parameters.createTrackers(this);
 		  LOG.info( "NEWLY CREATED TRACKERS: " + trackers);
-
+		  /*
+		  LOG.info( "PARAMETERS WORKFLOW\n");
+		  for( OperatorDictionary opdd : parameters.workflow.getOperators()){
+			LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
+		  }
+		  */
 		  for(ContainerTracker t : trackers.values()){
 			  LOG.info( "Tracker to initialize: " + t);
 			  t.init(factory);
@@ -441,6 +451,14 @@ protected ContainerLaunchContextFactory factory;
 	for( OperatorDictionary opdic : after_workflow_replanning.getOperators()){
 		if( opdic.getStatus().equals( "warn")){
 			opdic.setStatus( "stopped");
+			//mark its inputs
+			linput = opdic.getInput();
+			lis = linput.listIterator();
+			while( lis.hasNext()){
+				inname = lis.next();
+				LOG.info( "UPDATING STOPPED Input: " + inname);
+				after_workflow_replanning.getOperator( inname).setStatus( "stopped");
+			}
 		}
 	}
 	parameters.workflow = after_workflow_replanning;
@@ -453,23 +471,31 @@ protected ContainerLaunchContextFactory factory;
     
     LOG.info( "WORKFLOW TO REPLAN is\n");
     for( OperatorDictionary opdd : before_workflow_replanning.getOperators()){
-    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
-    
+
     LOG.info( "AFTER WORKFLOW REPLAN\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
-    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
+
     LOG.info( "REPLANNED WORKFLOW\n");
     for( OperatorDictionary opdd : replanned_workflow.getOperators()){
-    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\n");
+    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
-	
+
     after_workflow_replanning.initiateUpdate( replanned_workflow);
     
     LOG.info( "AFTER WORKFLOW REPLAN - UPDATED\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
+    }
+
+    MaterializedWorkflow1 mw = new MaterializedWorkflow1( "test", "/tmp");
+    mw.readFromWorkflowDictionary( after_workflow_replanning);
+    LOG.info( "MW AFTER WORKFLOW REPLAN - UPDATED\n");
+    for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
+    	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\tWorkflowNode " + mw.nodes.get(opdd.getName()) + "\n");
     }
     
 	return after_workflow_replanning;

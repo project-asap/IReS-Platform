@@ -150,34 +150,14 @@ public class RunningWorkflowLibrary {
 		HashMap<String,String> inputDatasets = new HashMap<String, String>();
 		LuaYarnClientParameters params = null;
 		String luafilename = null;
-		int luafileindex = 0;
 
 		for(OperatorDictionary op : d.getOperators()){
 			if(op.getIsOperator().equals("true")){
 				/* vpapa: retrieve the .lua file specified for this operator from
 					operator's description
 				*/
-				luafilename = op.getDescription();
-				//check that this property is specified and it has some value
-				luafileindex = luafilename.indexOf( "Execution.LuaScript");
-				if( luafileindex > -1){
-					//found the property inside the description file
-					luafilename = luafilename.substring( luafileindex, luafilename.indexOf( "\n", luafileindex));
-					luafilename = luafilename.split( "=")[ 1].trim();
-					if( luafilename.equals( "")){
-						luafilename = op.getNameNoID() + ".lua";
-						logger.info( "WARN: The property Execution.LuaScript has not any value. Check if this.");
-						logger.info( "In any case, it is assumed that operator's .lua file has the same name");
-						logger.info( "as the operator.");
-					}
-				}
-				else{
-					logger.info( "WARN: The property Execution.LuaScript is missing from operator's description.");
-					logger.info( "Check if this is valid. In any case, it is assumed that operator's .lua file");
-					logger.info( "has the same name as the operator");
-					luafilename = op.getNameNoID() + ".lua";
-				}
-				//System.out.println( "The .lua file is: " + luafilename);
+				luafilename = op.getPropertyValue( "Execution.LuaScript");
+				logger.info( "The .lua file is: " + luafilename);
 				operators.put( op.getName(), OperatorLibrary.operatorDirectory + "/" + op.getNameNoID() + "/" + luafilename);
 			}
 			else{
@@ -269,7 +249,9 @@ public class RunningWorkflowLibrary {
 		}
 		logger.info("Datasets: "+materializedDatasets);
 		aw = runningAbstractWorkflows.get(id);
-		replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
+		MaterializedWorkflow1 mw = aw.replan( materializedDatasets, 100);
+		//replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
+		replanned_workflow = mw.toWorkflowDictionary( "\n");
 		/*vpapa: the returned and replanned workflow may be empty because for example
 		 * no alternatives where found for the failed operator and the current set of
 		 * completed data sets. For this, we should go one executed operator back taking

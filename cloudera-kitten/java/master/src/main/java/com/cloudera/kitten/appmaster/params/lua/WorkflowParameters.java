@@ -36,8 +36,11 @@ import java.util.Map.Entry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
 import com.cloudera.kitten.ContainerLaunchParameters;
+import com.cloudera.kitten.appmaster.AbstractClient;
 import com.cloudera.kitten.appmaster.ApplicationMasterParameters;
 import com.cloudera.kitten.appmaster.service.WorkflowService;
 import com.cloudera.kitten.appmaster.service.ContainerTracker;
@@ -53,6 +56,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import org.apache.hadoop.net.NetUtils;
+import org.apache.hadoop.yarn.api.records.ApplicationId;
 
 public class WorkflowParameters implements ApplicationMasterParameters {
 
@@ -149,9 +153,14 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   	 * @param extras	
   	 * @param localToUris 
   	 */
-    public void resetWorkflowParameters() throws Exception{
+    public void resetWorkflowParameters( int applicationId) throws Exception{
 		this.env.clear();
   		HashMap<String,String> operators = new HashMap<String, String>();
+  		FileSystem fs = FileSystem.get( conf);
+  		File f = null;
+  		  		
+  		LOG.info( "FILESYSTEM IS: " + fs.getName() + "\tHOME DIRECTORY IS: " + fs.getHomeDirectory());
+        LOG.info( "APPLICATION ID IS: " + applicationId);
   		
   		materializedWorkflow = new MaterializedWorkflow1( this.jobName, "/tmp");
   		materializedWorkflow.readFromWorkflowDictionary( workflow);
@@ -159,9 +168,10 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   		
   		for(OperatorDictionary op : workflow.getOperators()){
   			if(op.getIsOperator().equals("true") && op.getStatus().equals("warn")){
+				LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput());
   				op.setExecTime("");
-  				operators.put(	op.getName(), op.getName() + ".lua");
-  				//operators.put(	op.getName(), op.getPropertyValue( "Execution.LuaScript"));
+  				operators.put(	op.getName(), op.getPropertyValue( "Execution.LuaScript"));
+  				//operators.put(	op.getName(), "/user/hadoop/app107/" + op.getPropertyValue( "Execution.LuaScript"));
   			}
   		}
   		for(OperatorDictionary op : workflow.getOperators()){
@@ -180,6 +190,11 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   		for(Entry<String, String> e : operators.entrySet()){
   			LOG.info( e.getKey() + "\t" + e.getValue());
   			luafilename = e.getValue();
+  			f = new File( luafilename);
+  			if( ! f.exists()){
+  				luafilename = getAppPath( fs, applicationId) + "/" + luafilename;
+  				luafilename = copyFromHdfs( luafilename, conf);
+  			}
   			lwr = new LuaWrapper( luafilename, loadExtras( this.extras)).getTable("operator");
   			if(i==0)
   				this.e0=lwr;
@@ -187,7 +202,36 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   			this.env.put( e.getKey(), lwr);
   		}
     }
-   
+  
+    private static String copyFromHdfs( String hdfsDataName, Configuration conf) throws IOException {
+    	String APP_BASE_DIR = "kitten.app.base.dir";
+        LOG.info("Base dir: " + conf.get(APP_BASE_DIR));
+        LOG.info("Copying hdfs file: " + hdfsDataName + " to local");
+        FileSystem fs = FileSystem.get(conf);
+        LOG.info( "FILESYSTEM IS: " + fs.getName() + "\tHOME DIRECTORY IS: " + fs.getHomeDirectory());      
+        hdfsDataName = hdfsDataName.substring( hdfsDataName.indexOf( "/user/"));
+        LOG.info("Copying hdfs file: " + hdfsDataName + " to local");
+        Path src = new Path( hdfsDataName);
+        Path dst = new Path( "./" + src.getName());
+        LOG.info("Copying hdfs file: " + hdfsDataName + " to local: " + dst);
+        fs.copyToLocalFile( src, dst);
+        return dst.toString();
+    }
+    
+    private String getAppPath( FileSystem fs, int applicationId){
+    	String APP_BASE_DIR = "kitten.app.base.dir";
+    	String appDir = "app";
+    	String abd = conf.get( APP_BASE_DIR);
+        if( applicationId > 0) {
+            appDir += applicationId;
+        }
+    	if( abd != null) {
+          return abd + appDir;
+        } else {
+          return fs.getHomeDirectory() + "/" + appDir;
+        }
+    }
+    
   public static Map<String, URI> loadLocalToUris() {
     Map<String, String> e = System.getenv();
     if (e.containsKey(LuaFields.KITTEN_LOCAL_FILE_TO_URI)) {

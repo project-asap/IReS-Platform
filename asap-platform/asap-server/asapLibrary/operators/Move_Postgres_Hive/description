@@ -5,19 +5,11 @@ Constraints.Output.number=1
 Constraints.Input.number=1
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-<<<<<<< HEAD
-Constraints.Input0.Engine.location=slave-1
-Constraints.Output0.type=SQL
-Constraints.Output0.Engine.SQL=HIVE
-Constraints.Output0.Engine.location=slave-1
-Constraints.EngineSpecification.Distributed.HIVE.masterLocation=slave-1
-=======
 Constraints.Input0.Engine.location=slave5
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=HIVE
 Constraints.Output0.Engine.location=slave5
 Constraints.EngineSpecification.Distributed.HIVE.masterLocation=slave5
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 Constraints.OpSpecification.Algorithm.name=move
 
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel

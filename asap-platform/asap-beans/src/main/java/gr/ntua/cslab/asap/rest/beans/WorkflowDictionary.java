@@ -220,8 +220,10 @@ public class WorkflowDictionary {
 					operators.add( updateswd.getOperator( updates.get( i)));
 				}
 				else {
-					//set the output dataset of the starting node in status 'completed'
-					this.setOutputsRunning( updates.get( i), "completed");
+					//set this node at 'warn' state itself
+					operators.get( indexes.get( updates.get( i))).setStatus( "warn");
+					//set the output datasets of the starting node in status 'warn'
+					this.setOutputsRunning( updates.get( i), "warn");
 				}
 			}
 		}

@@ -198,6 +198,38 @@ public class AbstractClient {
     return running_workflow;
   }   
 
+  public static int issueRequestReport( YarnConfiguration conf, String id) throws Exception {
+	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
+      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/" + id + "/applicationId";
+      StringBuilder builder = null;
+      InputStream in = null;
+      int applicationId = 0;
+      try {
+	        URL url = new URL(urlString);
+	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
+	        con.setRequestMethod("GET");
+	        con.setRequestProperty("accept", "text/html");
+	        con.setRequestProperty("Content-type", "text/html");	        
+	        con.setDoInput(true);
+	        
+	        builder = new StringBuilder();
+	    	in = con.getInputStream();
+	        byte[] buffer = new byte[1024];
+	        int count;
+	        while((count = in.read(buffer))!=-1) {
+	            builder.append(new String(buffer,0,count));
+	        }
+	        applicationId = Integer.parseInt( builder.toString());
+	        LOG.info( "APPLICATION ID IS: " + applicationId);
+	} 
+    catch (Exception e)
+    {
+		LOG.error( e.getStackTrace());
+		e.printStackTrace();
+    }
+    return applicationId;
+  }
   public static WorkflowDictionary issueRequestToRunWorkflow( YarnConfiguration conf, String id) throws Exception {
 	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
       String urlString = "http://" + masterDNS + ":1323/runningWorkflows/toRunWorkflow/XML/" + id;

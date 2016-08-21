@@ -5,10 +5,6 @@ from pyspark.sql.types import *
 import os
 import sys
 import argparse
-<<<<<<< HEAD
-=======
-import subprocess
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 
 def main():
 
@@ -56,13 +52,10 @@ def main():
 	#	else:
 	#		datafiles.append( file)
 
-<<<<<<< HEAD
 	conf = SparkConf().setAppName( "Convert CSV to Parquet")
 	sc = SparkContext(conf=conf)
 	#HiveContext is a superset of SparkContext and for this is preferred
 	sqlContext = SQLContext(sc)
-=======
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 
 	fileSchemas = { "customer": StructType([	StructField( "c_custkey", IntegerType(), True),
     						  					StructField( "c_name", StringType(), True),
@@ -126,7 +119,6 @@ def main():
 					  						  	StructField( "s_acctbal", DecimalType( 10, 2), True),
 					  						  	StructField( "s_comment", StringType(), True)]),
       				"part_agg":   StructType([	StructField( "agg_partkey", DecimalType( 38, 0), True),
-<<<<<<< HEAD
                                                                 StructField( "avg_quantity", DecimalType( 10, 2), True)])
     			  }		  
     			  
@@ -156,31 +148,6 @@ def main():
                         raise
 
                 df.write.format( "parquet").save( namenode + warehouse + "/" + output)
-=======
-                                                                StructField( "avg_quantity", DecimalType( 10, 2), True),
-                                                                StructField( "agg_extendedprice", DecimalType( 10, 2), True)])
-    			  }		  
-    			  
-	conf = SparkConf().setAppName( "Convert CSV to Parquet")
-	sc = SparkContext(conf=conf)
-	sqlContext = SQLContext(sc)
-        namenode = "hdfs://master:9000"
-        warehouse = "/user/hive/warehouse"
-        print( args.src)
-        forschema = args.src[ 0].split( "/")[-1].split( ".")[0]
-        print( forschema)
-        output = args.src[ 0] + ".parquet"
-        inputdir = warehouse + "/" + args.src[ 0]
-        fnames = subprocess.check_output( "/opt/hadoop-2.7.0/bin/hdfs dfs -ls " + inputdir, shell = True)
-        fnames = [ x for x in fnames.split() if x.startswith( warehouse)]
-        for file in fnames:
-                print( "FILE IS:", file)
-                fileSchema = fileSchemas[ forschema]
-                print( "FILESCHEMA IS ", fileSchema)
-                df = sqlContext.read.format( "com.databricks.spark.csv").options( header="false", delimiter="|", inferSchema="true").load( file, schema=fileSchema)
-                df.printSchema()
-                df.write.format( "parquet").save( namenode + warehouse + "/" + output, mode = "append")
->>>>>>> 679b7257e992f967a6c90fdd205f40a21e7f2014
 
 if __name__ == "__main__":
 	main()
