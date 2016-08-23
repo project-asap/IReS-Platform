@@ -103,8 +103,8 @@ public class ClusterNodes extends Configured implements Runnable {
 	}
 
 	public void run(){
-    		//interact with the ResourceManager of YARN cluster and find which nodes are active
-    		//and for these nodes check which services are still running on them
+   		//interact with the ResourceManager of YARN cluster and find which nodes are active
+   		//and for these nodes check which services are still running on them
 		//retrieve the needed information to find which services are running on which
 		//hosts
 		runservices = new HashMap< String, String>();
@@ -119,7 +119,6 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
 			logger.info( npe.getMessage());
-			//return;
 		}
 		hservices = new HashMap< String, String>();
 		if( hosts != null){
@@ -128,22 +127,23 @@ public class ClusterNodes extends Configured implements Runnable {
 					//System.out.println( hosts[ i].trim());
 					//services[ 0] -> host, services[ 1] -> host services
 					services = hosts[ i].trim().split( "::");
-					try{
-						hservices.put( services[ 0], services[ 1]);	
-					}
-					catch( ArrayIndexOutOfBoundsException aibe)
-					{
-						logger.info( "ERROR: for cluster node " + services[ 0] + " no services have been specified.");
-						logger.info( "To fix this, in yarn-site.xml file add into the value of property" );
-						logger.info( "yarn.nodemanager.services-running.per-node and for node " + services[ 0]);
-						logger.info( "add its services. File yarn-site.xml has detailed instructions on how to do it");
-						/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
-						msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
-						msg += "to this property value one cluster node together with its services as it is described\n";
-						msg += "into the yarn-site.xml file.";
-						logger.log( Level.INFO, "", aibe);
-						*/
-						//return;
+					if( ! services[ 0].equals( "")){
+						try{
+							hservices.put( services[ 0], services[ 1]);	
+						}
+						catch( ArrayIndexOutOfBoundsException aibe)
+						{
+							logger.info( "ERROR: for cluster node " + services[ 0] + " no services have been specified.");
+							logger.info( "To fix this, in yarn-site.xml file add into the value of property" );
+							logger.info( "yarn.nodemanager.services-running.per-node and for node " + services[ 0]);
+							logger.info( "add its services. File yarn-site.xml has detailed instructions on how to do it");
+							/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
+							msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
+							msg += "to this property value one cluster node together with its services as it is described\n";
+							msg += "into the yarn-site.xml file.";
+							logger.log( Level.INFO, "", aibe);
+							*/
+						}	
 					}
 				}
 			}
@@ -162,7 +162,6 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
 			logger.info( npe.getMessage());
-			//return;
 		}
 		scommands = new HashMap< String, String>();
 		if( hosts != null){
@@ -171,21 +170,23 @@ public class ClusterNodes extends Configured implements Runnable {
 					//System.out.println( hosts[ i].trim());
 					//services[ 0] -> service, services[ 1] -> service command
 					services = hosts[ i].trim().split( "::");
-					try{
-						scommands.put( services[ 0], services[ 1]);
-					}
-					catch( ArrayIndexOutOfBoundsException aibe)
-					{
-						logger.info( "ERROR: for service " + services[ 0] + " there is no command specified with which its status will be");
-						logger.info( "checked i.e. if it is running or not. To fix this, in yarn-site.xml file add into the value of property");
-						logger.info( "yarn.nodemanager.services-running.check-availability the corresponding command for service");
-						logger.info( services[ 0] + ". File yarn-site.xml has detailed instructions on how to do it");
-						
-						//in any case add this service with an empty command
-						scommands.put( services[ 0], "");
-					}
-					//add the service into the runservices with an unknown status for the moment
-					runservices.put( services[ 0], "");
+					if( ! services[ 0].equals( "")){
+						try{
+							scommands.put( services[ 0], services[ 1]);
+						}
+						catch( ArrayIndexOutOfBoundsException aibe)
+						{
+							logger.info( "ERROR: for service " + services[ 0] + " there is no command specified with which its status will be");
+							logger.info( "checked i.e. if it is running or not. To fix this, in yarn-site.xml file add into the value of property");
+							logger.info( "yarn.nodemanager.services-running.check-availability the corresponding command for service");
+							logger.info( services[ 0] + ". File yarn-site.xml has detailed instructions on how to do it");
+							
+							//in any case add this service with an empty command
+							scommands.put( services[ 0], "");
+						}
+						//add the service into the runservices with an unknown status for the moment
+						runservices.put( services[ 0], "");
+					}	
 				}
 			}
 			else{
@@ -203,7 +204,6 @@ public class ClusterNodes extends Configured implements Runnable {
 			logger.info( "For this, reliable, real time monitoring of cluster services cannot be established. Until you fix this,");
 			logger.info( "the server will run but the services monitoring will not. Have a nice day!");
 			logger.info( npe.getMessage());
-			//return;
 		}
 		sstatus = new HashMap< String, String>();
 		if( hosts != null){
@@ -212,22 +212,23 @@ public class ClusterNodes extends Configured implements Runnable {
 					//System.out.println( hosts[ i].trim());
 					//services[ 0] -> service, services[ 1] -> service running status
 					services = hosts[ i].trim().split( "::");
-					try{
-						sstatus.put( services[ 0], services[ 1]);	
-					}
-					catch( ArrayIndexOutOfBoundsException aibe)
-					{
-						logger.info( "ERROR: for service " + services[ 0] + " there is no status specified with which its state will be.");
-						logger.info( "verified i.e. if its running or not. To fix this, in yarn-site.xml file add into the value of property" );
-						logger.info( "yarn.nodemanager.services-running.check-status the corresponding status of service " + services[ 0] + ".");
-						logger.info( "File yarn-site.xml has detailed instructions on how to do it.");
-						/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
-						msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
-						msg += "to this property value one cluster node together with its services as it is described\n";
-						msg += "into the yarn-site.xml file.";
-						logger.log( Level.INFO, "", aibe);
-						*/
-						//return;
+					if( ! services[ 0].equals( "")){
+						try{
+							sstatus.put( services[ 0], services[ 1]);	
+						}
+						catch( ArrayIndexOutOfBoundsException aibe)
+						{
+							logger.info( "ERROR: for service " + services[ 0] + " there is no status specified with which its state will be.");
+							logger.info( "verified i.e. if its running or not. To fix this, in yarn-site.xml file add into the value of property" );
+							logger.info( "yarn.nodemanager.services-running.check-status the corresponding status of service " + services[ 0] + ".");
+							logger.info( "File yarn-site.xml has detailed instructions on how to do it.");
+							/*String msg = "ERROR: probably the value of yarn.nodemanager.services-running.per-node property.\n";
+							msg += "is empty i.e. there is no pair of cluster node and its services. To fix this, add\n";
+							msg += "to this property value one cluster node together with its services as it is described\n";
+							msg += "into the yarn-site.xml file.";
+							logger.log( Level.INFO, "", aibe);
+							*/
+						}	
 					}
 				}
 			}
@@ -348,7 +349,12 @@ public class ClusterNodes extends Configured implements Runnable {
 				*/
 				//preparation for the next iteration
 				for( String service : runservices.keySet()){
-					runservices.put( service, "");
+					if( ! service.equals( "")){
+						runservices.put( service, "");
+					}
+					else{
+						runservices.remove( "");
+					}
 				}
 				//retrieve the minimum and maximum amount of vcores and memory from yarn-site.xml that is a static information
 				ClusterStatusLibrary.cluster_static_resources.clear();

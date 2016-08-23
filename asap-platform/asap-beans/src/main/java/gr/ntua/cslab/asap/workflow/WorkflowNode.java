@@ -942,7 +942,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			    			logger.info( "from operator " + operator.opName + " as a property of input In" + index + ".");
 			    			logger.info( "To solve this, make sure that the input of this dataset, " + n.dataset.datasetName + ",");
 			    			logger.info( "i.e. the operator that corresponds to input In" + index + " defines a property");
-			    			logger.info( "'Execution.Output" + index + "." + parameter + ".");
+			    			logger.info( "'Execution." + parameter + ".");
 			    		}
 			    		arg=newArg;
 					}

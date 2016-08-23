@@ -171,8 +171,7 @@ public class AbstractWorkflow1 {
 	}// end of AbstractWorkflow1 materialize
 
 
-	public MaterializedWorkflow1 replan(
-			HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
+	public MaterializedWorkflow1 replan( HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
 		this.materilizedDatasets=materilizedDatasets;
 		this.count =count;
 		MaterializedWorkflow1 ret = materialize("", policy);
@@ -180,8 +179,6 @@ public class AbstractWorkflow1 {
 		this.count = 0;
 		return ret;
 	}
-
-
 
 	public String parsePolicy(String policy) {
 		this.policy=policy;
