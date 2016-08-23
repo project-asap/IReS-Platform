@@ -94,9 +94,11 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
     this.workflow = workflow;
     this.opName = opName;
     this.operator = workflow.nodes.get(opName);
+    /*
     LOG.info( "ASAP OPERATOR: " + operator);
     LOG.info( "ASAP OPERATOR: " + operator.operator.opName);
     LOG.info( "ASAP OPERATOR: " + operator.operator.optree);
+    */
     globalContainerId=0;
   }
 
@@ -141,10 +143,12 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }
 
   public int getMemory() {
+	  /*
 	  LOG.info( "WorkflowNode Operator: " + operator);
 	  LOG.info( "WorkflowNode Operator: " + operator.operator.opName);
 	  LOG.info( "WorkflowNode Operator: " + operator.operator);
 	  LOG.info( "WorkflowNode Operator Optree: " + operator.operator.optree);
+	  */
       String memory = operator.operator == null ? null: operator.operator.getParameter("Optimization.memory");
       if (memory == null)
           memory = operator.operator.getParameter("SelectedParam.memory");
@@ -217,7 +221,6 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
     
     return localResources;
   }
-
 
   private void addOperatorInputs(Map<String, LocalResource> localResources) throws IOException {
 	  LOG.info("Inputs: "+operator.getInputFiles());
@@ -441,8 +444,6 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     
     return cmds;
   }
-  
-
 
 private String writeExecutionScript(List<String> cmds) throws IOException {
 	  UUID id = UUID.randomUUID();

@@ -68,9 +68,7 @@ public class RunningWorkflows {
 	@Path("{id}/applicationId")
     public String getApplicationId(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
 		String applicationId = RunningWorkflowLibrary.getTrackingUrl(id);
-		logger.info( "APPLICATION ID ISS: " + applicationId);
 		applicationId = applicationId.substring( applicationId.lastIndexOf( "_") + 1, applicationId.lastIndexOf( "/"));
-		logger.info( "APPLICATION ID ISSS: " + applicationId);
 		return applicationId;
     }
 	

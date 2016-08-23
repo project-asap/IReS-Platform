@@ -56,7 +56,7 @@ public class LocalDataHelper {
   
   public static InputStream getFileOrResource(String name) {
     File f = new File(name);
-    LOG.info( "FILE: " + name + " has length " + f.length() + ". Does it exist?\t" + f.exists());
+    //LOG.info( "FILE: " + name + " has length " + f.length() + ". Does it exist?\t" + f.exists());
     if( f.exists()){
     	try{
         	return new FileInputStream(f);
@@ -125,11 +125,9 @@ public class LocalDataHelper {
   }
   
   private void copyToHdfs(String key, String localDataName) throws IOException {
-      LOG.info("Base dir: "+conf.get(APP_BASE_DIR));
-      LOG.info("Copying local file to hdfs key: "+key+" localDataName: "+localDataName);
       FileSystem fs = FileSystem.get(conf);
-      LOG.info( "FILESYSTEM IS: " + fs.getName() + "\tHOME DIRECTORY IS: " + fs.getHomeDirectory());
-      LOG.info( "APPLICATION ID IS: " + applicationId);
+      LOG.info( "Application " + applicationId + " has " + conf.get(APP_BASE_DIR) + " as base dir");
+      LOG.info( "Copying local file " + key + " to hdfs " + fs.getName() + " with home directory " + fs.getHomeDirectory());
       
     if (!localToHdfs.containsKey(localDataName)) {
       Path src = new Path(localDataName);
@@ -154,10 +152,8 @@ public class LocalDataHelper {
       appDir += applicationId.getId();
     }
     Path base = getAppPath(fs, appDir);
-    Path dst = new Path(base, name);
-    
-    LOG.info( "APPDIR IS: " + base + "\tFILE IS: " + dst);
-    
+    Path dst = new Path(base, name);  
+    //LOG.info( "APPDIR IS: " + base + "\tFILE IS: " + dst);
     return dst;
   }
 

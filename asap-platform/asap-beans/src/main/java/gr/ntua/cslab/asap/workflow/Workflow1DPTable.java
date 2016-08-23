@@ -65,6 +65,4 @@ public class Workflow1DPTable {
 	public HashMap<String,Double> getMetrics(Dataset dataset){
 		return dpMetrics.get(dataset);
 	}
-
-
 }

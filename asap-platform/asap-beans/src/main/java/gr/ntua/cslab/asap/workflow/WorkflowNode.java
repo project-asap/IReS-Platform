@@ -122,6 +122,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		WorkflowNode temp = null;
 		if(!isOperator){
 			List<WorkflowNode> p = dpTable.getPlan(dataset);
+			logger.info( toStringNorecursive() + " has as p: " + p);
 			if(p!=null){
 				ret.addAll(p);
 				return ret;
@@ -146,6 +147,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 
 		for(WorkflowNode in : inputs){
+			logger.info( toStringNorecursive() + " has inputs: " + inputs);
+			logger.info( "Input WorkflowNode: " + in);
 			List<WorkflowNode> l = in.materialize(materializedWorkflow,dpTable,getName());
 			materializedInputs.add(l);
 		}
@@ -226,29 +229,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									bestInput = in;
 								}
 							}
-							else{
-								/* vpapa: workflow materialization may fail due to properties Constraints.Inputx
-								 * i.e an operator's description file for some input x( or all of them)
-								 * doesn't match with the description file of Inputx. IReS either will find
-								 * a move operator to bridge the gap or it will not display any materialized
-								 * workflow. For this, precautionary, we write this event into the logs
-								*/
-								logger.info( "ERROR: For operator " + op.opName + " there "
-										+ " is an input mismatch. Check inside its"
-										+ " description file if all properties Constraints.Input"
-										+ " for some input x match with all the corresponding"
-										+ " properties of the input dataset x, probably a"
-										+ " materialized one, like the very first input( s)"
-										+ " of the workflow. This message should be taken"
-										+ " as a real error when the materialization seems"
-										+ " to succeed when pushing 'Materialize Workflow'"
-										+ " button but the workflow is not displayed at all.");
-								logger.info( "Input dataset: " + in.dataset);
-								logger.info( "Input to be matched: " + tempInput);
-								//one input checked, go for the next
-								logger.info( "checkedInputs: " + checkedInputs);
-								logger.info( "materializedInputs.size(): " + materializedInputs.size());
-								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());								
+							else{						
 								//check move
 								//hdfs-local move
 								/*WorkflowNode moveNoOp = new WorkflowNode(false, false);
@@ -258,7 +239,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 								String fs = temp2.getParameter("Constraints.Input"+i+".Engine.FS");
 								if(fs.equals("local")){
 								}*/
-
+								//one input checked, go for the next
+								logger.info( "checkedInputs: " + checkedInputs);
+								logger.info( "materializedInputs.size(): " + materializedInputs.size());
+								logger.info( "materializedInputs.get("+i+").size(): " + materializedInputs.get(i).size());
 								//generic move
 								logger.info("Check move ");
 								List<Operator> moveOps = OperatorLibrary.checkMove(in.dataset, tempInput);
@@ -321,6 +305,26 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 										}
 									}
 								}
+								else{
+									/* vpapa: workflow materialization may fail due to properties Constraints.Inputx
+									 * i.e an operator's description file for some input x( or all of them)
+									 * doesn't match with the description file of Inputx. IReS either will find
+									 * a move operator to bridge the gap or it will not display any materialized
+									 * workflow. For this, precautionary, we write this event into the logs
+									*/
+									logger.info( "ERROR: For operator " + op.opName + " there "
+											+ " is an input mismatch. Check inside its"
+											+ " description file if all properties Constraints.Input"
+											+ " for some input x match with all the corresponding"
+											+ " properties of the input dataset x, probably a"
+											+ " materialized one, like the very first input( s)"
+											+ " of the workflow. This message should be taken"
+											+ " as a real error when the materialization seems"
+											+ " to succeed when pushing 'Materialize Workflow'"
+											+ " button but the workflow is not displayed at all.");
+									logger.info( "Input dataset: " + in.dataset);
+									logger.info( "Input to be matched: " + tempInput);	
+								}
 							}
 						}
 						if(!inputMatches){
@@ -328,7 +332,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							/* vpapa: may be there exist other sets of input like in the
 								case of parallel workflows e.g. Wind_Demo_o_Postgres. Break
 								if all inputs have been checked. Until then continue
-							*/
+							
 							if( i < inputs){
 								logger.info( "Trying next inputs");
 								continue;
@@ -336,6 +340,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							else{
 								break;
 							}
+							*/
+							break;
 						}
 						//System.out.println(materializedInputs.get(i)+"fb");
 						//tempInputNode.addInputs(materializedInputs.get(i));

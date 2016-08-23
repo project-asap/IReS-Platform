@@ -158,9 +158,6 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   		HashMap<String,String> operators = new HashMap<String, String>();
   		FileSystem fs = FileSystem.get( conf);
   		File f = null;
-  		  		
-  		LOG.info( "FILESYSTEM IS: " + fs.getName() + "\tHOME DIRECTORY IS: " + fs.getHomeDirectory());
-        LOG.info( "APPLICATION ID IS: " + applicationId);
   		
   		materializedWorkflow = new MaterializedWorkflow1( this.jobName, "/tmp");
   		materializedWorkflow.readFromWorkflowDictionary( workflow);
@@ -205,16 +202,14 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   
     private static String copyFromHdfs( String hdfsDataName, Configuration conf) throws IOException {
     	String APP_BASE_DIR = "kitten.app.base.dir";
-        LOG.info("Base dir: " + conf.get(APP_BASE_DIR));
-        LOG.info("Copying hdfs file: " + hdfsDataName + " to local");
         FileSystem fs = FileSystem.get(conf);
-        LOG.info( "FILESYSTEM IS: " + fs.getName() + "\tHOME DIRECTORY IS: " + fs.getHomeDirectory());      
         hdfsDataName = hdfsDataName.substring( hdfsDataName.indexOf( "/user/"));
-        LOG.info("Copying hdfs file: " + hdfsDataName + " to local");
+
         Path src = new Path( hdfsDataName);
         Path dst = new Path( "./" + src.getName());
-        LOG.info("Copying hdfs file: " + hdfsDataName + " to local: " + dst);
         fs.copyToLocalFile( src, dst);
+        LOG.info( "Application has " + conf.get(APP_BASE_DIR) + " as base dir");
+        LOG.info( "Copied hdfs file " + hdfsDataName + " locally to " + dst);
         return dst.toString();
     }
     

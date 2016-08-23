@@ -474,11 +474,13 @@ protected ContainerLaunchContextFactory factory;
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
 
+    /*
     LOG.info( "AFTER WORKFLOW REPLAN\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
-
+	*/
+    
     LOG.info( "REPLANNED WORKFLOW\n");
     for( OperatorDictionary opdd : replanned_workflow.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
