@@ -36,7 +36,7 @@ public class OperatorDictionary {
 	private static final Log logger = LogFactory.getLog( OperatorDictionary.class);
 
 	private String name, cost, execTime, status, isOperator, isAbstract, description, abstractName;
-	private boolean isTarget;
+	private boolean isTarget, isReplanned;
 	private List<String> input, output;
 
 	public OperatorDictionary() {
@@ -54,6 +54,7 @@ public class OperatorDictionary {
 		this.isAbstract = isAbstract;
 		this.description = description;
 		this.isTarget = isTarget;
+		this.isReplanned = false;
 		input = new ArrayList<String>();
 		output = new ArrayList<String>();
 	}
@@ -74,6 +75,14 @@ public class OperatorDictionary {
 		return isTarget;
 	}
 
+	public boolean isReplanned(){
+		return isReplanned;
+	}
+	
+	public void setReplanned(boolean isReplanned) {
+		this.isReplanned = isReplanned;
+	}
+	
 	public void setTarget(boolean isTarget) {
 		this.isTarget = isTarget;
 	}
@@ -219,7 +228,7 @@ public class OperatorDictionary {
 				}
 				return value;
 			}
-			logger.info( "Operator " + name + "has not any property called " + property + ".");
+			logger.info( "Operator " + name + " has not any property called " + property + ".");
 			logger.info( "If you are sure that this property exists, have you provided it with the correct spelling?");
 			return null;
 		}

@@ -134,6 +134,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			temp = materializedWorkflow.materilizedDatasets.get(getName());
 			if(temp!=null){
 				logger.info("Found existing dataset : " + toStringNorecursive());
+				logger.info( "Dataset Tree: " + temp.dataset.datasetTree);
 				ret.add(temp);
 				List<WorkflowNode> plan = new ArrayList<WorkflowNode>();
 				plan.add(temp);
@@ -254,6 +255,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 										WorkflowNode moveNode = new WorkflowNode(true, false,"");
 										moveNode.setOperator(m);
 										logger.info( "Move node " + moveNode.getName() + " added input:\t" + in);
+										//logger.info( "dataset tree " + in.dataset.datasetTree);
 										moveNode.addInput(in);
 										List<WorkflowNode> lin= new ArrayList<WorkflowNode>();
 										lin.add(in);
@@ -934,6 +936,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						arg=newArg;
 					}
 					else{
+						//logger.info( "DATASET TREE: " + n.dataset.datasetTree);
 						String newArg = n.dataset.getParameter("Execution."+parameter);
 						logger.info( "newArg: " + newArg);
 						if( newArg == null){

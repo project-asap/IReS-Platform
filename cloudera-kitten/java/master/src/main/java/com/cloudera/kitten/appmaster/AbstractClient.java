@@ -1,6 +1,7 @@
 package com.cloudera.kitten.appmaster;
 
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -187,7 +188,8 @@ public class AbstractClient {
 	            builder.append(new String(buffer,0,count));
 	        }
 	        xmlStr = new StringBuffer( builder.toString());
-	        running_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
+	        running_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
+		running_workflow.replaceDescription( "<br>", "\n");
 	        //LOG.info( "Running workflow: " + running_workflow);
 	} 
     catch (Exception e)
@@ -221,7 +223,6 @@ public class AbstractClient {
 	            builder.append(new String(buffer,0,count));
 	        }
 	        applicationId = Integer.parseInt( builder.toString());
-	        LOG.info( "APPLICATION ID IS: " + applicationId);
 	} 
     catch (Exception e)
     {
@@ -258,8 +259,8 @@ public class AbstractClient {
 	            builder.append(new String(buffer,0,count));
 	        }
 	        xmlStr = new StringBuffer( builder.toString());
-	        to_run_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString() ) ) );
-	        //LOG.info( "To run workflow: " + to_run_workflow);
+	        to_run_workflow = (WorkflowDictionary) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
+		to_run_workflow.replaceDescription( "<br>", "\n");
 	} 
     catch (Exception e)
     {

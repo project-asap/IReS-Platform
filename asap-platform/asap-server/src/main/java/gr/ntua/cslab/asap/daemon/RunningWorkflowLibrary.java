@@ -296,7 +296,7 @@ public class RunningWorkflowLibrary {
 		//it is assumed that the nodes in 'sn' reflect the physical order of workflow operators
 		//remove the next two data sets that is assumed that correspond to the last completed operator input and output
 		//and update the 'sn' also
-		int i = sn.size() -1;
+		int i = sn.size() - 1;
 		materializedDatasets.remove( sn.get( i));
 		logger.info( "Datasets: " + materializedDatasets);
 		materializedDatasets.remove( sn.get( i - 1));

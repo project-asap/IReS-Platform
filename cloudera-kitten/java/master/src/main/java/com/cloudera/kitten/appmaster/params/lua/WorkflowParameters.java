@@ -172,7 +172,8 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   			}
   		}
   		for(OperatorDictionary op : workflow.getOperators()){
-  			if(op.getStatus().equals("warn") && op.getInput().isEmpty()){
+  			LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput() + "\tReplanned:\t" + op.isReplanned());
+  			if(op.getStatus().equals("warn") && ( op.getInput().isEmpty() || op.isReplanned())){
   				//we are dealing with the first dataset of the workflow which
   				//has not have an input i.e. op.getInput().isEmpty() is true
   				op.setStatus("completed");

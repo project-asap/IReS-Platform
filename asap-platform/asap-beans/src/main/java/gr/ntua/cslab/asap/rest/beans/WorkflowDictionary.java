@@ -222,6 +222,7 @@ public class WorkflowDictionary {
 				else {
 					//set this node at 'warn' state itself
 					operators.get( indexes.get( updates.get( i))).setStatus( "warn");
+					operators.get( indexes.get( updates.get( i))).setReplanned( true);
 					//set the output datasets of the starting node in status 'warn'
 					this.setOutputsRunning( updates.get( i), "warn");
 				}
@@ -252,6 +253,7 @@ public class WorkflowDictionary {
 		}
 		
 		//update the status of the 'failed' operators due to lack of alternative
+		/*
 		if( !( updates.failedops == null || updates.failedops.isEmpty())){
 			for( String fop : updates.failedops){
 				logger.info( "FAILED OPERATOR: " + fop);
@@ -270,6 +272,7 @@ public class WorkflowDictionary {
 				}
 			}
 		}
+		*/
 		
 		//get a mapping between operators and their position inside the WorkflowDictionary
 		getIndexes();
