@@ -43,7 +43,7 @@ public class YarnMetricsClient {
 	public YarnMetricsClient() {
         super();
 
-    }
+	    }
 	
 	public static String issueRequestYarnClusterMetrics( YarnConfiguration conf) throws Exception {
 		String masterDNS = conf.get( "yarn.resourcemanager.webapp.address");
@@ -55,8 +55,6 @@ public class YarnMetricsClient {
 		JAXBContext jaxbContext = JAXBContext.newInstance( HashMap.class );
 		Unmarshaller u = jaxbContext.createUnmarshaller();
 		try {
-			//LOG.info("Retrieving metrics from YARN, issuing urlString: " + urlString);
-			//System.out.println("ClusterStatus Issuing urlString: " + urlString);
 			URL url = new URL(urlString);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		
@@ -73,14 +71,63 @@ public class YarnMetricsClient {
 				builder.append(new String(buffer,0,count) + "\n");
 			}
 			xmlStr = new StringBuffer( builder.toString());
-			//metrics = (ConcurrentHashMap< String, String>) u.unmarshal( new StreamSource( new StringReader( xmlStr.toString())));
-			//LOG.info( "Retrieved metrics: " + metrics);
 		} 
 		catch (Exception e)
 		{
 				LOG.error( e.getStackTrace());
 				e.printStackTrace();
 		}
-		    return builder.toString();
+	    return builder.toString();
+	}
+
+	public static String issueRequestApplicationLogs( YarnConfiguration conf, String applicationId) throws Exception {
+		String masterDNS = conf.get( "yarn.resourcemanager.webapp.address");
+		String urlString = "http://" + masterDNS + "/ws/v1/cluster/apps/" + applicationId;
+		StringBuilder builder = null;
+		String xmlStr = null;
+		InputStream in = null;
+		HashMap< String, String> metrics = new HashMap();
+		JAXBContext jaxbContext = JAXBContext.newInstance( HashMap.class );
+		Unmarshaller u = jaxbContext.createUnmarshaller();
+		try {
+			URL url = new URL(urlString);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		
+			con.setRequestMethod("GET");
+			con.setRequestProperty("accept", "application/xml");
+			con.setRequestProperty("Content-type", "application/xml");	        
+			con.setDoInput(true);
+		
+			builder = new StringBuilder();
+			in = con.getInputStream();
+			byte[] buffer = new byte[1024];
+			int count;
+			while((count = in.read(buffer))!=-1) {
+				builder.append(new String(buffer,0,count) + "\n");
+			}
+			String[] tmetrics = null;
+			xmlStr = builder.toString();
+			xmlStr = xmlStr.replaceAll( "<\\?[^>]+\\?>", "" );
+                    	xmlStr = xmlStr.replaceAll( "<app>", "");
+			xmlStr = xmlStr.replaceAll( "</[^>]+>", "\n");
+			xmlStr = xmlStr.replaceAll( "[<]+", "");
+			xmlStr = xmlStr.replaceAll( "[>]+", " ");
+			tmetrics = xmlStr.split( "\n");
+			//System.out.println( "LOGS ARE:\n" + xmlStr);
+			//System.out.println( "METRICS\n");
+			for( int i = 0; i < tmetrics.length; i++){
+				//System.out.println( tmetrics[ i]);
+				if( !tmetrics.equals( "") && tmetrics[ i].trim().indexOf( " ") > -1){
+					metrics.put( tmetrics[ i].split(" ")[ 0], tmetrics[ i].split( " ")[ 1]);
+				}
+			}
+			//System.out.println( "METRICS ARE: " + metrics);
+		} 
+		catch (Exception e)
+		{
+				LOG.error( e.getStackTrace());
+				e.printStackTrace();
 		}
+	    return metrics.get( "amContainerLogs");
+	}
 }

@@ -65,13 +65,18 @@ public class RunningWorkflows {
     }
 
 	@GET
-	@Path("{id}/applicationId")
-    public String getApplicationId(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
-		String applicationId = RunningWorkflowLibrary.getTrackingUrl(id);
-		applicationId = applicationId.substring( applicationId.lastIndexOf( "_") + 1, applicationId.lastIndexOf( "/"));
-		return applicationId;
+	@Path("{id}/applicationName")
+    public String getApplicationName(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
+		String appname = RunningWorkflowLibrary.getTrackingUrl(id);
+		return appname.substring( appname.indexOf( "application_"));
     }
 	
+	@GET
+	@Path("{id}/applicationLogs")
+    public String getApplicationLogs(@PathParam("id") String id) throws Exception {
+		return RunningWorkflowLibrary.getApplicationLogs(id);
+    }
+
 	@GET
 	@Path("{id}/state")
     public String getState(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
@@ -102,7 +107,6 @@ public class RunningWorkflows {
 	@POST
     @Path("report/{id}/")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-
     public void refreshReport(@PathParam("id") String id, @Context HttpServletRequest request, InputStream input) throws IOException, Exception {
 		logger.info("Update state: "+id);
 		WorkflowDictionary workflow = Utils.unmarshall(input);

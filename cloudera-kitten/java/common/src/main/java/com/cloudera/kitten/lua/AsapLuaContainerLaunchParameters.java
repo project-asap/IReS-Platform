@@ -86,20 +86,20 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   
   public AsapLuaContainerLaunchParameters(LuaWrapper lv, String name, Configuration conf,
       Map<String, URI> localFileUris, Extras extras, MaterializedWorkflow1 workflow, String opName) throws IOException {
-	  this.name=name;
-    this.lv = lv;
-    this.conf = conf;
-    this.localFileUris = localFileUris;
-    this.extras = extras;
-    this.workflow = workflow;
-    this.opName = opName;
-    this.operator = workflow.nodes.get(opName);
-    /*
-    LOG.info( "ASAP OPERATOR: " + operator);
-    LOG.info( "ASAP OPERATOR: " + operator.operator.opName);
-    LOG.info( "ASAP OPERATOR: " + operator.operator.optree);
-    */
-    globalContainerId=0;
+	  	this.name=name;
+	    this.lv = lv;
+	    this.conf = conf;
+	    this.localFileUris = localFileUris;
+	    this.extras = extras;
+	    this.workflow = workflow;
+	    this.opName = opName;
+	    this.operator = workflow.nodes.get(opName);
+	    /*
+	    LOG.info( "ASAP OPERATOR: " + operator);
+	    LOG.info( "ASAP OPERATOR: " + operator.operator.opName);
+	    LOG.info( "ASAP OPERATOR: " + operator.operator.optree);
+	    */
+	    globalContainerId=0;
   }
 
 
@@ -143,12 +143,6 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
   }
 
   public int getMemory() {
-	  /*
-	  LOG.info( "WorkflowNode Operator: " + operator);
-	  LOG.info( "WorkflowNode Operator: " + operator.operator.opName);
-	  LOG.info( "WorkflowNode Operator: " + operator.operator);
-	  LOG.info( "WorkflowNode Operator Optree: " + operator.operator.optree);
-	  */
       String memory = operator.operator == null ? null: operator.operator.getParameter("Optimization.memory");
       if (memory == null)
           memory = operator.operator.getParameter("SelectedParam.memory");
@@ -210,14 +204,11 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
       localResources.put(LuaFields.KITTEN_JOB_XML_FILE, confRsrc);
     }
     
-
-    
     addScript(localResources);
     addOperatorInputs(localResources);
     //LOG.info("localFileUris: "+localFileUris);
     LOG.info("localResources: "+localResources.keySet());
-    //System.out.println(localResources);
-    
+    //System.out.println(localResources); 
     
     return localResources;
   }
@@ -249,7 +240,7 @@ public class AsapLuaContainerLaunchParameters implements ContainerLaunchParamete
 	  }*/
   }
 
-private void addScript(Map<String, LocalResource> lres) throws IOException {
+  private void addScript(Map<String, LocalResource> lres) throws IOException {
 	  LocalResource nl = constructScriptResource();
 	  lres.put(execScript, nl);
   }
@@ -385,7 +376,6 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     if (cmds.isEmpty()) {
       LOG.fatal("No commands found in container!");
     }
-    
 
     dir = localFileUris.get(LuaFields.KITTEN_JOB_XML_FILE).getPath();
     dir = dir.substring(0, dir.lastIndexOf("/"));
@@ -420,7 +410,6 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     }
 
     //List<String> stageInFiles = getStageInFiles();
-    
     //System.out.println("stageOutFiles: "+stageOutFiles);
     cmds.add("ls -ltr");
     //cmds.add("ls -ltr asapData/");
@@ -445,7 +434,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
     return cmds;
   }
 
-private String writeExecutionScript(List<String> cmds) throws IOException {
+  private String writeExecutionScript(List<String> cmds) throws IOException {
 	  UUID id = UUID.randomUUID();
 	  String ret = "script_"+id+".sh";
 	  File fout = new File("/tmp/"+ret);

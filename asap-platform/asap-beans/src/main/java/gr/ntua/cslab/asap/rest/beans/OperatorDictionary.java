@@ -163,37 +163,6 @@ public class OperatorDictionary {
 		this.abstractName = abstractName;
 	}
 
-	/*vpapa: retrieve the engine where the operator will run and for which it is written for
-	
-	public String getEngine(){
-		String description = null;
-		String engine = null;
-		int engine_index = 0;
-
-		description = this.getDescription();
-		//to ensure that the property "Constraints.Engine=OperatorEngine" will be
-		//at this format and not any else like "Constraints.Engine = OperatorEngine"
-        description = description.replaceAll( " ", "" );
-        //in case description comes in an html format
-        description = description.replaceAll( "<br>", "\n" );
-        logger.info( "Description\n\n" + description);
-		engine_index = description.indexOf( "Constraints.Engine=");
-		logger.info( "Engine index " + engine_index);
-		if( engine_index == -1){
-			//logger.info( "Operator " + name + "has not any engine specified.");
-			return null;
-		}
-		//engine = Constraints.Engine=OperatorEngine
-		engine = description.substring( engine_index, description.indexOf( "\n", engine_index));
-        //System.out.println( "Engine " + engine);
-		//engine=OperatorEngine
-		engine = engine.split( "=")[ 1].trim();
-        //System.out.println( "Engine " + engine);
-		logger.info( "Operator " + name + " has " + engine + " as specified engine.");
-
-		return engine;
-	}
-	*/
 	/**
 	 * Returns the value of the specified property from operator's description
 	 * 
@@ -242,5 +211,4 @@ public class OperatorDictionary {
 
 		return value;
 	}
-
 }

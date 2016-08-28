@@ -63,7 +63,6 @@ public class ClusterStatusLibrary {
 		else
 			return ret;
 	}
-	
     
     @GET
     @Produces(MediaType.TEXT_HTML)

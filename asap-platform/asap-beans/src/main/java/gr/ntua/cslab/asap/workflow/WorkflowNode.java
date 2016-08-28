@@ -134,7 +134,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			temp = materializedWorkflow.materilizedDatasets.get(getName());
 			if(temp!=null){
 				logger.info("Found existing dataset : " + toStringNorecursive());
-				logger.info( "Dataset Tree: " + temp.dataset.datasetTree);
+				//logger.info( "Dataset Tree: " + temp.dataset.datasetTree);
 				ret.add(temp);
 				List<WorkflowNode> plan = new ArrayList<WorkflowNode>();
 				plan.add(temp);
@@ -148,8 +148,8 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 
 		for(WorkflowNode in : inputs){
-			logger.info( toStringNorecursive() + " has inputs: " + inputs);
-			logger.info( "Input WorkflowNode: " + in);
+			//logger.info( toStringNorecursive() + " has inputs: " + inputs);
+			//logger.info( "Input WorkflowNode: " + in);
 			List<WorkflowNode> l = in.materialize(materializedWorkflow,dpTable,getName());
 			materializedInputs.add(l);
 		}
@@ -308,19 +308,17 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 									}
 								}
 								else{
-									/* vpapa: workflow materialization may fail due to properties Constraints.Inputx
-									 * i.e an operator's description file for some input x( or all of them)
-									 * doesn't match with the description file of Inputx. IReS either will find
-									 * a move operator to bridge the gap or it will not display any materialized
-									 * workflow. For this, precautionary, we write this event into the logs
+									/* vpapa: maybe there is in an error in description files or
+									 * no appropriate move operator has been defined correctly
 									*/
 									logger.info( "ERROR: For operator " + op.opName + " there "
-											+ " is an input mismatch. Check inside its"
+											+ " is an input mismatch.\n 1. Check inside its"
 											+ " description file if all properties Constraints.Input"
 											+ " for some input x match with all the corresponding"
 											+ " properties of the input dataset x, probably a"
 											+ " materialized one, like the very first input( s)"
-											+ " of the workflow. This message should be taken"
+											+ " of the workflow.\n 2. Check if an appropriate move"
+											+ " operator has been defined correctly.\n This message should be taken"
 											+ " as a real error when the materialization seems"
 											+ " to succeed when pushing 'Materialize Workflow'"
 											+ " button but the workflow is not displayed at all.");
@@ -331,18 +329,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						}
 						if(!inputMatches){
 							inputsMatch=false;
-							/* vpapa: may be there exist other sets of input like in the
-								case of parallel workflows e.g. Wind_Demo_o_Postgres. Break
-								if all inputs have been checked. Until then continue
-							
-							if( i < inputs){
-								logger.info( "Trying next inputs");
-								continue;
-							}
-							else{
-								break;
-							}
-							*/
 							break;
 						}
 						//System.out.println(materializedInputs.get(i)+"fb");
@@ -376,21 +362,16 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							else{
 								bin.dataset.copyExecVariables(tin.dataset,0);
 								bin.dataset.copyOptimization(tin.dataset);
-
 							}
 							i++;
 						}
 
-
-						/* vpapa: move out some common defitions in the following if else
-							statement
-						*/
 						Double prevCost = 0.0;
 						Double optCost	= 0.0;
 						HashMap<String,Double> nextMetrics = null;
 						HashMap<String,Double> bestInputMetrics = new HashMap<String, Double>();
 						/* vpapa: the operator may not have any inputs if it is a generator for
-							example. Thus minCostsForInput is
+							example. Thus minCostsForInput is empty
 						*/
 						if( !minCostsForInput.isEmpty()){
 							for(String m : minCostsForInput.get(0).keySet()){
@@ -430,9 +411,7 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 						prevCost 	= computePolicyFunction(bestInputMetrics, materializedWorkflow.function);
 						nextMetrics = op.getOptimalPolicyCost(bestInputMetrics, bestInputs, materializedWorkflow.function);
 						
-						
-						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);
-						
+						optCost = computePolicyFunction(nextMetrics, materializedWorkflow.function);						
 
 						temp.setExecTime(nextMetrics.get("execTime")-bestInputMetrics.get("execTime"));
 						temp.setOptimalCost(optCost-prevCost);
@@ -863,7 +842,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 	}
 
-
 	public String getInMetrics() {
 		
 		String ret ="";
@@ -905,7 +883,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		if(!isOperator)
 			return "";
 		else{
-			//logger.info( "WORKFLOWNODE OPERATOR: " + getName());
 			String ret = operator.getParameter( "Execution.Arguments.number");
 			if( ret == null){
 				logger.info( "WARNING: For operator " + getName() + " the amount of execution arguments"
@@ -973,14 +950,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 					arg=newArg;
 					
 				}
-				/* vpapa: an execution argument may be surrounded by double or single quotes
-					in which case no double or single quotes should be added and the argument
-					should be taken as is. If the argument is not surrounded by double quotes
-					and it also contains spaces, then it must be contained by double or single
-					quotes. This way bash interpreter can understand correctly the execution
-					arguments and the operator can be executed if no other error rises.
+				/* vpapa: enable execution arguments be surrounded by double or single quotes
+					or not into operator's description file while bash interpreter can understand
+					them correctly
 				*/
-				//does argument starts and ends with double or single quotes?
 				if( ( arg.startsWith( "\"") && arg.endsWith( "\"")) || ( arg.startsWith( "'") && arg.endsWith( "'"))){
 					//return as is
 					ret += arg + " ";
@@ -992,15 +965,15 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 							ret += "\"" + arg + "\"" + " ";
 						}
 						else{
-							//argument is not surrounded by double( single) quotes and it does
-						//not contain spaces
-						ret += arg + " ";
+							//return as is
+							ret += arg + " ";
 					}  	
 				}
 			}
 			return ret;
 		}
 	}
+	
 	public List<String> getOutputFiles() {
 		List<String> ret = new ArrayList<String>();
 		if(!isOperator)
@@ -1070,10 +1043,6 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		}
 	}
 
-	private boolean isDataset() {
-		return !isOperator;
-	}
-
 	public Double getExecTime() {
 		if(isOperator && !isAbstract){
     		return execTime;
@@ -1082,5 +1051,4 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
     		return 0.0;
 		}
 	}
-
 }

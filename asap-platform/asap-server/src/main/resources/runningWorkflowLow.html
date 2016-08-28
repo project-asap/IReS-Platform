@@ -3,8 +3,11 @@
   var graphId = setInterval(getGraph, 1000);
   var stateId = setInterval(getState, 1000);
   var trackingURLId = setInterval(getTrackingURL, 1000);
+  var logs = setInterval( getApplicationLogs, 1000);
   foundURL=false;
   stateFinished=false;
+  foundLogs=false;
+
 	function getGraph() {
 		if(stateFinished){
 			clearInterval(graphId);
@@ -80,7 +83,36 @@
 		xmlhttp.open("GET",resource+"/trackingURL",true);
 		xmlhttp.send();
   	}
+
+	function getApplicationLogs() {
+		if(foundLogs){
+			clearInterval(logs);
+			return;
+		}
+  		var xmlhttp;
+		if (window.XMLHttpRequest)
+  		{// code for IE7+, Firefox, Chrome, Opera, Safari
+  			xmlhttp=new XMLHttpRequest();
+  		}
+		else
+  		{// code for IE6, IE5
+  			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  		}
+		xmlhttp.onreadystatechange=function()
+  		{
+    		document.getElementById("amContainerLogs").innerHTML=xmlhttp.responseText;
+    		document.getElementById("amContainerLogs").href=xmlhttp.responseText;
+    		if(!(xmlhttp.responseText.length === 0)){
+    			foundLogs=true;
+    		}
+    			
+  		}
+		xmlhttp.open("GET",resource+"/applicationLogs",true);
+		xmlhttp.send();
+  	}
+
   getTrackingURL();
+  getApplicationLogs();
   getState();
   getGraph();
   draw();

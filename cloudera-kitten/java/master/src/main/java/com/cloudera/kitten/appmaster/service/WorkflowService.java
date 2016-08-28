@@ -86,12 +86,9 @@ public class WorkflowService extends
   public AMRMClientAsync<ContainerRequest> resourceManager;
   private boolean hasRunningContainers = false;
   private Throwable throwable;
-  public HashMap< String, String> services_n_status = null;
-  public HashMap< String, String> replanned_operators = null;
   public static boolean isReplanning = false;
   
-  
-protected ContainerLaunchContextFactory factory;
+  protected ContainerLaunchContextFactory factory;
 
   public WorkflowService(WorkflowParameters parameters, Configuration conf) {
 	this.trackers = new HashMap<String, ContainerTracker>();
@@ -185,7 +182,6 @@ protected ContainerLaunchContextFactory factory;
     }    	
   }
 
-
   @Override
   protected Scheduler scheduler() {
     return Scheduler.newFixedRateSchedule(0, 1, TimeUnit.SECONDS);
@@ -194,24 +190,16 @@ protected ContainerLaunchContextFactory factory;
   @Override
   protected void runOneIteration() throws Exception {
   	String service = null;
-	String[] response = null;
-	boolean replan = false;
-	
+    HashMap< String, String> services_n_status = null;
+    
 	AbstractClient.issueRequest(conf, parameters.jobName, parameters.workflow);
-    response = AbstractClient.issueRequestClusterStatus( conf).split( "\n");
-    services_n_status = new HashMap<String, String>();
-    for( String servic: response ){
-        services_n_status.put( servic.split( ":")[ 0].trim(), servic.split( ":")[ 1].trim());
-    }
+	services_n_status = AbstractClient.issueRequestClusterStatus( conf);
 
-    //read workflow operators' state until the running operators are found and if are found
-    //check that operators' needed services are up. If these services are not up replan
-    //workflow execution
+    //check if for at least one operator its engine is down or not existent
     for( OperatorDictionary opd : parameters.workflow.getOperators()){
         if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true")){
             service = opd.getPropertyValue( "Constraints.Engine");
             //System.out.println( "\n\nService is " + service);
-
             if( service != null){
                 //System.out.println( "Services and their status " + services_n_status.get( service ));
                 if( services_n_status.get( service) == null){
@@ -220,37 +208,21 @@ protected ContainerLaunchContextFactory factory;
                 	LOG.info( "or add this engine to cluster's services.");
                 }
                 else {
-                	if( services_n_status.get( service).toString().equals( "true")){
-                		LOG.info( "Service " + service + " is up for operator " + opd.getName());	
+                	if( ! services_n_status.get( service).toString().equals( "true")){
+                    	LOG.info( "ApplicationMaster got in 'replanning' state");
+                    	ApplicationMaster.isReplanning = true;
+                    	//parameters.workflow = reBuildPlan( opd.getName());
+                    	parameters.workflow = reBuildPlan( service);
+                    	enforcePlan();
+                    	ApplicationMaster.isReplanning = false;
+                  	  	LOG.info( "ApplicationMaster got out from 'replanning' state");
+                    	//since one operator failed and replan has been requested there is no reason to search for other
+                        //failed operators since the replan returns a "global" plan
+                        break;
                 	}
                     else{
-                        //LOG.info( "Service " + service + " is down for operator " + opd.getName());
-                        //LOG.info( "Workflow " + parameters.jobName + " should be replanned.");
-                        //replan for this operator if it hasn't replanned earlier
-			/*
-                        if( replanned_operators == null){
-                        	replanned_operators = new HashMap< String, String>();
-                        	replan = true;
-                        }
-                        else{
-    	                    if( replanned_operators.isEmpty() || replanned_operators.get( opd.getName()) == null){
-    	                    	replan = true;
-    	                    }
-                        }
-                        if( replan){
-			*/
-                        	LOG.info( "ApplicationMaster got in 'replanning' state");
-                        	ApplicationMaster.isReplanning = true;
-                        	//parameters.workflow = reBuildPlan( opd.getName());
-                        	parameters.workflow = reBuildPlan( service);
-                        	enforcePlan();
-                        	ApplicationMaster.isReplanning = false;
-                      	  	LOG.info( "ApplicationMaster got out from 'replanning' state");
-                        	//since one operator failed and replan has been requested there is no reason to search for other
-                            //failed operators since the replan returns a "global" plan
-                            break;
-                        //}//end of if( replan)
-                    }//end of if( services_n_status.get( service).toString().equals( "true")) but else part
+                		LOG.info( "Service " + service + " is up for operator " + opd.getName());
+                    }
                 }//end of if( services_n_status.get( service) == null) but else part
             }//end of if( service != null)
         }//end ofMaterialzedWorkflow1 if( opd.getStatus().toLowerCase().equals( "running") && opd.getIsOperator().toLowerCase().equals( "true"))
@@ -361,7 +333,7 @@ protected ContainerLaunchContextFactory factory;
   private void enforcePlan() throws Exception {
 	  FinalApplicationStatus status;
 	  String message = null;
-	  LOG.info( "CURRENT TRACKERS BEFORE ENFORCING: " + trackers);
+	  //LOG.info( "CURRENT TRACKERS BEFORE ENFORCING: " + trackers);
 	  
 	  //kill the failed trackers( status 'failed') and empty their nextTrackers field assuming that
 	  //the next trackers depend on the failed one
@@ -386,15 +358,16 @@ protected ContainerLaunchContextFactory factory;
 		  }
 	  }
 	  else{
-		  int applicationId = AbstractClient.issueRequestReport( conf, parameters.jobName);
+		  int applicationId = AbstractClient.issueRequestApplicationId( conf, parameters.jobName);
 		  parameters.resetWorkflowParameters( applicationId);
 		  LOG.info( "WORKFLOW PARAMETERS HAVE BEEN UPDATED");
-		  LOG.info( "CREATING TRACKERS");
+		  //LOG.info( "CREATING TRACKERS");
 		  factory = new ContainerLaunchContextFactory( ApplicationMaster.initial_registration.getMaximumResourceCapability());
 
 		  trackers = parameters.createTrackers(this);
-		  LOG.info( "NEWLY CREATED TRACKERS: " + trackers);
 		  /*
+		  LOG.info( "NEWLY CREATED TRACKERS: " + trackers);
+		  
 		  LOG.info( "PARAMETERS WORKFLOW\n");
 		  for( OperatorDictionary opdd : parameters.workflow.getOperators()){
 			LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
@@ -406,11 +379,8 @@ protected ContainerLaunchContextFactory factory;
 		  }
 		  LOG.info( "All newly trackers have been initialized: " + trackers);
 		  LOG.info( "REPLANNED WORKFLOW HAS STARTED");
-
-		 //this.hasRunningContainers = true;
 	  }
   }
-
   
   /**
    * Builds an alternative path for workflow execution.
@@ -432,7 +402,7 @@ protected ContainerLaunchContextFactory factory;
 	before_workflow_replanning = parameters.workflow;
         after_workflow_replanning = AbstractClient.issueRequestRunningWorkflow( conf, parameters.jobName);
 
-        //before updating the workflow being executed update the status of all operator having
+    //before updating the workflow being executed update the status of all operator having
 	//their service failed and all update their inputs and outputs as failed too
 	for( OperatorDictionary opd : after_workflow_replanning.getOperators()){
 		if( opd.getIsOperator().toLowerCase().equals( "true") && ( opd.getStatus().equals( "running") || opd.getStatus().equals( "warn")) && opd.getPropertyValue( "Constraints.Engine").equals( failedservice)){
@@ -442,12 +412,12 @@ protected ContainerLaunchContextFactory factory;
 			lis = linput.listIterator();
 			while( lis.hasNext()){
 				inname = lis.next();
-				LOG.info( "UPDATING FAILED Input: " + inname);
+				//LOG.info( "UPDATING FAILED Input: " + inname);
 				after_workflow_replanning.getOperator( inname).setStatus( "failed");
 			}
 			//and its outputs
 			for( String opout : after_workflow_replanning.getOutputs( opd.getName())){
-				LOG.info( "UPDATING FAILED  Output: " + opout);
+				//LOG.info( "UPDATING FAILED  Output: " + opout);
 				after_workflow_replanning.getOperator( opout).setStatus( "failed");
 			}
 		}
@@ -463,7 +433,7 @@ protected ContainerLaunchContextFactory factory;
 			while( lis.hasNext()){
 				inname = lis.next();
 				if( after_workflow_replanning.getOperator( inname).getStatus().equals( "warn")){
-					LOG.info( "UPDATING STOPPED Input: " + inname);
+					//LOG.info( "UPDATING STOPPED Input: " + inname);
 					after_workflow_replanning.getOperator( inname).setStatus( "stopped");					
 				}
 			}
@@ -476,26 +446,23 @@ protected ContainerLaunchContextFactory factory;
     AbstractClient.issueRequestReplan( conf, parameters.jobName);
     //retrieve this new workflow
     replanned_workflow = AbstractClient.issueRequestToRunWorkflow( conf, parameters.jobName);
-    
+    after_workflow_replanning.initiateUpdate( replanned_workflow);
+    /*
     LOG.info( "WORKFLOW TO REPLAN is\n");
     for( OperatorDictionary opdd : before_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
 
-    /*
     LOG.info( "AFTER WORKFLOW REPLAN\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
-	*/
     
     LOG.info( "REPLANNED WORKFLOW\n");
     for( OperatorDictionary opdd : replanned_workflow.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
     }
 
-    after_workflow_replanning.initiateUpdate( replanned_workflow);
-    
     LOG.info( "AFTER WORKFLOW REPLAN - UPDATED\n");
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\n");
@@ -507,7 +474,7 @@ protected ContainerLaunchContextFactory factory;
     for( OperatorDictionary opdd : after_workflow_replanning.getOperators()){
     	LOG.info( "Operator: " + opdd.getName() + "\twith status " + opdd.getStatus() + "\tand inputs " + opdd.getInput() + "\tWorkflowNode " + mw.nodes.get(opdd.getName()) + "\n");
     }
-    
+	*/   
 	return after_workflow_replanning;
   } 
  } 

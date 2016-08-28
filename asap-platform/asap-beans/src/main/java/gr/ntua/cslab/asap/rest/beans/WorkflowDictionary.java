@@ -238,7 +238,7 @@ public class WorkflowDictionary {
 	 * @author Vassilis Papaioannou
 	 * @param updates the WorkflowDictionary according to which the WorkflowDictionary will be updated
 	 * @param conf the configuration of the running workflow
-	 * @return updated	a list of operators that have been updated
+	 * @return
 	 */
 	public void initiateUpdate( WorkflowDictionary updates) {
 		List< String> newupdates = new ArrayList< String>();
@@ -252,8 +252,9 @@ public class WorkflowDictionary {
 			return;
 		}
 		
-		//update the status of the 'failed' operators due to lack of alternative
 		/*
+		//update the status of the 'failed' operators due to lack of alternative for the initially
+		//failed operator
 		if( !( updates.failedops == null || updates.failedops.isEmpty())){
 			for( String fop : updates.failedops){
 				logger.info( "FAILED OPERATOR: " + fop);
@@ -273,7 +274,6 @@ public class WorkflowDictionary {
 			}
 		}
 		*/
-		
 		//get a mapping between operators and their position inside the WorkflowDictionary
 		getIndexes();
 		newupdates.add( updates.getOperators().get( updates.getOperators().size() - 1).getName());
@@ -283,9 +283,9 @@ public class WorkflowDictionary {
 				startings.add( opdic.getName());
 			}
 		}
-		logger.info( "STARTINGS: " + startings);
+		//logger.info( "STARTINGS: " + startings);
 		updateNodes( newupdates, updates, startings);
-		//finaly the updated workflow may have duplicate operators
+		//finaly remove operators existing multiple times in the workflow with different status
 		//keep the ones that are in "warn" state
 		for( int i = 0; i < operators.size(); i++){
 			if( operators.get( i).getIsOperator().equals( "true")){
@@ -306,7 +306,7 @@ public class WorkflowDictionary {
 			}
 		}
 		for( OperatorDictionary opdic : filterout){
-			logger.info( "REMOVING " + opdic.getName() + "\twith status: " + opdic.getStatus());
+			//logger.info( "REMOVING " + opdic.getName() + "\twith status: " + opdic.getStatus());
 			operators.remove( opdic);
 		}
 		isUpdated = true;

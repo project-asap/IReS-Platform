@@ -161,21 +161,18 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   		
   		materializedWorkflow = new MaterializedWorkflow1( this.jobName, "/tmp");
   		materializedWorkflow.readFromWorkflowDictionary( workflow);
-  		LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
+  		//LOG.info(materializedWorkflow.getTargets().get(0).toStringRecursive());
   		
   		for(OperatorDictionary op : workflow.getOperators()){
   			if(op.getIsOperator().equals("true") && op.getStatus().equals("warn")){
-				LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput());
+				//LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput());
   				op.setExecTime("");
   				operators.put(	op.getName(), op.getPropertyValue( "Execution.LuaScript"));
-  				//operators.put(	op.getName(), "/user/hadoop/app107/" + op.getPropertyValue( "Execution.LuaScript"));
   			}
   		}
   		for(OperatorDictionary op : workflow.getOperators()){
-  			LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput() + "\tReplanned:\t" + op.isReplanned());
+  			//LOG.info( "Operator:\t" + op.getName() + "\tInputs:\t" + op.getInput() + "\tReplanned:\t" + op.isReplanned());
   			if(op.getStatus().equals("warn") && ( op.getInput().isEmpty() || op.isReplanned())){
-  				//we are dealing with the first dataset of the workflow which
-  				//has not have an input i.e. op.getInput().isEmpty() is true
   				op.setStatus("completed");
   				workflow.setOutputsRunning( op.getName(), "completed");
   			}
@@ -326,8 +323,8 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 	    LOG.info("Trackers: " + trackers);
 	    
 	    for(Entry<String, ContainerTracker> e : trackers.entrySet()){
-		LOG.info( "CREATING TRACKER: " + e.getKey());
-		LOG.info( "INPUTS: " + workflow.getOperator(e.getKey()).getInput());
+	    	//LOG.info( "CREATING TRACKER: " + e.getKey());
+	    	//LOG.info( "INPUTS: " + workflow.getOperator(e.getKey()).getInput());
 	    	for(String in : workflow.getOperator(e.getKey()).getInput()){
 	    		addTrackerDependencyRecursive(in, e.getKey(), trackers);
 	    	}
@@ -340,10 +337,12 @@ public class WorkflowParameters implements ApplicationMasterParameters {
 		ContainerTracker outTracker = trackers.get(out);
 		ContainerTracker inTracker = trackers.get(in);
 		OperatorDictionary inOp = workflow.getOperator(in);
+		/*
 		LOG.info( "OUTTARCKER: " + outTracker);
 		LOG.info( "INTRACKER: " + inTracker);
 		LOG.info( "IN OPERATOR: " + inOp.getName() + "\twith status " + inOp.getStatus() + "\thas inputs " + inOp.getInput());
 		LOG.info( "OUT OPERATOR: " + out);
+		*/
 		if( inOp.getStatus().equals( "stopped") || inOp.getStatus().equals( "completed") || inOp.getStatus().equals( "failed"))
 			return;
 		if(inOp.getIsOperator().equals("true")){

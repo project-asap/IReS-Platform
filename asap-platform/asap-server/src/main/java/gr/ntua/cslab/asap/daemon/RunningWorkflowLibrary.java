@@ -17,6 +17,7 @@
 
 package gr.ntua.cslab.asap.daemon;
 
+import gr.ntua.cslab.asap.daemon.rest.YarnMetricsClient;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
@@ -48,6 +49,7 @@ import org.apache.hadoop.yarn.api.records.YarnApplicationState;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.client.cli.YarnCLI;
 import org.apache.log4j.Logger;
+import org.apache.hadoop.yarn.conf.YarnConfiguration;
 
 import com.cloudera.kitten.client.YarnClientService;
 import com.cloudera.kitten.client.params.lua.LuaYarnClientParameters;
@@ -216,6 +218,13 @@ public class RunningWorkflowLibrary {
 			return report.getTrackingUrl();
 	}
 
+	public static String getApplicationLogs( String id) throws Exception {
+		String trackingUrl = getTrackingUrl( id);
+		String appname = trackingUrl.indexOf( "application_") > 0 ? trackingUrl.substring( trackingUrl.indexOf( "application_")) : "0";
+		String logs = appname.equals( "0") ? "" : YarnMetricsClient.issueRequestApplicationLogs( new YarnConfiguration(), appname);
+		return logs;
+	}
+
 	public static void setWorkFlow(String id, WorkflowDictionary workflow) {
 		runningWorkflows.put(id, workflow);
 	}
@@ -233,9 +242,7 @@ public class RunningWorkflowLibrary {
 		materialiazedWorkflow.readFromWorkflowDictionary(wd);
 		for(OperatorDictionary op : wd.getOperators()){
 			if(op.getIsOperator().equals("false") && op.getIsAbstract().equals("false") && op.getStatus().equals("completed")){
-
-				logger.info( "Operator: "+ op.getName()+ "\tAbstract name: " + op.getAbstractName());
-				
+				logger.info( "Operator: "+ op.getName()+ "\tAbstract name: " + op.getAbstractName());				
 				sorted_nodes.add( op.getAbstractName());
 				dataset_node = new WorkflowNode(false, false,op.getAbstractName());
 				temp = new Dataset(op.getName());
@@ -249,43 +256,51 @@ public class RunningWorkflowLibrary {
 		}
 		logger.info("Datasets: "+materializedDatasets);
 		aw = runningAbstractWorkflows.get(id);
-		MaterializedWorkflow1 mw = aw.replan( materializedDatasets, 100);
-		//replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
-		replanned_workflow = mw.toWorkflowDictionary( "\n");
-		/*vpapa: the returned and replanned workflow may be empty because for example
-		 * no alternatives where found for the failed operator and the current set of
-		 * completed data sets. For this, we should go one executed operator back taking
-		 * in account the related data sets and then ask for a new plan 
+		replanned_workflow = aw.replan(materializedDatasets, 100).toWorkflowDictionary( "\n");
+
+		/*vpapa: the returned and replanned workflow may be empty for the failed operator
+		 * and the current set of completed data sets. For this, we should go one executed
+		 * operator back taking in account the related data sets and then ask for a new plan 
 		 */
+		/*
 		logger.info( "#################");
 		logger.info( "#################");
 		logger.info( "#################");
+		*/
 		if( replanned_workflow.getOperators() == null || replanned_workflow.getOperators().isEmpty()){
 			logger.info( "Empty or null replanned workflow: " + replanned_workflow.getOperators());
 			replanned_workflow = trimReplannedWorkflow( materializedDatasets, aw, sorted_nodes);
 		}
+		/*
 		else{
 			for( OperatorDictionary node : replanned_workflow.getOperators()){
 				logger.info( "WorkflowNode: " + node.getName() + "\t" + node.getStatus());
 			}
 		}
+		*/
 		toRunWorkflows.put(id, replanned_workflow);
 	}
-	/**
+	
+	/** 
+	 * Returns an alternative execution plan( WorkflowDictionary) if it exists. Otherwise it returns
+	 * a new, empty WorkflowDictionary.
 	 * 
-	 * @param materializeddatasets
-	 * @param wd
-	 * @param sn
-	 * @return
+	 * @author Vassilis Papaioannou
+	 * @param materializeddatasets	the set of inputs already have been run
+	 * @param aw					the abstract workflow for which to find an alternative plan
+	 * @param sn					the reduced set of materialized inputs for which to search for an alternative plan
+	 * @return WorkflowDictionary	the alternative execution path
 	 */
 	private static WorkflowDictionary trimReplannedWorkflow( HashMap< String, WorkflowNode> materializedDatasets, AbstractWorkflow1 aw, List< String> sn) throws Exception{
+		List< String> failed_operators = new ArrayList< String>();
+
+		/*
 		logger.info( "#################");
 		logger.info( "#################");
 		logger.info( "#################");
 		logger.info( "TRIM Datasets: " + materializedDatasets);
 		logger.info( "TRIM KEY Datasets: " + sn);
-		List< String> failed_operators = new ArrayList< String>();
-
+		*/
 		//only the very first dataset of the workflow has remained, so there is no alternative workflow
 		if( sn.size() == 1){
 			return new WorkflowDictionary();
@@ -298,22 +313,22 @@ public class RunningWorkflowLibrary {
 		//and update the 'sn' also
 		int i = sn.size() - 1;
 		materializedDatasets.remove( sn.get( i));
-		logger.info( "Datasets: " + materializedDatasets);
+		//logger.info( "Datasets: " + materializedDatasets);
 		materializedDatasets.remove( sn.get( i - 1));
-		logger.info( "Datasets: " + materializedDatasets);
+		//logger.info( "Datasets: " + materializedDatasets);
 		failed_operators.add( sn.get( sn.size() - 1));
 		sn.remove( sn.size() - 1);
-		logger.info( "KEY Datasets: " + sn);
+		//logger.info( "KEY Datasets: " + sn);
 		failed_operators.add( sn.get( sn.size() - 1));
 		sn.remove( sn.size() - 1);
-		logger.info( "KEY Datasets: " + sn);
+		//logger.info( "KEY Datasets: " + sn);
 		
 		replanned_workflow = aw.replan( materializedDatasets, 100).toWorkflowDictionary( "\n");
 		if( replanned_workflow.getOperators().isEmpty()){
 			logger.info( "Empty or null replanned workflow: " + replanned_workflow.getOperators());
 			replanned_workflow = trimReplannedWorkflow( materializedDatasets, aw, sn);
 		}
-		logger.info( "FAILED OPERATORS: " + failed_operators);
+		//logger.info( "FAILED OPERATORS: " + failed_operators);
 		if( replanned_workflow.failedops == null){
 			replanned_workflow.failedops = new ArrayList< String>();
 		}
