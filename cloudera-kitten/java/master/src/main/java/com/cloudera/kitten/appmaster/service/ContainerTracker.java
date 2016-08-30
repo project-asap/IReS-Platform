@@ -176,6 +176,7 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
       if(v==null)
     	  return;
       completed.incrementAndGet();
+      /*
       if( ApplicationMaster.isReplanning){
     	  isInitialized=false;
     	  long stop = System.currentTimeMillis();
@@ -184,7 +185,8 @@ public class ContainerTracker implements NMClientAsync.CallbackHandler {
     	  service.parameters.workflow.getOperator( params.getName()).setExecTime( time + "");
     	  service.parameters.workflow.getOperator( params.getName()).setStatus( "failed");
     	  removeContainerRequests();
-      }     
+      }
+      */    
     }
 
     public void removeContainerRequests(){

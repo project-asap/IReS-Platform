@@ -65,16 +65,22 @@ public class RunningWorkflows {
     }
 
 	@GET
-	@Path("{id}/applicationName")
+	@Path("{id}/application/name")
     public String getApplicationName(@PathParam("id") String id) throws IOException, NumberFormatException, EvaluationException {
 		String appname = RunningWorkflowLibrary.getTrackingUrl(id);
 		return appname.substring( appname.indexOf( "application_"));
     }
 	
 	@GET
-	@Path("{id}/applicationLogs")
+	@Path("{id}/application/logs")
     public String getApplicationLogs(@PathParam("id") String id) throws Exception {
 		return RunningWorkflowLibrary.getApplicationLogs(id);
+    }
+	
+	@GET
+	@Path("{id}/application/containerLogs")
+    public String getApplicationContainersLogs(@PathParam("id") String id) throws Exception {
+		return RunningWorkflowLibrary.getApplicationContainersLogs(id);
     }
 
 	@GET

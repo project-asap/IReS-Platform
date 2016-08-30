@@ -498,10 +498,13 @@ public class WebUI {
     public String executeWorkflow(@QueryParam("workflowName") String workflowName) throws Exception{
     	RunningWorkflowLibrary.executeWorkflow(MaterializedWorkflowLibrary.get(workflowName));
     	String trackingUrl = RunningWorkflowLibrary.getTrackingUrl(workflowName);
-	String logs = RunningWorkflowLibrary.getApplicationLogs(workflowName);
+    	String logs = RunningWorkflowLibrary.getApplicationLogs(workflowName);
+	String info_msg = "If not yet, add to the local /etc/hosts file, the cluster host names and ips in order for the links to work";
+    	String contLogs = "<ul id=opContainerLogs style=\"list-style-type: none\">" + RunningWorkflowLibrary.getApplicationContainersLogs(workflowName)+"</ul>";
     	String ret = header+
     			"APPLICATION MASTER INFO<br>General: <a id=\"trackingURL\" href=\""+trackingUrl+"\">"+trackingUrl+"</a><br>"+
-			"Logs: <a id=amContainerLogs href=\""+logs+"\">"+logs+"</a>"+
+    			"<span class=info><img src=\"/info.png\" style=\"width:15px;height:15px\"/><span id=info_text>"+info_msg+"</span></span>Logs: <a id=amContainerLogs href=\""+logs+"\">"+logs+"</a><br>"+
+    			"<span class=info><img src=\"/info.png\" style=\"width:15px;height:15px\"/><span id=info_text>"+info_msg+"</span></span>Workflow containers:"+contLogs+
     			"<p id=\"state\">State: "+RunningWorkflowLibrary.getState(workflowName)+"</p>";
     	ret+="</div><div  class=\"mainpage\">";
     	

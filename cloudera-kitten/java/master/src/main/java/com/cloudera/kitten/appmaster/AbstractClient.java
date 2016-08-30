@@ -266,7 +266,7 @@ public class AbstractClient {
   */
   public static int issueRequestApplicationId( YarnConfiguration conf, String id) throws Exception {
 	  String masterDNS = conf.get( "yarn.resourcemanager.address").split(":")[0];
-      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/" + id + "/applicationName";
+      String urlString = "http://" + masterDNS + ":1323/runningWorkflows/" + id + "/application/name";
       StringBuilder builder = null;
       InputStream in = null;
       int applicationId = 0;

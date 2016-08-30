@@ -62,11 +62,17 @@ public class RunningWorkflowLibrary {
 	private static ConcurrentHashMap<String,AbstractWorkflow1> runningAbstractWorkflows;
 	private static ConcurrentHashMap<String,YarnClientService> runningServices;
 	public static ConcurrentHashMap<String,ApplicationReport> workflowsReport;
+	public static ConcurrentHashMap<String, String> nodes;
+	public static ConcurrentHashMap< String, ConcurrentHashMap< String, ArrayList< String>>> runningContainers;
+	public static YarnConfiguration yconf;
 	
 	private static Configuration conf;
 	private static Logger logger = Logger.getLogger(RunningWorkflowLibrary.class.getName());
 
 	public static void initialize() throws Exception{
+		runningContainers = new ConcurrentHashMap< String, ConcurrentHashMap< String, ArrayList< String>>>();
+		yconf = new YarnConfiguration();
+		nodes = new ConcurrentHashMap< String, String>();
 		runningWorkflows = new ConcurrentHashMap<String, WorkflowDictionary>();
 		runningServices = new ConcurrentHashMap<String, YarnClientService>();
 		workflowsReport =  new ConcurrentHashMap<String, ApplicationReport>();
@@ -126,7 +132,6 @@ public class RunningWorkflowLibrary {
 			return wd;
 		}
 	}	
-	
 
 	public static List<String> getWorkflows() {
 		return new ArrayList<String>(runningWorkflows.keySet());
@@ -218,10 +223,63 @@ public class RunningWorkflowLibrary {
 			return report.getTrackingUrl();
 	}
 
+	/**
+  	 * Returns an html string containing the http url of ApplicationMaster's container
+  	 * logs
+  	 * 
+  	 * @author Vassilis Papaioannou
+  	 * @parm id			workflow's id
+  	 * @return logs  	the html string
+  	 */
 	public static String getApplicationLogs( String id) throws Exception {
 		String trackingUrl = getTrackingUrl( id);
 		String appname = trackingUrl.indexOf( "application_") > 0 ? trackingUrl.substring( trackingUrl.indexOf( "application_")) : "0";
 		String logs = appname.equals( "0") ? "" : YarnMetricsClient.issueRequestApplicationLogs( new YarnConfiguration(), appname);
+		return logs;
+	}	
+	
+	/**
+  	 * Returns an html string containing the http urls of workflow's containers
+  	 * logs
+  	 * 
+  	 * @author Vassilis Papaioannou
+  	 * @parm id			workflow's id
+  	 * @return logs  	the html string
+  	 */
+	public static String getApplicationContainersLogs( String id) throws Exception {
+		String trackingUrl = getTrackingUrl( id);
+		String appname = trackingUrl.indexOf( "application_") > 0 ? trackingUrl.substring( trackingUrl.indexOf( "application_")) : "0";
+		String logs = "";
+		String log_dirs = yconf.get( "yarn.nodemanager.log-dirs").trim();
+		log_dirs = log_dirs.startsWith( "$") ? "/logs/userlogs" : log_dirs;
+		ConcurrentHashMap< String, ArrayList< String>> temp = null; 
+		ArrayList< String> templ = null;
+		if( ! appname.equals( "0")){
+			if( runningContainers.get( appname) == null){
+				runningContainers.put( appname, new ConcurrentHashMap< String, ArrayList< String>>());
+			}
+			temp = YarnMetricsClient.issueRequestApplicationContainersLogs( yconf, nodes, appname);
+			for( Entry<String, String> node : nodes.entrySet()){
+				if( temp.get( node.getKey()) != null){
+					//System.out.println( "R NODE " + node.getKey() + " at port " + node.getValue());
+					if( runningContainers.get( appname).get( node.getKey()) == null){
+						runningContainers.get( appname).put( node.getKey(), new ArrayList< String>());
+					}
+					runningContainers.get( appname).get( node.getKey()).addAll( temp.get( node.getKey()));
+					templ = new ArrayList< String>( new HashSet< String>( runningContainers.get( appname).get( node.getKey())));
+					runningContainers.get( appname).put( node.getKey(), templ);
+				}
+				if( runningContainers.get( appname).get( node.getKey()) != null){
+					for( String contlog : runningContainers.get( appname).get( node.getKey())){
+						if( contlog != null && ! contlog.endsWith( "000001")){
+							contlog = "http://" + node.getKey() + ":" + node.getValue() + log_dirs + "/" + appname + contlog;
+							logs += "<li><a href=\"" + contlog + "\">" + contlog + "</a></li>";
+						}
+					}
+				}				
+				//System.out.println( "LOGS: " + logs);
+			}
+		}
 		return logs;
 	}
 

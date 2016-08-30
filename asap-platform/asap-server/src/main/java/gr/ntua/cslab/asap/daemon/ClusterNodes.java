@@ -250,23 +250,31 @@ public class ClusterNodes extends Configured implements Runnable {
 		logger.info( "YarnClient has started.");
 		//System.out.println( "The yarn cluster has " + hosts.size() + " hosts.");
 		yhosts = new HashMap< String, String>();
+		
 		try{
-			//ensure that the cluster master node will be checked whether or not
-			//is also a slave node
-			if( yhosts.get( master) == null){
-				yhosts.put( master, "RUNNING");
-			}
 			while( true){
 				ycinfo = yc.getNodeReports();
 				if( ycinfo != null){
 					yciter = ycinfo.listIterator();
+					RunningWorkflowLibrary.nodes.clear();
 					while( yciter.hasNext()){
 						nr = yciter.next();
-						host = nr.getNodeId().toString().split( ":")[ 0];
-						yhosts.put( host, nr.getNodeState().toString());
-						//System.out.println( "YARN hosts: " + yhosts);
 						//only hosts where NodeManager is running are checked for the availability
 						//of their services
+						if( nr.getNodeState().toString().equals( "RUNNING")){
+							host = nr.getNodeId().toString().split( ":")[ 0];
+							yhosts.put( host, nr.getNodeState().toString());
+							//System.out.println( "YARN hosts: " + yhosts);
+							//update RunningWorfklowLibrary
+							RunningWorkflowLibrary.nodes.put( host, nr.getHttpAddress().split( ":")[ 1]);	
+						}
+					}
+					//System.out.println( "Nodes are : " + RunningWorkflowLibrary.nodes);
+					//System.out.println( "YARN hosts: " + yhosts);
+					//ensure that the cluster master node will be checked whether or not
+					//is also a slave node
+					if( yhosts.get( master) == null){
+						yhosts.put( master, "RUNNING");
 					}
 					for( String host : yhosts.keySet()){
 						if( yhosts.get( host).equals( "RUNNING")){
@@ -402,7 +410,7 @@ public class ClusterNodes extends Configured implements Runnable {
 					ClusterStatusLibrary.cluster_available_resources.put( metrics[ i].split( " " )[ 0].trim(), metrics[ i].split( " ")[ 1].trim());
 					//logger.info( "Metric: " + metrics[ i].split( " ")[ 0 ].trim() + "\t" + metrics[ i].split( " " )[ 1 ].trim());
 				}
-
+				
 				Thread.sleep( period);
 			}//end of while( true)
 		}

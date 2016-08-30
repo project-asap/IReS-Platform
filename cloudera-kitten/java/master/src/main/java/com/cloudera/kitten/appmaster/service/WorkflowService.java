@@ -213,9 +213,10 @@ public class WorkflowService extends
                     	ApplicationMaster.isReplanning = true;
                     	//parameters.workflow = reBuildPlan( opd.getName());
                     	parameters.workflow = reBuildPlan( service);
-                    	enforcePlan();
                     	ApplicationMaster.isReplanning = false;
                   	  	LOG.info( "ApplicationMaster got out from 'replanning' state");
+                  	  	LOG.info( "Enforcing new plan");
+                    	enforcePlan();
                     	//since one operator failed and replan has been requested there is no reason to search for other
                         //failed operators since the replan returns a "global" plan
                         break;

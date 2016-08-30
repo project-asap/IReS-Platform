@@ -144,7 +144,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   }  
   
    /**
-  	 * Enables workflow's execution by setting workflow's parameters appropriately
+  	 * Enables workflow's execution by re-setting workflow's parameters appropriately
 	 * when replanning is needed
   	 * 
   	 * @param wd 		the workflow to execute
@@ -198,6 +198,13 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   		}
     }
   
+    /**
+  	 * Copies a file from application's directory to the local file system
+  	 * 
+  	 * @author Vassilis Papaioannou
+  	 * @parm hdfsDataName 	the hdfs file to copy
+  	 * @param conf 			the Configuration of the cluster
+  	 */
     private static String copyFromHdfs( String hdfsDataName, Configuration conf) throws IOException {
     	String APP_BASE_DIR = "kitten.app.base.dir";
         FileSystem fs = FileSystem.get(conf);
@@ -210,7 +217,14 @@ public class WorkflowParameters implements ApplicationMasterParameters {
         LOG.info( "Copied hdfs file " + hdfsDataName + " locally to " + dst);
         return dst.toString();
     }
-    
+
+    /**
+  	 * Returns application hdfs path
+  	 * 
+  	 * @author Vassilis Papaioannou
+  	 * @parm fs 				the hdfs filesystem
+  	 * @param applicationId 	application's id
+  	 */
     private String getAppPath( FileSystem fs, int applicationId){
     	String APP_BASE_DIR = "kitten.app.base.dir";
     	String appDir = "app";
@@ -277,7 +291,7 @@ public class WorkflowParameters implements ApplicationMasterParameters {
   @Override
   public int getAllowedFailures() {
     if (e0.isNil(LuaFields.TOLERATED_FAILURES)) {
-      return 54; // TODO: kind of arbitrary, no? :)
+      return 14; // TODO: kind of arbitrary, no? :)
     } else {
       return e0.getInteger(LuaFields.TOLERATED_FAILURES);
     }
