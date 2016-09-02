@@ -199,10 +199,10 @@ public class Main {
 	}
 	
 	private static void checkServicesStatus() throws Exception{
-		ClusterNodes cns = new ClusterNodes( 5000);
+		ClusterNodes cns = new ClusterNodes();
 		Thread check = new Thread( cns);
 		try{
-			check.start();		
+			check.start();
 		}
 		catch( Exception e){
 			check.stop();
@@ -224,5 +224,4 @@ public class Main {
 
         checkServicesStatus();
     }
-
 }

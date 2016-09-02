@@ -52,7 +52,7 @@ public class ClusterNodes extends Configured implements Runnable {
 
 	//define how often the check will be run
 	//by default the period is 3 seconds
-	int period = 3000;
+	public static int period = 500000;
 	//the process that will be returned after checking each service running status
 	Process p = null;
 	//a BufferedReader to read check's output
@@ -95,11 +95,11 @@ public class ClusterNodes extends Configured implements Runnable {
 
 	public ClusterNodes(){
 		//default values
-		this( 3000);
+		this( period);
 	}
 
 	public ClusterNodes( int period){
-		this.period = period;
+		ClusterNodes.period = period;
 	}
 
 	public void run(){
@@ -410,7 +410,6 @@ public class ClusterNodes extends Configured implements Runnable {
 					ClusterStatusLibrary.cluster_available_resources.put( metrics[ i].split( " " )[ 0].trim(), metrics[ i].split( " ")[ 1].trim());
 					//logger.info( "Metric: " + metrics[ i].split( " ")[ 0 ].trim() + "\t" + metrics[ i].split( " " )[ 1 ].trim());
 				}
-				
 				Thread.sleep( period);
 			}//end of while( true)
 		}

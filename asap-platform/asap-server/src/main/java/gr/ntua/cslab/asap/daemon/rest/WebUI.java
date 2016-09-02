@@ -19,6 +19,7 @@ package gr.ntua.cslab.asap.daemon.rest;
 
 import gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary;
 import gr.ntua.cslab.asap.daemon.Main;
+import gr.ntua.cslab.asap.daemon.ClusterNodes;
 import gr.ntua.cslab.asap.daemon.RunningWorkflowLibrary;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.staticLibraries.AbstractOperatorLibrary;
@@ -665,37 +666,70 @@ public class WebUI {
     @Produces(MediaType.TEXT_HTML)
     public String listServicesAndResources() {
         String action = null;
-        String script = "<script>setTimeout('location.reload(true);', 5000)</script>";
-        String ret = header + script;
+        String img = "<img class=ehidden src=/blueTick.jpg/>";
+        String style = "<style> .engineButton:hover{ color: #47a3da; background: white; border: solid #1a87b9 1px; border-radius: 4px;}</style>";
+        /*
+        style += ".ehidden { visibility: hidden; opacity: 0; transition: visibility 0s 2s, opacity 2s linear; width: 25px; height: 25px;}";
+        style += ".evisible { visibility: visible; opacity: 1; transition: opacity 2s linear; width: 25px; height: 25px; z-index: 10; float: left;}";
+        style += ".engineform{ width: 100%} p.engineform { width: 80%; float: right}</style>";
+        */
+        String script = "<script>setTimeout('location.reload(true);'," + ClusterNodes.period  + ");</script>";
+        /*String script = "<script>";
+        script += "var buttons = [], content = [], i,"
+        			+ "rows = document.getElementById( 'cluster_services').rows.length - 1;"
+        			+ "console.log( 'length', rows);"
+        			+ "buttons = document.querySelectorAll( 'input.engineButton');"
+        			+ "content = document.querySelectorAll( 'img.ehidden');"
+        			+ "console.log( 'buttons', buttons);"
+        			+ "console.log( 'content', content);"
+        			+ "for( i = 0; i < buttons.length; i++) {"
+        			+ "console.log( buttons[ i]);"
+        			+ "console.log( content[ i]);"
+        			+ "buttons[ i][ 'engine'] = false;"
+        			+ "buttons[ i][ 'content'] = content[ i];"
+        			+ "buttons[ i].addEventListener( 'click', function(){"
+        			+ "if( this[ 'engine']){"
+        			+ "this[ 'content'].className = 'ehidden';"
+        			+ "this[ 'engine'] = false;"
+        			+ "}"
+        			+ "else{"
+        			+ "this[ 'content'].className = 'evisible';"
+        			+ "this[ 'engine'] = true;"
+        			+ "}"
+        			+ "}, false);"
+        			+ "}</script>";
+        */
+        String ret = header + style;
         //display cluster services
-        ret += "<table id='cluster_services' border='1' align='left' style='width:33%'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
+        ret += "<table id='cluster_services' border='1' align='left' style='width:40%; float: left'><tr><th>Service</th><th>Status</th><th>Action</th></tr>";
     	for(Entry<String, Boolean> e : ClusterStatusLibrary.status.entrySet()){
             if( e.getValue()){
-                action ="<form action='/clusterStatus/services/dead/" + e.getKey() + "' method='get'>"
+                action ="<form action='/clusterStatus/services/dead/" + e.getKey() + "' method='get' class=engineform'>"
                             + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
-                            + "<p align='center'><input class='styled-button' type='submit' value='stop'></form>";
+                            + "<p align='center'><input class='styled-button engineButton' type='submit' value='stop'></form>";
             }
             else{
-                action ="<form action='/clusterStatus/services/alive/" + e.getKey() + "' method='get'>"
+                action ="<form  action='/clusterStatus/services/alive/" + e.getKey() + "' method='get' class=engineform>"
                             + "<input type='hidden' name='service' value='" + e.getKey() + "'>"
-                            + "<p align='center'><input class='styled-button' type='submit' value='start'></form>";
+                            + "<p align='center'><input class='styled-button engineButton' type='submit' value='start'></form>";
             }
-			ret+= "<tr><td>"+e.getKey()+"</td><td>"+e.getValue()+"</td><td>" + action + "</td></tr>";
+			//ret+=  "<tr><td>"+e.getKey()+"</td><td>"+e.getValue()+"</td><td style='width:40%; display:flex; flex: row nowrap'>" + action  + img + "</td></tr>";
+            ret+=  "<tr><td>"+e.getKey()+"</td><td>"+e.getValue()+"</td><td>" + action + "</td></tr>";
     	}
     	ret+="</table>";
     	//display static resources
-        ret += "<table id='cluster_static_resources' border='1' align='left' style='width:33%'><tr><th>Capacity Scheduler Resource</th><th>Min</th><th>Max</th></tr>";
+        ret += "<table id='cluster_static_resources' border='1' align='left' style='width:30%; float: right'><tr><th>Capacity Scheduler Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_static_resources.entrySet()){
 			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue().split( "_")[ 0] + "</td><td>" + e.getValue().split( "_")[ 1] + "</td></tr>";
     	}
     	ret+="</table>";
     	//display available resources
-        ret += "<table id='cluster_available_resources' border='1' align='left' style='width:33%'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
+        ret += "<table id='cluster_available_resources' border='1' align='left' style='width:30%; float: right'><tr><th>YARN Cluster Total Resource</th><th>Min</th><th>Max</th></tr>";
     	for(Entry<String, String> e : ClusterStatusLibrary.cluster_available_resources.entrySet()){
 			ret+= "<tr><td>" + e.getKey() + "</td><td>" + e.getValue() + "</td><td>" + e.getValue() + "</td></tr>";
 		}
     	ret+="</table>" + footer;
-        return ret;
+        return ret  + script;
     }
     
     

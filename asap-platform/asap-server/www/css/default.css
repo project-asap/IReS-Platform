@@ -38,6 +38,8 @@ body, html { font-size: 100%; 	padding: 0; margin: 0;}
 body {
     font-family: 'Lato', Calibri, Arial, sans-serif;
     color: #47a3da;
+    display: flex;
+    flex-flow: column;
 }
 
 a {
