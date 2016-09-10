@@ -21,7 +21,6 @@ DESCRIPTION
 # 4. Take full host name or host ip which runs Hadoop YARN
 # 4.1 Update YARN configuration files yarn-site.xml and core-site.xml
 # 4.2 Copy updated files into asap-server/target/conf folder
-# 4.3 Build NodeManager health script i.e. resources/conf/yarnServices
 
 #define project modules to build
 #declare -a modules=( panic cloudera-kitten asap-platform)
