@@ -34,7 +34,7 @@ Open a terminal( Linux) and navigate to a desired directory (create it if does n
 <li>
 <h3>Run install.sh</h3>
 
-After successful cloning of IReS-Platform inside the <code>$IRES_HOME</code> various folders and files can be found. Among them there exists <code>install.sh</code>. <p><code>install.sh</code> <bold>is your friend!</bold></p>
+After successful cloning of IReS-Platform inside the <code>$IRES_HOME</code> various folders and files can be found. Among them there exists <code>install.sh</code>. <p><code>install.sh</code> <bold>is your friend!</bold></p> You can run install.sh from any directory you would like. Here for demnostration reasons is assumed that the current working directory is $IRES_HOME.
 
 Executing, <p><code>./install.sh</code></p> will start building IReS-Platform. Upon successful building you will be prompted to provide the path where Hadoop YARN is located in your computer. By doing this, IReS gets connected with Hadoop YARN. You can skip this step and the installation will be finished.
 
@@ -46,7 +46,7 @@ Executing, <p><code>./install.sh</code></p> will start building IReS-Platform. U
 
 <h4>Connecting IReS to Hadoop YARN</h4>
 
-Executing, <p><code>install.sh -c $YARN\_HOME,$IRES\_HOME</code></p> will make the connection of IReS and YARN, where $YARN\_HOME and $IRES_HOME correspond to the absolute paths of YARN's and IReS's home folder.
+Executing, <p><code>./install.sh -c $YARN\_HOME,$IRES\_HOME</code></p> will make the connection of IReS and YARN, where $YARN\_HOME and $IRES_HOME correspond to the absolute paths of YARN's and IReS's home folder.
 </li>
 <li>
 <h3>Cluster Monitoring</h3>
@@ -74,7 +74,7 @@ Here are some tips to confirm IReS installation.
 </ol>
 
 <h3>Appendix</h3>
-To see all available functionalities of <code>install.sh</code> run <p><code>./install.sh -h</code></p>. However, in this section some details about <code>install.sh</code> script are given.
+To see all available functionalities of <code>install.sh</code> run <p><code>./install.sh -h</code></p> However, in this section some details about <code>install.sh</code> script are given.
 
 To begin with, install.sh supports can be run from user's working directory, it is not needed navigating to <code>IRES_HOME</code> folder. Moreover, user can access server's logs by running <code>install.sh</code> script using <code>-l</code> flag.
 
