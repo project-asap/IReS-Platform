@@ -3,7 +3,7 @@
 <<INFO
 Author				:	Papaioannou Vassiis
 Last update			:	10/ 06/ 2016
-Previous updates	:	06/03/2016, 04/ 03/ 2016
+Previous updates		:	06/03/2016, 04/ 03/ 2016
 Platform			:	ASAP IReS
 Github				:	https://github.com/project-asap/IReS-Platform
 INFO
@@ -21,7 +21,6 @@ DESCRIPTION
 # 4. Take full host name or host ip which runs Hadoop YARN
 # 4.1 Update YARN configuration files yarn-site.xml and core-site.xml
 # 4.2 Copy updated files into asap-server/target/conf folder
-# 4.3 Build NodeManager health script i.e. resources/conf/yarnServices
 
 #define project modules to build
 #declare -a modules=( panic cloudera-kitten asap-platform)
@@ -337,13 +336,13 @@ do
 			mvn clean install -DskipTests -P asapCluster-q > log.txt
 			# check for errors
 			errors=`cat log.txt | grep ERROR`
-			#if [[ ! -z $errors ]]
-			#then
-			#	echo -e "$errors"
-			#	echo -e "List of errors found!"
-			#	echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
-			#	exit
-			#fi
+			if [[ ! -z $errors ]]
+			then
+				echo -e "$errors"
+				echo -e "List of errors found!"
+				echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
+				exit
+			fi
 			# remove log.txt since everything went well
 			rm log.txt
 			cd ../
