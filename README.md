@@ -74,6 +74,8 @@ Here are some tips to confirm IReS installation.
 </ol>
 
 <h3>Appendix</h3>
-In this section some details about <code>install.sh</code> script are given.
+To see all available functionalities of <code>install.sh</code> run <p><code>./install.sh -h</code></p>. However, in this section some details about <code>install.sh</code> script are given.
+
+To begin with, install.sh supports can be run from user's working directory, it is not needed navigating to <code>IRES_HOME</code> folder. Moreover, user can access server's logs by running <code>install.sh</code> script using <code>-l</code> flag.
 
 To see all available functionalities of <code>install.sh</code> run <p><code>./install.sh -h</code></p> Now assume that for some reason the IRES\_HOME has been changed. For example you would like to rename IReS home folder or move it to another folder. In this case, all configuration files of IReS should be updated with the new value of $IRES\_HOME. To do so, run the command <p><code>./install.sh -s NEW\_IRES\_HOME</code></p>

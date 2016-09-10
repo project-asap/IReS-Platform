@@ -23,8 +23,6 @@ DESCRIPTION
 # 4.2 Copy updated files into asap-server/target/conf folder
 # 4.3 Build NodeManager health script i.e. resources/conf/yarnServices
 
-#add some color
-. resources/textformat/colors.sh
 #define project modules to build
 #declare -a modules=( panic cloudera-kitten asap-platform)
 declare -a modules=( panic cloudera-kitten asap-platform cloudera-kitten)
@@ -32,8 +30,40 @@ declare -a conf=()
 #the installation process will be either via terminal or a GUI; installation through terminal
 #i.e. command line is the default one
 INSTALL_MODE="cli"
-#IReS home folder
-IRES_HOME=`pwd`
+#derive IReS home folder
+IRES_HOME=$0
+if [[ $IRES_HOME == ./* ]]
+then
+	#case of ./.../install.sh
+	IRES_HOME=`echo -e ${IRES_HOME#*./}`
+	if [[ $IRES_HOME == "install.sh" ]]
+	then
+		IRES_HOME=""
+	else
+		IRES_HOME="/"`echo -e ${IRES_HOME%/install.sh}`
+	fi
+	IRES_HOME=`pwd`"$IRES_HOME"
+else
+	#case of ../../../..../install.sh
+	rcd=""
+	while [[ $IRES_HOME == ../* ]]
+	do
+		cd ../
+		IRES_HOME=`echo -e ${IRES_HOME#*../}`
+		rcd=$rcd"../"
+	done
+	if [[ $IRES_HOME == "install.sh" ]]
+	then
+		IRES_HOME=""
+	else
+		IRES_HOME="/"`echo -e ${IRES_HOME%/install.sh}`
+	fi
+	IRES_HOME=`pwd`$IRES_HOME
+	cd $rcd
+fi
+echo -e "IReS-Platfrom home folder is $IRES_HOME"
+#add some color
+. $IRES_HOME/resources/textformat/colors.sh
 #Hadoop YARN home folder
 YARN_HOME=
 
@@ -50,12 +80,6 @@ usage()
 	-h
 		show this message,
 		
-	-g
-		enables graphical installation. This installation process needs ${bold}xserver${reset}
-		to be installed and set appropriately for the user who runs this script. If command
-		${bold}xeyes${reset} runs successfully then xserver is configured correctly for the
-		user running the script,
-		
 	-r command
 		Start, stop or restart ASAP server. Command can be one of start, restart and stop.
 
@@ -67,6 +91,20 @@ usage()
 		connect ASAP server to a Hadoop YARN installation. ${bold}Path1${reset} should be the
 		/absolute/path/to/Hadoop_YARN/home/folder. ${bold}Path2${reset} should be the local home
 		folder of IReS. Both paths are required in the specified order.
+
+	-l n,i
+		view the last n lines of server logs. If i = 0, then logs will be opened in interactive mode
+		starting from the last n lines. Usage examples,
+		1. ./install.sh -l 15,0	        --> the last 15 log lines will be displayed in interactive mode
+		2. ./install.sh -l 15	        --> the last 15 log lines will be displayed( no interactive mode)
+		3. ./install.sh -l 0	        --> the default amount of log lines( 10) will be displayed in interactive mode
+		4. ./install.sh -l 	        --> is not acceptable, at least one argument should be given
+		
+	-g
+		enables graphical installation. This installation process needs ${bold}xserver${reset}
+		to be installed and set appropriately for the user who runs this script. If command
+		${bold}xeyes${reset} runs successfully then xserver is configured correctly for the
+		user running the script,
 		
 
 EOF
@@ -75,14 +113,14 @@ EOF
 setIresHome()
 {
 	# update asap-platform/asap-server/src/main/scripts/asap-server file
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" asap-platform/asap-server/src/main/scripts/asap-server
+	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
 	# update asap.server_home variable in asap-platform/asap-server/src/main/resources/asap.properties file
-	sed -i "s:^asap\.server_home.*:asap\.server_home = $IRES_HOME/asap-platform/asap-server/target:" asap-platform/asap-server/src/main/resources/asap.properties
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
+	sed -i "s:^asap\.server_home.*:asap\.server_home = $IRES_HOME/asap-platform/asap-server/target:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
+	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
+	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
 	if [[ -e $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua ]]
 	then
-		sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
+		sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
 	fi
 }
 
@@ -105,7 +143,7 @@ connectASAP2YARN()
 		if [[ -z $rm_host_exists ]]
 		then
 			# specify host name running of HADOOP YARN
-			echo -e "No hostname or ip address for ResourceManager was found."
+			echo -e "\n\nNo hostname or ip address for ResourceManager was found."
 			read -p "Give the full name or the ip of the host where ResourceManager runs: " HOST_NAME
 			rm_host_exists="\t<!-- Configurations for Resource Manager -->\n\t<property>\n\t\t<name>yarn.resourcemanager.hostname</name>\n\t\t"
 			rm_host_exists="$rm_host_exists<value>$HOST_NAME</value>\n\t\t<description>The hostname of the RM.</description>\n\t</property>\n\n"
@@ -120,7 +158,7 @@ connectASAP2YARN()
 		if [[ -z $rm_host_exists ]]
 		then
 			# specify host name running of HADOOP YARN
-			echo -e "No hostname or ip address for NameNode was found."
+			echo -e "\n\nNo hostname or ip address for NameNode was found."
 			read -p "Give the full name or the ip of the host where NameNode runs: " HOST_NAME
 			description="The name of the default file system. A URI whose scheme and authority\n \
 				     determine the FileSystem implementation. The uri's scheme determines\n \
@@ -152,31 +190,31 @@ connectASAP2YARN()
 		echo -e "$nm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
 
 		# copy Hadoop YARN configuration files into ASAP server
-		cp $YARN_HOME/etc/hadoop/yarn-site.xml asap-platform/asap-server/target/conf
-		cp $YARN_HOME/etc/hadoop/core-site.xml asap-platform/asap-server/target/conf
+		cp $YARN_HOME/etc/hadoop/yarn-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
+		cp $YARN_HOME/etc/hadoop/core-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
 
 		# set asap.properties file
 		# append
 		# path of hdfs command of Hadoop YARN
-		sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" asap-platform/asap-server/src/main/resources/asap.properties
+		sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" $IRES_HOM/Easap-platform/asap-server/src/main/resources/asap.properties
 		# path of asap command of ASAP server which does the reporting( taking measures)
-		sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" asap-platform/asap-server/src/main/resources/asap.properties
+		sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
 
 		# add Hadoop YARN classpath to $IRES_HOME/asap-server/main/src/scripts/asap-server file
 		YARN_CLASSPATH=`${YARN_HOME}/bin/hadoop classpath`
-		sed -i "s@^YARN_CLASSPATH=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" asap-platform/asap-server/src/main/scripts/asap-server
+		sed -i "s@^YARN_CLASSPATH=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
 		# update asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
+		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
+		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
 		if [[ -e $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua ]]
 		then
-			sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
+			sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
 		fi
 		cd -
 	fi
 }
 
-while getopts ":hgr:s:c:" opt;
+while getopts ":hgr:s:c:l:" opt;
 	do
 		case $opt in
 		h)
@@ -230,6 +268,38 @@ while getopts ":hgr:s:c:" opt;
 			connectASAP2YARN
 			exit
 			;;
+		l)
+			OLD_IFS=$IFS
+			IFS=,
+			logs=false
+			declare -a tmp=($OPTARG)
+			if [[ ! -z $tmp ]]
+			then
+				if [[ ${tmp[0]} =~ ^[0]{0,}[1-9]{1}[0-9]{0,}$ ]]
+				then
+					if [[ ! -z ${tmp[1]} && ${tmp[1]} == "0" ]]
+					then
+						tail -f -n ${tmp[0]} /tmp/asap-server.log
+					else
+						tail -n ${tmp[0]} /tmp/asap-server.log
+					fi
+					logs=true
+				else
+					if [[ ${tmp[0]} =~ ^[0]{1,}$ && -z ${tmp[1]} ]]  
+					then
+						tail -f /tmp/asap-server.log
+						logs=true
+					fi
+				fi
+			fi
+			IFS=$OLD_IFS
+			if [[ $logs == false ]]
+			then
+				echo -e "Wrong arguments given for -l flag.You given '$OPTARG'.\n"
+				usage
+			fi
+			exit
+			;;
 		:)
 			echo -e "\nOption -$OPTARG requires its argument.\n"
 			usage
@@ -252,6 +322,8 @@ do
 		echo -e "WELCOME TO ASAP SERVER AND IReS-Platform INSTALLATION!\n"
 
 		# build ASAP server
+		rcd=`pwd`
+		cd $IRES_HOME
 		percentage=0
 		module_index=0
 		echo -e "ASAP server is under construction ... please wait"
@@ -278,6 +350,7 @@ do
 			percentage=$(( $percentage + 33))
 			#echo $percentage 
 		done
+		cd $rcd
 		# inform about builting success
 		echo -e "ASAP server was built successfully.\n"
 
