@@ -59,13 +59,6 @@
     	<artifactId>asap-beans</artifactId>
     	<version>0.1-SNAPSHOT</version>
     </dependency>
-    <!--
-    <dependency>
-    	<groupId>gr.ntua.cslab</groupId>
-    	<artifactId>asap-client</artifactId>
-    	<version>0.1-SNAPSHOT</version>
-    </dependency>
-    -->
   </dependencies>
 
   <build>

@@ -192,11 +192,6 @@
             <artifactId>kitten-client</artifactId>
             <version>0.2.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.cloudera.kitten</groupId>
-            <artifactId>kitten-master</artifactId>
-            <version>0.2.0</version>
-        </dependency>
     	<dependency>
     		<groupId>gr.ntua.cslab</groupId>
     		<artifactId>asap-beans</artifactId>

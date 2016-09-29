@@ -108,11 +108,6 @@
             <artifactId>moeaframework</artifactId>
             <version>2.6</version>
         </dependency>
-        <dependency>
-            <groupId>com.cloudera.kitten</groupId>
-            <artifactId>kitten-client</artifactId>
-            <version>0.2.0</version>
-        </dependency>
     </dependencies>
 
    <!-- Define different profiles according the installation environment -->
