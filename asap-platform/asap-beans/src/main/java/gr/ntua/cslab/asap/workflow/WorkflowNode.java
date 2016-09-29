@@ -902,7 +902,9 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 		    for (int i = 0; i < Integer.parseInt(operator.getParameter("Execution.Arguments.number")); i++) {
 		    	String arg = operator.getParameter("Execution.Argument"+i);
 		    	if(arg.startsWith("In")){
-		    		int index = Integer.parseInt(arg.charAt(2)+"");
+					String[] s = arg.split("\\.");
+		    		int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
+		    		//int index = Integer.parseInt(arg.charAt(2)+"");
 		    		WorkflowNode n = inputs.get(index);
 		    		String parameter =arg.substring(arg.indexOf(".")+1);
 		    		if(parameter.endsWith("local")){
@@ -1007,7 +1009,10 @@ public class WorkflowNode implements Comparable<WorkflowNode>{
 			String[] files = inFiles.split(",");
 			for (int i = 0; i < files.length; i++) {
 				if(files[i].startsWith("In")){
-					int index = Integer.parseInt(files[i].charAt(2)+"");
+
+					String[] s = files[i].split("\\.");
+		    		int index = Integer.parseInt(s[0].substring((s[0].length() - 1)));
+					//int index = Integer.parseInt(files[i].charAt(2)+"");
 		    		WorkflowNode n = inputs.get(index);
 					String path = n.dataset.getParameter("Execution.path");
 			    	ret.put(path.substring(path.lastIndexOf("/")+1),path);
