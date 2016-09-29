@@ -24,8 +24,11 @@ import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +44,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.xml.ws.WebServiceException;
 
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.log4j.Logger;
 
 @Path("/operators/")
@@ -103,6 +110,47 @@ public class Operators {
             @QueryParam("opname") String opname) throws Exception {
     	
     	OperatorLibrary.deleteOperator(opname);
+    	return "OK";
+    }
+    
+    
+    private void storeOperator(InputStream is, String outputDir) throws Exception {
+    	
+    	logger.info("Writting operator to: "+outputDir);
+    	
+    	File file = new File(outputDir);
+        file.mkdir();
+    	
+        TarArchiveInputStream debInputStream = (TarArchiveInputStream) new ArchiveStreamFactory().createArchiveInputStream("tar", is);
+        TarArchiveEntry entry = null; 
+        while ((entry = (TarArchiveEntry)debInputStream.getNextEntry()) != null) {
+            final File outputFile = new File(outputDir, entry.getName());
+            if (entry.isDirectory()) {
+            	logger.info(String.format("Attempting to write output directory %s.", outputFile.getAbsolutePath()));
+                if (!outputFile.exists()) {
+                	logger.info(String.format("Attempting to create output directory %s.", outputFile.getAbsolutePath()));
+                    if (!outputFile.mkdirs()) {
+                        throw new IllegalStateException(String.format("Couldn't create directory %s.", outputFile.getAbsolutePath()));
+                    }
+                }
+            } else {
+            	logger.info(String.format("Creating output file %s.", outputFile.getAbsolutePath()));
+                final OutputStream outputFileStream = new FileOutputStream(outputFile); 
+                IOUtils.copy(debInputStream, outputFileStream);
+                outputFileStream.close();
+            }
+        }
+        debInputStream.close(); 
+        
+        
+    }
+    
+    @POST
+    @Path("addTarball/")
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces("application/XML")
+    public String addOperator(@QueryParam("opname") String opname, @Context HttpServletRequest request, InputStream input) throws Exception {
+        storeOperator(input, OperatorLibrary.operatorDirectory+"/"+opname);
     	return "OK";
     }
     
