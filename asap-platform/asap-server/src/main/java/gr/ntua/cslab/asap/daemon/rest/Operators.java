@@ -150,7 +150,11 @@ public class Operators {
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
 	@Produces("application/XML")
     public String addOperator(@QueryParam("opname") String opname, @Context HttpServletRequest request, InputStream input) throws Exception {
-        storeOperator(input, OperatorLibrary.operatorDirectory+"/"+opname);
+    	String folder = OperatorLibrary.operatorDirectory+"/"+opname;
+        storeOperator(input, folder);
+        Operator op = new Operator(opname, folder);
+		op.readFromDir();
+    	OperatorLibrary.add(op);
     	return "OK";
     }
     
