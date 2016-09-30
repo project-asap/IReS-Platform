@@ -195,7 +195,7 @@ connectASAP2YARN()
 		# set asap.properties file
 		# append
 		# path of hdfs command of Hadoop YARN
-		sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" $IRES_HOM/Easap-platform/asap-server/src/main/resources/asap.properties
+		sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
 		# path of asap command of ASAP server which does the reporting( taking measures)
 		sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
 
