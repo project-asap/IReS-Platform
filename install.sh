@@ -193,8 +193,8 @@ connectASAP2YARN()
 		echo -e "$nm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
 
 		# copy Hadoop YARN configuration files into ASAP server
-		cp $YARN_HOME/etc/hadoop/yarn-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
-		cp $YARN_HOME/etc/hadoop/core-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
+		ln -s $YARN_HOME/etc/hadoop/yarn-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
+		ln -s $YARN_HOME/etc/hadoop/core-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
 
 		# set asap.properties file
 		# append
