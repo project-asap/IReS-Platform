@@ -134,6 +134,10 @@ connectASAP2YARN()
 	else
 						
 		cd $IRES_HOME
+		# backup files
+		for f in yarn-site.xml core-site.xml; do
+			cp $YARN_HOME/etc/hadoop/$f $YARN_HOME/etc/hadoop/$f.orig
+		done
 		# update YARN_HOME/etc/hadoop/yarn-site.xml with the properties of resources/conf/yarn-site-min.xml file
 		# if the property yarn.resource.hostname exists in YARN_HOME/etc/hadoop/yarn-site.xml file then this
 		# property should not be inserted again and it is assumed to be correctly set.
