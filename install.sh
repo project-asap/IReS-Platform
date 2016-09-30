@@ -154,7 +154,7 @@ connectASAP2YARN()
 		# property should not be inserted again and it is assumed to be correctly set.
 		# update with the appropriate host name
 		nm_host_exists=`sed -n '/<name>fs\.defaultFS<\/name>/=' $YARN_HOME/etc/hadoop/core-site.xml`
-		if [[ -z $rm_host_exists ]]
+		if [[ -z $nm_host_exists ]]
 		then
 			# specify host name running of HADOOP YARN
 			echo -e "\n\nNo hostname or ip address for NameNode was found."
