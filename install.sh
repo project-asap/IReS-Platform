@@ -134,6 +134,10 @@ connectASAP2YARN()
 	else
 						
 		cd $IRES_HOME
+		# backup files
+		for f in yarn-site.xml core-site.xml; do
+			cp $YARN_HOME/etc/hadoop/$f $YARN_HOME/etc/hadoop/$f.orig
+		done
 		# update YARN_HOME/etc/hadoop/yarn-site.xml with the properties of resources/conf/yarn-site-min.xml file
 		# if the property yarn.resource.hostname exists in YARN_HOME/etc/hadoop/yarn-site.xml file then this
 		# property should not be inserted again and it is assumed to be correctly set.
@@ -154,7 +158,7 @@ connectASAP2YARN()
 		# property should not be inserted again and it is assumed to be correctly set.
 		# update with the appropriate host name
 		nm_host_exists=`sed -n '/<name>fs\.defaultFS<\/name>/=' $YARN_HOME/etc/hadoop/core-site.xml`
-		if [[ -z $rm_host_exists ]]
+		if [[ -z $nm_host_exists ]]
 		then
 			# specify host name running of HADOOP YARN
 			echo -e "\n\nNo hostname or ip address for NameNode was found."
@@ -189,8 +193,8 @@ connectASAP2YARN()
 		echo -e "$nm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
 
 		# copy Hadoop YARN configuration files into ASAP server
-		cp $YARN_HOME/etc/hadoop/yarn-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
-		cp $YARN_HOME/etc/hadoop/core-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
+		ln -s $YARN_HOME/etc/hadoop/yarn-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
+		ln -s $YARN_HOME/etc/hadoop/core-site.xml $IRES_HOME/asap-platform/asap-server/target/conf
 
 		# set asap.properties file
 		# append
@@ -336,13 +340,13 @@ do
 			mvn clean install -DskipTests -P asapCluster-q > log.txt
 			# check for errors
 			errors=`cat log.txt | grep ERROR`
-			if [[ ! -z $errors ]]
-			then
-				echo -e "$errors"
-				echo -e "List of errors found!"
-				echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
-				exit
-			fi
+			#if [[ ! -z $errors ]]
+			#then
+			#	echo -e "$errors"
+			#	echo -e "List of errors found!"
+			#	echo -e "$errors\n\n${red}Contact administrator to fix them.${reset}"
+			#	exit
+			#fi
 			# remove log.txt since everything went well
 			rm log.txt
 			cd ../
