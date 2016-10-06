@@ -151,9 +151,9 @@ In order to create a new workflow the definition of the abstract operators is ne
 .. image:: newabstractoperator.png
    :width: 150%
 
------------------------------------
-2. Creating Materialized Operators
------------------------------------
+-------------------------------------------------
+2. Creating Materialized Operators (Server-side)
+-------------------------------------------------
 
 Currently, to add a materialized operator a folder with the least required files is needed. 
 
@@ -238,8 +238,68 @@ vi. Restart the IReS server
 	
 	$ $IRES_HOME/asap-server/src/main/scripts/asap-server restart
 
+------------------------------------------------------------------
+3. Creating Materialized Operators (Client-side via the REST API)
+------------------------------------------------------------------
+As an alternative of section 2, a new materialized operator can be added using the provided REST API. This can be done by using the `addTarball` method of the `REST API <./rest_api>`_. The steps are similar with these of section 2.
+
+i. Create a folder for the new operator (name does not matters)
+
+.. code:: bash
+
+	mkdir operator
+
+ii. Navigate to the new folder
+
+.. code:: bash
+
+	cd operator
+
+iii. Create the **description** file and enter the information below. By adding the new operator via `addTarball` method there is no need of creating a .lua file as it will be generated automatically. In such a case, three more parameters should be added in the `Execution` tree. These parameters are `cores`, `memory` and `command`.
+
+.. code:: bash
+
+	$ nano description
+
+.. code:: javascript
+
+	Constraints.Engine=Spark
+	Constraints.Output.number=1
+	Constraints.Input.number=1
+	Constraints.OpSpecification.Algorithm.name=HelloWorld
+	Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+	Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+	Optimization.outputSpace.execTime=Double
+	Optimization.outputSpace.cost=Double
+	Optimization.cost=1.0
+	Optimization.execTime=1.0
+	Execution.Arguments.number=1
+	Execution.Argument0=testout
+	Execution.Output0.name=$HDFS_OP_DIR/testout
+	Execution.copyFromLocal=testout
+	####Extra Execution Parameters###
+	Execution.cores=1
+	Execution.memory=1024
+	Execution.command=./HelloWorld.sh
+
+iv. Put all files in the current directory in a compress (tar.gz) file:
+
+.. code:: bash
+
+	tar -cvf helloworld.tar.gz *
+
+this command must be executed inside the operator's folder. The corresponding folder in IReS server will be created automatically.
+
+v. Send the tarball via the REST API using curl:
+
+.. code:: bash
+
+	curl -H "Content-Type: application/octet-stream" -X POST --data-binary @myOperator.tar.gz ires_host:1323/operators/addTarball?opname=HelloWorld
+
+The tarball for this example is available `here <./files/helloworld.tar.gz>`_.
+
 -----------------------------------
-3. Creating the Abstract Workflow
+4. Creating the Abstract Workflow
 -----------------------------------
 
 Now we will combine everything we created in the above steps to generate the new workflow. Go to the **Abstract Workflows** tab and click the "New Workflow" button.

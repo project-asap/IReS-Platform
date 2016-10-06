@@ -57,6 +57,7 @@ clean:
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	cp -r source/rest_api build/html/
+	cp -r source/files build/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
