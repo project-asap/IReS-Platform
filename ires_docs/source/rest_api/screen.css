@@ -1169,7 +1169,6 @@ table {
   cursor: pointer;
 }
 #header {
-  display:none;
   background-color: #89bf04;
   padding: 14px;
 }
@@ -1271,8 +1270,7 @@ table {
 }
 
 .active_schema .active_schema_link:hover{
-  display:none;
-  //text-decoration:underline;
+  text-decoration:underline;
 }
 
 .swadl-ui-wrap .model-signature .active_schema_link .propType {

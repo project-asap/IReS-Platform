@@ -1,38 +1,11 @@
 <?xml version="1.0" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="operator" nillable="true" type="xs:anyType"/>
+  <xs:element name="helloModel" type="helloModel"/>
 
-  <xs:element name="workflow" type="workflowDictionary"/>
-
-  <xs:complexType name="operatorDescription">
+  <xs:complexType name="helloModel">
     <xs:sequence>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="value" type="xs:string" minOccurs="0"/>
-      <xs:element name="children" type="operatorDescription" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="workflowDictionary">
-    <xs:sequence>
-      <xs:element name="operators" type="operatorDictionary" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="operatorDictionary">
-    <xs:sequence>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="cost" type="xs:string" minOccurs="0"/>
-      <xs:element name="execTime" type="xs:string" minOccurs="0"/>
-      <xs:element name="status" type="xs:string" minOccurs="0"/>
-      <xs:element name="isOperator" type="xs:string" minOccurs="0"/>
-      <xs:element name="isAbstract" type="xs:string" minOccurs="0"/>
-      <xs:element name="description" type="xs:string" minOccurs="0"/>
-      <xs:element name="abstractName" type="xs:string" minOccurs="0"/>
-      <xs:element name="isTarget" type="xs:boolean"/>
-      <xs:element name="input" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="output" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="hello" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
