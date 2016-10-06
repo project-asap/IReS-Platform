@@ -49,6 +49,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import com.sun.jersey.api.core.ResourceConfig;
+import com.palominolabs.jersey.cors.CorsResourceFilterFactory;
 
 public class Main {
 
@@ -116,7 +118,11 @@ public class Main {
                 + "org.codehaus.jackson.jaxrs");//Set the package where the services reside
         holder.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
         holder.setInitParameter("com.sun.jersey.config.feature.Formatted", "true");
-//        
+        holder.setInitParameter(
+                ResourceConfig.PROPERTY_RESOURCE_FILTER_FACTORIES,
+                CorsResourceFilterFactory.class.getCanonicalName()
+        );
+//
         holder.setInitOrder(1);
 //
 //        ServerStaticComponents.server = new Server();

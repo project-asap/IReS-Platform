@@ -46,6 +46,8 @@ import javax.xml.ws.WebServiceException;
 
 import org.apache.log4j.Logger;
 
+import com.palominolabs.jersey.cors.Cors;
+
 @Path("/abstractOperators/")
 public class AbstractOperators {
 
@@ -73,6 +75,7 @@ public class AbstractOperators {
     }
     
     @GET
+    @Cors(allowOrigin="*")  // Change it to specific hosts
     @Path("json/{id}/")
 	@Produces("application/json")
     public OperatorDescription getOperatorInfoJson(@PathParam("id") String id) {
