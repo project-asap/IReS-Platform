@@ -353,49 +353,6 @@ In order to create the workflow input dataset you need to add the dataset defini
 
 This step assumes that a file named 'asap-server.log' exists in the hdfs. You can download the log file used in this example `through this link <./files/asap-server.log>`_.
 
-------------------------------
-Abstract operator definition
-------------------------------
-Create the `LineCount` abstract operator by creating a file named 'LineCount' in the asapLibrary/abstractOperators folder with the following content:
-
-.. code:: javascript
-
-	Constraints.Output.number=1
-	Constraints.Input.number=1
-	Constraints.OpSpecification.Algorithm.name=LineCount
-
---------------------------------
-Abstract workflow definition
---------------------------------
-Create the `LineCountWorkflow` workflow by creating a folder named 'LineCountWorkflow' in the asapLibrary/abstractWorkflows. The abstract workflow folder should consist of three required components: the `datasets` folder , the `operators` folder and a file named `graph`.
-
-i. datasets: Create a folder named 'datasets' and copy the `asapServerLog` file from the `asapLibrary/datasets/` folder into it. Then, create an empty file named 'd1' (touch d1). 
-
-ii. graph: Create a file named 'graph' and add the following content:
-
-.. code:: javascript
-
-	asapServerLog,LineCount
-	LineCount,d1
-	d1,$$target
-
-This `graph` file defines the workflow graph as follows: `asapServerLog` dataset is input to the `LineCount` abstract operator, `LineCount` operator outputs the result into `d1`. Finally, `d1` node maps to the final result ($$target).
-
-iii. operators: Create a folder named 'operators' which will contain the operators involved in the worflow. In the 'operators' folder create a file named 'LineCount' and add the following content:
-
-.. code:: javascript
-
-	Constraints.Engine=Spark
-	Constraints.Output.number=1
-	Constraints.Input.number=1
-	Constraints.OpSpecification.Algorithm.name=LineCount
-
-Restart the server for changes to take effect.
-
-.. code:: bash
-
-	$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server restart
-
 ---------------------------------------------
 Materialized Operator Definition (via REST)
 ---------------------------------------------
@@ -439,9 +396,53 @@ and make it executable
 iii. Send the operator via the 'send_operator.sh' script:
 
 .. code:: bash
-	./send_operator.sh
+	
+	./send_operator.sh LOCAL_OP_FOLDER IRES_HOST LineCount
 
 The script is available at $IRES_HOME/asap-server/src/main/scripts location or you can `download it directly <https://github.com/project-asap/IReS-Platform/blob/master/asap-platform/asap-server/src/main/scripts/send_operator.sh>`_.
+
+------------------------------
+Abstract operator definition
+------------------------------
+Create the `LineCount` abstract operator by creating a file named 'LineCount' in the asapLibrary/abstractOperators folder with the following content:
+
+.. code:: javascript
+
+	Constraints.Output.number=1
+	Constraints.Input.number=1
+	Constraints.OpSpecification.Algorithm.name=LineCount
+
+--------------------------------
+Abstract workflow definition
+--------------------------------
+Create the `LineCountWorkflow` workflow by creating a folder named 'LineCountWorkflow' in the asapLibrary/abstractWorkflows. The abstract workflow folder should consist of three required components: the `datasets` folder , the `operators` folder and a file named `graph`.
+
+i. datasets: Create a folder named 'datasets' and copy the `asapServerLog` file from the `asapLibrary/datasets/` folder into it. Then, create an empty file named 'd1' (touch d1). 
+
+ii. graph: Create a file named 'graph' and add the following content:
+
+.. code:: javascript
+
+	asapServerLog,LineCount
+	LineCount,d1
+	d1,$$target
+
+This `graph` file defines the workflow graph as follows: `asapServerLog` dataset is input to the `LineCount` abstract operator, `LineCount` operator outputs the result into `d1`. Finally, `d1` node maps to the final result ($$target).
+
+iii. operators: Create a folder named 'operators' which will contain the operators involved in the worflow. In the 'operators' folder create a file named 'LineCount' and add the following content:
+
+.. code:: javascript
+
+	Constraints.Engine=Spark
+	Constraints.Output.number=1
+	Constraints.Input.number=1
+	Constraints.OpSpecification.Algorithm.name=LineCount
+
+Restart the server for changes to take effect.
+
+.. code:: bash
+
+	$IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server restart
 
 -------------------------
 Workflow Materialization
@@ -465,3 +466,6 @@ When the execution finish, navigate to the HDFS file browser to see the output l
 
 .. image:: ./images/lineCount/lineCountHDFS.png
    :width: 150%
+
+
+All resources and examples files described in this section are available `here <./files/LineCountExample.tar>`_.

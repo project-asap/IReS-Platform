@@ -92,27 +92,7 @@ In this section, we give an example of a dataset description (Figure 4).
 ------------------------------
 Operator metadata description 
 ------------------------------
-In this section, we give an example of a materialized operator description (Figure 5). 
-
-| Constraints.Input.number=1 
-| Constraints.Output.number=1 
-| Constraints.Input0.Engine.FS=HDFS  
-| Constraints.Input0.type=SequenceFile  
-| Constraints.Output0.Engine.FS=HDFS 
-| Constraints.Output0.type=SequenceFile 
-| Constraints.OpSpecification.Algorithm.name=TF_IDF  
-| Constraints.EngineSpecification.Distributed.MapReduce.masterLocation=127.0.0.1 
-| Optimization.inputSpace.In0.documents=Double,100.0,150000.0,10000.0 
-| Optimization.outputSpace.execTime=Double 
-| Optimization.outputSpace.Out0.points=Integer 
-| Optimization.outputSpace.cost=Double 
-| Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel 
-| Optimization.model.Out0.points=gr.ntua.ece.cslab.panic.core.models.UserFunction  
-| Optimization.Out0.points=In0.documents  
-| Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction 
-| Optimization.cost=15.0 Execution.LuaScript=TF_IDF_mahout.lua Execution.Arguments.number=2 
-| Execution.Argument0=In0.path Execution.Argument1=$HDFS_OP_DIR/tfidf 
-| Execution.Output0.path=$HDFS_OP_DIR/tfidf 
+In this section, we give an example of a materialized operator description. We also provide a `template <./files/description_template>`_ of an operator description file.
 
 .. figure:: materializedop.png
 	
