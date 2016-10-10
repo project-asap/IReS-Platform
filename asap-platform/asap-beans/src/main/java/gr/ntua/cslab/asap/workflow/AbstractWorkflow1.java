@@ -493,14 +493,21 @@ public class AbstractWorkflow1 {
 			and note them with a "MISSING" statement
 			TODO
 		*/
+		
+		HashMap<String,OperatorDictionary> operators = new HashMap<>();
+		
 		for(WorkflowNode n : workflowNodes.values()){
 			OperatorDictionary op = new OperatorDictionary(n.getAbstractName(), n.toStringNorecursive(), n.getCost()+"", n.getExecTime()+"",
 	    			n.getStatus(new HashMap<String, List<WorkflowNode>>()), n.isOperator+"", n.isAbstract+"", n.toKeyValueString(delimiter), targets.contains(n));
-
-			for(WorkflowNode in : n.inputs){
-				op.addInput(in.toStringNorecursive());
-			}
+			
+			operators.put(n.toStringNorecursive(), op);
 	    	ret.addOperator(op);
+		}
+		for(WorkflowNode n : workflowNodes.values()){
+			for(WorkflowNode in : n.inputs){
+				operators.get(n.toStringNorecursive()).addInput(in.toStringNorecursive());
+				operators.get(in.toStringNorecursive()).addOutput(n.toStringNorecursive());
+			}
 		}
 		return ret;
 	}
