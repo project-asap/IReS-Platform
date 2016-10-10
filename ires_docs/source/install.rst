@@ -338,7 +338,7 @@ The resulting materialized workflow
 ===============================================
 Create an input-process-output workflow
 ===============================================
-In this example we will create a workflow consists of one operator which takes as input a text file and produces as output the number of lines.
+In this example we will create a workflow consists of a single operator which takes as input a text file and produces as output the number of lines.
 
 -------------------
 Dataset definition
@@ -351,7 +351,7 @@ In order to create the workflow input dataset you need to add the dataset defini
 	Execution.path=hdfs\:///user/root/asap-server.log
 	Constraints.Engine.FS=HDFS
 
-This step assumes that a file named 'asap-server.log' exists in the hdfs. You can download the log file used in this example `through this link <./files/asap-server.log>`_.
+This step assumes that a file named 'asap-server.log' exists in the HDFS. You can download the log file used in this example `through this link <./files/asap-server.log>`_.
 
 ---------------------------------------------
 Materialized Operator Definition (via REST)
@@ -399,7 +399,7 @@ iii. Send the operator via the 'send_operator.sh' script:
 	
 	./send_operator.sh LOCAL_OP_FOLDER IRES_HOST LineCount
 
-The script is available at $IRES_HOME/asap-server/src/main/scripts location or you can `download it directly <https://github.com/project-asap/IReS-Platform/blob/master/asap-platform/asap-server/src/main/scripts/send_operator.sh>`_.
+The script is available at $IRES_HOME/asap-server/src/main/scripts. You can also `download it directly <https://github.com/project-asap/IReS-Platform/blob/master/asap-platform/asap-server/src/main/scripts/send_operator.sh>`_.
 
 ------------------------------
 Abstract operator definition
@@ -427,7 +427,7 @@ ii. graph: Create a file named 'graph' and add the following content:
 	LineCount,d1
 	d1,$$target
 
-This `graph` file defines the workflow graph as follows: `asapServerLog` dataset is input to the `LineCount` abstract operator, `LineCount` operator outputs the result into `d1`. Finally, `d1` node maps to the final result ($$target).
+This `graph` file defines the workflow graph as follows: `asapServerLog` dataset is being given as input to the `LineCount` abstract operator and `LineCount` operator outputs the result into `d1`. Finally, `d1` node maps to the final result ($$target).
 
 iii. operators: Create a folder named 'operators' which will contain the operators involved in the worflow. In the 'operators' folder create a file named 'LineCount' and add the following content:
 
@@ -447,7 +447,7 @@ Restart the server for changes to take effect.
 -------------------------
 Workflow Materialization
 -------------------------
-To materialize the workflow go to the `Abstract Workflows` tab, click on the LineCountWorkflow. 
+To materialize the workflow navigate to the `Abstract Workflows` tab and click on the LineCountWorkflow created in the previous steps. 
 
 .. image:: ./images/lineCount/abstractLineCount.png
    :width: 150%
