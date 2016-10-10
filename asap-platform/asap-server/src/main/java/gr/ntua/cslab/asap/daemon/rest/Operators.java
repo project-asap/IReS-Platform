@@ -18,22 +18,19 @@
 package gr.ntua.cslab.asap.daemon.rest;
 
 
+
 import gr.ntua.cslab.asap.daemon.ServerStaticComponents;
 import gr.ntua.cslab.asap.operators.Operator;
+import gr.ntua.cslab.asap.operators.SpecTree;
 import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,7 +39,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.xml.ws.WebServiceException;
 
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -144,6 +140,115 @@ public class Operators {
         
         
     }
+
+    private static String generateLua(HashMap<String, String> params){
+        return String.format("operator = yarn {\n" +
+                        "  name = \"%s\",\n" +
+                        "  timeout = 10000,\n" +
+                        "  memory = %s,\n" +
+                        "  cores = %s,\n" +
+                        "  container = {\n" +
+                        "    instances = 1,\n" +
+                        "    --env = base_env,\n" +
+                        "    resources = {\n" +
+                        "    %s\n" +
+                        "    },\n" +
+                        "    command = {\n" +
+                        "        base = \"%s\"\n" +
+                        "    }\n" +
+                        "  }\n" +
+                        "}",
+                params.get("name"),
+                params.get("memory"),
+                params.get("cores"),
+                params.get("resources"),
+                params.get("command"));
+    }
+
+    //Generates the .lua file
+    private boolean generateLua(Operator op){
+        try {
+            HashMap<String, String> luaParams = new HashMap<>();
+            SpecTree params = op.optree;
+            String name = op.opName;
+            String resources = "";
+            String cores = params.getParameter("Execution.cpu");
+            String memory = params.getParameter("Execution.memory");
+            String command = params.getParameter("Execution.command");
+
+            //Default values
+            if (cores == null) cores = "1";
+            if (memory == null) memory = "1024";
+
+            //If a command is not set in the description file
+            //the first shell script found will be set as the
+            //execution command
+            if (command == null) {
+                logger.warn("Command not found in description, searching for an executable");
+                for (File file : (new File(op.directory)).listFiles()) {
+                    if (file.getName().endsWith(".sh")) {
+                        logger.warn("./"+file.getName()+" added as execution command");
+                        command = "./" + file.getName();
+                        break;
+                    }
+                }
+            }
+
+            //Add all the files in the folder as resources
+            File[] files = (new File(op.directory)).listFiles();
+            int fileCounter = 0;
+            for (File file : files) {
+                ++fileCounter;
+                resources += genResourceFromFile(file);
+                if (fileCounter != files.length) resources += ",\n\t  ";
+            }
+
+            luaParams.put("name", name);
+            luaParams.put("cores", cores);
+            luaParams.put("memory", memory);
+            luaParams.put("command", command);
+            luaParams.put("resources", resources);
+
+            FileWriter fw = new FileWriter(String.format("%s/%s.lua", op.directory, op.opName));
+            fw.write(generateLua(luaParams));
+            fw.close();
+
+            op.optree.add("Execution.LuaScript", op.opName + ".lua");
+            logger.info(op.opName+".lua written successfully");
+        }
+        catch (IOException ioException) {
+            logger.warn("IO Exception");
+        }
+
+        return true;
+    }
+
+    //Generates a container resource in json format from a file
+    private String genResourceFromFile(File file){
+        return String.format("[\"%s\"] = {\n" +
+                "       file = \"%s\",\n" +
+                "                type = \"file\",               -- other value: 'archive'\n" +
+                "                visibility = \"application\"  -- other values: 'private', 'public'\n" +
+                "        }",file.getName(), file.getPath());
+    }
+
+    //Checks if the operator contains a .lua file
+    private boolean containsLua(String operatorPath){
+        File f = new File(operatorPath);
+        if (f.isDirectory()){
+            File[] files = f.listFiles();
+            for (File file : files){
+                if (file.getName().endsWith(".lua")){
+                    return true;
+                }
+            }
+        }
+        else{
+            logger.warn("Invalid path");
+        }
+
+        return false;
+    }
     
     @POST
     @Path("addTarball/")
@@ -153,9 +258,14 @@ public class Operators {
     	String folder = OperatorLibrary.operatorDirectory+"/"+opname;
         storeOperator(input, folder);
         Operator op = new Operator(opname, folder);
-		op.readFromDir();
-    	OperatorLibrary.add(op);
+        op.readFromDir();
+        if (!containsLua(folder)){
+            //No .lua file found, generate it
+            logger.info(".lua not found, generating it...");
+            generateLua(op);
+        }
+        OperatorLibrary.add(op);
     	return "OK";
     }
-    
+
 }

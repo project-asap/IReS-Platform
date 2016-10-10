@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://wadl.dev.java.net/2009/02">
+    <doc xmlns:jersey="http://jersey.java.net/" jersey:generatedBy="Jersey: 1.19 02/11/2015 03:25 AM"/>
+    <grammars>
+        <include href="application.wadl/xsd0.xsd">
+            <doc title="Generated" xml:lang="en"/>
+        </include>
+    </grammars>
+    <resources base="http://asapmaster:1323/">
+        <resource path="/web/">
+            <resource path="/abstractWorkflows/newWorkflow/">
+                <method id="newWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/datasets/addDataset/">
+                <method id="addDataset" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/datasets/deleteDataset/">
+                <method id="deleteDataset" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/addOperator/">
+                <method id="addOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/deleteOperator/">
+                <method id="deleteOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/editOperator/">
+                <method id="editOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/workflows/execute/">
+                <method id="executeWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/">
+                <method id="listOperators" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/datasets/">
+                <method id="listDatasets" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/main/">
+                <method id="mainPage" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/">
+                <method id="listAbstractOperators" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="abstractOperatorDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/checkMatches/">
+                <method id="checkAbstractOperatorMatches" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/editOperator/">
+                <method id="editAbstractOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/deleteOperator/">
+                <method id="deleteAbstractOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractOperators/addOperator/">
+                <method id="addAbstractOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="operatorDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/operators/operatorProfile/">
+                <method id="operatorProfile" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="variable" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="profileType" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/datasets/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="datasetDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/datasets/editDataset/">
+                <method id="editDataset" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="dString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/runningWorkflows/">
+                <method id="listRunningWorkflows" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/runningWorkflows/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="runningWorkflowDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/runningWorkflows/replan/">
+                <method id="replanWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/workflows/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="workflowDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/workflows/">
+                <method id="listWorkflows" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractWorkflows/">
+                <method id="listAbstractWorkflows" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractWorkflows/changeGraph/">
+                <method id="changeAbstractWorkflowDescription" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowGraph" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractWorkflows/addRemove/">
+                <method id="addNodeToWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="type" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="name" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="addRemove" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractWorkflows/{workflowName}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="template" type="xs:string"/>
+                <method id="abstractWorkflowDescription" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/abstractWorkflows/materialize/">
+                <method id="materializeAbstractWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="workflowName" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="policy" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="parameters" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/clusterStatus/">
+                <method id="listServicesAndResources" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/clusterStatus/">
+            <resource path="services">
+                <method id="listServices" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="services/alive/{id}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="setAlive" name="GET"/>
+            </resource>
+            <resource path="static/resources">
+                <method id="listClusterStaticResources" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="available/resources">
+                <method id="listClusterAvailableResources" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="services/dead/{id}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="setDead" name="GET"/>
+            </resource>
+        </resource>
+        <resource path="/datasets/">
+            <method id="listDatasets" name="GET">
+                <response>
+                    <representation mediaType="text/html"/>
+                </response>
+            </method>
+            <resource path="{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDatasetInfo" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="json/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoJson" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/abstractOperators/">
+            <method id="listOperators" name="GET">
+                <response>
+                    <representation mediaType="text/html"/>
+                </response>
+            </method>
+            <resource path="add/">
+                <method id="addOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="delete/">
+                <method id="deleteOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getApplicationInfo" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="checkMatches/">
+                <method id="checkMatches" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="json/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoJson" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/operators/">
+            <method id="listOperators" name="GET">
+                <response>
+                    <representation mediaType="text/html"/>
+                </response>
+            </method>
+            <resource path="addTarball/">
+                <method id="addOperator" name="POST">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <representation mediaType="application/octet-stream"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="add/">
+                <method id="addOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opString" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="delete/">
+                <method id="deleteOperator" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="opname" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getApplicationInfo" name="GET">
+                    <response>
+                        <representation mediaType="text/html"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="json/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoJson" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getOperatorInfoXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="operator" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/abstractWorkflows/">
+            <resource path="execute/{id}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="execute" name="GET">
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="remove/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="removeWorkflow" name="GET"/>
+            </resource>
+            <resource path="{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescription" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="add/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="addWorkflow" name="POST">
+                    <request>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/xml"/>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/json"/>
+                    </request>
+                </method>
+            </resource>
+            <resource path="materializeWithParams/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="materializeWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="policy" style="query" type="xs:string"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="parameters" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="materialize/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="materializeWorkflow" name="GET">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="policy" style="query" type="xs:string"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescriptionXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/runningWorkflows/">
+            <resource path="{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescription" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="replan/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="replan" name="GET"/>
+            </resource>
+            <resource path="toRunWorkflow/XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescriptionToRunXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="report/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="refreshReport" name="POST">
+                    <request>
+                        <representation mediaType="application/octet-stream"/>
+                    </request>
+                </method>
+            </resource>
+            <resource path="{id}/trackingURL">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getTrackingURL" name="GET">
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescriptionXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="{id}/state">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getState" name="GET">
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/workflows/">
+            <method id="listOperators" name="GET">
+                <response>
+                    <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="remove/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="removeWorkflow" name="GET"/>
+            </resource>
+            <resource path="/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescription" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/XML/{id}/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" name="id" style="template" type="xs:string"/>
+                <method id="getDescriptionXML" name="GET">
+                    <response>
+                        <ns2:representation xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" element="workflow" mediaType="application/XML"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+    </resources>
+</application>

@@ -51,7 +51,7 @@ Executing, <p><code>./install.sh -c $YARN\_HOME,$IRES\_HOME</code></p> will make
 <li>
 <h3>Cluster Monitoring</h3>
 
-This step requires the connection of IReS with YARN. Assuming that this connections has been established, then the user should update the file <p><code>$YARN_HOME/etc/hadoop/yarn-site.xml</code></p> and more specifically the values of the following properties,
+This step requires the connection of IReS with YARN. Assuming that this connection has been established, then the user should update the file <p><code>$YARN_HOME/etc/hadoop/yarn-site.xml</code></p> and more specifically the values of the following properties,
 <ul>
 <li>yarn.nodemanager.services-running.per-node</li>
 <li>yarn.nodemanager.services-running.check-availability</li>

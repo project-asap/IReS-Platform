@@ -1,0 +1,113 @@
+# variable $HDFS_DIR designates the path to the directory of the workflow
+# variavle $HDFS_OP_DIR designates the path to directory of the operator 
+
+##############Constraints#################
+# used for matching abstract to materialized operators
+# abstract operators need only the constraints section and may use regex as values of the contraints fields
+
+#mandatory field, possible values (e.g., HDFS, Spark, etc.) privided by cluster status api call
+Constraints.Engine=Spark
+# Regex can be used for abstract operators, e.g.,
+# Constraints.Engine=* 
+
+#optional, user-defined fields to provide more info about engine. Categorization of engines in Centralized or Distributed ones, e.g.,
+#Constraints.EngineSpecification.Centralized.PostgreSQL.location - the location of PostgreSQL
+#Constraints.EngineSpecification.Distributed.HIVE.masterLocation - the location of HIVE master
+#Constraints.EngineSpecification.Distributed.MapReduce.masterLocation - the location of MR master
+#Constraints.EngineSpecification.Distributed.Spark.masterLocation - the location of Spark master
+
+#mandatory, number of input datasets, integer
+Constraints.Input.number = 1
+
+#convention: InputN refers to the N+1th input dataset. Anything after InputN is user-defined and specifies more information about InputN, e.g.
+#Constraints.Input0.Engine.FS=HDFS
+#Constraints.Input0.Engine.SQL=PostgreSQL
+#Constraints.Input0.type=SequenceFile
+
+#mandatory field, a string that designates the implemented algorithm.
+#Future functionality: This field will be used for indexing. An API call will return all already available algorithms
+Constraints.OpSpecification.Algorithm.name=TF_IDF
+
+#mandatory field, number of output datasets, integer
+Constraints.Output.number
+#convention: OutputN refers to the N+1th output dataset. Anything after OutputN is user-defined and specifies more information about OutputN, e.g.
+#Constraints.Output0.Engine.FS=HDFS 
+#Constraints.Output0.Engine.SQL=PostgreSQL
+#Constraints.Output0.type=SequenceFile
+#the above fields are copied to the metadata description of the output datasets
+
+
+##############Execution#################
+#used for execution of the materialized operator
+
+#mandatory field, number of execution arguments, integer
+Execution.Arguments.number=1
+
+#convention: ArgumentN refers to the N+1th execution argument. Could be (a)a static string, e.g.,
+#Execution.Argument0=10 
+#Execution.Argument1=$HDFS_OP_DIR/tfidf
+# or (b) a field related to one of the input datasets, e.g.,
+#Execution.Argument0=Input0.path
+
+
+#list of files that need to be copied in the container before the execution of the operator
+#can be a static path to a file or the path of InputN/OutputN
+Execution.copyFromLocal=Output0.path
+#list of files that need to be maintained after the execution of the operator
+Execution.copyToLocal=Input0.path
+
+#fields needed for the automatic generation of lua scripts
+#Number of container cores
+Execution.cores=8 
+#Memory of container in power of 2 (512, 1024, 2048 etc)
+Execution.memory=4096 
+#The execution command
+Execution.command=./myCommand.sh
+
+# depricated 
+#lua script name
+#Execution.LuaScript
+
+#Optional information you want to keep about the output, e.g., the name of the output dataset created, its path, etc. We use the convention OutputN as above.
+#Execution.Output0.name
+#Execution.Output0.path=$HDFS_OP_DIR/tfidf
+
+#Only for datasets
+#path of the dataset
+Execution.path=hdfs:///user/root/asapDataAll
+
+##############Optimization#################
+#Used by IReS server for materialized operator monitoring and workflow planning
+#All fields are optional
+
+#Optimization.inputSpace.x=type,min,max, step The user defines the type of the profiling input x and optionally the minimum and maximum value and a step.
+#x may be related to some parameter of the input dataset(s).
+Optimization.inputSpace.centroids=Integer
+Optimization.inputSpace.cores=Integer,2,16,2
+Optimization.inputSpace.cpus
+Optimization.inputSpace.documents
+Optimization.inputSpace.Input0.avgDegree
+Optimization.inputSpace.Input0.documents
+Optimization.inputSpace.Input0.nodes
+Optimization.inputSpace.Input0.points
+Optimization.inputSpace.Input0.size
+Optimization.inputSpace.iterations
+Optimization.inputSpace.k=Integer
+
+#Optimization.outputSpace.x The user defines the type of the profiling output metric x utilized during planning, e.g., 
+Optimization.outputSpace.cost=Double
+Optimization.outputSpace.execTime=Double
+Optimization.outputSpace.Output0.points=Integer
+
+#The user defines how each output metric (declared above) is modelled. Chooses between AbstractWekaModel and UserFunction
+Optimization.model.cost=UserFunction
+Optimization.model.execTime=AbstractWekaModel
+Optimization.model.Output0.points=AbstractWekaModel
+
+#The user-provided model function of an output metric, if it is modelled as a UserFunction, e.g.,
+Optimization.cost=15.0
+#no function is required for documents and execTime, since they are modelled using the AbstractWekaModel
+#Optimization.execTime
+#Optimization.Output0.points=2*Input0.points
+
+

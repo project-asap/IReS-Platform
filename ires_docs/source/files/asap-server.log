@@ -1,0 +1,1305 @@
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, crawlDocuments=crawlDocuments, HelloWorld=HelloWorld}
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, crawlDocuments, HelloWorld]
+ INFO [qtp377718445-21] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, crawlDocuments=crawlDocuments, HelloWorld=HelloWorld}
+ INFO [qtp377718445-21] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, crawlDocuments, HelloWorld]
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, crawlDocuments=crawlDocuments, HelloWorld=HelloWorld}
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, crawlDocuments, HelloWorld]
+ INFO [qtp377718445-18] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:118) - Processing : HelloWorld from name: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:118) - Processing : crawlDocuments from name: HelloWorld
+ INFO [qtp377718445-18] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp377718445-18] (WorkflowNode.java:538) - Processed : crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:153) - Materialized inputs: [[crawlDocuments]]
+ INFO [qtp377718445-18] (OperatorLibrary.java:119) - Found: HelloWorld_0
+ INFO [qtp377718445-18] (OperatorLibrary.java:119) - Found: hello_test_1
+ INFO [qtp377718445-18] (OperatorLibrary.java:119) - Found: hiTest_2
+ INFO [qtp377718445-18] (OperatorLibrary.java:119) - Found: hiTest555_3
+ INFO [qtp377718445-18] (WorkflowNode.java:169) - Materialized operator: HelloWorld_0
+ INFO [qtp377718445-18] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-18] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-18] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-18] (WorkflowNode.java:338) - copy path from: crawlDocuments to t0
+ INFO [qtp377718445-18] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-18] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: execTime from operator: HelloWorld_0
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: cost from operator: HelloWorld_0
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:916) - Output metrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-18] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-18] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-18] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-18] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-18] (WorkflowNode.java:451) - Call outputFor() for operator: HelloWorld_0
+ INFO [qtp377718445-18] (WorkflowNode.java:452) - with tempOutput: t1: {}
+ INFO [qtp377718445-18] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-18] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-18] (WorkflowNode.java:455) - temp.inputs: [t0]
+ INFO [qtp377718445-18] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-18] (Operator.java:671) - dataset: t1
+ INFO [qtp377718445-18] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-18] (Operator.java:673) - and inputs: [t0]
+ INFO [qtp377718445-18] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-18] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:169) - Materialized operator: hello_test_1
+ INFO [qtp377718445-18] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-18] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-18] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-18] (WorkflowNode.java:338) - copy path from: crawlDocuments to t2
+ INFO [qtp377718445-18] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-18] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: execTime from operator: hello_test_1
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: cost from operator: hello_test_1
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-18] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-18] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-18] (WorkflowNode.java:451) - Call outputFor() for operator: hello_test_1
+ INFO [qtp377718445-18] (WorkflowNode.java:452) - with tempOutput: t3: {}
+ INFO [qtp377718445-18] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-18] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (WorkflowNode.java:455) - temp.inputs: [t2]
+ INFO [qtp377718445-18] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-18] (Operator.java:671) - dataset: t3
+ INFO [qtp377718445-18] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-18] (Operator.java:673) - and inputs: [t2]
+ INFO [qtp377718445-18] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-18] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:169) - Materialized operator: hiTest_2
+ INFO [qtp377718445-18] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-18] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-18] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-18] (WorkflowNode.java:338) - copy path from: crawlDocuments to t4
+ INFO [qtp377718445-18] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-18] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: execTime from operator: hiTest_2
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: cost from operator: hiTest_2
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-18] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-18] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-18] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest_2
+ INFO [qtp377718445-18] (WorkflowNode.java:452) - with tempOutput: t5: {}
+ INFO [qtp377718445-18] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-18] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-18] (WorkflowNode.java:455) - temp.inputs: [t4]
+ INFO [qtp377718445-18] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-18] (Operator.java:671) - dataset: t5
+ INFO [qtp377718445-18] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-18] (Operator.java:673) - and inputs: [t4]
+ INFO [qtp377718445-18] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-18] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:169) - Materialized operator: hiTest555_3
+ INFO [qtp377718445-18] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-18] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-18] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-18] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-18] (WorkflowNode.java:338) - copy path from: crawlDocuments to t6
+ INFO [qtp377718445-18] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-18] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: execTime from operator: hiTest555_3
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:969) - Getting mettric: cost from operator: hiTest555_3
+ INFO [qtp377718445-18] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-18] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-18] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-18] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-18] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-18] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-18] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest555_3
+ INFO [qtp377718445-18] (WorkflowNode.java:452) - with tempOutput: t7: {}
+ INFO [qtp377718445-18] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-18] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-18] (WorkflowNode.java:455) - temp.inputs: [t6]
+ INFO [qtp377718445-18] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-18] (Operator.java:671) - dataset: t7
+ INFO [qtp377718445-18] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-18] (Operator.java:673) - and inputs: [t6]
+ INFO [qtp377718445-18] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-18] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-18] (WorkflowNode.java:538) - Processed : HelloWorld
+ INFO [qtp377718445-18] (WorkflowNode.java:153) - Materialized inputs: [[t1, t3, t5, t7]]
+ INFO [qtp377718445-18] (WorkflowNode.java:538) - Processed : d1
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:86) - Target: d1
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:87) - Best plan: 
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:89) - crawlDocuments
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:89) - t6
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:89) - hiTest555_3
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:89) - t7
+ INFO [qtp377718445-18] (MaterializedWorkflow1.java:89) - d1
+ INFO [qtp377718445-18] (AbstractWorkflow1.java:165) - Optimal cost: 0.1
+ INFO [qtp377718445-19] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, crawlDocuments=crawlDocuments, HelloWorld=HelloWorld}
+ INFO [qtp377718445-19] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, crawlDocuments, HelloWorld]
+ INFO [qtp377718445-21] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:118) - Processing : HelloWorld from name: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:118) - Processing : crawlDocuments from name: HelloWorld
+ INFO [qtp377718445-21] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp377718445-21] (WorkflowNode.java:538) - Processed : crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:153) - Materialized inputs: [[crawlDocuments]]
+ INFO [qtp377718445-21] (OperatorLibrary.java:119) - Found: HelloWorld_0
+ INFO [qtp377718445-21] (OperatorLibrary.java:119) - Found: hello_test_1
+ INFO [qtp377718445-21] (OperatorLibrary.java:119) - Found: hiTest_2
+ INFO [qtp377718445-21] (OperatorLibrary.java:119) - Found: hiTest555_3
+ INFO [qtp377718445-21] (WorkflowNode.java:169) - Materialized operator: HelloWorld_0
+ INFO [qtp377718445-21] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-21] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-21] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-21] (WorkflowNode.java:338) - copy path from: crawlDocuments to t0
+ INFO [qtp377718445-21] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-21] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: execTime from operator: HelloWorld_0
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: cost from operator: HelloWorld_0
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:916) - Output metrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-21] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-21] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-21] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-21] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-21] (WorkflowNode.java:451) - Call outputFor() for operator: HelloWorld_0
+ INFO [qtp377718445-21] (WorkflowNode.java:452) - with tempOutput: t1: {}
+ INFO [qtp377718445-21] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-21] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-21] (WorkflowNode.java:455) - temp.inputs: [t0]
+ INFO [qtp377718445-21] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-21] (Operator.java:671) - dataset: t1
+ INFO [qtp377718445-21] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-21] (Operator.java:673) - and inputs: [t0]
+ INFO [qtp377718445-21] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-21] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:169) - Materialized operator: hello_test_1
+ INFO [qtp377718445-21] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-21] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-21] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-21] (WorkflowNode.java:338) - copy path from: crawlDocuments to t2
+ INFO [qtp377718445-21] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-21] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: execTime from operator: hello_test_1
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: cost from operator: hello_test_1
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-21] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-21] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-21] (WorkflowNode.java:451) - Call outputFor() for operator: hello_test_1
+ INFO [qtp377718445-21] (WorkflowNode.java:452) - with tempOutput: t3: {}
+ INFO [qtp377718445-21] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-21] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (WorkflowNode.java:455) - temp.inputs: [t2]
+ INFO [qtp377718445-21] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-21] (Operator.java:671) - dataset: t3
+ INFO [qtp377718445-21] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-21] (Operator.java:673) - and inputs: [t2]
+ INFO [qtp377718445-21] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-21] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:169) - Materialized operator: hiTest_2
+ INFO [qtp377718445-21] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-21] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-21] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-21] (WorkflowNode.java:338) - copy path from: crawlDocuments to t4
+ INFO [qtp377718445-21] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-21] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: execTime from operator: hiTest_2
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: cost from operator: hiTest_2
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-21] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-21] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-21] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest_2
+ INFO [qtp377718445-21] (WorkflowNode.java:452) - with tempOutput: t5: {}
+ INFO [qtp377718445-21] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-21] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-21] (WorkflowNode.java:455) - temp.inputs: [t4]
+ INFO [qtp377718445-21] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-21] (Operator.java:671) - dataset: t5
+ INFO [qtp377718445-21] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-21] (Operator.java:673) - and inputs: [t4]
+ INFO [qtp377718445-21] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-21] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:169) - Materialized operator: hiTest555_3
+ INFO [qtp377718445-21] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-21] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-21] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-21] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-21] (WorkflowNode.java:338) - copy path from: crawlDocuments to t6
+ INFO [qtp377718445-21] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-21] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: execTime from operator: hiTest555_3
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:969) - Getting mettric: cost from operator: hiTest555_3
+ INFO [qtp377718445-21] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-21] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-21] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-21] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-21] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-21] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-21] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest555_3
+ INFO [qtp377718445-21] (WorkflowNode.java:452) - with tempOutput: t7: {}
+ INFO [qtp377718445-21] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-21] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-21] (WorkflowNode.java:455) - temp.inputs: [t6]
+ INFO [qtp377718445-21] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-21] (Operator.java:671) - dataset: t7
+ INFO [qtp377718445-21] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-21] (Operator.java:673) - and inputs: [t6]
+ INFO [qtp377718445-21] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-21] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-21] (WorkflowNode.java:538) - Processed : HelloWorld
+ INFO [qtp377718445-21] (WorkflowNode.java:153) - Materialized inputs: [[t1, t3, t5, t7]]
+ INFO [qtp377718445-21] (WorkflowNode.java:538) - Processed : d1
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:86) - Target: d1
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:87) - Best plan: 
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:89) - crawlDocuments
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:89) - t6
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:89) - hiTest555_3
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:89) - t7
+ INFO [qtp377718445-21] (MaterializedWorkflow1.java:89) - d1
+ INFO [qtp377718445-21] (AbstractWorkflow1.java:165) - Optimal cost: 0.1
+ INFO [qtp377718445-19] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, crawlDocuments=crawlDocuments, HelloWorld=HelloWorld}
+ INFO [qtp377718445-19] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, crawlDocuments, HelloWorld]
+ INFO [qtp377718445-23765] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:118) - Processing : HelloWorld from name: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:118) - Processing : crawlDocuments from name: HelloWorld
+ INFO [qtp377718445-23765] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp377718445-23765] (WorkflowNode.java:538) - Processed : crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:153) - Materialized inputs: [[crawlDocuments]]
+ INFO [qtp377718445-23765] (OperatorLibrary.java:119) - Found: HelloWorld_0
+ INFO [qtp377718445-23765] (OperatorLibrary.java:119) - Found: hello_test_1
+ INFO [qtp377718445-23765] (OperatorLibrary.java:119) - Found: hiTest_2
+ INFO [qtp377718445-23765] (OperatorLibrary.java:119) - Found: hiTest555_3
+ INFO [qtp377718445-23765] (WorkflowNode.java:169) - Materialized operator: HelloWorld_0
+ INFO [qtp377718445-23765] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-23765] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-23765] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-23765] (WorkflowNode.java:338) - copy path from: crawlDocuments to t0
+ INFO [qtp377718445-23765] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-23765] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: execTime from operator: HelloWorld_0
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: cost from operator: HelloWorld_0
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:916) - Output metrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-23765] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-23765] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-23765] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-23765] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-23765] (WorkflowNode.java:451) - Call outputFor() for operator: HelloWorld_0
+ INFO [qtp377718445-23765] (WorkflowNode.java:452) - with tempOutput: t1: {}
+ INFO [qtp377718445-23765] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-23765] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=1.0}
+ INFO [qtp377718445-23765] (WorkflowNode.java:455) - temp.inputs: [t0]
+ INFO [qtp377718445-23765] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-23765] (Operator.java:671) - dataset: t1
+ INFO [qtp377718445-23765] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-23765] (Operator.java:673) - and inputs: [t0]
+ INFO [qtp377718445-23765] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-23765] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:169) - Materialized operator: hello_test_1
+ INFO [qtp377718445-23765] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-23765] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-23765] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-23765] (WorkflowNode.java:338) - copy path from: crawlDocuments to t2
+ INFO [qtp377718445-23765] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-23765] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: execTime from operator: hello_test_1
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: cost from operator: hello_test_1
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-23765] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-23765] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-23765] (WorkflowNode.java:451) - Call outputFor() for operator: hello_test_1
+ INFO [qtp377718445-23765] (WorkflowNode.java:452) - with tempOutput: t3: {}
+ INFO [qtp377718445-23765] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-23765] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (WorkflowNode.java:455) - temp.inputs: [t2]
+ INFO [qtp377718445-23765] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-23765] (Operator.java:671) - dataset: t3
+ INFO [qtp377718445-23765] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-23765] (Operator.java:673) - and inputs: [t2]
+ INFO [qtp377718445-23765] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-23765] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:169) - Materialized operator: hiTest_2
+ INFO [qtp377718445-23765] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-23765] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-23765] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-23765] (WorkflowNode.java:338) - copy path from: crawlDocuments to t4
+ INFO [qtp377718445-23765] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-23765] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: execTime from operator: hiTest_2
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: cost from operator: hiTest_2
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-23765] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-23765] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-23765] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest_2
+ INFO [qtp377718445-23765] (WorkflowNode.java:452) - with tempOutput: t5: {}
+ INFO [qtp377718445-23765] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-23765] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.2}
+ INFO [qtp377718445-23765] (WorkflowNode.java:455) - temp.inputs: [t4]
+ INFO [qtp377718445-23765] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-23765] (Operator.java:671) - dataset: t5
+ INFO [qtp377718445-23765] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-23765] (Operator.java:673) - and inputs: [t4]
+ INFO [qtp377718445-23765] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-23765] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:169) - Materialized operator: hiTest555_3
+ INFO [qtp377718445-23765] (WorkflowNode.java:200) - materializedInputs: [[crawlDocuments]]
+ INFO [qtp377718445-23765] (WorkflowNode.java:202) - CHECKING INPUT DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-23765] (WorkflowNode.java:220) - CHECKING for moved dataset: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:244) - CHECKING Move DATASET: crawlDocuments
+ INFO [qtp377718445-23765] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-23765] (WorkflowNode.java:338) - copy path from: crawlDocuments to t6
+ INFO [qtp377718445-23765] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}, Execution{(path, hdfs:///user/root/asapDataSmall)}, Optimization{(documents, 100000), (size, 932.22E06)}}
+ INFO [qtp377718445-23765] (Operator.java:846) - Input metrics: {cost=0.0, execTime=0.0}
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: execTime from operator: hiTest555_3
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:969) - Getting mettric: cost from operator: hiTest555_3
+ INFO [qtp377718445-23765] (Operator.java:990) - Model selected: class gr.ntua.ece.cslab.panic.core.models.UserFunction
+ INFO [qtp377718445-23765] (Operator.java:916) - Output metrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-23765] (Operator.java:920) - cost 0.0
+ INFO [qtp377718445-23765] (Operator.java:920) - execTime 0.0
+ INFO [qtp377718445-23765] (Operator.java:926) - Output metrics added with input: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-23765] (WorkflowNode.java:446) - Outputs are: [d1]
+ INFO [qtp377718445-23765] (WorkflowNode.java:451) - Call outputFor() for operator: hiTest555_3
+ INFO [qtp377718445-23765] (WorkflowNode.java:452) - with tempOutput: t7: {}
+ INFO [qtp377718445-23765] (WorkflowNode.java:453) - outN: 0
+ INFO [qtp377718445-23765] (WorkflowNode.java:454) - nextMetrics: {cost=1.0, execTime=0.1}
+ INFO [qtp377718445-23765] (WorkflowNode.java:455) - temp.inputs: [t6]
+ INFO [qtp377718445-23765] (Operator.java:670) - Copying execution parameters for
+ INFO [qtp377718445-23765] (Operator.java:671) - dataset: t7
+ INFO [qtp377718445-23765] (Operator.java:672) - at position: 0
+ INFO [qtp377718445-23765] (Operator.java:673) - and inputs: [t6]
+ INFO [qtp377718445-23765] (Operator.java:677) - Execution variables are: Output0{(name, $HDFS_OP_DIR/testout)}
+ INFO [qtp377718445-23765] (WorkflowNode.java:473) - out.getName(): d1 fromName: d1
+ INFO [qtp377718445-23765] (WorkflowNode.java:538) - Processed : HelloWorld
+ INFO [qtp377718445-23765] (WorkflowNode.java:153) - Materialized inputs: [[t1, t3, t5, t7]]
+ INFO [qtp377718445-23765] (WorkflowNode.java:538) - Processed : d1
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:86) - Target: d1
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:87) - Best plan: 
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:89) - crawlDocuments
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:89) - t6
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:89) - hiTest555_3
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:89) - t7
+ INFO [qtp377718445-23765] (MaterializedWorkflow1.java:89) - d1
+ INFO [qtp377718445-23765] (AbstractWorkflow1.java:165) - Optimal cost: 0.1
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:187) - Adding dataset: crawlDocuments hdfs:///user/root/asapDataSmall
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:192) - Operators: {hello_test_1=asapLibrary/operators/hello_test/hello_test.lua, hiTest_2=asapLibrary/operators/hiTest/hiTest.lua, HelloWorld_0=asapLibrary/operators/HelloWorld/HelloWorld.lua, hiTest555_3=asapLibrary/operators/hiTest555/hiTest555.lua}
+ INFO [qtp377718445-21] (RunningWorkflowLibrary.java:193) - InputDatasets: {crawlDocuments=hdfs:///user/root/asapDataSmall}
+ INFO [qtp377718445-21] (LuaYarnClientParameters.java:97) - hdfs resource: hdfs:///user/root/asapDataSmall
+ INFO [pool-6-thread-1] (RMProxy.java:98) - Connecting to ResourceManager at master/192.168.5.245:8032
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: job.xml localDataName: /tmp/job4303413687235500131.xml
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/hiTest555.lua localDataName: asapLibrary/operators/hiTest555/hiTest555.lua
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/HelloWorld/HelloWorld.lua localDataName: asapLibrary/operators/HelloWorld/HelloWorld.lua
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/hiTest.lua localDataName: asapLibrary/operators/hiTest/hiTest.lua
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/hello_test.lua localDataName: asapLibrary/operators/hello_test/hello_test.lua
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/BasicLuaConf.lua localDataName: asapLibrary/BasicLuaConf.lua
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/workflows/hello_world_2016_10_06_12:23:37/c33af3b3-74a8-4e02-8036-f9f7241e1c32.xml localDataName: asapLibrary/workflows/hello_world_2016_10_06_12:23:37/c33af3b3-74a8-4e02-8036-f9f7241e1c32.xml
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file kitten-master-0.2.0-jar-with-dependencies.jar to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: kitten-master-0.2.0-jar-with-dependencies.jar localDataName: kitten-master-0.2.0-jar-with-dependencies.jar
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hello_test/HelloWorld.sh to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/HelloWorld.sh localDataName: asapLibrary/operators/hello_test/HelloWorld.sh
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hello_test/description to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/description localDataName: asapLibrary/operators/hello_test/description
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest/HelloWorld.sh to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/HelloWorld.sh localDataName: asapLibrary/operators/hiTest/HelloWorld.sh
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest/description to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/description localDataName: asapLibrary/operators/hiTest/description
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/description to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/description localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/description
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest555/HelloWorld.sh to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/HelloWorld.sh localDataName: asapLibrary/operators/hiTest555/HelloWorld.sh
+ INFO [pool-6-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest555/description to hdfs
+ INFO [pool-6-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-6-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/description localDataName: asapLibrary/operators/hiTest555/description
+ INFO [pool-6-thread-1] (YarnClientServiceImpl.java:114) - Submitting application to the applications manager
+ INFO [pool-6-thread-1] (YarnClientImpl.java:273) - Submitted application application_1475569839453_0043
+ INFO [qtp377718445-23765] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-17] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-23765] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-19] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-23765] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-19] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [pool-6-thread-1] (YarnClientServiceImpl.java:147) - Application completed successfully.
+ INFO [Thread-2] (YarnServiceHandler.java:65) - Finished 
+ INFO [Thread-2] (RunningWorkflowLibrary.java:87) - Removing: hello_world_2016_10_06_12:23:37
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: crawlDocuments
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t0
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: HelloWorld_0
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t1
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t2
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hello_test_1
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t3
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t4
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hiTest_2
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t5
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t6
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hiTest555_3
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t7
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: d1
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:187) - Adding dataset: crawlDocuments hdfs:///user/root/asapDataSmall
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:175) - WARN: The property Execution.LuaScript is missing from operator's description.
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:176) - Check if this is valid. In any case, it is assumed that operator's .lua file
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:177) - has the same name as the operator
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:192) - Operators: {hello_test_1=asapLibrary/operators/hello_test/hello_test.lua, hiTest_2=asapLibrary/operators/hiTest/hiTest.lua, HelloWorld_0=asapLibrary/operators/HelloWorld/HelloWorld.lua, hiTest555_3=asapLibrary/operators/hiTest555/hiTest555.lua}
+ INFO [qtp377718445-17] (RunningWorkflowLibrary.java:193) - InputDatasets: {crawlDocuments=hdfs:///user/root/asapDataSmall}
+ INFO [qtp377718445-17] (LuaYarnClientParameters.java:97) - hdfs resource: hdfs:///user/root/asapDataSmall
+ INFO [pool-7-thread-1] (RMProxy.java:98) - Connecting to ResourceManager at master/192.168.5.245:8032
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: job.xml localDataName: /tmp/job5928300296105473988.xml
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/hiTest555.lua localDataName: asapLibrary/operators/hiTest555/hiTest555.lua
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/HelloWorld/HelloWorld.lua localDataName: asapLibrary/operators/HelloWorld/HelloWorld.lua
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/hiTest.lua localDataName: asapLibrary/operators/hiTest/hiTest.lua
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/hello_test.lua localDataName: asapLibrary/operators/hello_test/hello_test.lua
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/BasicLuaConf.lua localDataName: asapLibrary/BasicLuaConf.lua
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/workflows/hello_world_2016_10_06_12:23:37/4349b495-3bb4-4d53-9a4b-6b4f930e16b2.xml localDataName: asapLibrary/workflows/hello_world_2016_10_06_12:23:37/4349b495-3bb4-4d53-9a4b-6b4f930e16b2.xml
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file kitten-master-0.2.0-jar-with-dependencies.jar to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: kitten-master-0.2.0-jar-with-dependencies.jar localDataName: kitten-master-0.2.0-jar-with-dependencies.jar
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hello_test/HelloWorld.sh to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/HelloWorld.sh localDataName: asapLibrary/operators/hello_test/HelloWorld.sh
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hello_test/description to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hello_test/description localDataName: asapLibrary/operators/hello_test/description
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest/HelloWorld.sh to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/HelloWorld.sh localDataName: asapLibrary/operators/hiTest/HelloWorld.sh
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest/description to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest/description localDataName: asapLibrary/operators/hiTest/description
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/description to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/description localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/description
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.sh
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua localDataName: /opt/asap-server/asapLibrary/operators/HelloWorld/HelloWorld.lua
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest555/HelloWorld.sh to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/HelloWorld.sh localDataName: asapLibrary/operators/hiTest555/HelloWorld.sh
+ INFO [pool-7-thread-1] (LuaYarnClientParameters.java:216) - Copying local file asapLibrary/operators/hiTest555/description to hdfs
+ INFO [pool-7-thread-1] (LocalDataHelper.java:128) - Base dir: null
+ INFO [pool-7-thread-1] (LocalDataHelper.java:129) - Copying local file to hdfs key: asapLibrary/operators/hiTest555/description localDataName: asapLibrary/operators/hiTest555/description
+ INFO [pool-7-thread-1] (YarnClientServiceImpl.java:114) - Submitting application to the applications manager
+ INFO [pool-7-thread-1] (YarnClientImpl.java:273) - Submitted application application_1475569839453_0044
+ INFO [qtp377718445-17] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-23765] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-19] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-17] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-17] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-21] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-20] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [qtp377718445-23765] (RunningWorkflows.java:99) - Update state: hello_world_2016_10_06_12:23:37
+ INFO [pool-7-thread-1] (YarnClientServiceImpl.java:147) - Application completed successfully.
+ INFO [Thread-2] (YarnServiceHandler.java:65) - Finished 
+ INFO [Thread-2] (RunningWorkflowLibrary.java:87) - Removing: hello_world_2016_10_06_12:23:37
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: crawlDocuments
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t0
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: HelloWorld_0
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t1
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t2
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hello_test_1
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t3
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t4
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hiTest_2
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t5
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t6
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: hiTest555_3
+ INFO [Thread-2] (Operator.java:94) - reconfiguring model for: hiTest555
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: t7
+ INFO [Thread-2] (RunningWorkflowLibrary.java:90) - Checking: d1
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, grep=grep, hdfs_file=hdfs_file}
+ INFO [qtp377718445-17] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, grep, hdfs_file]
+ INFO [qtp377718445-19] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp377718445-19] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp377718445-19] (WorkflowNode.java:118) - Processing : grep from name: d1
+ INFO [qtp377718445-19] (WorkflowNode.java:118) - Processing : hdfs_file from name: grep
+ INFO [qtp377718445-19] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp377718445-19] (WorkflowNode.java:538) - Processed : hdfs_file
+ INFO [qtp377718445-19] (WorkflowNode.java:153) - Materialized inputs: [[hdfs_file]]
+ INFO [qtp377718445-19] (OperatorLibrary.java:119) - Found: grep_0
+ INFO [qtp377718445-19] (WorkflowNode.java:169) - Materialized operator: grep_0
+ INFO [qtp377718445-19] (WorkflowNode.java:200) - materializedInputs: [[hdfs_file]]
+ INFO [qtp377718445-19] (WorkflowNode.java:202) - CHECKING INPUT DATASET: hdfs_file
+ INFO [qtp377718445-19] (WorkflowNode.java:204) - true
+ INFO [qtp377718445-19] (WorkflowNode.java:220) - CHECKING for moved dataset: hdfs_file
+ INFO [qtp377718445-19] (WorkflowNode.java:244) - CHECKING Move DATASET: hdfs_file
+ INFO [qtp377718445-19] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp377718445-19] (WorkflowNode.java:338) - copy path from: hdfs_file to t0
+ INFO [qtp377718445-19] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}}
+ERROR [qtp377718445-19] (ContainerResponse.java:419) - The RuntimeException could not be mapped to a response, re-throwing to the HTTP container
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ WARN [qtp377718445-19] (ServletHandler.java:628) - /web/abstractWorkflows/materialize
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ INFO [Thread-1] (AbstractConnector.java:306) - Stopped ServerConnector@40f60839{HTTP/1.1}{0.0.0.0:1323}
+ INFO [Thread-1] (ContextHandler.java:865) - Stopped o.e.j.s.ServletContextHandler@481f7c94{/,null,UNAVAILABLE}
+ INFO [main] (Main.java:147) - Logger configured
+ INFO [main] (Log.java:186) - Logging initialized @451ms
+ INFO [main] (Main.java:138) - Server configured
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit0.05
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: amazon
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit0.07
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller3
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller4
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller1
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: orders_1G
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: orders_10G
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.4
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.04
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: IMR_docs_large
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: orders_100M
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: crawlDocuments
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit0.04
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrMed1
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imr02
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller2
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmallTFIDF0.05
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit0.02
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrBig
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller5
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller2
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller4
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imr07
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: hdfs_file
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.8
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller1
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.2
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_spark04
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: evenSmaller0
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: IMR_docs
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.02
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.6
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imr04
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: part
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmallTFIDF0.07
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller5
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: lineitem
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_spark02
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_spark07
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller0
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.07
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: customers
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrMed2
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imr01
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: tfidf_scikit_evenSmaller3
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: crawlDocuments_small
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmall0.05
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmallTFIDF0.02
+ INFO [main] (DatasetLibrary.java:48) - Loading Dataset: imrSmallTFIDF0.04
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: GroupBy_Sort
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: PageRank
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: TF_IDF
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: w2v_train_spark
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: OutterSQL
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: w2v_train
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: w2v_vectorize
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: PeakDetection
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: InnerSQL
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: lr_classify
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: HelloWorld
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: lr_train
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: Filter_Join
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: grep
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: sampler
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: TF_IDF_weka
+ INFO [main] (AbstractOperatorLibrary.java:48) - Loading operator: k-Means
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PageRank_Hama
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: lr_train_python
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: lr_train_spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PageRank_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PeakDetection_NestedSpark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Hive_Postgres
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: hiTest
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PeakDetection_SQLite
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: InnerSQL_Hive
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Postgres_GroupBy_Sort
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: kmeans_mahout
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Postgres_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: OutterSQL_Postgres
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: InnerSQL_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Spark_Postgres
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_TFIDF_Spark_Scikit
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: metastore_db
+ INFO [main] (Operator.java:596) - For abstract operator metastore_db there is not any materialized operator.
+ INFO [main] (Operator.java:597) - Try to create one by creating the corresponding directory with all the required
+ INFO [main] (Operator.java:598) - files and subfolders into the appropriate asapLibrary directory.
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: HIVE_GroupBy_Sort
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: TF_IDF_mahout
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Hive_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: InnerSQL_Postgres
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: kmeans_weka
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: tfidf_mllib
+ INFO [main] (Operator.java:278) - MONGO
+ INFO [main] (Operator.java:397) - Initializing datasource...
+ INFO [main] (Operator.java:401) - Col: tfidf_mllib
+DB: metrics
+Host: master
+
+ INFO [main] (SLF4JLogger.java:71) - Cluster created with settings {hosts=[master:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+ INFO [main] (MongoDB.java:98) - Document{{totalCores=true, memory=true, In0@documents=true, time=true}}
+ INFO [main] (SLF4JLogger.java:71) - No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, all=[ServerDescription{address=master:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
+ INFO [cluster-ClusterId{value='57f61a7c3097da5ab574b43c', description='null'}-master:27017] (SLF4JLogger.java:71) - Opened connection [connectionId{localValue:1, serverValue:69}] to master:27017
+ INFO [cluster-ClusterId{value='57f61a7c3097da5ab574b43c', description='null'}-master:27017] (SLF4JLogger.java:71) - Monitor thread successfully connected to server with description ServerDescription{address=master:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 4, 9]}, minWireVersion=0, maxWireVersion=0, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=1199459}
+ INFO [main] (SLF4JLogger.java:71) - Opened connection [connectionId{localValue:2, serverValue:70}] to master:27017
+ INFO [main] (Reflections.java:205) - Reflections took 448 ms to scan 2 urls, producing 10 keys and 26 values 
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: models
+ INFO [main] (Operator.java:596) - For abstract operator models there is not any materialized operator.
+ INFO [main] (Operator.java:597) - Try to create one by creating the corresponding directory with all the required
+ INFO [main] (Operator.java:598) - files and subfolders into the appropriate asapLibrary directory.
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: HelloWorld
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: grep
+ INFO [main] (Operator.java:278) - MONGO
+ INFO [main] (Operator.java:397) - Initializing datasource...
+ INFO [main] (Operator.java:401) - Col: grep
+DB: metrics
+Host: master
+
+ INFO [main] (SLF4JLogger.java:71) - Cluster created with settings {hosts=[master:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+ INFO [main] (MongoDB.java:98) - Document{{In0@size=true, time=true}}
+ INFO [main] (SLF4JLogger.java:71) - No server chosen by ReadPreferenceServerSelector{readPreference=primary} from cluster description ClusterDescription{type=UNKNOWN, connectionMode=SINGLE, all=[ServerDescription{address=master:27017, type=UNKNOWN, state=CONNECTING}]}. Waiting for 30000 ms before timing out
+ INFO [cluster-ClusterId{value='57f61a7c3097da5ab574b43d', description='null'}-master:27017] (SLF4JLogger.java:71) - Opened connection [connectionId{localValue:3, serverValue:71}] to master:27017
+ INFO [cluster-ClusterId{value='57f61a7c3097da5ab574b43d', description='null'}-master:27017] (SLF4JLogger.java:71) - Monitor thread successfully connected to server with description ServerDescription{address=master:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[2, 4, 9]}, minWireVersion=0, maxWireVersion=0, electionId=null, maxDocumentSize=16777216, roundTripTimeNanos=1154070}
+ INFO [main] (SLF4JLogger.java:71) - Opened connection [connectionId{localValue:4, serverValue:72}] to master:27017
+ INFO [main] (Reflections.java:205) - Reflections took 106 ms to scan 2 urls, producing 10 keys and 26 values 
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:348) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (Operator.java:360) - Exception in training: weka.classifiers.meta.RandomCommittee: Cannot handle numeric class!
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: sampler
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: OutterSQL_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Spark_Hive
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: hello_test
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PageRank_Java
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: HIVE_Join_Filter
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: TF_IDF_weka
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: lr_classify_spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: kmeans_mllib
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Move_Postgres_Hive
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: grep_original
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: PeakDetection_Spark
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: Postgres_Join_Filter
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: OutterSQL_Hive
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: lr_classify_python
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: test_mahout
+ INFO [main] (Operator.java:257) - ERROR: There is a problem with the already existing models of
+ INFO [main] (Operator.java:258) - test_mahout operator. Verify that the existent models are not empty in folder
+ INFO [main] (Operator.java:259) - $ASAP_SERVER_HOME/asapLibrary/operators/test_mahout/models.
+ INFO [main] (Operator.java:260) - A solution to this problem would be to delete the problematic models
+ INFO [main] (Operator.java:261) - or even delete the whole models folder and let ASAP server to build it
+ INFO [main] (Operator.java:262) - from scratch during its restarting.
+ INFO [main] (OperatorLibrary.java:65) - Loading operator: hiTest555
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: IMR1
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: TPCH_100M
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: TPCH_1G
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: TPCH_10G
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: hello_world
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: IMR
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: kmeans
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: grep
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: IMR2
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: Just_W2V
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: grepProfiling
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: TPCH_part_10G
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: tfidf
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: TPCH_QUERIES
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: kmeans_small
+ INFO [main] (AbstractWorkflowLibrary.java:58) - Loading abstract workflow: test
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_11:40:36
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: Just_W2V_2016_10_03_15:45:43
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:07:13
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:49:50
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:30:10
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_18:35:25
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:30:54
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:31:50
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:05:51
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_18:35:53
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:33:20
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:30:02
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:40:20
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:34:38
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_18:37:24
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:13:01
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:11:32
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:54:34
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:06:37
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_11:39:19
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:45:06
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:18:19
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:06:10
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:29:42
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:37:16
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:13:26
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:33:40
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:42:09
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:44:17
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:26:09
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:17:11
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:04:40
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_13:30:44
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:31:44
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:44:47
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:30:25
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:13:17
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:38:31
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:22:25
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_16:00:51
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:16:01
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:39:07
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:08:45
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_06_12:20:50
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_18:26:12
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_06_12:20:08
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_11:28:32
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:28:42
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_15:13:15
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_06_12:23:37
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:46:21
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:30:58
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:15:22
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: Just_W2V_2016_10_03_15:12:13
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:40:58
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:09:41
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_04_12:06:31
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_13:28:40
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:32:29
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_12:59:48
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:39:37
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_15:37:53
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: hello_world_2016_10_03_18:38:10
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:04:37
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_04_15:39:40
+ INFO [main] (MaterializedWorkflowLibrary.java:55) - Loading workflow: kmeans_2016_10_03_15:46:05
+ INFO [main] (Server.java:327) - jetty-9.2.7.v20150116
+ INFO [main] (PackagesResourceConfig.java:101) - Scanning for root resource and provider classes in the packages:
+  gr.ntua.cslab.asap.daemon.rest
+  org.codehaus.jackson.jaxrs
+ INFO [main] (ScanningResourceConfig.java:153) - Root resource classes found:
+  class gr.ntua.cslab.asap.daemon.rest.WebUI
+  class gr.ntua.cslab.asap.daemon.rest.ClusterStatus
+  class gr.ntua.cslab.asap.daemon.rest.Operators
+  class gr.ntua.cslab.asap.daemon.rest.Workflows
+  class gr.ntua.cslab.asap.daemon.rest.Datasets
+  class gr.ntua.cslab.asap.daemon.rest.RunningWorkflows
+  class gr.ntua.cslab.asap.daemon.rest.AbstractOperators
+  class gr.ntua.cslab.asap.daemon.rest.AbstractWorkflows
+ INFO [main] (ScanningResourceConfig.java:153) - Provider classes found:
+  class org.codehaus.jackson.jaxrs.JacksonJsonProvider
+  class org.codehaus.jackson.jaxrs.JsonParseExceptionMapper
+  class org.codehaus.jackson.jaxrs.JsonMappingExceptionMapper
+  class org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider
+ INFO [main] (WebApplicationImpl.java:815) - Initiating Jersey application, version 'Jersey: 1.19 02/11/2015 03:25 AM'
+ WARN [main] (Errors.java:173) - The following warnings have been detected with resource and/or provider classes:
+  WARNING: A HTTP GET method, public void gr.ntua.cslab.asap.daemon.rest.Workflows.removeWorkflow(java.lang.String) throws java.io.IOException,java.lang.NumberFormatException,net.sourceforge.jeval.EvaluationException, MUST return a non-void type.
+  WARNING: A HTTP GET method, public void gr.ntua.cslab.asap.daemon.rest.ClusterStatus.setAlive(java.lang.String), MUST return a non-void type.
+  WARNING: A HTTP GET method, public void gr.ntua.cslab.asap.daemon.rest.ClusterStatus.setDead(java.lang.String), MUST return a non-void type.
+  WARNING: A HTTP GET method, public void gr.ntua.cslab.asap.daemon.rest.RunningWorkflows.replan(java.lang.String) throws java.lang.Exception, MUST return a non-void type.
+  WARNING: A HTTP GET method, public void gr.ntua.cslab.asap.daemon.rest.AbstractWorkflows.removeWorkflow(java.lang.String) throws java.io.IOException,java.lang.NumberFormatException,net.sourceforge.jeval.EvaluationException, MUST return a non-void type.
+ INFO [main] (ContextHandler.java:744) - Started o.e.j.s.ServletContextHandler@42f322f1{/,null,AVAILABLE}
+ INFO [main] (AbstractConnector.java:266) - Started ServerConnector@427c5874{HTTP/1.1}{0.0.0.0:1323}
+ INFO [main] (Server.java:379) - Started @12320ms
+ INFO [main] (Main.java:223) - Server is started
+ INFO [Thread-13] (ClusterNodes.java:248) - YarnClient has been initiated.
+ INFO [Thread-13] (RMProxy.java:98) - Connecting to ResourceManager at master/192.168.5.245:8032
+ WARN [Thread-13] (NativeCodeLoader.java:62) - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+ INFO [Thread-13] (ClusterNodes.java:250) - YarnClient has started.
+ INFO [qtp315877747-20] (AbstractWorkflow1.java:490) - WorkflowNodes: {d1=d1, grep=grep, hdfs_file=hdfs_file}
+ INFO [qtp315877747-20] (AbstractWorkflow1.java:491) - WorkflowNodes: [d1, grep, hdfs_file]
+ INFO [qtp315877747-19] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp315877747-19] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp315877747-19] (WorkflowNode.java:118) - Processing : grep from name: d1
+ INFO [qtp315877747-19] (WorkflowNode.java:118) - Processing : hdfs_file from name: grep
+ INFO [qtp315877747-19] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp315877747-19] (WorkflowNode.java:538) - Processed : hdfs_file
+ INFO [qtp315877747-19] (WorkflowNode.java:153) - Materialized inputs: [[hdfs_file]]
+ INFO [qtp315877747-19] (OperatorLibrary.java:119) - Found: grep_original_0
+ INFO [qtp315877747-19] (OperatorLibrary.java:119) - Found: grep_1
+ INFO [qtp315877747-19] (WorkflowNode.java:169) - Materialized operator: grep_original_0
+ INFO [qtp315877747-19] (WorkflowNode.java:200) - materializedInputs: [[hdfs_file]]
+ INFO [qtp315877747-19] (WorkflowNode.java:202) - CHECKING INPUT DATASET: hdfs_file
+ INFO [qtp315877747-19] (WorkflowNode.java:204) - true
+ INFO [qtp315877747-19] (WorkflowNode.java:220) - CHECKING for moved dataset: hdfs_file
+ INFO [qtp315877747-19] (WorkflowNode.java:244) - CHECKING Move DATASET: hdfs_file
+ INFO [qtp315877747-19] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp315877747-19] (WorkflowNode.java:338) - copy path from: hdfs_file to t0
+ INFO [qtp315877747-19] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}}
+ERROR [qtp315877747-19] (ContainerResponse.java:419) - The RuntimeException could not be mapped to a response, re-throwing to the HTTP container
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ WARN [qtp315877747-19] (ServletHandler.java:628) - /web/abstractWorkflows/materialize
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ INFO [qtp315877747-23] (AbstractWorkflow1.java:116) - Materializing workflow node: d1
+ INFO [qtp315877747-23] (WorkflowNode.java:118) - Processing : d1 from name: d1
+ INFO [qtp315877747-23] (WorkflowNode.java:118) - Processing : grep from name: d1
+ INFO [qtp315877747-23] (WorkflowNode.java:118) - Processing : hdfs_file from name: grep
+ INFO [qtp315877747-23] (WorkflowNode.java:153) - Materialized inputs: []
+ INFO [qtp315877747-23] (WorkflowNode.java:538) - Processed : hdfs_file
+ INFO [qtp315877747-23] (WorkflowNode.java:153) - Materialized inputs: [[hdfs_file]]
+ INFO [qtp315877747-23] (OperatorLibrary.java:119) - Found: grep_original_0
+ INFO [qtp315877747-23] (OperatorLibrary.java:119) - Found: grep_1
+ INFO [qtp315877747-23] (WorkflowNode.java:169) - Materialized operator: grep_original_0
+ INFO [qtp315877747-23] (WorkflowNode.java:200) - materializedInputs: [[hdfs_file]]
+ INFO [qtp315877747-23] (WorkflowNode.java:202) - CHECKING INPUT DATASET: hdfs_file
+ INFO [qtp315877747-23] (WorkflowNode.java:204) - true
+ INFO [qtp315877747-23] (WorkflowNode.java:220) - CHECKING for moved dataset: hdfs_file
+ INFO [qtp315877747-23] (WorkflowNode.java:244) - CHECKING Move DATASET: hdfs_file
+ INFO [qtp315877747-23] (WorkflowNode.java:334) - all inputs match
+ INFO [qtp315877747-23] (WorkflowNode.java:338) - copy path from: hdfs_file to t0
+ INFO [qtp315877747-23] (Dataset.java:159) - DATASET TREE: {Constraints{Engine{(FS, HDFS)}}}
+ERROR [qtp315877747-23] (ContainerResponse.java:419) - The RuntimeException could not be mapped to a response, re-throwing to the HTTP container
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ WARN [qtp315877747-23] (ServletHandler.java:628) - /web/abstractWorkflows/materialize
+java.lang.NullPointerException
+	at gr.ntua.cslab.asap.operators.Dataset.copyExecVariables(Dataset.java:162)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:368)
+	at gr.ntua.cslab.asap.workflow.WorkflowNode.materialize(WorkflowNode.java:150)
+	at gr.ntua.cslab.asap.workflow.AbstractWorkflow1.materialize(AbstractWorkflow1.java:117)
+	at gr.ntua.cslab.asap.daemon.AbstractWorkflowLibrary.getMaterializedWorkflow(AbstractWorkflowLibrary.java:97)
+	at gr.ntua.cslab.asap.daemon.rest.WebUI.materializeAbstractWorkflow(WebUI.java:775)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)
+	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$TypeOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:185)
+	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)
+	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)
+	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)
+	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)
+	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)
+	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)
+	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:800)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:587)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1127)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:515)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:185)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1061)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:52)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:97)
+	at org.eclipse.jetty.server.Server.handle(Server.java:497)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:310)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:245)
+	at org.eclipse.jetty.io.AbstractConnection$2.run(AbstractConnection.java:540)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555)
+	at java.lang.Thread.run(Thread.java:745)
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-21] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-23] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-22] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-19] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
+ INFO [qtp315877747-20] (AbstractWadlGeneratorGrammarGenerator.java:479) - Couldn't find grammar element for class java.lang.String
