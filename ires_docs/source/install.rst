@@ -93,7 +93,7 @@ Running the HelloWorld workflow
 
 The HelloWorld is a simple workflow constists of just a single operator, designed for demonstration purposes. To run the HelloWolrd follow the next steps:
 
-1. Go to IReS UI: http://localhost:1323/web/main
+1. Go to IReS UI: http://ires_host:1323/web/main
 
 .. figure:: ireshome.png
 	
@@ -294,7 +294,7 @@ v. Send the tarball via the REST API using curl:
 
 .. code:: bash
 
-	curl -H "Content-Type: application/octet-stream" -X POST --data-binary @myOperator.tar.gz ires_host:1323/operators/addTarball?opname=HelloWorld
+	curl -H "Content-Type: application/octet-stream" -X POST --data-binary @helloworld.tar.gz ires_host:1323/operators/addTarball?opname=HelloWorld
 
 The tarball for this example is available `here <./files/helloworld.tar.gz>`_.
 
