@@ -189,7 +189,7 @@ iii. Create the **description** file and enter the information below
 	Optimization.execTime=1.0
 	Execution.Arguments.number=1
 	Execution.Argument0=testout
-	Execution.Output0.name=$HDFS_OP_DIR/testout
+	Execution.Output0.path=$HDFS_OP_DIR/testout
 	Execution.copyFromLocal=testout
 
 iv. Create the .lua file with the execution instructions
@@ -275,7 +275,7 @@ iii. Create the **description** file and enter the information below. By adding 
 	Optimization.execTime=1.0
 	Execution.Arguments.number=1
 	Execution.Argument0=testout
-	Execution.Output0.name=$HDFS_OP_DIR/testout
+	Execution.Output0.path=$HDFS_OP_DIR/testout
 	Execution.copyFromLocal=testout
 	####Extra Execution Parameters###
 	Execution.cores=1
@@ -375,7 +375,7 @@ i. description file: Create inside the folder a file named `description` with th
 	Execution.Arguments.number=2
 	Execution.Argument0=In0.path.local
 	Execution.Argument1=lines.out
-	Execution.Output0.name=$HDFS_OP_DIR/lines.out
+	Execution.Output0.path=$HDFS_OP_DIR/lines.out
 	Execution.copyFromLocal=lines.out
 	Execution.copyToLocal=In0.path
 
