@@ -1,0 +1,28 @@
+interval=5
+
+echo Establishing baseline DISK IO KBs
+
+a=$(iostat | grep vda)
+wd_baseline=$(echo $a | awk '{print $6}')
+rd_baseline=$(echo $a | awk '{print $5}')
+
+echo Starting Reporting Loop
+while true; do 
+	a=$(iostat | grep vda)
+	kb_wd=$(echo $a | awk '{print $6}')
+	kb_rd=$(echo $a | awk '{print $5}')
+	
+	wd_delta=$(( kb_wd-wd_baseline )) 
+	rd_delta=$(( kb_rd-rd_baseline ))
+
+	wd_rate=$(( wd_delta/interval ))
+	rd_rate=$(( rd_delta/interval ))
+	
+	#report to ganglia
+	gmetric --name io_write --value $wd_rate --type int32 --unit "KB/s" --group "disk metrics"
+	gmetric --name io_read --value $rd_rate --type int32 --unit "KB/s" --group "disk metrics"
+
+	wd_baseline=$kb_wd
+	rd_baseline=$kb_rd
+	sleep $interval
+done

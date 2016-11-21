@@ -1,0 +1,43 @@
+## GENERIC ###
+runs=1 			#how many runs per experiment
+
+## WORKER (SLAVE) NODES ##
+min_slaves=3
+max_slaves=9
+slaves_step=2
+
+### KMEANS  ###
+min_k=5		#min num of clusters
+max_k=20	#max num of clusters
+k_step=5		#step of increasing the clusters	
+echo TEMP: max iterations: 11
+max_iterations=11 # USE 50
+
+### SYNTHETIC ###
+min_points=100 	#min number of data points
+max_points=30100	#max num of data points
+points_step=1000	#30 measurements
+
+min_dimensions=9999999
+max_dimensions=9999999
+dimensions_step=2000  	# 5 measurements
+
+synth_clusters_data_dir=~/Data/synth_clusters
+
+### TEXT ###
+#proxy="proxy localhost:1234" #comment out for execution in IMR
+max_documents=150000
+min_documents=200
+documents_step=10000
+
+min_minDF=10
+max_minDF=160
+minDF_step=50
+
+
+window=500
+documents_data_dir=~/Data/ElasticSearch_text_docs
+
+
+rm *.out &>/dev/null
+

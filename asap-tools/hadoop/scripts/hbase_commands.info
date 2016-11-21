@@ -1,0 +1,10 @@
+
+create 'test', 'cf' 
+# list info of table
+list 'test'
+
+put 'test', 'row1', 'cf:a', 'value1'
+scan 'test'
+get 'test', 'row1'
+disable 'test'
+enable 'test'

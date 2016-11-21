@@ -1,0 +1,49 @@
+File: input/wikipedia/enwikibooks-20070126-pages-articles.xml
+PR prerocess for 156 MB
+* Took 23 seconds
+PR Iteration for 2 MB
+* Took 4 seconds
+PR vector Ordering for 2 MB
+* Took 3 seconds
+
+File: input/wikipedia/enwikibooks-20141223-pages-articles-multistream.xml
+PR prerocess for 535 MB
+* Took 57 seconds
+PR Iteration for 10 MB
+* Took 6 seconds
+PR vector Ordering for 10 MB
+* Took 4 seconds
+
+File: input/wikipedia/frwiki-20150313-pages-articles.xml
+PR prerocess for 12835 MB
+* Took 1221 seconds
+
+ls: `/tmp/wiki_pagerank/initial/part*': No such file or directory
+PR Iteration for 0 MB
+* Took 3 seconds
+*
+15/03/31 04:12:36 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+PR vector Ordering for 0 MB
+* Took 2 seconds
+*
+File: input/wikipedia/nlwiki-latest-pages-articles.xml
+PR prerocess for 5518 MB
+* Took 609 seconds
+*
+PR Iteration for 532 MB
+* Took 199 seconds
+*
+PR vector Ordering for 547 MB
+* Took 15 seconds
+
+File: input/wikipedia/nlwiki-latest-pages-articles.xml
+PR prerocess for 5518 MB
+* Took 627 seconds
+*
+PR Iteration for 532 MB
+* Took 199 seconds
+*
+PR vector Ordering for 547 MB
+* Took 14 seconds
+*
+

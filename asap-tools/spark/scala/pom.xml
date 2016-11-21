@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>sparkops</groupId>
+    <artifactId>sparkops_2.10</artifactId>
+    <packaging>jar</packaging>
+    <description>SparkOps</description>
+    <version>1.0</version>
+    <name>SparkOps</name>
+    <organization>
+        <name>sparkops</name>
+    </organization>
+    <properties>
+        <extraDependencyAttributes xml:space="preserve">+e:scalaVersion:#@#:+2.10:#@#:+revision:#@#:+3.0.0:#@#:+module:#@#:+sbteclipse-plugin:#@#:+e:sbtVersion:#@#:+0.13:#@#:+organisation:#@#:+com.typesafe.sbteclipse:#@#:+branch:#@#:+@#:NULL:#@:#@#:</extraDependencyAttributes>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.10.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.10</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_2.10</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-jackson_2.10</artifactId>
+            <version>3.2.11</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.typesafe.sbteclipse</groupId>
+            <artifactId>sbteclipse-plugin</artifactId>
+            <version>3.0.0</version>
+        </dependency> -->
+    </dependencies>
+</project>

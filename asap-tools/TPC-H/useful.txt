@@ -1,0 +1,3 @@
+#get head of table
+
+ssh cognito "head /home/npapa/datasets/tpch-s1/nation.tbl" > table_small.tbl

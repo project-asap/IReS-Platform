@@ -1,0 +1,4 @@
+https://archive.org/details/enwiki-20080425
+https://dumps.wikimedia.org/enwikibooks/20141223/enwikibooks-20141223-pages-articles-multistream.xml.bz2
+http://dumps.wikimedia.org/enwiki/20150304/enwiki-20150304-pages-articles-multistream-index.txt.bz2
+http://dumps.wikimedia.org/archive/2007/2007-02/enwikibooks/20070126/enwikibooks-20070126-pages-articles.xml.bz2

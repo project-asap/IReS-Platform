@@ -1,0 +1,66 @@
+#!/bin/bash 
+
+# source the operators ''library''
+source $ASAP_HOME/bin/*operators.sh
+
+function monitor	
+{
+	operation=$1
+	shift
+	case $operation in
+		start)
+			${ASAP_HOME}/monitoring/monitor.py $@ & ;;
+		stop)
+			${ASAP_HOME}/monitoring/monitor.py -cm $@;;
+		kill)
+			kill -9 $(ps aux|grep asap|grep monitor.py|awk {'print $2'});;
+		*)
+			echo Please specify start or stop;;
+	esac
+
+}
+
+function report
+{
+	exec ${ASAP_HOME}/monitoring/reporter_cli.py report $@
+}
+
+function future-report
+{
+	${ASAP_HOME}/monitoring/reporter_cli.py future-report $@
+}
+
+function help  # Show a list of available opperations
+{
+
+	echo ======--- Available Commands ---======
+	echo ======--- 	   General        ---======
+	grep "^function" $0 | sed "s/function/➜/g" 
+	echo ======--- 	  Operators       ---======
+	grep "^function" $ASAP_HOME/bin/*operators.sh | sed "s/function/➜/g" 
+}
+
+function run #wrapper that monitors an operator
+{	# start monitoring
+	monitor start
+	# run the experiment
+	$@
+	rs=$?
+	# stop monitoring
+	monitor stop 
+	
+	# check return status
+	if [ "$rs" -ne 0 ]
+	then
+		echo -e "ERROR: tried command \n ->$@\nFAILED with $rv"
+	fi
+	
+	#return with the same status
+	exit $rv
+}
+
+if [ "_$1" = "_" ]; then
+    help
+else
+        "$@"
+fi

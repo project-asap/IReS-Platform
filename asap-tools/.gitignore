@@ -1,0 +1,35 @@
+# Eclipse
+*.classpath
+*.project
+*.settings/
+
+# Intellij
+*.idea/
+*.iml
+*.iws
+
+# Mac
+*.DS_Store
+
+# Maven
+log/
+*target/
+
+# Java
+*.class
+*.jar
+
+# Python
+*.pyc
+
+# Data
+*.tar.gz
+*.tbl
+*.csv
+*.out
+*.results
+experiments/input/*
+experiments/tmp/*
+*.db
+*.log
+*.pid

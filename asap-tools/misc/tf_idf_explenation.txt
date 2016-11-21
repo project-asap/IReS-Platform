@@ -1,0 +1,84 @@
+in each of the implementations assume we are starting with 3 local files with the following filenames and contents
+The parts marked with a (*) are our own custom code to fill some bits and pieces
+
+The TF/IDF process for weka is 
+a) convert those documents to a local .arff file of all those data (using weka's TextDirectoryLoader)
+b) run tf/idf (StringToWordVector with some stemmer)
+c) the output is an arff file (see at the end of this document) 
+
+For Mahout
+a) convert those documents to a seqfile of filename->file_content (using mahout's seqdirectory)
+b) run tf/idf (seq2sparse)
+c) the output includes multiple hdfs sequence files of which we are only interested in the dictionary and idf vectors
+
+For Spark
+a) convert those documents to a seqfile of filename->file_content (using mahout's seqdirectory) (*)
+b.1) Create the document vectors
+b.2) Create the dictionary (*)
+c) The output files are two hdfs files: a sequence file  containing the dictionary and a text file of the document vectors
+
+
+=======================  Dataset and Outputs ====================
+
+Toy dataset:
+	file1: this is a pretty dog
+	file2: I am dog dog
+	file3: this is a dummy test
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Weka output (singe local .arff file):
+	@attribute @@class@@ {text}
+	@attribute dog numeric
+	@attribute dummy numeric
+	@attribute pretty numeric
+	@attribute test numeric
+
+	@data
+
+	{1 0.81093}
+	{1 0.405465,3 1.098612}
+	{2 1.098612,4 1.098612}
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Mahout ouput:
+
+Dictionary (sequencefile @ hdfs) :
+	Key class: class org.apache.hadoop.io.Text Value Class: class org.apache.hadoop.io.IntWritable
+	Key: am: Value: 0
+	Key: dog: Value: 1
+	Key: dummy: Value: 2
+	Key: i: Value: 3
+	Key: pretty: Value: 4
+	Key: test: Value: 5
+Document Vectors (sequencefile @ hdfs):
+	Key class: class org.apache.hadoop.io.Text Value Class: class org.apache.mahout.math.VectorWritable
+	Key: file1: Value: file1:{1:1.0,4:1.4054651260375977}
+	Key: file2: Value: file2:{0:1.4054651260375977,1:1.4142135381698608,3:1.4054651260375977}
+	Key: file3: Value: file3:{2:1.4054651260375977,5:1.4054651260375977}
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Spark Output:
+
+Dictionary (sequencefile @ hdfs): 
+	Key class: class org.apache.hadoop.io.Text Value Class: class org.apache.hadoop.io.IntWritable
+	Key: a: Value: 897504
+	Key: dummy: Value: 459745
+	Key: this: Value: 629096
+	Key: is: Value: 50570
+	Key: am: Value: 36748
+	Key: dog: Value: 1000429
+	Key: i: Value: 441832
+	Key: pretty: Value: 832566
+	Key: test: Value: 796600
+
+
+Document Vectors (text file @ hdfs):
+	(1048576,[50570,629096,832566,897504,1000429],[0.287682072452,0.287682072452,0.69314718056,0.287682072452,0.287682072452])
+	(1048576,[36748,441832,1000429],[0.69314718056,0.69314718056,0.575364144904])
+	(1048576,[50570,459745,629096,796600,897504],[0.287682072452,0.69314718056,0.287682072452,0.69314718056,0.287682072452])
+
+
+
