@@ -1,0 +1,23 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.OpSpecification.Algorithm.name=lr_classify
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Input0.type=vectors
+Constraints.Input1.Engine.FS=HDFS
+Constraints.Input1.type=lr_model
+Constraints.Engine=Python
+Constraints.Output.number=1
+Constraints.Input.number=2
+Optimization.inputSpace.In0.points=Double,10000.0,160000.0,10000.0
+Optimization.outputSpace.execTime=Double
+Optimization.execTime=In0.points*(0.04/log(1024))
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.cost=Double
+Optimization.cost=log(1024)
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Executioin.LuaScript=lr_classify_python.lua
+Execution.Arguments.number=2
+Execution.Argument0=In0.path
+Execution.Argument1=In1.path 
+Execution.Output0.path=$HDFS_OPT_DIR/python_classified

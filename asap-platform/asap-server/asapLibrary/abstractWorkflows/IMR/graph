@@ -5,4 +5,7 @@ d1,w2v_vectorize,1
 w2v_vectorize,d2
 d2,lr_train
 lr_train,d3
-d3,$$target
+d2,lr_classify,0
+d3,lr_classify,1
+lr_classify,d4
+d4,$$target

@@ -1,5 +1,6 @@
 #
-#Tue Feb 03 18:37:47 EET 2015
+#Thu Mar 10 14:00:31 EET 2016
 Optimization.documents=100000
+Optimization.size=932.22E06
+Execution.path=hdfs\:///user/root/asapDataSmall
 Constraints.Engine.FS=HDFS
-Execution.path=hdfs:///user/root/asapDataAll2

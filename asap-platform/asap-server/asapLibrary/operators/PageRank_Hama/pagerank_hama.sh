@@ -1,7 +1,7 @@
 #!/bin/bash
 inputFile=$1
 outputFile=$2
-iterations=${4%.*}
+iterations=${3%.*}
 
 
 echo "Pagerank"

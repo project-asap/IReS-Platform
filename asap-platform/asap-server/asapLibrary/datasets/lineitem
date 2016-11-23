@@ -1,31 +1,8 @@
-#Author				:	Papaioannou Vassilis
-#Last update		:	12/ 07/ 2016
-#Previous update	:	none
-#Platform			:	ASAP IReS
-#Github				:	https://github.com/project-asap/IReS-Platform
-################################################################################
 #
-#Description
-#	Concrete version of the 'lineitem' data set from TPC-H benchmark.
-#Description_End
-
-#################
-# CONFIGURATION #
-#################
-#Dataset
-#ENGINE
-Constraints.type=SQL
-Constraints.Engine.SQL=PostgreSQL
-Constraints.Engine.location=path
-
-############
-# MODELING #
-############
-#OPTIMIZATION METRIC( mandatory)
-Optimization.size=1E9
-
-#############
-# EXECUTION #
-#############
+#Sun Aug 07 23:12:24 EEST 2016
 Execution.name=lineitem
-Execution.schema=( l_orderkey bigint, l_partkey bigint, l_suppkey bigint, l_linenumber int, l_quantity decimal( 10, 2), l_extendedprice decimal( 10, 2), l_discount decimal( 10, 2), l_tax decimal( 10, 2), l_returnflag char( 1),   l_linestatus char( 1), l_shipdate date, l_commitdate date, l_receiptdate date, l_shipinstruct char( 25), l_shipmode char( 10), l_comment varchar( 44))
+Execution.schema=( l_orderkey bigint, l_partkey bigint, l_suppkey bigint, l_linenumber int, l_quantity decimal, l_extendedprice decimal, l_discount decimal, l_tax decimal, l_returnflag char( 1),   l_linestatus char( 1), l_shipdate date, l_commitdate date, l_receiptdate date, l_shipinstruct char( 25), l_shipmode char( 10), l_comment varchar( 44))
+Constraints.Engine.SQL=HIVE
+Constraints.type=SQL
+Constraints.Engine.location=slave-1
+Optimization.size=20

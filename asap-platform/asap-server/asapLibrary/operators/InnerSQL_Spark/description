@@ -14,34 +14,36 @@
 #################
 #Engine
 Constraints.Engine=Spark
-Constraints.EngineSpecification.Distributed.Spark.masterLocation=path
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
-Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity FROM lineitem GROUP BY l_partkey"
+Constraints.OpSpecification.SQL_query="SELECT l_partkey AS agg_partkey, 0.2 * avg(l_quantity) AS avg_quantity, l_extendedprice AS agg_extendedprice FROM lineitem GROUP BY l_partkey, l_extendedprice"
 #Inputs
 Constraints.Input.number = 1
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=Spark
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=master
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=Spark
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=master
 
 #################
 # OPTIMIZATION #
 #################
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+Optimization.inputSpace.In0.size=Double,1,20,5
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+#Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+#Optimization.execTime=2500.0
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=(In0.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
@@ -51,8 +53,11 @@ Optimization.cost=25.0
 #   EXECUTION   #
 #################
 Execution.LuaScript=InnerSQL_Spark.lua
-Execution.Arguments.number=2
-Execution.Argument0=tpchQuery17InnerPostgres.sql
-Execution.Argument1=postgres
-Execution.Output0.name=PART_AGG
-Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2))
+Execution.Arguments.number=5
+Execution.Argument0=spark://master:7077
+Execution.Argument1=executeInnerSQL.py
+Execution.Argument2=master
+Execution.Argument3=/opt/hadoop-2.7.0
+Execution.Argument4=tpchQuery17InnerSpark.sql
+Execution.Output0.name=part_agg
+Execution.Output0.schema=(agg_partkey bigint, avg_quantity decimal( 10, 2) NULL, agg_extendedprice decimal( 10,2))

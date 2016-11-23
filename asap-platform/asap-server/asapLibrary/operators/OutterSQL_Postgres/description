@@ -14,53 +14,56 @@
 #################
 #Engine
 Constraints.Engine=PostgreSQL
-Constraints.EngineSpecification.Centralized.PostgreSQL.location=path
+Constraints.EngineSpecification.Centralized.PostgreSQL.location=slave-1
 #Query
 Constraints.OpSpecification.Algorithm.name=SQL_query
 Constraints.OpSpecification.SQL_query="select sum(l_extendedprice) / 7.0 as avg_yearly from lineitem, part, part_agg where p_partkey = l_partkey and agg_partkey = l_partkey and p_brand = 'Brand#33' and p_container = 'MED BAG' and l_quantity < avg_quantity LIMIT 1;"
 #Inputs
-Constraints.Input.number = 3
+Constraints.Input.number = 2
 #Input0
 Constraints.Input0.type = SQL
 Constraints.Input0.Engine.SQL=PostgreSQL
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=slave-1
 #Input1
 Constraints.Input1.type = SQL
 Constraints.Input1.Engine.SQL=PostgreSQL
-Constraints.Input1.Engine.location=path
+Constraints.Input1.Engine.location=slave-1
 #Input2
-Constraints.Input2.type = SQL
-Constraints.Input2.Engine.SQL=PostgreSQL
-Constraints.Input2.Engine.location=path
+#Constraints.Input2.type = SQL
+#Constraints.Input2.Engine.SQL=PostgreSQL
+#Constraints.Input2.Engine.location=slave-1
 #Outputs
 Constraints.Output.number = 1
 #Output0
 Constraints.Output0.type = SQL
 Constraints.Output0.Engine.SQL=PostgreSQL
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=slave-1
 
 #################
 # OPTIMIZATION #
 #################
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.In0.size=Double,1E7,1E10,l
+Optimization.inputSpace.In0.size=Double,1,20,5
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
 Optimization.outputSpace.cost=Double
 #optimization metric function
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+#Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+#Optimization.execTime=250000.0
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.Out0.size=(In0.size)*0.1
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.cost=15.0
+Optimization.cost=2500.0
 
 #################
 #   EXECUTION   #
 #################
 Execution.LuaScript=OutterSQL_Postgres.lua
 Execution.Arguments.number=2
-Execution.Argument0=tpchQuery17OutterPostgres.sql
+Execution.Argument0="DROP TABLE IF EXISTS FINAL_RESULTS; CREATE TABLE FINAL_RESULTS AS SELECT SUM(l_extendedprice) / 7.0 AS avg_yearly 	FROM lineitem, 	part, part_agg 	WHERE p_partkey = l_partkey AND agg_partkey = l_partkey AND p_brand = 'Brand#33' AND p_container = 'MED BAG' AND l_quantity < avg_quantity LIMIT 1"
+#Execution.Argument0=tpchQuery17OutterPostgres.sql
 Execution.Argument1=postgres
 Execution.Output0.name=FINAL_RESULTS
 Execution.Output0.schema=( avg_yearly numeric)

@@ -1,0 +1,6 @@
+#
+#Thu Mar 10 14:00:31 EET 2016
+Optimization.documents=900000
+Optimization.size=950
+Execution.path=hdfs\:///user/root/amazon_data
+Constraints.Engine.FS=HDFS

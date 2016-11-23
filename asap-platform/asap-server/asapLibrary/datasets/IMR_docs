@@ -1,6 +1,6 @@
 #
-#Tue Feb 03 18:37:47 EET 2015
-Optimization.documents=1000
-Constraints.Engine.FS=HDFS
+#Tue Apr 05 15:36:35 EEST 2016
+Optimization.documents=2000
 Constraints.type=csv
-Execution.path=hdfs:///user/root/IMR/imr_training_suffled_small.csv
+Execution.path=hdfs\://master\:9000/user/root/imr_train/2k.csv
+Constraints.Engine.FS=HDFS

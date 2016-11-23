@@ -1,0 +1,4 @@
+Optimization.documents=6306
+Constraints.type=tfidf_scikit
+Execution.path=hdfs\://master\:9000/user/root/IMR/small/evenSmaller/tfidf/1
+Constraints.Engine.FS=HDFS
