@@ -378,6 +378,7 @@ i. description file: Create inside the folder a file named `description` with th
 	Execution.Output0.path=$HDFS_OP_DIR/lines.out
 	Execution.copyFromLocal=lines.out
 	Execution.copyToLocal=In0.path
+	Execution.command=./count_lines.sh
 
 ii. executable file: Create the executable named 'count_lines.sh' with the following content:
 
