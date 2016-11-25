@@ -5,26 +5,26 @@
 #################
 #Engine - destination
 Constraints.Engine=Spark
-Constraints.EngineSpecification.Distributed.Spark.masterLocation=path
+Constraints.EngineSpecification.Distributed.Spark.masterLocation=master
 Constraints.OpSpecification.Algorithm.name=move
 #Inputs
 Constraints.Input.number=1
 #Input0 - source
 Constraints.Input0.type=SQL
 Constraints.Input0.Engine.SQL=HIVE
-Constraints.Input0.Engine.location=path
+Constraints.Input0.Engine.location=slave-1
 #Outputs
 Constraints.Output.number=1
 #Output0 - destination
 Constraints.Output0.type=SQL
 Constraints.Output0.Engine.SQL=Spark
-Constraints.Output0.Engine.location=path
+Constraints.Output0.Engine.location=master
 
 #################
 # OPTIMIZATION #
 #################
 #OPTIMIZATION DIMENSIONS( mandatory, at least one)
-Optimization.inputSpace.In0.size=Double,1E8,1E10,l
+Optimization.inputSpace.In0.size=Double,1,20,5
 #OPTIMIZATION METRIC( mandatory)
 Optimization.outputSpace.execTime=Double
 Optimization.outputSpace.Out0.size=Double
@@ -32,7 +32,7 @@ Optimization.outputSpace.cost=Double
 #OPTIMIZATION MODELS
 Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
 Optimization.model.Out0.size=gr.ntua.ece.cslab.panic.core.models.UserFunction
-Optimization.Out0.size=In0.size
+Optimization.Out0.size=20
 Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
 Optimization.cost=1.0
 
@@ -41,8 +41,8 @@ Optimization.cost=1.0
 #################
 Execution.LuaScript=Move_Hive_Spark.lua
 Execution.Arguments.number=3
-Execution.Argument0=postgres
-Execution.Argument1=In0.name
-Execution.Argument2=In0.schema
+Execution.Argument0=In0.name
+Execution.Argument1=In0.schema
+Execution.Argument2=spark://master:7077
 Execution.Output0.name=In0.name
 Execution.Output0.schema=In0.schema

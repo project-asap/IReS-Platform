@@ -6,6 +6,7 @@ parser.add_argument("-k","--K", help="the K parameter of K-means", type=int, req
 parser.add_argument("-mi","--max_iterations", help="the max iterations of the algorithm", type=int, required=True)
 parser.add_argument("-i", "--input",  help="the input dir (RDD)", required=True)
 parser.add_argument("-o", '--output', help="the output file", required=True )
+parser.add_argument("-s", '--source', help="the input file source (eg scikit)", required=True )
 args = parser.parse_args()
 
 
@@ -13,11 +14,12 @@ args = parser.parse_args()
 k = args.K
 max_iter = args.max_iterations
 fname = args.input
-if not fname.startswith('/'):
-    print "Please specify an absolute path for the input"
-    exit()
+source = args.source
+#if not fname.startswith('/'):
+#    print "Please specify an absolute path for the input"
+#    exit()
 
-fname = "hdfs://master:9000/"+fname
+#fname = "hdfs://master:9000/"+fname
 runs = 4 #???
 
 from pyspark import SparkContext
@@ -34,10 +36,20 @@ def myVec(line):
     return  eval("SparseVector"+line)
 
 
-
+data = None 
 # Load and parse the data
-data = sc.textFile(fname).map(myVec)
-
+#try:
+#    data = sc.textFile(fname).first()#.map(myVec)
+#except Exception as e:
+if source == "python": 
+    import pickle, os
+    print "Aw! python<3"
+    os.system("hdfs dfs -copyToLocal %s /tmp/tfidfTMP"%fname)
+    s = pickle.load(open("/tmp/tfidfTMP")).todense()
+    #data = map(lambda k: k.tolist()[0], s)
+    data = sc.parallelize(s, 100).map(lambda k: k.tolist()[0])
+else:
+    data = sc.textFile(fname).first()#.map(myVec)
 
 # Build the model (cluster the data)
 clusters = KMeans.train(data, k, maxIterations=max_iter, runs=runs, initializationMode="random")
@@ -60,3 +72,5 @@ for c in clusters.clusterCenters:
     f.write("]\n")
 
 f.close()
+
+os.system("rm /tmp/tfidfTMP")

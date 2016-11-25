@@ -1,0 +1,6 @@
+#
+#Thu Mar 10 14:00:31 EET 2016
+Optimization.documents=1
+Optimization.size=500
+Execution.path=hdfs\:///user/root/asap-server.log
+Constraints.Engine.FS=HDFS

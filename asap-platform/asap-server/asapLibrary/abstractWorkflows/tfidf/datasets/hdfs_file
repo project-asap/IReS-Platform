@@ -1,0 +1,3 @@
+Constraints.Engine.FS=HDFS
+Execution.path=hdfs:///user/root/imr_docs/2k.arff
+Optimization.documents=2000

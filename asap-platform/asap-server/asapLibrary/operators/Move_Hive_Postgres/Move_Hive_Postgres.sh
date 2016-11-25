@@ -1,27 +1,35 @@
 #!/bin/bash
 
-export HADOOP_HOME='/home/bill/PhD/projects/yarn'
-HIVE_HOME='/home/bill/PhD/projects/hive'
+echo -e "Move_Hive_Postgres\n"
 
+export HADOOP_HOME=/opt/hadoop-2.7.0
+HDFS=/user/hive/warehouse
 DATABASE=$1
 TABLE=$2
 SCHEMA=$3
-SQL_QUERY="DROP TABLE $TABLE; CREATE TABLE $TABLE $SCHEMA; COPY $TABLE FROM '/tmp/out' WITH DELIMITER AS '|';"
-
 
 echo "exporting table from HIVE"
-mkdir t1
-$HADOOP_HOME/bin/hadoop fs -copyToLocal $HIVE_HOME/warehouse/$2/* t1
-rm /tmp/out
-for x in $(ls t1/*);
-do
-        #echo $x
-        cat $x >> /tmp/out
-done
-chown -R postgres:postgres /tmp/out
+if [ ! -e /mnt/Data/tmp/$TABLE ]
+then
+	mkdir -p /mnt/Data/tmp/$TABLE
+	sudo chmod -R a+wrx /mnt/Data/tmp
+else
+	rm /mnt/Data/tmp/$TABLE/*
+fi
+$HADOOP_HOME/bin/hdfs dfs -copyToLocal $HDFS/$TABLE/* /mnt/Data/tmp/$TABLE
+if [ ! -f /mnt/Data/tmp/$TABLE/$TABLE.csv ]
+then
+	for x in $(ls /mnt/Data/tmp/$TABLE/*);
+	do
+		#echo $x
+		cat $x >> /mnt/Data/tmp/$TABLE/$TABLE.csv
+	done
+fi
+chown -R postgres:postgres /mnt/Data/tmp/$TABLE/$TABLE.csv
 ls -ltr 
-rm -r t1
 
 echo "loading table to POSTGRES"
-sudo -u postgres psql $DATABASE -c $SQL_QUERY
-rm /tmp/out
+sudo -u postgres psql -d $DATABASE -c "DROP TABLE $TABLE;"
+sudo -u postgres psql -d $DATABASE -c "CREATE TABLE $TABLE $SCHEMA;"
+sudo -u postgres psql -d $DATABASE -c "COPY $TABLE FROM '/mnt/Data/tmp/$TABLE/$TABLE.csv' WITH DELIMITER AS '|';"
+rm -r /mnt/Data/tmp/$TABLE

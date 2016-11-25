@@ -1,27 +1,54 @@
 #!/bin/bash
 
-export HADOOP_HOME='/home/bill/PhD/projects/yarn'
-HIVE_HOME='/home/bill/PhD/projects/hive'
+echo -e "Move_Spark_Postgres\n"
 
+export HADOOP_HOME=/opt/hadoop-2.7.0
+export SPARK_HOME=/opt/spark
+HDFS=/user/hive/warehouse
 DATABASE=$1
 TABLE=$2
 SCHEMA=$3
-SQL_QUERY="DROP TABLE $TABLE; CREATE TABLE $TABLE $SCHEMA; COPY $TABLE FROM '/tmp/out' WITH DELIMITER AS '|';"
+SPARK_PORT=$4
+SQL_QUERY="DROP TABLE $TABLE; CREATE TABLE $TABLE $SCHEMA; COPY $TABLE FROM '/mnt/Data/tmp/$TABLE/$TABLE.csv' WITH DELIMITER AS '|';"
 
-
-echo "exporting table from HIVE"
-mkdir t1
-$HADOOP_HOME/bin/hadoop fs -copyToLocal $HIVE_HOME/warehouse/$2/* t1
-rm /tmp/out
-for x in $(ls t1/*);
+echo "Exporting table from Spark"
+if [ ! -e /mnt/Data/tmp/$TABLE ]
+then
+	mkdir -p /mnt/Data/tmp/$TABLE
+	sudo chmod -R a+wrx /mnt/Data/tmp
+else
+	rm -r /mnt/Data/tmp/$TABLE/*
+fi
+#convert parquet file to csv
+#$HADOOP_HOME/bin/hdfs dfs -rm -r $HDFS/$TABLE.csv
+$SPARK_HOME/bin/spark-submit --executor-memory 2G --driver-memory 512M  --packages com.databricks:spark-csv_2.10:1.4.0 --master $SPARK_PORT convertParquet2CSV.py $HADOOP_HOME $TABLE
+$HADOOP_HOME/bin/hdfs dfs -copyToLocal $HDFS/$TABLE.csv/* /mnt/Data/tmp/$TABLE
+ls -lah /mnt/Data/tmp/$TABLE
+if [ -f /mnt/Data/tmp/$TABLE/$TABLE.csv ]
+then
+	rm /mnt/Data/tmp/$TABLE/$TABLE.csv
+fi
+for x in $(ls /mnt/Data/tmp/$TABLE/part-*);
 do
-        #echo $x
-        cat $x >> /tmp/out
+       echo "Copying file "$x
+       cat $x >> /mnt/Data/tmp/$TABLE/$TABLE.csv
 done
-chown -R postgres:postgres /tmp/out
-ls -ltr 
-rm -r t1
+ls -ltr /mnt/Data/tmp/$TABLE
+#from parquet file double quotes have been added to string values
+#and for this their length is changed. To restore their length the
+#extra double quotes are removed with sed
+sed -i 's/|\"/|/g' /mnt/Data/tmp/$TABLE/$TABLE.csv
+sed -i 's/\"|/|/g' /mnt/Data/tmp/$TABLE/$TABLE.csv
+#rm /mnt/Data/tmp/temp_sed
+#head /mnt/Data/tmp/$TABLE/$TABLE.csv
+chown -R postgres:postgres /mnt/Data/tmp/$TABLE/$TABLE.csv
+ls -ltr /mnt/Data/tmp/$TABLE
 
-echo "loading table to POSTGRES"
-sudo -u postgres psql $DATABASE -c $SQL_QUERY
-rm /tmp/out
+echo "Loading table to POSTGRES"
+sudo -u postgres psql -d $DATABASE -c "$SQL_QUERY"
+#sudo -u postgres psql -d $DATABASE -c "DROP TABLE $TABLE"
+#sudo -u postgres psql -d $DATABASE -c "CREATE TABLE $TABLE $SCHEMA"
+#sudo -u postgres psql -d $DATABASE -c "COPY $TABLE FROM '/mnt/Data/tmp/$TABLE/$TABLE.csv' WITH DELIMITER AS '|'"
+#clean
+rm -r /mnt/Data/tmp/$TABLE
+$HADOOP_HOME/bin/hdfs dfs -rm -r $HDFS/$TABLE.csv
