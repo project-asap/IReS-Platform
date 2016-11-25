@@ -1,0 +1,29 @@
+#
+#Wed Jan 28 16:52:09 EET 2015
+Constraints.Output0.Engine.FS=HDFS
+Constraints.Output0.type=w2v_model
+Constraints.OpSpecification.Algorithm.name=w2v_train
+Constraints.Input0.Engine.FS=HDFS
+Constraints.Input0.type=csv
+Constraints.Engine=Spark
+Constraints.Output.number=1
+Constraints.Input.number=1
+Optimization.inputSpace.In0.documents=Double,10000.0,160000.0,10000.0
+Optimization.inputSpace.cores=Double,8,16,4
+Optimization.inputSpace.memory=Double,512,1024,256
+Optimization.outputSpace.execTime=Double
+Optimization.execTime=30+120/(log(cores) + log(memory))
+Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Optimization.outputSpace.cost=Double
+Optimization.cost=log(cores) + log(memory)
+Optimization.model.cost=gr.ntua.ece.cslab.panic.core.models.UserFunction
+Execution.LuaScript=w2v_train_spark.lua
+Execution.Output0.path=$HDFS_OP_DIR/w2vmodel
+Execution.Arguments.number=2
+Execution.Argument0=In0.path
+Execution.Argument1=$HDFS_OP_DIR/w2vmodel
+#Optimization.model.execTime=gr.ntua.ece.cslab.panic.core.models.AbstractWekaModel
+Optimizatidon.inputSource.type=mongodb
+Optimization.inputSource.host=master
+Optimization.inputSource.db=metrics
+#Execution.Output0.path=$HDFS_OP_DIR/w2vmodel
