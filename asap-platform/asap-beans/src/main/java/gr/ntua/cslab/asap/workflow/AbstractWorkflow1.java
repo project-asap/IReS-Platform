@@ -412,6 +412,10 @@ public class AbstractWorkflow1 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 
 		String line = null;
+		for(WorkflowNode n : workflowNodes.values()){
+			n.inputs = new ArrayList<>();
+			n.outputs = new ArrayList<>();
+		}
 		while ((line = br.readLine()) != null) {
 			String[] e =line.split(",");
 			if(e[1].equals("$$target")){
