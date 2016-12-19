@@ -424,8 +424,8 @@ ii. graph: Create a file named 'graph' and add the following content:
 
 .. code:: javascript
 
-	asapServerLog,LineCount
-	LineCount,d1
+	asapServerLog,LineCount,0
+	LineCount,d1,0
 	d1,$$target
 
 This `graph` file defines the workflow graph as follows: `asapServerLog` dataset is being given as input to the `LineCount` abstract operator and `LineCount` operator outputs the result into `d1`. Finally, `d1` node maps to the final result ($$target).
@@ -470,3 +470,193 @@ When the execution finish, navigate to the HDFS file browser to see the output l
 
 
 All resources and examples files described in this section are available `here <./files/LineCountExample.tar>`_.
+
+====================================
+Creating a text clustering workflow
+====================================
+This example describes how to define a text clustering workflow consisting of two operators. This workflow takes as input a dataset with raw text files. In the first operator the files are transformed into tf-idf vectors. Then the vectors are given as input to the next operator which performs the clustering using a k-means algorithm.
+
+We will use two Cilk-based implementations for this example. 
+
+-------------------
+Dataset definition
+-------------------
+We will use this text file for our example. The following file should exists in the HDFS cluster with name 'textData'. Create the data definition as follows:
+1. Create a file named 'textData' in the asapLibrary/datasets folder
+2. Add the following content:
+
+.. code:: javascript
+
+	Constraints.Engine.FS = HDFS
+	Constraints.type = text
+	Execution.path = hdfs:///user/asap/input/textData
+	Optimization.size = 932E06
+
+-------------------------------------
+TF-IDF abstract operator definition
+-------------------------------------
+Next, we'll define the abstract definition for a TF-IDF operator.
+1. Create a file named 'tf-idf' in the asapLibrary/abstractOperators folder
+2. Add the following content:
+
+.. code:: javascript
+
+	Constraints.Input.number = 1
+	Constraints.OpSpecification.Algorithm.name = TF_IDF
+	Constraints.Output.number = 1
+
+-------------------------------------
+K-Means abstract operator definition
+-------------------------------------
+Create the abstract definition of K-Means operator as follows:
+1. Create a file named 'kmeans' in the asapLibrary/abstractOperators folder
+2. Add the following content:
+
+.. code:: javascript
+
+	Constraints.Input.number = 1
+	Constraints.OpSpecification.Algorithm.name = kmeans
+	Constraints.Output.number = 1
+
+
+-----------------------------
+Abstract workflow definition
+-----------------------------
+In this step we'll describe how to connect the two aforementioned operators in order to define the text clustering workflow.
+1. Create a folder named 'TextClustering' in the asabLibrary/abstractWorkflows folder
+2. Specify the workflow graph by creating a file named 'graph' with the following content:
+
+.. code:: javascript
+
+	testdir,tfidf_cilk,0
+	tfidf_cilk,d1,0
+	d1,kmeans,0
+	kmeans,d2,0
+	d2,$$target
+
+Next, we will defined the materialized operators. We will use Cilk for our implementations. 
+
+-----------------------------------------------
+TF-IDF materialized operator definition (Cilk)
+-----------------------------------------------
+1. Create a folder named 'TF_IDF_cilk' in the asapLibrary/operators folder.
+2. Create the description file named 'description' and add the following content:
+
+.. code:: javascript 
+
+	Constraints.Output0.Engine.FS=HDFS
+	Constraints.OpSpecification.Algorithm.name=TF_IDF
+	Constraints.Input0.type=text
+	Constraints.Output0.type=arff
+	Constraints.Engine=Cilk
+	Constraints.Output.number=1
+	Constraints.Input.number=1
+	Execution.LuaScript=TF_IDF_cilk.lua
+	Execution.Arguments.number=2
+	Execution.Argument0=In0.path.local
+	Execution.Argument1=tfidf.out
+	Execution.copyFromLocal=tfidf.out
+	Execution.copyToLocal=In0.path
+	Execution.Output0.path=$HDFS_OP_DIR/tfidf.out
+
+3. Create the lua file named 'TF_IDF_cilk.lua' as follows:
+
+.. code:: javascript
+
+	operator = yarn {
+	  name = "Execute cilk tfidf",
+	  timeout = 10000,
+	  memory = 1024,
+	  cores = 1,
+	  container = {
+	    instances = 1,
+	    --env = base_env,
+	    resources = {
+	    ["tfidf"] = {
+	       file = "asapLibrary/operators/TF_IDF_cilk/tfidf",
+	                type = "file",               -- other value: 'archive'
+	                visibility = "application"  -- other values: 'private', 'public'
+	        }
+	    },
+	    command = {
+	        base = "export LD_LIBRARY_PATH=/0/asap/qub/gcc-5/lib64:$LD_LIBRARY_PATH ; ./tfidf"
+	    }
+	  }
+	}
+
+4. Add the 'tfidf' executable (can be found in the tarball provided in the end of this article).
+
+-----------------------------------------------
+K-Means materialized operator definition (Cilk)
+-----------------------------------------------
+1. Create a folder named 'kmeans_cilk' in the asapLibrary/operators folder.
+2. Create the description file named 'description' and add the following content:
+
+.. code:: javascript 
+
+	Constraints.Output0.Engine.FS=HDFS
+	Constraints.OpSpecification.Algorithm.name=kmeans
+	Constraints.Input0.Engine.FS=HDFS
+	Constraints.Input0.type=arff
+	Constraints.Engine=Spark
+	Constraints.Output.number=1
+	Constraints.Input.number=1
+	Execution.LuaScript=kmeans_cilk.lua
+	Execution.Arguments.number=2
+	Execution.Argument0=In0.path.local
+	Execution.Argument1=kmeans.out
+	Execution.copyFromLocal=kmeans.out
+	Execution.copyToLocal=In0.path
+	Execution.Output0.path=$HDFS_OP_DIR/kmeans.out
+
+3. Create the lua file named 'kmeans_cilk.lua' as follows:
+
+.. code:: javascript
+
+	operator = yarn {
+	  name = "Execute kmeans",
+	  timeout = 10000,
+	  memory = 1024,
+	  cores = 1,
+	  container = {
+	    instances = 1,
+	    --env = base_env,
+	    resources = {
+	    ["kmeans"] = {
+	       file = "asapLibrary/operators/kmeans_cilk/kmeans",
+	                type = "file",               -- other value: 'archive'
+	                visibility = "application"  -- other values: 'private', 'public'
+	        }
+	    },
+	    command = {
+	        base = "export LD_LIBRARY_PATH=/0/asap/qub/gcc-5/lib64:$LD_LIBRARY_PATH ; ./kmeans"
+	    }
+	  }
+	}
+
+
+4. Add the 'kmeans' executable (can be also found in the tarball).
+
+---------------------
+Execute the workflow
+---------------------
+After finishing the previous steps restart the server for changes to take effect. Then:
+1. Go to Abstract Workflows and click on TextClustering
+
+.. image:: ./images/TextClustering/abstract.png
+   :width: 150%
+
+
+2. Materialize the workflow by clicking 'Materialize' button
+
+.. image:: ./images/TextClustering/materialized.png
+   :width: 150%
+
+
+3. Start the workflow execution by clicking 'Execute' button
+
+.. image:: ./images/TextClustering/running.png
+   :width: 150%
+
+
+The files used in this example can be downloaded `here <./files/TextClustering.tar>`_.
