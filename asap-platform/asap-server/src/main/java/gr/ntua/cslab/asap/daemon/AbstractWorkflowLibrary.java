@@ -165,14 +165,14 @@ public class AbstractWorkflowLibrary {
 		aw.removeNode(type, name);
 	}
 
-	public static void addWorkflow(String workflowName, WorkflowDictionary workflow) throws IOException {
-		
+	public static void addWorkflow(String workflowName, WorkflowDictionary workflow) throws Exception {
 		AbstractWorkflow1 w = TransformWorkflows.tranformAbstractWorkflow(workflowName, workflowDirectory, workflow);
-		
+		w.writeToDir("asapLibrary/abstractWorkflows/"+workflowName);
 		abstractWorkflows.put(workflowName, w);
 	}
 
-	public static void removeWorkflow(String id) {
+	public static void removeWorkflow(String id) throws IOException{
+		abstractWorkflows.get(id).deleteDir();
 		abstractWorkflows.remove(id);
 	}
 

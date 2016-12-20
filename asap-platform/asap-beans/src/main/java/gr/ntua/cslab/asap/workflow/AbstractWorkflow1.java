@@ -47,6 +47,7 @@ import gr.ntua.cslab.asap.operators.NodeName;
 import gr.ntua.cslab.asap.operators.Operator;
 import gr.ntua.cslab.asap.rest.beans.OperatorDictionary;
 import gr.ntua.cslab.asap.rest.beans.WorkflowDictionary;
+import org.apache.commons.io.FileUtils;
 
 public class AbstractWorkflow1 {
 	private List<WorkflowNode> targets;
@@ -55,7 +56,7 @@ public class AbstractWorkflow1 {
 	public String name, directory;
 	private static Logger logger = Logger.getLogger(AbstractWorkflow1.class.getName());
 
-	private HashMap<String, WorkflowNode> materilizedDatasets;
+	private HashMap<String, WorkflowNode> materializedDatasets;
 	public HashMap<String,String> groupInputs;
 	public String optimizationFunction;
 	public String functionTarget;
@@ -72,7 +73,7 @@ public class AbstractWorkflow1 {
 		this.name=name;
 		targets = new ArrayList<WorkflowNode>();
 		workflowNodes = new HashMap<String, WorkflowNode>();
-		materilizedDatasets = new HashMap<String, WorkflowNode>();
+		materializedDatasets = new HashMap<String, WorkflowNode>();
 	}
 
 	public AbstractWorkflow1(String name, String directory) {
@@ -100,8 +101,8 @@ public class AbstractWorkflow1 {
 		String fullName=name+"_"+nameExtention;
 		MaterializedWorkflow1 materializedWorkflow = new MaterializedWorkflow1(fullName, MaterializedWorkflowLibrary.getWorkflowDirectory()+"/"+fullName);
 		materializedWorkflow.count = this.count;
-		if(materilizedDatasets!=null)
-			materializedWorkflow.materilizedDatasets=materilizedDatasets;
+		if(materializedDatasets!=null)
+			materializedWorkflow.materilizedDatasets=materializedDatasets;
 		else
 			materializedWorkflow.materilizedDatasets=new HashMap<>();
 		materializedWorkflow.setAbstractWorkflow(this);
@@ -173,10 +174,10 @@ public class AbstractWorkflow1 {
 
 	public MaterializedWorkflow1 replan(
 			HashMap<String, WorkflowNode> materilizedDatasets, int count) throws Exception {
-		this.materilizedDatasets=materilizedDatasets;
+		this.materializedDatasets=materilizedDatasets;
 		this.count =count;
 		MaterializedWorkflow1 ret = materialize("", policy);
-		this.materilizedDatasets=null;
+		this.materializedDatasets=null;
 		this.count = 0;
 		return ret;
 	}
@@ -246,6 +247,9 @@ public class AbstractWorkflow1 {
 		graphWritter.close();
 	}
 
+	public void deleteDir() throws IOException {
+		FileUtils.deleteDirectory(new File(this.directory));
+	}
 
 	public void readFromDir(String directory) throws IOException {
 		HashMap<String,WorkflowNode> nodes = new HashMap<String, WorkflowNode>();

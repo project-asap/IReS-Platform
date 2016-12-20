@@ -69,7 +69,7 @@ public class AbstractWorkflows {
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Path("add/{id}/")
     public void addWorkflow(@PathParam("id") String id,
-    		WorkflowDictionary workflow) throws IOException, NumberFormatException, EvaluationException {
+    		WorkflowDictionary workflow) throws Exception{
 		AbstractWorkflowLibrary.addWorkflow(id, workflow);
     }
 	
