@@ -26,6 +26,7 @@ import gr.ntua.cslab.asap.rest.beans.OperatorDescription;
 import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -109,7 +110,9 @@ public class Operators {
     	return "OK";
     }
     
-    
+    /**
+     * Stores an operator from a tarball
+     * */
     private void storeOperator(InputStream is, String outputDir) throws Exception {
     	
     	logger.info("Writting operator to: "+outputDir);
@@ -136,11 +139,16 @@ public class Operators {
                 outputFileStream.close();
             }
         }
-        debInputStream.close(); 
-        
-        
+
+        debInputStream.close();
     }
 
+    /**
+     * Generates the content of the .lua file
+     * @param params The execution parameters. For example
+     *               Execution.memory=1024
+     *               Execution.cores=1
+     * */
     private static String generateLua(HashMap<String, String> params){
         return String.format("operator = yarn {\n" +
                         "  name = \"%s\",\n" +
@@ -165,7 +173,9 @@ public class Operators {
                 params.get("command"));
     }
 
-    //Generates the .lua file
+    /**
+     * Generates the actual .lua file
+     */
     private boolean generateLua(Operator op){
         try {
             HashMap<String, String> luaParams = new HashMap<>();
@@ -223,7 +233,9 @@ public class Operators {
         return true;
     }
 
-    //Generates a container resource in json format from a file
+    /**
+     * Generates a container resource in json format from a file
+     * */
     private String genResourceFromFile(File file){
         return String.format("[\"%s\"] = {\n" +
                 "       file = \"%s\",\n" +
@@ -232,7 +244,9 @@ public class Operators {
                 "        }",file.getName(), file.getPath());
     }
 
-    //Checks if the operator contains a .lua file
+    /**
+     * Checks if the operator contains a .lua file
+     * */
     private boolean containsLua(String operatorPath){
         File f = new File(operatorPath);
         if (f.isDirectory()){
@@ -249,6 +263,17 @@ public class Operators {
 
         return false;
     }
+
+    /**
+     * Validates an operator by checking if all the
+     * required files exist.
+     * */
+    private boolean isValid(File operatorFolder) {
+        String[] files = operatorFolder.list();
+        boolean description = Arrays.asList(files).contains("description");
+
+        return description;
+    }
     
     @POST
     @Path("addTarball/")
@@ -257,6 +282,11 @@ public class Operators {
     public String addOperator(@QueryParam("opname") String opname, @Context HttpServletRequest request, InputStream input) throws Exception {
     	String folder = OperatorLibrary.operatorDirectory+"/"+opname;
         storeOperator(input, folder);
+
+        if (!isValid(new File(folder))) {
+            return "description file not found!";
+        }
+
         Operator op = new Operator(opname, folder);
         op.readFromDir();
         if (!containsLua(folder)){
