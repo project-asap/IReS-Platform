@@ -45,6 +45,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 @Path("/operators/")
@@ -284,6 +285,7 @@ public class Operators {
         storeOperator(input, folder);
 
         if (!isValid(new File(folder))) {
+            FileUtils.deleteDirectory(new File(folder));
             return "description file not found!";
         }
 
