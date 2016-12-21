@@ -112,14 +112,14 @@ EOF
 setIresHome()
 {
 	# update asap-platform/asap-server/src/main/scripts/asap-server file
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
+	sed -i -e "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
 	# update asap.server_home variable in asap-platform/asap-server/src/main/resources/asap.properties file
-	sed -i "s:^asap\.server_home.*:asap\.server_home = $IRES_HOME/asap-platform/asap-server/target:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-	sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
+	sed -i -e "s:^asap\.server_home.*:asap\.server_home = $IRES_HOME/asap-platform/asap-server/target:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
+	sed -i -e "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
+	sed -i -e "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
 	if [[ -e $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua ]]
 	then
-		sed -i "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
+		sed -i -e "s:^IRES_HOME.*=.*:IRES_HOME=\"$IRES_HOME\":" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
 	fi
 }
 
@@ -180,7 +180,7 @@ connectASAP2YARN()
 		end=$(( $end - 1))
 		properties=`sed -n "$start","$end"p resources/conf/yarn-site-min.xml`
 		# add minimum set of properties
-		sed -i 's_<\/configuration>__' $YARN_HOME/etc/hadoop/yarn-site.xml
+		sed -i -e 's_<\/configuration>__' $YARN_HOME/etc/hadoop/yarn-site.xml
 		echo -e "$rm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/yarn-site.xml
 		#extract now just all the properties that reside inside <configuration></configuration> tags
 		start=`sed -n '/<configuration>/=' resources/conf/core-site-min.xml`
@@ -189,7 +189,7 @@ connectASAP2YARN()
 		end=$(( $end - 1))
 		properties=`sed -n "$start","$end"p resources/conf/core-site-min.xml`
 		# add minimum set of properties
-		sed -i 's_<\/configuration>__' $YARN_HOME/etc/hadoop/core-site.xml
+		sed -i -e 's_<\/configuration>__' $YARN_HOME/etc/hadoop/core-site.xml
 		echo -e "$nm_host_exists$properties\n</configuration>" >> $YARN_HOME/etc/hadoop/core-site.xml
 
 		# copy Hadoop YARN configuration files into ASAP server
@@ -199,19 +199,19 @@ connectASAP2YARN()
 		# set asap.properties file
 		# append
 		# path of hdfs command of Hadoop YARN
-		sed -i "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
+		sed -i -e "s:^asap\.hdfs_path.*:asap\.hdfs_path = "$YARN_HOME"/bin/hdfs:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
 		# path of asap command of ASAP server which does the reporting( taking measures)
-		sed -i "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
+		sed -i -e "s:^asap\.asap_path.*:asap\.asap_path = /home/"$USER"/asap/bin/asap:" $IRES_HOME/asap-platform/asap-server/src/main/resources/asap.properties
 
 		# add Hadoop YARN classpath to $IRES_HOME/asap-server/main/src/scripts/asap-server file
 		YARN_CLASSPATH=`${YARN_HOME}/bin/hadoop classpath`
-		sed -i "s@^YARN_CLASSPATH=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
+		sed -i -e "s@^YARN_CLASSPATH=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/src/main/scripts/asap-server
 		# update asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
-		sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
+		sed -i -e "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/asapLibrary/BasicLuaConf.lua
+		sed -i -e "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/defaultAsapLibrary/BasicLuaConf.lua
 		if [[ -e $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua ]]
 		then
-			sed -i "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
+			sed -i -e "s@^YARN_CLASSPATH.*=.*@YARN_CLASSPATH=\"${YARN_CLASSPATH}\"@" $IRES_HOME/asap-platform/asap-server/target/asapLibrary/BasicLuaConf.lua
 		fi
 		cd -
 	fi
