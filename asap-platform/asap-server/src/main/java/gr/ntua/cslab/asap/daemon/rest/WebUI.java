@@ -714,7 +714,7 @@ public class WebUI {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/abstractWorkflows/newWorkflow/")
-    public String newWorkflow(@QueryParam("workflowName") String workflowName) throws IOException {
+    public String newWorkflow(@QueryParam("workflowName") String workflowName) throws Exception {
     	AbstractWorkflowLibrary.newWorkflow(workflowName);
         return abstractWorkflowView(workflowName);
     }
@@ -722,7 +722,10 @@ public class WebUI {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/abstractWorkflows/changeGraph/")
-    public String changeAbstractWorkflowDescription(@QueryParam("workflowName") String workflowName, @QueryParam("workflowGraph") String workflowGraph) throws IOException {
+    public String changeAbstractWorkflowDescription(@QueryParam("workflowName") String workflowName,
+													@QueryParam("workflowGraph") String workflowGraph)
+			throws Exception {
+
     	logger.info("workflowName: "+workflowName);
     	logger.info("workflowGraph: "+workflowGraph);
     	
@@ -735,7 +738,7 @@ public class WebUI {
     @Produces(MediaType.TEXT_HTML)
     @Path("/abstractWorkflows/addRemove/")
     public String addNodeToWorkflow(@QueryParam("workflowName") String workflowName, @QueryParam("type") String type, @QueryParam("name") String name, 
-    		@QueryParam("addRemove") String addRemove) throws IOException {
+    		@QueryParam("addRemove") String addRemove) throws Exception {
     	if(name.isEmpty() || type.isEmpty() || workflowName.isEmpty())
             return abstractWorkflowView(workflowName);
     		

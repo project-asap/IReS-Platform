@@ -144,23 +144,25 @@ public class AbstractWorkflowLibrary {
 		aw.refresh();
 	}
 	
-	public static void changeWorkflow(String workflowName, String workflowGraph) throws IOException {
+	public static void changeWorkflow(String workflowName, String workflowGraph) throws Exception {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.changeEdges(workflowGraph);
-		
+		aw.deleteDir();
+		aw.writeToDir("asapLibrary/abstractWorkflows/"+workflowName);
 	}
 	
-	public static void newWorkflow(String workflowName) {
+	public static void newWorkflow(String workflowName) throws Exception {
 		AbstractWorkflow1 aw = new AbstractWorkflow1(workflowName, workflowDirectory+"/"+workflowName);
 		abstractWorkflows.put(workflowName, aw);
+		aw.writeToDir("asapLibrary/abstractWorkflows/"+workflowName);
 	}
 
-	public static void addNode(String workflowName, String type, String name) {
+	public static void addNode(String workflowName, String type, String name) throws Exception {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.addNode(type, name);
 	}
 
-	public static void removeNode(String workflowName, String type, String name) {
+	public static void removeNode(String workflowName, String type, String name) throws Exception {
 		AbstractWorkflow1 aw = abstractWorkflows.get(workflowName);
 		aw.removeNode(type, name);
 	}
