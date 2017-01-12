@@ -28,6 +28,7 @@ import gr.ntua.cslab.asap.staticLibraries.OperatorLibrary;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,10 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.ws.WebServiceException;
 
 import org.apache.log4j.Logger;
+
+import com.palominolabs.jersey.cors.Cors;
+
+import org.json.simple.JSONArray;
 
 @Path("/abstractOperators/")
 public class AbstractOperators {
@@ -66,6 +71,22 @@ public class AbstractOperators {
     }
 
     @GET
+    @Path("json")
+    @Cors(allowOrigin="*")  // Change it to specific hosts
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listOperatorsJson() throws java.io.IOException {
+    	List<String> l = AbstractOperatorLibrary.getOperators();
+        JSONArray array = new JSONArray();
+    	for(String op: l ){
+            array.add(op);
+    	}
+        StringWriter out = new StringWriter();
+        array.writeJSONString(out);
+        String jsonText = out.toString();
+        return jsonText;
+    }
+
+    @GET
     @Path("{id}/")
     @Produces(MediaType.TEXT_HTML)
     public String getApplicationInfo(@PathParam("id") String id) {
@@ -73,6 +94,7 @@ public class AbstractOperators {
     }
     
     @GET
+    @Cors(allowOrigin="*")  // Change it to specific hosts
     @Path("json/{id}/")
 	@Produces("application/json")
     public OperatorDescription getOperatorInfoJson(@PathParam("id") String id) {

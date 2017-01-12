@@ -80,7 +80,7 @@ public class AbstractOperatorLibrary {
 		AbstractOperator o = new AbstractOperator(opname);
     	InputStream is = new ByteArrayInputStream(opString.getBytes());
     	o.readPropertiesFromFile(is);
-    	o.writeToPropertiesFile("asapLibrary/operators/"+o.opName);
+        o.writeToPropertiesFile("asapLibrary/abstractOperators/"+o.opName);
     	add(o);
     	is.close();
 	}
