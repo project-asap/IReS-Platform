@@ -28,12 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -356,6 +352,7 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
   @Override
   public List<String> getCommands() throws IOException {
     List<String> cmds = Lists.newArrayList();
+
     if (!lv.isNil(LuaFields.COMMANDS)) {
       Iterator<LuaPair> pairsIter = lv.getTable(LuaFields.COMMANDS).arrayIterator();
       while (pairsIter.hasNext()) {
@@ -386,10 +383,12 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 
     String hdfs = conf.get("asap.hdfs_path");
     String asap = conf.get("asap.asap_path");
+    String asapHome = asap.split("/bin")[0];
+
     List<String> oldcmds = cmds;
     cmds = new ArrayList<String>();
-    cmds.add("export HOME=/root");
-    cmds.add("export ASAP_HOME=/root/asap; export PATH=\"$PATH:$ASAP_HOME/bin/\"");
+    //cmds.add("export HOME=/root");
+    //cmds.add("export ASAP_HOME=" + asapHome + "; export PATH=\"$PATH:$ASAP_HOME/bin/\"");
     cmds.add(asap +" monitor start");
     
     String outdir = dir+"/"+this.name;//+"_"+globalContainerId;
