@@ -383,14 +383,18 @@ private void addScript(Map<String, LocalResource> lres) throws IOException {
 
     String hdfs = conf.get("asap.hdfs_path");
     String asap = conf.get("asap.asap_path");
+    String venv = conf.get("asap.virtualenv");
     String asapHome = asap.split("/bin")[0];
 
     List<String> oldcmds = cmds;
     cmds = new ArrayList<String>();
     //cmds.add("export HOME=/root");
     //cmds.add("export ASAP_HOME=" + asapHome + "; export PATH=\"$PATH:$ASAP_HOME/bin/\"");
+    if (venv != null) {
+        cmds.add(String.format("source %s/bin/activate", venv));
+    }
     cmds.add(asap +" monitor start");
-    
+
     String outdir = dir+"/"+this.name;//+"_"+globalContainerId;
 
 	LOG.info("Inputs: "+operator.getInputFiles());
