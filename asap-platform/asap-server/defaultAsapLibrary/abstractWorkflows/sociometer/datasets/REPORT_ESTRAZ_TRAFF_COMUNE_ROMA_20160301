@@ -1,0 +1,5 @@
+#
+#Tue Mar 28 17:47:32 EEST 2017
+Optimization.size=430MB
+Execution.path=hdfs\://sith0\:9000/user/spapagian/dataset_simulated/REPORT_ESTRAZ_TRAFF_COMUNE_ROMA_20160301.csv
+Constraints.Engine.FS=HDFS

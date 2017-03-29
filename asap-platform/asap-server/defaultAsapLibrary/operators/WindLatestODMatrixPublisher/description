@@ -1,0 +1,11 @@
+Constraints.Engine = Python
+Constraints.Input.number = 1
+Constraints.OpSpecification.Algorithm.name = wind_od_publisher
+Constraints.Output.number = 1
+Execution.Argument0 = simulated
+Execution.Arguments.number = 1
+Execution.command = ./od_publisher.sh
+Execution.copyToLocal=Input0.path
+Execution.copyFromLocal=od-simulated.json
+Execution.Output0.path=$HDFS_OP_DIR/od-simulated.json
+Execution.Output0.name=od-simulated.json

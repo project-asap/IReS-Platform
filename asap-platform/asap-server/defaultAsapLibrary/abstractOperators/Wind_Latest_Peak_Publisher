@@ -1,0 +1,5 @@
+#
+#Mon Mar 13 17:50:14 EET 2017
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=wind_presence_publisher
+Constraints.Input.number=1

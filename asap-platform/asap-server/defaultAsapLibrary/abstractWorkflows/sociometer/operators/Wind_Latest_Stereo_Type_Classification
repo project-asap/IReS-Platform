@@ -1,0 +1,5 @@
+#
+#Tue Mar 28 17:47:32 EEST 2017
+Constraints.Output.number=2
+Constraints.OpSpecification.Algorithm.name=stereo_type_classification_latest
+Constraints.Input.number=2

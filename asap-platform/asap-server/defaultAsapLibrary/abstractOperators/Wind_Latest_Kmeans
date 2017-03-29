@@ -1,0 +1,5 @@
+#
+#Fri Mar 03 17:51:53 EET 2017
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=kmeans_latest
+Constraints.Input.number=1

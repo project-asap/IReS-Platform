@@ -1,0 +1,17 @@
+Constraints.Engine = Spark
+Constraints.Input.number = 1
+Constraints.OpSpecification.Algorithm.name = wind_socio_publisher
+Constraints.Output.number = 1
+Execution.command = ./socio_publisher.sh
+Execution.copyFromLocal=sociometer-simulated.json
+Execution.Output0.path=$HDFS_OP_DIR/sociometer-simulated.json
+Execution.Output0.name=sociometer-simulated.json
+Execution.Arguments.number=6
+Execution.Argument0=spark\://192.168.1.62\:7077
+Execution.Argument1=/home/asap/asap/spark01
+Execution.Argument2=Input0.path
+Execution.Argument3=simulated
+Execution.Argument4=2016-03-01
+Execution.Argument5=2016-04-30
+Execution.memory=4096
+Execution.cores=1

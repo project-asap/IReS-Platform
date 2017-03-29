@@ -1,0 +1,5 @@
+#
+#Thu Mar 16 14:27:25 EET 2017
+Constraints.Output.number=1
+Constraints.OpSpecification.Algorithm.name=wind_od_publisher
+Constraints.Input.number=1

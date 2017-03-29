@@ -1,0 +1,11 @@
+Constraints.Engine = Python
+Constraints.Input.number = 3
+Constraints.OpSpecification.Algorithm.name = wind_weblyzard_uploader
+Constraints.Output.number = 1
+Execution.command = ./weblyzard_uploader.sh
+Execution.copyToLocal=Input0.path,Input1.path,Input2.path
+Execution.Output0.path=$HDFS_OP_DIR
+Execution.Arguments.number = 3
+Execution.Argument0=Input0.name
+Execution.Argument1=Input1.name
+Execution.Argument2=Input2.name

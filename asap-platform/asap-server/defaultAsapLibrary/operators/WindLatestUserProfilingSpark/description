@@ -1,0 +1,21 @@
+#
+#Fri Jan 20 12:45:45 CET 2017
+Execution.Argument3=Input0.path
+Execution.Argument2=2g
+Execution.Argument1=/home/asap/asap/spark01
+Execution.Argument0=spark\://192.168.1.62\:7077
+Execution.cores=1
+Constraints.OpSpecification.Algorithm.name=user_profiling_latest
+Constraints.Output.number=1
+Constraints.Engine=Spark
+Execution.Output0.path=$AS_IShdfs\:///profiles
+Execution.Arguments.number=10
+Constraints.Input.number=1
+Execution.memory=4096
+Execution.command=./user_profiling.sh
+Execution.Argument7=simulated
+Execution.Argument8=2016-03-01
+Execution.Argument9=2016-04-30
+Execution.Argument6=%Y-%m-%d %X
+Execution.Argument5=field2col_simulated.csv
+Execution.Argument4=aree_roma.csv

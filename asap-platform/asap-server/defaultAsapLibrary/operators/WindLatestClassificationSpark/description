@@ -1,0 +1,21 @@
+#
+#Fri Jan 20 12:46:58 CET 2017
+Execution.Argument3=Input0.path
+Constraints.Input.number=2
+Execution.Argument2=2g
+Execution.Argument1=/home/asap/asap/spark01
+Execution.Argument0=spark\://192.168.1.62\:7077
+Execution.command=./classification.sh
+Execution.Output0.path=$AS_IShdfs\:///annotation_global
+Execution.Output1.path=$AS_IShdfs\:///sociometer
+Constraints.Engine=Spark/sociometer-simulated
+Execution.memory=4096
+Constraints.Engine=Spark
+Constraints.Output.number=2
+Constraints.OpSpecification.Algorithm.name=stereo_type_classification_latest
+Execution.cores=1
+Execution.Arguments.number=8
+Execution.Argument5=simulated
+Execution.Argument6=2016-03-01
+Execution.Argument7=2016-04-30
+Execution.Argument4=Input1.path
