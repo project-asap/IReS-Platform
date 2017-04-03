@@ -48,8 +48,8 @@ public class TestWorkflows {
 		cli.removeAbstractWorkflow("pagerank");
 		
 		AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("pagerank");
+		
 		Dataset d1 = new Dataset("graph");
-
 		WorkflowNode t1 = new WorkflowNode(false,false,"graph");
 		t1.setDataset(d1);
 
