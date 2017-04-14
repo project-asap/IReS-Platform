@@ -1,8 +1,7 @@
 #
 #Fri Jan 20 12:46:04 CET 2017
-Execution.Argument3=Input0.path
+Execution.Argument2=Input0.path
 Constraints.Input.number=1
-Execution.Argument2=4g
 Execution.Argument1=/home/asap/asap/spark01
 Execution.Argument0=spark\://192.168.1.62\:7077
 Execution.command=./clustering.sh
@@ -11,8 +10,8 @@ Execution.memory=4096
 Constraints.Engine=Swan
 Constraints.Output.number=1
 Constraints.OpSpecification.Algorithm.name=kmeans_latest
-Execution.cores=1
-Execution.Arguments.number=7
-Execution.Argument4=simulated
-Execution.Argument5=2016-03-01
-Execution.Argument6=2016-04-30
+xecution.cores=1
+Execution.Arguments.number=6
+Execution.Argument3=simulated
+Execution.Argument4=2016-03-01
+Execution.Argument5=2016-04-30
