@@ -716,7 +716,6 @@ public class WebUI {
     @Path("/abstractWorkflows/newWorkflow/")
     public String newWorkflow(@QueryParam("workflowName") String workflowName) throws Exception {
 		if (workflowName.equals("")) {
-			System.out.println("Empty...");
 			workflowName = String.format("workflow%d", System.currentTimeMillis());
 		}
     	AbstractWorkflowLibrary.newWorkflow(workflowName);
