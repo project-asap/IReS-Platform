@@ -17,14 +17,23 @@ public class Sociometer {
         WorkflowClient cli = new WorkflowClient();
         cli.setConfiguration(conf);
 
-		/*WorkflowDictionary wd = cli.getMaterializedWorkflowDescription("abstractTest1_2016_02_25_12:01:56");
-		for(OperatorDictionary op : wd.getOperators()){
-			if(op.getIsOperator().equals("true"))
-				System.out.println(op.getNameNoID()+" "+op.getCost());
-		}*/
+        AbstractWorkflow1 abstractWorkflow = socioMeter();
 
-        //cli.removeAbstractWorkflow("abstractTest1");
+        String policy ="metrics,cost,execTime\n"+
+                "groupInputs,execTime,max\n"+
+                "groupInputs,cost,sum\n"+
+                "function,2*execTime+3*cost,min";
 
+        cli.addAbstractWorkflow(abstractWorkflow);
+        //cli.materializeWorkflow(abstractWorkflow.name, policy);
+
+
+		/*String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
+		System.out.println(materializedWorkflow);
+		cli.executeWorkflow(materializedWorkflow);*/
+    }
+
+    public static AbstractWorkflow1 socioMeter() {
         AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
 
         AbstractOperator userProfilingOp = new AbstractOperator("Wind_Latest_User_Profiling");
@@ -80,6 +89,10 @@ public class Sociometer {
         WorkflowNode stereoTypeOut = new WorkflowNode(false, true, "d3");
         stereoTypeOut.setDataset(d3);
 
+        Dataset d8 = new Dataset("d8");
+        WorkflowNode stereoTypeOut2 = new WorkflowNode(false, true, "d8");
+        stereoTypeOut2.setDataset(d8);
+
         Dataset d4 = new Dataset("d4");
         WorkflowNode socioPublisherOut = new WorkflowNode(false, true, "d4");
         socioPublisherOut.setDataset(d4);
@@ -96,9 +109,6 @@ public class Sociometer {
         WorkflowNode ODMatrixPublisherOut = new WorkflowNode(false, true, "d7");
         ODMatrixPublisherOut.setDataset(d7);
 
-        Dataset d8 = new Dataset("d8");
-        WorkflowNode stereoTypeOut2 = new WorkflowNode(false, true, "d8");
-        stereoTypeOut2.setDataset(d8);
 
         Dataset d9 = new Dataset("d9");
         WorkflowNode peakDetectionOut = new WorkflowNode(false, true, "d9");
@@ -114,7 +124,7 @@ public class Sociometer {
         userProfiling.addOutput(0, userProfilingOut);
         userProfilingOut.addInput(0, userProfiling);
 
-        ODMatrix.addInput(0, stereoTypeOut2);
+        ODMatrix.addInput(0, stereoTypeOut);
         ODMatrix.addInput(1, inputData);
         ODMatrix.addOutput(0, ODMatrixOut);
         ODMatrixOut.addInput(0, ODMatrix);
@@ -131,14 +141,15 @@ public class Sociometer {
         stereoTypeClassification.addInput(1, kmeansOut);
         stereoTypeClassification.addOutput(0, stereoTypeOut);
         stereoTypeClassification.addOutput(1, stereoTypeOut2);
+
         stereoTypeOut.addInput(0, stereoTypeClassification);
         stereoTypeOut2.addInput(0, stereoTypeClassification);
 
-        socioPublisher.addInput(0, stereoTypeOut);
+        socioPublisher.addInput(0, stereoTypeOut2);
         socioPublisher.addOutput(0, socioPublisherOut);
         socioPublisherOut.addInput(0, socioPublisher);
 
-        peakDetection.addInput(0, stereoTypeOut2);
+        peakDetection.addInput(0, stereoTypeOut);
         peakDetection.addInput(1, inputData);
         peakDetection.addOutput(0, peakDetectionOut);
         peakDetectionOut.addInput(0, peakDetection);
@@ -156,16 +167,6 @@ public class Sociometer {
 
         abstractWorkflow.addTarget(weblyzardUploaderOut);
 
-
-        cli.addAbstractWorkflow(abstractWorkflow);
-
-        String policy ="metrics,cost,execTime\n"+
-                "groupInputs,execTime,max\n"+
-                "groupInputs,cost,sum\n"+
-                "function,2*execTime+3*cost,min";
-
-		/*String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
-		System.out.println(materializedWorkflow);
-		cli.executeWorkflow(materializedWorkflow);*/
+        return abstractWorkflow;
     }
 }
