@@ -6,6 +6,7 @@ import gr.ntua.cslab.asap.operators.AbstractOperator;
 import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
+import net.sourceforge.jeval.function.math.Abs;
 
 /**
  * Created by vic on 3/4/2017.
@@ -17,7 +18,9 @@ public class Sociometer {
         WorkflowClient cli = new WorkflowClient();
         cli.setConfiguration(conf);
 
-        AbstractWorkflow1 abstractWorkflow = socioMeter();
+        String dataset = "REPORT_ESTRAZ_TRAFF_COMUNE_ROMA_20160301";
+
+        AbstractWorkflow1 abstractWorkflow = userProfiling(dataset);
 
         String policy ="metrics,cost,execTime\n"+
                 "groupInputs,execTime,max\n"+
@@ -25,16 +28,42 @@ public class Sociometer {
                 "function,2*execTime+3*cost,min";
 
         cli.addAbstractWorkflow(abstractWorkflow);
-        //cli.materializeWorkflow(abstractWorkflow.name, policy);
+        String name = cli.materializeWorkflow(abstractWorkflow.name, policy);
 
+        //cli.executeWorkflow(name);
 
 		/*String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
 		System.out.println(materializedWorkflow);
 		cli.executeWorkflow(materializedWorkflow);*/
     }
 
-    public static AbstractWorkflow1 socioMeter() {
-        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("abstractTest1");
+    public static AbstractWorkflow1 userProfiling(String dataset) {
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("UserProfiling");
+
+        AbstractOperator userProfilingOp = new AbstractOperator("Wind_Latest_User_Profiling");
+        WorkflowNode userProfiling = new WorkflowNode(true,true,"Wind_Latest_User_Profiling");
+        userProfiling.setAbstractOperator(userProfilingOp);
+
+        Dataset input = new Dataset(dataset);
+        WorkflowNode inputData = new WorkflowNode(false,false,"WIND_DATASET");
+        inputData.setDataset(input);
+
+        Dataset d1 = new Dataset("d1");
+        WorkflowNode userProfilingOut = new WorkflowNode(false, true,"d1");
+        userProfilingOut.setDataset(d1);
+
+        userProfiling.addInput(0, inputData);
+        userProfiling.addOutput(0, userProfilingOut);
+        userProfilingOut.addInput(0, userProfiling);
+
+
+        abstractWorkflow.addTarget(userProfilingOut);
+
+        return abstractWorkflow;
+    }
+
+    public static AbstractWorkflow1 socioMeter(String dataset) {
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("SocioMeter");
 
         AbstractOperator userProfilingOp = new AbstractOperator("Wind_Latest_User_Profiling");
         WorkflowNode userProfiling = new WorkflowNode(true,true,"Wind_Latest_User_Profiling");
@@ -73,7 +102,7 @@ public class Sociometer {
         weblyzardUploader.setAbstractOperator(weblyzardUploaderAbstract);
 
 
-        Dataset input = new Dataset("REPORT_ESTRAZ_TRAFF_COMUNE_ROMA_20160301");
+        Dataset input = new Dataset(dataset);
         WorkflowNode inputData = new WorkflowNode(false,false,"WIND_DATASET");
         inputData.setDataset(input);
 
