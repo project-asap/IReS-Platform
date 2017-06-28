@@ -7,34 +7,162 @@ import gr.ntua.cslab.asap.operators.Dataset;
 import gr.ntua.cslab.asap.workflow.AbstractWorkflow1;
 import gr.ntua.cslab.asap.workflow.WorkflowNode;
 import net.sourceforge.jeval.function.math.Abs;
+import net.sourceforge.jeval.function.math.Exp;
 
 /**
  * Created by vic on 3/4/2017.
  */
 public class Sociometer {
     public static void main(String[] args) throws Exception {
+        runMultipleExperiments(args[0], args[1]);
+        //runMultipleExperiments("asapmaster", "peakdetection");
+    }
 
-        ClientConfiguration conf = new ClientConfiguration("asapmaster", 1323);
+    public static void runMultipleExperiments(String host, String workflow) throws Exception{
+        ClientConfiguration conf = new ClientConfiguration(host, 1323);
         WorkflowClient cli = new WorkflowClient();
         cli.setConfiguration(conf);
 
-        String dataset = "REPORT_ESTRAZ_TRAFF_COMUNE_ROMA_20160301";
+        String[] datasets = {"sociometer_tiny"};//,"sociometer_small", "sociometer_medium", "sociometer_huge"};
 
-        AbstractWorkflow1 abstractWorkflow = userProfiling(dataset);
+        int[] cores = {1,2,3,4};
 
-        String policy ="metrics,cost,execTime\n"+
-                "groupInputs,execTime,max\n"+
-                "groupInputs,cost,sum\n"+
-                "function,2*execTime+3*cost,min";
+        for (String ds : datasets) {
+            for (int memory=1; memory<=6; memory++) {
+                for (int c : cores) {
+                    AbstractWorkflow1 abstractWorkflow;
 
-        cli.addAbstractWorkflow(abstractWorkflow);
-        String name = cli.materializeWorkflow(abstractWorkflow.name, policy);
+                    switch (workflow) {
+                        case "kmeans": abstractWorkflow = KMeans(ds);
+                            break;
+                        case "sociometer": abstractWorkflow = socioMeter(ds);
+                            break;
+                        case "peakdetection": abstractWorkflow = PeakDetection(ds);
+                            break;
+                        default: throw new Exception("Workflow does not exists");
+                    }
 
-        //cli.executeWorkflow(name);
+                    String policy = "metrics,cost,execTime\n" +
+                            "groupInputs,execTime,max\n" +
+                            "groupInputs,cost,sum\n" +
+                            "function,execTime,min";
 
-		/*String materializedWorkflow = cli.materializeWorkflow("abstractTest1", policy);
-		System.out.println(materializedWorkflow);
-		cli.executeWorkflow(materializedWorkflow);*/
+                    String params =
+                                    "WindLatestPeakDetectionSparkNested.Optimization.totalCores=" + c*7 + "\n" +
+                                    "WindLatestPeakDetectionSparkNested.SelectedParam.totalCores=" + c*7 + "\n" +
+                                    "WindLatestPeakDetectionSparkNested.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                    "WindLatestPeakDetectionSparkNested.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
+                                    "WindLatestPeakDetectionSpark.Optimization.totalCores=" + c*7 + "\n" +
+                                    "WindLatestPeakDetectionSpark.SelectedParam.totalCores=" + c*7 + "\n" +
+                                    "WindLatestPeakDetectionSpark.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                    "WindLatestPeakDetectionSpark.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
+                                    "WindLatestClusteringScikit.Optimization.memory=" + memory*1024 + "\n" +
+                                    "WindLatestClusteringScikit.SelectedParam.memory=" + memory*1024 + "\n" +
+                                    "WindLatestClusteringMllib.Optimization.coresPerNode=" + c*7 + "\n" +
+                                    "WindLatestClusteringMllib.SelectedParam.coresPerNode=" + c*7 + "\n" +
+                                    "WindLatestClusteringMllib.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                    "WindLatestClusteringMllib.SelectedParam.memoryPerNode=" + memory*1024 + "\n";
+
+                    cli.addAbstractWorkflow(abstractWorkflow);
+
+                    String name = cli.materializeWorkflowWithParameters(abstractWorkflow.name, policy, params);
+                    cli.executeWorkflow(name);
+                    cli.waitForCompletion(name);
+                }
+            }
+        }
+    }
+
+    public static AbstractWorkflow1 PeakDetection(String dataset) {
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("PeakDetection");
+
+        AbstractOperator peakDetectionOp = new AbstractOperator("Wind_Latest_Peak_Detection");
+        WorkflowNode peakDetection = new WorkflowNode(true,true,"Wind_Latest_Peak_Detection");
+        peakDetection.setAbstractOperator(peakDetectionOp);
+
+        Dataset input1 = new Dataset("annotation_global");
+        WorkflowNode inputData1 = new WorkflowNode(false,false, "annotation_global");
+        inputData1.setDataset(input1);
+
+        Dataset input2 = new Dataset(dataset);
+        WorkflowNode inputData2 = new WorkflowNode(false,false, dataset);
+        inputData2.setDataset(input2);
+
+        Dataset d1 = new Dataset("d1");
+        WorkflowNode peakDetectionOut = new WorkflowNode(false, true,"d1");
+        peakDetectionOut.setDataset(d1);
+
+        peakDetection.addInput(0, inputData1);
+        peakDetection.addInput(1, inputData2);
+        peakDetection.addOutput(0, peakDetectionOut);
+        peakDetectionOut.addInput(0, peakDetection);
+
+
+        abstractWorkflow.addTarget(peakDetectionOut);
+
+        return abstractWorkflow;
+    }
+
+    public static AbstractWorkflow1 ProfilingAndKMeans(String dataset) {
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("ProfilingAndKMeans");
+
+        AbstractOperator clusteringOp = new AbstractOperator("Wind_Latest_Kmeans");
+        WorkflowNode clustering = new WorkflowNode(true,true,"Wind_Latest_Kmeans");
+        clustering.setAbstractOperator(clusteringOp);
+
+        AbstractOperator userProfilingOp = new AbstractOperator("Wind_Latest_User_Profiling");
+        WorkflowNode userProfiling = new WorkflowNode(true,true,"Wind_Latest_User_Profiling");
+        userProfiling.setAbstractOperator(userProfilingOp);
+
+        Dataset input = new Dataset(dataset);
+        WorkflowNode inputData = new WorkflowNode(false,false, dataset);
+        inputData.setDataset(input);
+
+        Dataset d1 = new Dataset("d1");
+        WorkflowNode profilingOut = new WorkflowNode(false, true,"d1");
+        profilingOut.setDataset(d1);
+
+        Dataset d2 = new Dataset("d2");
+        WorkflowNode clusteringOut = new WorkflowNode(false, true,"d2");
+        clusteringOut.setDataset(d2);
+
+        userProfiling.addInput(0, inputData);
+        userProfiling.addOutput(0, profilingOut);
+        profilingOut.addInput(0, userProfiling);
+
+        clustering.addInput(0, profilingOut);
+        clustering.addOutput(0, clusteringOut);
+        clusteringOut.addInput(0, clustering);
+
+
+        abstractWorkflow.addTarget(clusteringOut);
+
+        return abstractWorkflow;
+    }
+
+    public static AbstractWorkflow1 KMeans(String dataset) {
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("KMeans");
+
+        AbstractOperator clusteringOp = new AbstractOperator("Wind_Latest_Kmeans");
+        WorkflowNode clustering = new WorkflowNode(true,true,"Wind_Latest_Kmeans");
+        clustering.setAbstractOperator(clusteringOp);
+
+        Dataset input = new Dataset(dataset);
+        WorkflowNode inputData = new WorkflowNode(false,false, dataset);
+        inputData.setDataset(input);
+
+        Dataset d1 = new Dataset("d1");
+        WorkflowNode clusteringOut = new WorkflowNode(false, true,"d1");
+        clusteringOut.setDataset(d1);
+
+        clustering.addInput(0, inputData);
+        clustering.addOutput(0, clusteringOut);
+        clusteringOut.addInput(0, clustering);
+
+
+        abstractWorkflow.addTarget(clusteringOut);
+
+        return abstractWorkflow;
     }
 
     public static AbstractWorkflow1 userProfiling(String dataset) {
@@ -45,7 +173,7 @@ public class Sociometer {
         userProfiling.setAbstractOperator(userProfilingOp);
 
         Dataset input = new Dataset(dataset);
-        WorkflowNode inputData = new WorkflowNode(false,false,"WIND_DATASET");
+        WorkflowNode inputData = new WorkflowNode(false,false, dataset);
         inputData.setDataset(input);
 
         Dataset d1 = new Dataset("d1");
@@ -63,7 +191,7 @@ public class Sociometer {
     }
 
     public static AbstractWorkflow1 socioMeter(String dataset) {
-        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("SocioMeter");
+        AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("SocioMeterTest");
 
         AbstractOperator userProfilingOp = new AbstractOperator("Wind_Latest_User_Profiling");
         WorkflowNode userProfiling = new WorkflowNode(true,true,"Wind_Latest_User_Profiling");
