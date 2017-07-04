@@ -9,27 +9,39 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
 import net.sourceforge.jeval.function.math.Abs;
 import net.sourceforge.jeval.function.math.Exp;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  * Created by vic on 3/4/2017.
  */
 public class Sociometer {
     public static void main(String[] args) throws Exception {
-        runMultipleExperiments(args[0], args[1]);
-        //runMultipleExperiments("asapmaster", "peakdetection");
+        int coresStart = Integer.parseInt(args[4]);
+        int coresEnd = Integer.parseInt(args[5]);
+        int memStart = Integer.parseInt(args[6]);
+        int memEnd = Integer.parseInt(args[7]);
+
+        runMultipleExperiments(args[0], args[1], args[2], args[3], coresStart, coresEnd, memStart, memEnd);
+
+        //runMultipleExperiments("asapmaster", "sociometer", "sociometer_small", "cost",4, 6, 4,4);
     }
 
-    public static void runMultipleExperiments(String host, String workflow) throws Exception{
+    public static void runMultipleExperiments(String host, String workflow, String dataset, String p,
+                                              int coresStart, int coresEnd, int memStart, int memEnd) throws Exception{
         ClientConfiguration conf = new ClientConfiguration(host, 1323);
         WorkflowClient cli = new WorkflowClient();
         cli.setConfiguration(conf);
 
-        String[] datasets = {"sociometer_tiny"};//,"sociometer_small", "sociometer_medium", "sociometer_huge"};
+        FileWriter resultsFile = new FileWriter("results.csv", true);
 
-        int[] cores = {1,2,3,4};
+        String[] datasets = {dataset};//,"sociometer_small", "sociometer_medium", "sociometer_huge"};
+
 
         for (String ds : datasets) {
-            for (int memory=1; memory<=6; memory++) {
-                for (int c : cores) {
+            for (int memory=memStart; memory<=memEnd; memory++) {
+                for (int c=coresStart; c<=coresEnd; c++) {
                     AbstractWorkflow1 abstractWorkflow;
 
                     switch (workflow) {
@@ -45,7 +57,7 @@ public class Sociometer {
                     String policy = "metrics,cost,execTime\n" +
                             "groupInputs,execTime,max\n" +
                             "groupInputs,cost,sum\n" +
-                            "function,execTime,min";
+                            "function,"+p+",min";
 
                     String params =
                                     "WindLatestPeakDetectionSparkNested.Optimization.totalCores=" + c*7 + "\n" +
@@ -66,11 +78,19 @@ public class Sociometer {
                     cli.addAbstractWorkflow(abstractWorkflow);
 
                     String name = cli.materializeWorkflowWithParameters(abstractWorkflow.name, policy, params);
+
+                    long startTime = System.currentTimeMillis();
                     cli.executeWorkflow(name);
                     cli.waitForCompletion(name);
+                    double endTime = (System.currentTimeMillis() - startTime) / 1000.0;
+
+                    resultsFile.append(String.format("%s, %s, %s, %d, %d, %f\n", workflow, dataset, p, c, memory, endTime));
+                    resultsFile.flush();
                 }
             }
         }
+
+        resultsFile.close();
     }
 
     public static AbstractWorkflow1 PeakDetection(String dataset) {
