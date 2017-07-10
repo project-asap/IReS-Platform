@@ -24,11 +24,9 @@ public class Sociometer {
         int memEnd = Integer.parseInt(args[7]);
 
         runMultipleExperiments(args[0], args[1], args[2], args[3], coresStart, coresEnd, memStart, memEnd);
-
-        //runMultipleExperiments("asapmaster", "sociometer", "sociometer_small", "cost",4, 6, 4,4);
     }
 
-    public static void runMultipleExperiments(String host, String workflow, String dataset, String p,
+    public static void runMultipleExperiments(String host, String workflow, String ds, String p,
                                               int coresStart, int coresEnd, int memStart, int memEnd) throws Exception{
         ClientConfiguration conf = new ClientConfiguration(host, 1323);
         WorkflowClient cli = new WorkflowClient();
@@ -36,60 +34,58 @@ public class Sociometer {
 
         FileWriter resultsFile = new FileWriter("results.csv", true);
 
-        String[] datasets = {dataset};//,"sociometer_small", "sociometer_medium", "sociometer_huge"};
+        for (int memory=memStart; memory<=memEnd; memory++) {
+            for (int c=coresStart; c<=coresEnd; c++) {
+                AbstractWorkflow1 abstractWorkflow;
 
-
-        for (String ds : datasets) {
-            for (int memory=memStart; memory<=memEnd; memory++) {
-                for (int c=coresStart; c<=coresEnd; c++) {
-                    AbstractWorkflow1 abstractWorkflow;
-
-                    switch (workflow) {
-                        case "kmeans": abstractWorkflow = KMeans(ds);
-                            break;
-                        case "sociometer": abstractWorkflow = socioMeter(ds);
-                            break;
-                        case "peakdetection": abstractWorkflow = PeakDetection(ds);
-                            break;
-                        default: throw new Exception("Workflow does not exists");
-                    }
-
-                    String policy = "metrics,cost,execTime\n" +
-                            "groupInputs,execTime,max\n" +
-                            "groupInputs,cost,sum\n" +
-                            "function,"+p+",min";
-
-                    String params =
-                                    "WindLatestPeakDetectionSparkNested.Optimization.totalCores=" + c*7 + "\n" +
-                                    "WindLatestPeakDetectionSparkNested.SelectedParam.totalCores=" + c*7 + "\n" +
-                                    "WindLatestPeakDetectionSparkNested.Optimization.memoryPerNode=" + memory*1024 + "\n" +
-                                    "WindLatestPeakDetectionSparkNested.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
-                                    "WindLatestPeakDetectionSpark.Optimization.totalCores=" + c*7 + "\n" +
-                                    "WindLatestPeakDetectionSpark.SelectedParam.totalCores=" + c*7 + "\n" +
-                                    "WindLatestPeakDetectionSpark.Optimization.memoryPerNode=" + memory*1024 + "\n" +
-                                    "WindLatestPeakDetectionSpark.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
-                                    "WindLatestClusteringScikit.Optimization.memory=" + memory*1024 + "\n" +
-                                    "WindLatestClusteringScikit.SelectedParam.memory=" + memory*1024 + "\n" +
-                                    "WindLatestClusteringMllib.Optimization.coresPerNode=" + c*7 + "\n" +
-                                    "WindLatestClusteringMllib.SelectedParam.coresPerNode=" + c*7 + "\n" +
-                                    "WindLatestClusteringMllib.Optimization.memoryPerNode=" + memory*1024 + "\n" +
-                                    "WindLatestClusteringMllib.SelectedParam.memoryPerNode=" + memory*1024 + "\n";
-
-                    cli.addAbstractWorkflow(abstractWorkflow);
-
-                    String name = cli.materializeWorkflowWithParameters(abstractWorkflow.name, policy, params);
-
-                    long startTime = System.currentTimeMillis();
-                    cli.executeWorkflow(name);
-                    cli.waitForCompletion(name);
-                    double endTime = (System.currentTimeMillis() - startTime) / 1000.0;
-
-                    resultsFile.append(String.format("%s, %s, %s, %d, %d, %f\n", workflow, dataset, p, c, memory, endTime));
-                    resultsFile.flush();
+                switch (workflow) {
+                    case "kmeans": abstractWorkflow = KMeans(ds);
+                        break;
+                    case "sociometer": abstractWorkflow = socioMeter(ds);
+                        break;
+                    case "peakdetection": abstractWorkflow = PeakDetection(ds);
+                        break;
+                    case "profiling": abstractWorkflow = userProfiling(ds);
+                        break;
+                    case "pk": abstractWorkflow = ProfilingAndKMeans(ds);
+                        break;
+                    default: throw new Exception("Workflow does not exists");
                 }
+
+                String policy = "metrics,cost,execTime\n" +
+                        "groupInputs,execTime,max\n" +
+                        "groupInputs,cost,sum\n" +
+                        "function,"+p+",min";
+
+                String params =
+                                "WindLatestPeakDetectionSparkNested.Optimization.totalCores=" + c*7 + "\n" +
+                                "WindLatestPeakDetectionSparkNested.SelectedParam.totalCores=" + c*7 + "\n" +
+                                "WindLatestPeakDetectionSparkNested.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                "WindLatestPeakDetectionSparkNested.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
+                                "WindLatestPeakDetectionSpark.Optimization.totalCores=" + c*7 + "\n" +
+                                "WindLatestPeakDetectionSpark.SelectedParam.totalCores=" + c*7 + "\n" +
+                                "WindLatestPeakDetectionSpark.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                "WindLatestPeakDetectionSpark.SelectedParam.memoryPerNode=" + memory*1024 + "\n" +
+                                "WindLatestClusteringScikit.Optimization.memory=" + memory*1024 + "\n" +
+                                "WindLatestClusteringScikit.SelectedParam.memory=" + memory*1024 + "\n" +
+                                "WindLatestClusteringMllib.Optimization.coresPerNode=" + c*7 + "\n" +
+                                "WindLatestClusteringMllib.SelectedParam.coresPerNode=" + c*7 + "\n" +
+                                "WindLatestClusteringMllib.Optimization.memoryPerNode=" + memory*1024 + "\n" +
+                                "WindLatestClusteringMllib.SelectedParam.memoryPerNode=" + memory*1024 + "\n";
+
+                cli.addAbstractWorkflow(abstractWorkflow);
+
+                String name = cli.materializeWorkflowWithParameters(abstractWorkflow.name, policy, params);
+
+                long startTime = System.currentTimeMillis();
+                cli.executeWorkflow(name);
+                cli.waitForCompletion(name);
+                double endTime = (System.currentTimeMillis() - startTime) / 1000.0;
+
+                resultsFile.append(String.format("%s, %s, %s, %d, %d, %f\n", workflow, ds, p, c, memory, endTime));
+                resultsFile.flush();
             }
         }
-
         resultsFile.close();
     }
 
