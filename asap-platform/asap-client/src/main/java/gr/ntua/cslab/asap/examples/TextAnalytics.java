@@ -13,12 +13,24 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
 public class TextAnalytics {
     public static void main(String[] args) throws Exception {
         String host = "asapmaster";
+        String p = "execTime";
 
         ClientConfiguration conf = new ClientConfiguration(host, 1323);
         WorkflowClient cli = new WorkflowClient();
         cli.setConfiguration(conf);
 
-        cli.addAbstractWorkflow(TextAnalytics("big"));
+        String policy = "metrics,cost,execTime\n" +
+                "groupInputs,execTime,max\n" +
+                "groupInputs,cost,sum\n" +
+                "function,"+p+",min";
+
+        AbstractWorkflow1 aw = TextAnalytics("20news3");
+        cli.removeAbstractWorkflow(aw.name);
+        cli.addAbstractWorkflow(aw);
+
+        //String materialized = cli.materializeWorkflow(aw.name, policy);
+        //cli.executeWorkflow(materialized);
+        //cli.waitForCompletion(materialized);
     }
     public static AbstractWorkflow1 PosTagger(String dataset) {
         AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("POS_Tagging");
@@ -60,6 +72,10 @@ public class TextAnalytics {
         WorkflowNode TFIDF = new WorkflowNode(true,true,"TF_IDF");
         TFIDF.setAbstractOperator(TFIDFOp);
 
+        AbstractOperator KMeansOp = new AbstractOperator("k-Means");
+        WorkflowNode KMeans = new WorkflowNode(true,true,"k-Means");
+        KMeans.setAbstractOperator(KMeansOp);
+
         Dataset input1 = new Dataset(dataset);
         WorkflowNode inputData1 = new WorkflowNode(false,false, dataset);
         inputData1.setDataset(input1);
@@ -76,6 +92,10 @@ public class TextAnalytics {
         WorkflowNode TFIDFOut = new WorkflowNode(false, true,"d3");
         TFIDFOut.setDataset(d3);
 
+        Dataset d4 = new Dataset("d4");
+        WorkflowNode KMeansOut = new WorkflowNode(false, true,"d4");
+        KMeansOut.setDataset(d4);
+
         PosTagger.addInput(0, inputData1);
         PosTagger.addOutput(0, posTaggerOut);
         posTaggerOut.addInput(0, PosTagger);
@@ -88,8 +108,11 @@ public class TextAnalytics {
         TFIDF.addOutput(0, TFIDFOut);
         TFIDFOut.addInput(TFIDF);
 
+        KMeans.addInput(0, TFIDFOut);
+        KMeans.addOutput(0, KMeansOut);
+        KMeansOut.addInput(0, KMeans);
 
-        abstractWorkflow.addTarget(TFIDFOut);
+        abstractWorkflow.addTarget(KMeansOut);
 
         return abstractWorkflow;
     }

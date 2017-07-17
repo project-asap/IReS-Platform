@@ -49,6 +49,8 @@ public class Sociometer {
                         break;
                     case "pk": abstractWorkflow = ProfilingAndKMeans(ds);
                         break;
+                    case "textanalytics": abstractWorkflow = TextAnalytics.TextAnalytics(ds);
+                        break;
                     default: throw new Exception("Workflow does not exists");
                 }
 
