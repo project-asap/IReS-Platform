@@ -82,20 +82,17 @@ public class MongoDB implements DataSource{
 			String in1= is.replace('.', '@');
             projection.append(in1, "true");
         }
-//        for (String os : outputSpace){
-//			String os1= os.replace('.', '@');
-//            projection.append(os1, "true");
-//        }
 
     	if(metric.equals("execTime")){
             projection.append("time", "true");
     	}
     	else{
             String metric1= metric.replace('.', '@');
+            logger.info("This is mongo! I am building the projection for metric: " + metric);
             projection.append(metric1, "true");
     	}
-        System.out.println(projection);
-        logger.info(projection);
+        logger.info("The projection is: " + projection);
+
         FindIterable obj = mc.find().projection(projection);
 
         try {
