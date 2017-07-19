@@ -12,7 +12,7 @@ import gr.ntua.cslab.asap.workflow.WorkflowNode;
  */
 public class TextAnalytics {
     public static void main(String[] args) throws Exception {
-        String host = "asapmaster";
+        String host = "master";
         String p = "execTime";
 
         ClientConfiguration conf = new ClientConfiguration(host, 1323);
@@ -24,13 +24,13 @@ public class TextAnalytics {
                 "groupInputs,cost,sum\n" +
                 "function,"+p+",min";
 
-        AbstractWorkflow1 aw = TextAnalytics("20news3");
+        AbstractWorkflow1 aw = TextAnalytics("doc201");
         cli.removeAbstractWorkflow(aw.name);
         cli.addAbstractWorkflow(aw);
 
-        //String materialized = cli.materializeWorkflow(aw.name, policy);
-        //cli.executeWorkflow(materialized);
-        //cli.waitForCompletion(materialized);
+        String materialized = cli.materializeWorkflow(aw.name, policy);
+        cli.executeWorkflow(materialized);
+        cli.waitForCompletion(materialized);
     }
     public static AbstractWorkflow1 PosTagger(String dataset) {
         AbstractWorkflow1 abstractWorkflow = new AbstractWorkflow1("POS_Tagging");

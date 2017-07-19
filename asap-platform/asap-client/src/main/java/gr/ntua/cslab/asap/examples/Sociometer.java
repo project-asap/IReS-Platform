@@ -18,15 +18,16 @@ import java.io.FileWriter;
  */
 public class Sociometer {
     public static void main(String[] args) throws Exception {
-        int coresStart = Integer.parseInt(args[4]);
-        int coresEnd = Integer.parseInt(args[5]);
-        int memStart = Integer.parseInt(args[6]);
-        int memEnd = Integer.parseInt(args[7]);
+        //runMultipleExperiments("master", "peakdetection", "sociometer_60percent", "cpu_util", "min", 4, 4, 4, 4);
+        int coresStart = Integer.parseInt(args[5]);
+        int coresEnd = Integer.parseInt(args[6]);
+        int memStart = Integer.parseInt(args[7]);
+        int memEnd = Integer.parseInt(args[8]);
 
-        runMultipleExperiments(args[0], args[1], args[2], args[3], coresStart, coresEnd, memStart, memEnd);
+        runMultipleExperiments(args[0], args[1], args[2], args[3], args[4], coresStart, coresEnd, memStart, memEnd);
     }
 
-    public static void runMultipleExperiments(String host, String workflow, String ds, String p,
+    public static void runMultipleExperiments(String host, String workflow, String ds, String p,String objective,
                                               int coresStart, int coresEnd, int memStart, int memEnd) throws Exception{
         ClientConfiguration conf = new ClientConfiguration(host, 1323);
         WorkflowClient cli = new WorkflowClient();
@@ -51,13 +52,17 @@ public class Sociometer {
                         break;
                     case "textanalytics": abstractWorkflow = TextAnalytics.TextAnalytics(ds);
                         break;
+                    case "pos": abstractWorkflow = TextAnalytics.PosTagger(ds);
+                        break;
                     default: throw new Exception("Workflow does not exists");
                 }
 
-                String policy = "metrics,cost,execTime\n" +
+                String policy = "metrics,cost,execTime,mem_util,cpu_util\n" +
                         "groupInputs,execTime,max\n" +
+                        "groupInputs,cpu_util,max\n" +
+                        "groupInputs,mem_util,max\n" +
                         "groupInputs,cost,sum\n" +
-                        "function,"+p+",min";
+                        "function,"+p+","+objective;
 
                 String params =
                                 "WindLatestPeakDetectionSparkNested.Optimization.totalCores=" + c*7 + "\n" +
@@ -75,13 +80,14 @@ public class Sociometer {
                                 "WindLatestClusteringMllib.Optimization.memoryPerNode=" + memory*1024 + "\n" +
                                 "WindLatestClusteringMllib.SelectedParam.memoryPerNode=" + memory*1024 + "\n";
 
+                cli.removeAbstractWorkflow(abstractWorkflow.name);
                 cli.addAbstractWorkflow(abstractWorkflow);
 
                 String name = cli.materializeWorkflowWithParameters(abstractWorkflow.name, policy, params);
 
                 long startTime = System.currentTimeMillis();
-                cli.executeWorkflow(name);
-                cli.waitForCompletion(name);
+                //cli.executeWorkflow(name);
+                //cli.waitForCompletion(name);
                 double endTime = (System.currentTimeMillis() - startTime) / 1000.0;
 
                 resultsFile.append(String.format("%s, %s, %s, %d, %d, %f\n", workflow, ds, p, c, memory, endTime));
