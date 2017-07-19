@@ -56,7 +56,7 @@ public class Operator {
 	public SpecTree optree;
 	public String opName;
 	private DataSource dataSource;
-	private Model bestModel;
+	//private Model bestModel;
 	private double minTotalError;
 	private static Logger logger = Logger.getLogger(Operator.class.getName());
 	public String directory;
@@ -203,7 +203,6 @@ public class Operator {
 	 * @throws Exception
 	 */
 	public void configureModel() throws Exception {
-		System.out.println("Configuring model for operator "+this.opName);
 		String modelClass;
 		List<Model> performanceModels;
         List<OutputSpacePoint> outPoints = new ArrayList<>();
@@ -237,6 +236,7 @@ public class Operator {
 		}
 
 		for (Entry<String, String> e : outputSpace.entrySet()) {
+			Model bestModel = null;
 			logger.info("Configuring model for metric: "+e.getKey());
 
 			performanceModels = new ArrayList<>();
@@ -292,6 +292,7 @@ public class Operator {
 					}
 				}
 				else {
+					System.out.println("Bulding model for metric: " + metricName + " for operator " + opName);
 					logger.info("Bulding model for metric: " + metricName + " for operator " + opName);
 					int i = 0;
                     if (inputSource != null && inputSource.equalsIgnoreCase("mongodb")) {
@@ -383,7 +384,8 @@ public class Operator {
 					}
                     if(bestModel!=null){
 						modelDir.mkdir();
-						bestModel.serialize(modelDir + "/" + e.getKey() + "_" + i + ".model");
+						String modelPath = modelDir + "/" + e.getKey() + "_" + i + ".model";
+						bestModel.serialize(modelPath);
 						performanceModels.add(bestModel);
                     }
 				}
@@ -404,6 +406,15 @@ public class Operator {
 			}
 			models.put(e.getKey(), performanceModels);
 		}
+
+		/* DELETE THIS
+		System.out.println("Models for operator "+this.opName);
+		for (Entry<String, List<Model>> entry : models.entrySet()) {
+			System.out.println(entry.getKey());
+			for (Model m : entry.getValue()) {
+				System.out.println(m);
+			}
+		}*/
 	}
 
     public void initializeDatasource(){
@@ -921,11 +932,11 @@ public class Operator {
 		}
 		else{
 			for(String metric : outputSpace.keySet()){
-				Double v= getMettric(metric,inputs);
+				Double v = getMettric(metric,inputs);
 				retMetrics.put(metric, v);
 			}
 		}
-		
+		System.out.println("Output metrics: " + retMetrics);
 		logger.info("Output metrics: " + retMetrics);
 		
 		
@@ -979,6 +990,7 @@ public class Operator {
 	}
 	
 	public Double getMettric(String metric, List<WorkflowNode> inputs) throws Exception {
+		System.out.println("Getting mettric: " + metric + " from operator: " + opName);
 		logger.info("Getting mettric: " + metric + " from operator: " + opName);
 		//System.out.println(metric);
 		if(models.get(metric)==null || models.get(metric).size()==0){
@@ -1001,6 +1013,8 @@ public class Operator {
 			}
 		}
 		logger.info("Model selected: " + model.getClass());
+		System.out.println("Model selected: " + model.getClass());
+
 		//System.out.println(opName);
 		//System.out.println("inputs: "+inputs);
 
@@ -1054,7 +1068,7 @@ public class Operator {
 	}
 
 	public Double getCost(List<WorkflowNode> inputs) throws NumberFormatException, EvaluationException {
-
+		System.out.println("Getting cost for op: "+opName);
 		logger.info("Compute cost Operator " + opName);
 		logger.info("inputs: " + inputs);
 		String value = getParameter("Optimization.execTime");
