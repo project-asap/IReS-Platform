@@ -113,6 +113,8 @@ public class AbstractWorkflow1 {
 		Double tempCost = 0.0;
 		List<WorkflowNode> bestPlan=null;
 
+		long startTime = System.currentTimeMillis();
+
 		for(WorkflowNode t : targets){
 			logger.info( "Materializing workflow node: " + t.toStringNorecursive());
 			List<WorkflowNode> l = t.materialize(materializedWorkflow,dpTable,t.getName());
@@ -167,6 +169,9 @@ public class AbstractWorkflow1 {
 				materializedWorkflow.optimalCost=bestCost;
 			}
 		}
+
+		long end = System.currentTimeMillis();
+		logger.info("Planning time: "+(end-startTime)+" msec.");
 
 		return materializedWorkflow;
 	}// end of AbstractWorkflow1 materialize
